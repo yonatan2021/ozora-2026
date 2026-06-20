@@ -33,6 +33,7 @@ export function generateGoogleCalendarUrl(set) {
     dates: `${startStr}/${endStr}`,
     location: 'Ozora Festival, Hungary',
     details: set.type || '',
+    ctz: 'Europe/Budapest',
   });
 
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
@@ -48,8 +49,8 @@ export function generateICSFile(set) {
     'VERSION:2.0',
     'PRODID:-//Ozora 2026//EN',
     'BEGIN:VEVENT',
-    `DTSTART:${dtStart}`,
-    `DTEND:${dtEnd}`,
+    `DTSTART;TZID=Europe/Budapest:${dtStart}`,
+    `DTEND;TZID=Europe/Budapest:${dtEnd}`,
     `SUMMARY:${summary}`,
     'LOCATION:Ozora Festival\\, Hungary',
     `DESCRIPTION:${set.type || ''}`,
