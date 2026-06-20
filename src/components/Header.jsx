@@ -1,30 +1,56 @@
-import React from 'react';
-import { Star, Languages } from 'lucide-react';
+import { Languages, Calendar, BookOpen, User } from 'lucide-react';
 import { translations } from '../utils/lang';
+import SearchBar from './SearchBar';
+import logo from '../assets/logo.png';
 
 export default function Header({ 
   lang, 
   setLang, 
-  searchQuery, 
-  setSearchQuery, 
-  showFavoritesOnly, 
-  setShowFavoritesOnly 
+  timetableData,
+  favorites,
+  toggleFavorite,
+  onSelectSet,
+  activeTab,
+  setActiveTab
 }) {
   const t = translations[lang];
+  const isHe = lang === 'he';
 
   return (
     <header className="app-header">
       <div className="header-top">
-        <h1 className="brand-title">{t.title}</h1>
+        <h1 className="brand-title">
+          <img src={logo} alt={t.title} className="brand-logo" />
+        </h1>
+        
+        {/* Desktop/Tablet view Navigation Tabs */}
+        <div className="desktop-view-only">
+          <div className="desktop-nav-tabs">
+            <button 
+              className={`tab-btn ${activeTab === 'timetable' ? 'active' : ''}`}
+              onClick={() => setActiveTab('timetable')}
+            >
+              <Calendar size={16} />
+              <span>{isHe ? 'לוח הופעות' : 'Timetable'}</span>
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'favorites' ? 'active' : ''}`}
+              onClick={() => setActiveTab('favorites')}
+            >
+              <User size={16} />
+              <span>{isHe ? 'הלוח שלי' : 'My Schedule'}</span>
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'guide' ? 'active' : ''}`}
+              onClick={() => setActiveTab('guide')}
+            >
+              <BookOpen size={16} />
+              <span>{isHe ? 'מדריך פסטיבל' : 'Festival Guide'}</span>
+            </button>
+          </div>
+        </div>
+
         <div className="header-actions">
-          <button 
-            className={`fav-toggle ${showFavoritesOnly ? 'active' : ''}`}
-            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-            title={t.favoritesOnly}
-          >
-            <Star size={18} fill={showFavoritesOnly ? 'var(--stage-visium)' : 'none'} stroke={showFavoritesOnly ? 'var(--stage-visium)' : 'currentColor'} />
-            <span>{t.favoritesOnly}</span>
-          </button>
           <button 
             className="lang-toggle" 
             onClick={() => setLang(lang === 'en' ? 'he' : 'en')}
@@ -36,16 +62,13 @@ export default function Header({
         </div>
       </div>
 
-      <div className="search-bar-container">
-        <input 
-          type="text" 
-          placeholder={t.searchPlaceholder} 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-          dir={lang === 'he' ? 'rtl' : 'ltr'}
-        />
-      </div>
+      <SearchBar 
+        lang={lang}
+        timetableData={timetableData}
+        favorites={favorites}
+        toggleFavorite={toggleFavorite}
+        onSelectSet={onSelectSet}
+      />
     </header>
   );
 }

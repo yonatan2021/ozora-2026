@@ -1,17 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
 import TimetableGrid from './components/TimetableGrid';
 import ChronologicalFeed from './components/ChronologicalFeed';
 import SetModal from './components/SetModal';
+import LiveStatusModal from './components/LiveStatusModal';
+import MySchedule from './components/MySchedule';
+import FestivalGuide from './components/FestivalGuide';
 import { getSetStatus } from './utils/time';
 import { translations } from './utils/lang';
+import { Calendar, User, BookOpen } from 'lucide-react';
+
+const DATE_TO_DAY_MAP = {
+  '2026-07-25': 'Warmup Sat',
+  '2026-07-26': 'Warmup Sun',
+  '2026-07-27': 'DAY 1',
+  '2026-07-28': 'DAY 2',
+  '2026-07-29': 'DAY 3',
+  '2026-07-30': 'DAY 4',
+  '2026-07-31': 'DAY 5',
+  '2026-08-01': 'DAY 6',
+  '2026-08-02': 'DAY 7',
+  '2026-08-03': 'DAY 8'
+};
 
 export default function App() {
   const [lang, setLang] = useState('he');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'guide'
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('ozora_favs');
     return saved ? JSON.parse(saved) : [];
@@ -20,29 +36,60 @@ export default function App() {
   const [selectedDay, setSelectedDay] = useState('DAY 1');
   const [isSimulated, setIsSimulated] = useState(false);
   const [simTime, setSimTime] = useState(new Date('2026-07-27T20:00:00').getTime()); // Start of DAY 1
-  const [activeStatusMap, setActiveStatusMap] = useState({});
   const [selectedSet, setSelectedSet] = useState(null);
+  const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
 
   // Save favorites to localStorage
   useEffect(() => {
     localStorage.setItem('ozora_favs', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Update active set statuses
+  // Synchronize simulated time date with selected day (Slider -> Calendar)
   useEffect(() => {
-    const statusMap = {};
-    const evalTime = isSimulated ? new Date(simTime) : new Date();
-    
-    // In real-time mode, override year to 2026 for simulation/convenience
-    if (!isSimulated) {
-      evalTime.setFullYear(2026);
+    if (isSimulated) {
+      const dateObj = new Date(simTime);
+      const yyyy = dateObj.getFullYear();
+      const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const dd = String(dateObj.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+      const dayName = DATE_TO_DAY_MAP[dateStr];
+      if (dayName && dayName !== selectedDay) {
+        setSelectedDay(dayName);
+      }
     }
+  }, [simTime, isSimulated, selectedDay]);
 
-    timetableData.forEach(set => {
-      statusMap[set.id] = getSetStatus(set, evalTime);
-    });
-    setActiveStatusMap(statusMap);
-  }, [isSimulated, simTime]);
+  // Synchronize selected day change with simulated time (Calendar -> Slider)
+  const handleDayChange = (dayName) => {
+    setSelectedDay(dayName);
+    if (isSimulated) {
+      const dateStr = Object.keys(DATE_TO_DAY_MAP).find(key => DATE_TO_DAY_MAP[key] === dayName);
+      if (dateStr) {
+        const currentDate = new Date(simTime);
+        const [year, month, day] = dateStr.split('-').map(Number);
+        
+        const newSimDate = new Date(currentDate);
+        newSimDate.setFullYear(year);
+        newSimDate.setMonth(month - 1);
+        newSimDate.setDate(day);
+        
+        setSimTime(newSimDate.getTime());
+      }
+    }
+  };
+
+  // Derive active set statuses directly in render
+  const activeStatusMap = {};
+  const evalTime = isSimulated ? new Date(simTime) : new Date();
+  
+  // In real-time mode, override year to 2026 for simulation/convenience
+  if (!isSimulated) {
+    evalTime.setFullYear(2026);
+  }
+
+  timetableData.forEach(set => {
+    activeStatusMap[set.id] = getSetStatus(set, evalTime);
+  });
 
   const toggleFavorite = (id) => {
     setFavorites(prev => 
@@ -50,40 +97,59 @@ export default function App() {
     );
   };
 
-  // Filter sets based on selected filters
-  const filteredSets = timetableData.filter(set => {
-    // 1. Day Filter (Only filter by day if not showing favorites only, or let favorites show all days, or keep day filter. Day filter is great for grid views!)
-    if (set.day !== selectedDay) return false;
-
-    // 2. Search Query Filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      const artistMatch = set.artist.toLowerCase().includes(query);
-      const stageMatch = set.stage.toLowerCase().includes(query);
-      const typeMatch = set.type.toLowerCase().includes(query);
-      if (!artistMatch && !stageMatch && !typeMatch) return false;
-    }
-
-    // 3. Favorites Filter
-    if (showFavoritesOnly && !favorites.includes(set.id)) return false;
-
-    return true;
-  });
+  // Filter sets based on selected day
+  const filteredSets = timetableData.filter(set => set.day === selectedDay);
 
   // Unique days list sorted by date
   const days = Array.from(new Set(timetableData.map(s => s.day)));
-
   const t = translations[lang];
 
+  const handleSelectSetFromSearch = (set) => {
+    setActiveTab('timetable');
+    handleDayChange(set.day);
+    setSelectedSet(set);
+    
+    // Smooth scroll and flash highlight effect
+    setTimeout(() => {
+      const cardId = `set-card-${set.id}`;
+      const feedId = `feed-set-${set.id}`;
+      const element = document.getElementById(cardId) || document.getElementById(feedId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.classList.add('highlight-flash');
+        setTimeout(() => {
+          element.classList.remove('highlight-flash');
+        }, 2500);
+      }
+    }, 200);
+  };
+
+  // Dynamic theme classifier based on simulated or current time
+  const getThemeClass = (ts) => {
+    const hour = new Date(ts).getHours();
+    if (hour >= 20 || hour < 5) {
+      return 'theme-night';
+    } else if (hour >= 5 && hour < 7) {
+      return 'theme-sunrise';
+    } else if (hour >= 7 && hour < 18) {
+      return 'theme-day';
+    } else {
+      return 'theme-sunset';
+    }
+  };
+  const activeThemeClass = getThemeClass(simTime);
+
   return (
-    <div className="app-container" style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
+    <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
       <Header 
         lang={lang} 
         setLang={setLang}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        showFavoritesOnly={showFavoritesOnly}
-        setShowFavoritesOnly={setShowFavoritesOnly}
+        timetableData={timetableData}
+        favorites={favorites}
+        toggleFavorite={toggleFavorite}
+        onSelectSet={handleSelectSetFromSearch}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
       />
 
       <TimeSimulator 
@@ -92,52 +158,103 @@ export default function App() {
         setSimTime={setSimTime}
         isSimulated={isSimulated}
         setIsSimulated={setIsSimulated}
+        onOpenLiveModal={() => setIsLiveModalOpen(true)}
       />
 
-      {/* Days Selector */}
-      <div className="days-selector">
-        {days.map(d => (
-          <button 
-            key={d} 
-            className={`day-btn ${selectedDay === d ? 'active' : ''}`}
-            onClick={() => setSelectedDay(d)}
-          >
-            {d}
-          </button>
-        ))}
-      </div>
-
-      <main className="main-content">
-        {filteredSets.length === 0 ? (
-          <div className="empty-state">
-            <p>{showFavoritesOnly && favorites.length === 0 ? t.favoritesEmpty : t.noSetsFound}</p>
+      {/* Render Tab Contents */}
+      {activeTab === 'timetable' && (
+        <>
+          {/* Days Selector */}
+          <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
+            {days.map(d => (
+              <button 
+                key={d} 
+                className={`day-btn ${selectedDay === d ? 'active' : ''}`}
+                onClick={() => handleDayChange(d)}
+              >
+                {lang === 'he' ? d.replace('DAY', 'יום').replace('Warmup Sat', 'חימום שבת').replace('Warmup Sun', 'חימום ראשון') : d}
+              </button>
+            ))}
           </div>
-        ) : (
-          <>
-            {/* Desktop and Tablet grid view */}
-            <div className="desktop-view-only">
-              <TimetableGrid 
-                sets={filteredSets}
-                favorites={favorites}
-                toggleFavorite={toggleFavorite}
-                onSetClick={setSelectedSet}
-                activeStatusMap={activeStatusMap}
-              />
-            </div>
-            
-            {/* Mobile feed list */}
-            <div className="mobile-view-only">
-              <ChronologicalFeed 
-                sets={filteredSets}
-                favorites={favorites}
-                toggleFavorite={toggleFavorite}
-                onSetClick={setSelectedSet}
-                activeStatusMap={activeStatusMap}
-              />
-            </div>
-          </>
-        )}
-      </main>
+
+          <main className="main-content">
+            {filteredSets.length === 0 ? (
+              <div className="empty-state">
+                <p>{t.noSetsFound}</p>
+              </div>
+            ) : (
+              <>
+                {/* Desktop and Tablet grid view */}
+                <div className="desktop-view-only">
+                  <TimetableGrid 
+                    sets={filteredSets}
+                    favorites={favorites}
+                    toggleFavorite={toggleFavorite}
+                    onSetClick={setSelectedSet}
+                    activeStatusMap={activeStatusMap}
+                    simTime={simTime}
+                    isSimulated={isSimulated}
+                  />
+                </div>
+                
+                {/* Mobile feed list */}
+                <div className="mobile-view-only">
+                  <ChronologicalFeed 
+                    sets={filteredSets}
+                    favorites={favorites}
+                    toggleFavorite={toggleFavorite}
+                    onSetClick={setSelectedSet}
+                    activeStatusMap={activeStatusMap}
+                    simTime={simTime}
+                    isSimulated={isSimulated}
+                  />
+                </div>
+              </>
+            )}
+          </main>
+        </>
+      )}
+
+      {activeTab === 'favorites' && (
+        <MySchedule 
+          lang={lang}
+          timetableData={timetableData}
+          favorites={favorites}
+          toggleFavorite={toggleFavorite}
+          onSetClick={setSelectedSet}
+          simTime={simTime}
+          isSimulated={isSimulated}
+        />
+      )}
+
+      {activeTab === 'guide' && (
+        <FestivalGuide lang={lang} />
+      )}
+
+      {/* Bottom Navigation for Mobile Devices */}
+      <nav className="bottom-nav">
+        <button 
+          className={`bottom-nav-btn ${activeTab === 'timetable' ? 'active' : ''}`}
+          onClick={() => setActiveTab('timetable')}
+        >
+          <Calendar size={20} />
+          <span>{lang === 'he' ? 'לוח הופעות' : 'Timetable'}</span>
+        </button>
+        <button 
+          className={`bottom-nav-btn ${activeTab === 'favorites' ? 'active' : ''}`}
+          onClick={() => setActiveTab('favorites')}
+        >
+          <User size={20} />
+          <span>{lang === 'he' ? 'הלוח שלי' : 'My Schedule'}</span>
+        </button>
+        <button 
+          className={`bottom-nav-btn ${activeTab === 'guide' ? 'active' : ''}`}
+          onClick={() => setActiveTab('guide')}
+        >
+          <BookOpen size={20} />
+          <span>{lang === 'he' ? 'מדריך' : 'Guide'}</span>
+        </button>
+      </nav>
 
       <SetModal 
         set={selectedSet}
@@ -145,6 +262,15 @@ export default function App() {
         favorites={favorites}
         toggleFavorite={toggleFavorite}
         onClose={() => setSelectedSet(null)}
+      />
+
+      <LiveStatusModal 
+        isOpen={isLiveModalOpen}
+        onClose={() => setIsLiveModalOpen(false)}
+        lang={lang}
+        simTime={simTime}
+        timetableData={timetableData}
+        onSelectSet={handleSelectSetFromSearch}
       />
     </div>
   );
