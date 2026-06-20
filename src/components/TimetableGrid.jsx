@@ -51,21 +51,23 @@ function getCardStyle(set) {
   };
 }
 
-export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+  const isHe = lang === 'he';
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const indicator = document.querySelector('.grid-time-indicator');
-      if (indicator) {
-        indicator.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      const firstCard = document.querySelector('.grid-table-v2 .set-card');
-      if (firstCard) {
-        firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [simTime, isSimulated]);
+    scrollToCurrentTime();
+  }, []);
+
+  function scrollToCurrentTime() {
+    const indicator = document.querySelector('.grid-time-indicator');
+    if (indicator) {
+      indicator.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    const firstCard = document.querySelector('.grid-table-v2 .set-card');
+    if (firstCard) {
+      firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 
   const evalDate = new Date(simTime);
   const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');
@@ -83,6 +85,9 @@ export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetCl
 
   return (
     <div className="grid-view-wrapper">
+      <div className="grid-timezone-note">
+        {isHe ? '* השעות מוצגות לפי שעון הונגריה (CEST)' : '* Times shown in Hungary timezone (CEST)'}
+      </div>
       <div className="grid-table-v2">
         {/* Sticky Header */}
         <div className="grid-header-row">

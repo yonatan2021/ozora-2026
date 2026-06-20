@@ -10,7 +10,21 @@ import MySchedule from './components/MySchedule';
 import FestivalGuide from './components/FestivalGuide';
 import { getSetStatus } from './utils/time';
 import { translations } from './utils/lang';
+import CountdownBanner from './components/CountdownBanner';
 import { Calendar, User, BookOpen } from 'lucide-react';
+
+const DAY_DATE_LABELS = {
+  'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
+  'Warmup Sun': { he: 'חימום ראשון · 26/7', en: 'Warmup Sun · 26/7' },
+  'DAY 1': { he: 'יום 1 · שני 27/7', en: 'Day 1 · Mon 27/7' },
+  'DAY 2': { he: 'יום 2 · שלישי 28/7', en: 'Day 2 · Tue 28/7' },
+  'DAY 3': { he: 'יום 3 · רביעי 29/7', en: 'Day 3 · Wed 29/7' },
+  'DAY 4': { he: 'יום 4 · חמישי 30/7', en: 'Day 4 · Thu 30/7' },
+  'DAY 5': { he: 'יום 5 · שישי 31/7', en: 'Day 5 · Fri 31/7' },
+  'DAY 6': { he: 'יום 6 · שבת 1/8', en: 'Day 6 · Sat 1/8' },
+  'DAY 7': { he: 'יום 7 · ראשון 2/8', en: 'Day 7 · Sun 2/8' },
+  'DAY 8': { he: 'יום 8 · שני 3/8', en: 'Day 8 · Mon 3/8' },
+};
 
 const DATE_TO_DAY_MAP = {
   '2026-07-25': 'Warmup Sat',
@@ -142,8 +156,10 @@ export default function App() {
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
-      <Header 
-        lang={lang} 
+      <CountdownBanner lang={lang} />
+
+      <Header
+        lang={lang}
         setLang={setLang}
         timetableData={timetableData}
         favorites={favorites}
@@ -153,18 +169,18 @@ export default function App() {
         setActiveTab={setActiveTab}
       />
 
-      <TimeSimulator 
-        lang={lang}
-        simTime={simTime}
-        setSimTime={setSimTime}
-        isSimulated={isSimulated}
-        setIsSimulated={setIsSimulated}
-        onOpenLiveModal={() => setIsLiveModalOpen(true)}
-      />
-
       {/* Render Tab Contents */}
       {activeTab === 'timetable' && (
         <>
+          <TimeSimulator
+            lang={lang}
+            simTime={simTime}
+            setSimTime={setSimTime}
+            isSimulated={isSimulated}
+            setIsSimulated={setIsSimulated}
+            onOpenLiveModal={() => setIsLiveModalOpen(true)}
+          />
+
           {/* Days Selector */}
           <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
             {days.map(d => (
@@ -173,7 +189,7 @@ export default function App() {
                 className={`day-btn ${selectedDay === d ? 'active' : ''}`}
                 onClick={() => handleDayChange(d)}
               >
-                {lang === 'he' ? d.replace('DAY', 'יום').replace('Warmup Sat', 'חימום שבת').replace('Warmup Sun', 'חימום ראשון') : d}
+                {DAY_DATE_LABELS[d]?.[lang === 'he' ? 'he' : 'en'] || d}
               </button>
             ))}
           </div>
@@ -187,7 +203,8 @@ export default function App() {
               <>
                 {/* Desktop and Tablet grid view */}
                 <div className="desktop-view-only">
-                  <TimetableGrid 
+                  <TimetableGrid
+                    lang={lang}
                     sets={filteredSets}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}

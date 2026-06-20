@@ -582,6 +582,15 @@ body {
   box-shadow: 0 8px 32px rgba(26, 43, 37, 0.04);
 }
 
+.grid-timezone-note {
+  padding: 0.5rem 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: end;
+}
+
 .grid-table-v2 {
   min-width: 1200px;
   position: relative;
@@ -1980,6 +1989,96 @@ body {
 .feed-set-card.active .live-wave-indicator .wave-bar,
 .set-card.active .live-wave-indicator .wave-bar {
   background-color: currentColor;
+}
+
+/* ==========================================
+   COUNTDOWN BANNER
+   ========================================== */
+.countdown-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-md);
+  color: var(--bg);
+}
+
+.countdown-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.countdown-title {
+  font-family: 'Righteous', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+.countdown-date {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.countdown-units {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.countdown-sep {
+  font-size: 1.3rem;
+  font-weight: 700;
+  opacity: 0.6;
+  margin-top: -0.75rem;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+}
+
+.countdown-value {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-unit-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 500px) {
+  .countdown-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .countdown-label {
+    align-items: center;
+  }
+
+  .countdown-value {
+    font-size: 1.25rem;
+  }
+
+  .countdown-unit {
+    min-width: 38px;
+  }
 }
 
 
