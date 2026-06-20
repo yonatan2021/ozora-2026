@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Star } from 'lucide-react';
 
 const STAGES = [
@@ -53,21 +52,6 @@ function getCardStyle(set) {
 
 export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
   const isHe = lang === 'he';
-  useEffect(() => {
-    scrollToCurrentTime();
-  }, []);
-
-  function scrollToCurrentTime() {
-    const indicator = document.querySelector('.grid-time-indicator');
-    if (indicator) {
-      indicator.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    const firstCard = document.querySelector('.grid-table-v2 .set-card');
-    if (firstCard) {
-      firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
 
   const evalDate = new Date(simTime);
   const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');

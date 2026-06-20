@@ -1,8 +1,7 @@
-import React from 'react';
-import { Clock, RefreshCw } from 'lucide-react';
+import { Clock, RefreshCw, Radio } from 'lucide-react';
 import { translations } from '../utils/lang';
 
-export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, setIsSimulated }) {
+export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, setIsSimulated, onOpenLiveModal, onScrollToActive }) {
   const t = translations[lang];
 
   // Festival duration: July 25, 2026 00:00 to August 3, 2026 23:59
@@ -22,8 +21,13 @@ export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, 
     });
   };
 
+  const bgStyle = {
+    background: 'linear-gradient(135deg, var(--surface) 0%, var(--simulator-tint) 100%)',
+    transition: 'background 0.5s ease'
+  };
+
   return (
-    <div className="time-simulator">
+    <div className="time-simulator" style={bgStyle}>
       <div className="simulator-header">
         <div className="simulator-title">
           <Clock size={18} className={isSimulated ? 'pulse-green' : ''} />
@@ -56,7 +60,25 @@ export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, 
             onChange={(e) => setSimTime(Number(e.target.value))}
             className="time-slider"
           />
-          <div className="time-display">{formatDate(simTime)}</div>
+          <div className="simulator-details-row">
+            <div className="time-display">{formatDate(simTime)}</div>
+            <div className="simulator-actions">
+              <button 
+                className="scroll-to-time-btn"
+                onClick={onScrollToActive}
+                title={lang === 'he' ? 'גלול לשעה הנבחרת בלוח' : 'Scroll to selected time in schedule'}
+              >
+                {lang === 'he' ? 'קח אותי לשם' : 'Take Me There'}
+              </button>
+              <button 
+                className="open-live-status-btn"
+                onClick={onOpenLiveModal}
+              >
+                <Radio size={14} className="live-radio-icon" />
+                <span>{lang === 'he' ? '?מה מנגן עכשיו' : "What's Playing Now?"}</span>
+              </button>
+            </div>
+          </div>
           <p className="sim-desc">{t.simulatedTimeDesc}</p>
         </div>
       )}

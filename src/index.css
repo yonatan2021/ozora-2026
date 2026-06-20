@@ -576,6 +576,9 @@ body {
 /* Timetable Grid View (Desktop) */
 .grid-view-wrapper {
   overflow-x: auto;
+  overflow-y: clip;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--bg);
@@ -1844,7 +1847,13 @@ body {
 .guide-header h2 {
   font-family: 'Righteous', sans-serif;
   font-size: 1.75rem;
-  color: var(--text-primary);
+  color: var(--primary);
+}
+
+.guide-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .guide-grid {
@@ -1913,6 +1922,153 @@ body {
 .app-container[style*="direction: rtl"] .coming-soon-badge {
   right: auto;
   left: 1rem;
+}
+
+/* Guide Detail View */
+.guide-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: var(--transition-smooth);
+  margin-bottom: 0.5rem;
+}
+
+.guide-back-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.guide-card-topic-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.guide-card {
+  cursor: pointer;
+}
+
+.guide-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.guide-topic {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.guide-topic.open {
+  border-color: var(--border-strong);
+  background: var(--bg);
+}
+
+.guide-topic-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  text-align: start;
+  transition: var(--transition-smooth);
+}
+
+.guide-topic-header:hover {
+  background: var(--surface-hover);
+}
+
+.guide-topic-body {
+  padding: 0 1.25rem 1.25rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  animation: accordionOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes accordionOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guide-topic-body p {
+  margin-bottom: 0.75rem;
+}
+
+.guide-topic-body p:last-child {
+  margin-bottom: 0;
+}
+
+.guide-topic-body ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.guide-topic-body li {
+  padding-right: 1.25rem;
+  position: relative;
+}
+
+.guide-topic-body li::before {
+  content: '•';
+  position: absolute;
+  right: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.app-container[style*="direction: ltr"] .guide-topic-body li {
+  padding-right: 0;
+  padding-left: 1.25rem;
+}
+
+.app-container[style*="direction: ltr"] .guide-topic-body li::before {
+  right: auto;
+  left: 0;
+}
+
+.guide-topic-body strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.guide-topic-body a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.guide-topic-body a:hover {
+  text-decoration: underline;
 }
 
 /* ==========================================

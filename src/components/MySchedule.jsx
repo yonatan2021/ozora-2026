@@ -97,7 +97,7 @@ export default function MySchedule({
                 onClick={() => onSetClick(set)}
               >
                 <div className="feed-set-info">
-                  <div className="live-now-tag" style={{ color: 'var(--primary)' }}>
+                  <div className="live-now-tag">
                     <span className="live-wave-indicator">
                       <span className="wave-bar bar-1"></span>
                       <span className="wave-bar bar-2"></span>

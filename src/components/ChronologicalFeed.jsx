@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Star } from 'lucide-react';
 
 const STAGE_CLASSES = {
@@ -11,19 +10,6 @@ const STAGE_CLASSES = {
 };
 
 export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
-  // Scroll to active card when time changes in simulation mode
-  useEffect(() => {
-    if (isSimulated) {
-      const timer = setTimeout(() => {
-        const activeCard = document.querySelector('.feed-set-card.active');
-        if (activeCard) {
-          activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [simTime, isSimulated]);
-
   // Sort sets chronologically by start time, and then by stage name
   const sortedSets = [...sets].sort((a, b) => {
 
