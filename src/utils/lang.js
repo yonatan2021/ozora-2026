@@ -1,0 +1,42 @@
+export const translations = {
+  en: {
+    title: "OZORA 2026 TIMETABLE",
+    searchPlaceholder: "Search artist, stage, type...",
+    favoritesOnly: "My Schedule Only",
+    stageFilter: "Stages",
+    dayFilter: "Days",
+    simulatingTime: "Simulated Time",
+    nowPlaying: "Now Playing",
+    nextUp: "Next Up",
+    noSetsFound: "No sets match your criteria.",
+    stage: "Stage",
+    time: "Time",
+    type: "Type",
+    allStages: "All Stages",
+    allDays: "All Days",
+    simulatedTimeDesc: "Drag slider to test schedule during festival",
+    backToRealTime: "Use Real Time",
+    favoritesEmpty: "Tap the star on any artist to add them to your custom schedule!",
+    artist: "Artist"
+  },
+  he: {
+    title: "לוח הופעות אוזורה 2026",
+    searchPlaceholder: "חיפוש אמן, במה, סוג...",
+    favoritesOnly: "הלוח שלי בלבד",
+    stageFilter: "במות",
+    dayFilter: "ימים",
+    simulatingTime: "זמן מדומה",
+    nowPlaying: "מנגנים עכשיו",
+    nextUp: "הבאים בתור",
+    noSetsFound: "לא נמצאו הופעות תואמות.",
+    stage: "במה",
+    time: "שעה",
+    type: "סוג",
+    allStages: "כל הבמות",
+    allDays: "כל הימים",
+    simulatedTimeDesc: "גרור את הסליידר כדי לבדוק הופעות במהלך הפסטיבל",
+    backToRealTime: "חזור לזמן אמת",
+    favoritesEmpty: "לחץ על הכוכב ליד שם האמן כדי להוסיף אותו ללוח האישי שלך!",
+    artist: "אמן"
+  }
+};
