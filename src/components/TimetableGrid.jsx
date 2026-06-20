@@ -20,6 +20,19 @@ const STAGE_CLASSES = {
 };
 
 export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+  // Scroll to active indicator line when time changes in simulation mode
+  useEffect(() => {
+    if (isSimulated) {
+      const timer = setTimeout(() => {
+        const indicator = document.querySelector('.grid-time-indicator');
+        if (indicator) {
+          indicator.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [simTime, isSimulated]);
+
   // Calculate current time indicator offset if simulated or active
   const evalDate = new Date(simTime);
 

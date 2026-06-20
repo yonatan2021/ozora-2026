@@ -54,6 +54,7 @@ export default function App() {
       const dateStr = `${yyyy}-${mm}-${dd}`;
       const dayName = DATE_TO_DAY_MAP[dateStr];
       if (dayName && dayName !== selectedDay) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedDay(dayName);
       }
     }
