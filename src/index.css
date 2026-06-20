@@ -582,11 +582,64 @@ body {
   box-shadow: 0 8px 32px rgba(26, 43, 37, 0.04);
 }
 
-.grid-table {
-  display: flex;
-  flex-direction: column;
+.grid-table-v2 {
   min-width: 1200px;
   position: relative;
+}
+
+.grid-body {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  position: relative;
+}
+
+.grid-time-labels {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+}
+
+.grid-hour-label {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.25rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  box-sizing: border-box;
+}
+
+.grid-hour-line {
+  position: absolute;
+  left: 80px;
+  right: 0;
+  height: 0;
+  border-top: 1px solid var(--border);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-stage-column {
+  position: relative;
+  grid-row: 1;
+  border-left: 1px solid var(--border);
+}
+
+.grid-table-v2 .set-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 2;
+  min-height: 0;
 }
 
 .grid-header-row {
@@ -623,37 +676,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.grid-row {
-  display: grid;
-  grid-template-columns: 80px repeat(6, 1fr);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-
-.time-cell {
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  border-right: 1px solid var(--border);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.grid-cell {
-  border-left: 1px solid var(--border);
-  min-height: 70px;
-  position: relative;
-}
-
-.grid-cell.empty {
-  background: transparent;
 }
 
 /* Set Card Styles - Clean Rounded Cards */
