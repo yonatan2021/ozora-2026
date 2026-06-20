@@ -263,7 +263,7 @@ body {
   top: calc(100% + 0.5rem);
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--dropdown-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-strong);
@@ -360,13 +360,12 @@ body {
   color: #fff;
   text-transform: uppercase;
 }
-
-.search-item-stage-badge.stage-ozora { background-color: var(--stage-ozora); }
-.search-item-stage-badge.stage-pumpui { background-color: var(--stage-pumpui); }
-.search-item-stage-badge.stage-dome { background-color: var(--stage-dome); }
-.search-item-stage-badge.stage-dragon { background-color: var(--stage-dragon); }
-.search-item-stage-badge.stage-visium { background-color: var(--stage-visium); }
-.search-item-stage-badge.stage-tekzero { background-color: var(--stage-tekzero); }
+.search-item-stage-badge.stage-ozora { background-color: var(--stage-ozora-text); }
+.search-item-stage-badge.stage-pumpui { background-color: var(--stage-pumpui-text); }
+.search-item-stage-badge.stage-dome { background-color: var(--stage-dome-text); }
+.search-item-stage-badge.stage-dragon { background-color: var(--stage-dragon-text); }
+.search-item-stage-badge.stage-visium { background-color: var(--stage-visium-text); }
+.search-item-stage-badge.stage-tekzero { background-color: var(--stage-tekzero-text); }
 .search-item-stage-badge.stage-generic { background-color: var(--primary); }
 
 /* Favorite star button in dropdown */
@@ -749,13 +748,12 @@ body {
 .set-card.stage-dragon:hover { background: var(--stage-dragon-dim); border-color: rgba(199, 90, 0, 0.2); }
 .set-card.stage-visium:hover { background: var(--stage-visium-dim); border-color: rgba(161, 133, 0, 0.2); }
 .set-card.stage-tekzero:hover { background: var(--stage-tekzero-dim); border-color: rgba(138, 43, 226, 0.2); }
-
-.stage-col-header.stage-ozora { color: var(--stage-ozora); }
-.stage-col-header.stage-pumpui { color: var(--stage-pumpui); }
-.stage-col-header.stage-dome { color: var(--stage-dome); }
-.stage-col-header.stage-dragon { color: var(--stage-dragon); }
-.stage-col-header.stage-visium { color: var(--stage-visium); }
-.stage-col-header.stage-tekzero { color: var(--stage-tekzero); }
+.stage-col-header.stage-ozora { color: var(--stage-ozora-text); }
+.stage-col-header.stage-pumpui { color: var(--stage-pumpui-text); }
+.stage-col-header.stage-dome { color: var(--stage-dome-text); }
+.stage-col-header.stage-dragon { color: var(--stage-dragon-text); }
+.stage-col-header.stage-visium { color: var(--stage-visium-text); }
+.stage-col-header.stage-tekzero { color: var(--stage-tekzero-text); }
 
 /* Active Set Highlights (Playing Now) */
 .set-card.active, .feed-set-card.active {
@@ -1002,6 +1000,105 @@ body {
   background: var(--primary);
   border-color: var(--primary);
   color: var(--bg);
+}
+
+/* Calendar Export Button */
+.modal-calendar-wrapper {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.modal-calendar-btn-group {
+  display: flex;
+  width: 100%;
+}
+
+.modal-calendar-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--text-primary);
+  padding: 0.875rem;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.app-container[style*="direction: rtl"] .modal-calendar-btn {
+  border-right: 1px solid var(--border);
+  border-left: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.modal-calendar-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.modal-calendar-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.875rem 0.75rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.app-container[style*="direction: rtl"] .modal-calendar-dropdown-toggle {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.modal-calendar-dropdown-toggle:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.modal-calendar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-calendar-dropdown button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: start;
+  transition: var(--transition-smooth);
+}
+
+.modal-calendar-dropdown button:hover {
+  background: var(--surface-hover);
+}
+
+.modal-calendar-dropdown button + button {
+  border-top: 1px solid var(--border);
 }
 
 /* Dynamic Time Indicator Line Across Grid */
@@ -1436,6 +1533,16 @@ body {
   --surface-hover: #e6eeea;
   --primary: #2b8a6a;
   --primary-hover: #216d53;
+  --simulator-tint: #fdf9e2;
+  --dropdown-bg: rgba(255, 255, 255, 0.96);
+
+  /* Calibrated contrast stage colors (Dark on Light) */
+  --stage-ozora-text: #b31b5a;
+  --stage-pumpui-text: #1a6e1a;
+  --stage-dome-text: #006887;
+  --stage-dragon-text: #944300;
+  --stage-visium-text: #735f00;
+  --stage-tekzero-text: #621e9c;
 }
 
 /* Sunset Theme */
@@ -1452,6 +1559,16 @@ body {
   --surface-hover: #f5dfcf;
   --primary: #d96226;
   --primary-hover: #ba4f19;
+  --simulator-tint: #fdeee3;
+  --dropdown-bg: rgba(255, 252, 247, 0.96);
+
+  /* Warm theme calibrated contrast stage colors */
+  --stage-ozora-text: #a30f4a;
+  --stage-pumpui-text: #145c14;
+  --stage-dome-text: #005570;
+  --stage-dragon-text: #7d3700;
+  --stage-visium-text: #5e4d00;
+  --stage-tekzero-text: #501582;
 }
 
 /* Psychedelic Night Theme */
@@ -1468,6 +1585,16 @@ body {
   --surface-hover: #1e2e27;
   --primary: #22c55e;
   --primary-hover: #16a34a;
+  --simulator-tint: #1a1530;
+  --dropdown-bg: rgba(9, 14, 12, 0.96);
+
+  /* Glowing neon stage colors (Light on Dark) */
+  --stage-ozora-text: #ff60a0;
+  --stage-pumpui-text: #4ade80;
+  --stage-dome-text: #38bdf8;
+  --stage-dragon-text: #fb923c;
+  --stage-visium-text: #facc15;
+  --stage-tekzero-text: #c084fc;
 }
 
 /* Sunrise (Dawn) Theme */
@@ -1484,6 +1611,16 @@ body {
   --surface-hover: #eedbe9;
   --primary: #a855f7;
   --primary-hover: #9333ea;
+  --simulator-tint: #fde8ee;
+  --dropdown-bg: rgba(253, 250, 251, 0.96);
+
+  /* Dawn cool calibrated contrast stage colors */
+  --stage-ozora-text: #a3124f;
+  --stage-pumpui-text: #125e12;
+  --stage-dome-text: #005c75;
+  --stage-dragon-text: #823b00;
+  --stage-visium-text: #635100;
+  --stage-tekzero-text: #55108f;
 }
 
 /* Smooth theme transitions */
@@ -1789,6 +1926,38 @@ body {
   color: var(--text-primary);
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.5rem;
+}
+
+/* ==========================================
+   STAGE THEME ADAPTATIONS
+   ========================================== */
+
+/* Live Status Modal Stage Card Accents */
+.live-stage-card.stage-ozora .live-card-badge { border-color: var(--stage-ozora-text); color: var(--stage-ozora-text); }
+.live-stage-card.stage-pumpui .live-card-badge { border-color: var(--stage-pumpui-text); color: var(--stage-pumpui-text); }
+.live-stage-card.stage-dome .live-card-badge { border-color: var(--stage-dome-text); color: var(--stage-dome-text); }
+.live-stage-card.stage-dragon .live-card-badge { border-color: var(--stage-dragon-text); color: var(--stage-dragon-text); }
+.live-stage-card.stage-visium .live-card-badge { border-color: var(--stage-visium-text); color: var(--stage-visium-text); }
+.live-stage-card.stage-tekzero .live-card-badge { border-color: var(--stage-tekzero-text); color: var(--stage-tekzero-text); }
+
+.live-stage-card.stage-ozora .live-progress-fill { background-color: var(--stage-ozora); }
+.live-stage-card.stage-pumpui .live-progress-fill { background-color: var(--stage-pumpui); }
+.live-stage-card.stage-dome .live-progress-fill { background-color: var(--stage-dome); }
+.live-stage-card.stage-dragon .live-progress-fill { background-color: var(--stage-dragon); }
+.live-stage-card.stage-visium .live-progress-fill { background-color: var(--stage-visium); }
+.live-stage-card.stage-tekzero .live-progress-fill { background-color: var(--stage-tekzero); }
+
+/* Live now tag colors inside active cards */
+.feed-set-card.stage-ozora.active .live-now-tag, .set-card.stage-ozora.active .live-now-tag { color: var(--stage-ozora-text); }
+.feed-set-card.stage-pumpui.active .live-now-tag, .set-card.stage-pumpui.active .live-now-tag { color: var(--stage-pumpui-text); }
+.feed-set-card.stage-dome.active .live-now-tag, .set-card.stage-dome.active .live-now-tag { color: var(--stage-dome-text); }
+.feed-set-card.stage-dragon.active .live-now-tag, .set-card.stage-dragon.active .live-now-tag { color: var(--stage-dragon-text); }
+.feed-set-card.stage-visium.active .live-now-tag, .set-card.stage-visium.active .live-now-tag { color: var(--stage-visium-text); }
+.feed-set-card.stage-tekzero.active .live-now-tag, .set-card.stage-tekzero.active .live-now-tag { color: var(--stage-tekzero-text); }
+
+.feed-set-card.active .live-wave-indicator .wave-bar,
+.set-card.active .live-wave-indicator .wave-bar {
+  background-color: currentColor;
 }
 
 
