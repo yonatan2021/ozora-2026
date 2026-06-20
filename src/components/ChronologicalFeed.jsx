@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Star } from 'lucide-react';
 
 const STAGE_CLASSES = {
@@ -10,9 +10,10 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
-export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap }) {
+export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
   // Sort sets chronologically by start time, and then by stage name
   const sortedSets = [...sets].sort((a, b) => {
+
     const timeCompare = a.start.localeCompare(b.start);
     if (timeCompare !== 0) return timeCompare;
     return a.stage.localeCompare(b.stage);
@@ -33,18 +34,30 @@ export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onS
         <div key={time} className="feed-time-block">
           <div className="feed-time-header">{time}</div>
           <div className="feed-sets-list">
-            {daySets.map(set => {
+            {daySets.map((set, index) => {
               const isFav = favorites.includes(set.id);
               const status = activeStatusMap[set.id] || '';
+              const isPlaying = status === 'active';
 
               return (
                 <div 
                   key={set.id} 
-                  className={`feed-set-card ${STAGE_CLASSES[set.stage]} ${status}`}
+                  id={`feed-set-${set.id}`}
+                  className={`feed-set-card ${STAGE_CLASSES[set.stage]} ${status} stagger-slide-up`}
+                  style={{ '--card-index': index }}
                   onClick={() => onSetClick(set)}
                 >
                   <div className="feed-set-info">
-                    <div className="feed-artist-name">{set.artist}</div>
+                    <div className="feed-artist-name">
+                      {isPlaying && (
+                        <span className="live-wave-indicator">
+                          <span className="wave-bar bar-1"></span>
+                          <span className="wave-bar bar-2"></span>
+                          <span className="wave-bar bar-3"></span>
+                        </span>
+                      )}
+                      <span>{set.artist}</span>
+                    </div>
                     <div className="feed-stage-name">
                       {set.stage} {set.type ? `• ${set.type}` : ''}
                     </div>

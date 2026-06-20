@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Star } from 'lucide-react';
 
 const STAGES = [
@@ -19,7 +19,18 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
-export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap }) {
+export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+  // Calculate current time indicator offset if simulated or active
+  const evalDate = new Date(simTime);
+
+  const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');
+  const isCurrentDay = sets.length > 0 && sets[0].date === evalDateStr;
+  
+  const currentHour = evalDate.getHours();
+  const currentMinute = evalDate.getMinutes();
+  const minuteOffset = currentMinute % 30; // 0 to 29
+  const percentOffset = (minuteOffset / 30) * 100;
+
   // Generate time slots: 00:00 to 23:30 in 30-min intervals
   const timeSlots = [];
   for (let h = 0; h < 24; h++) {
@@ -71,9 +82,26 @@ export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetCl
           ))}
         </div>
 
-        {timeSlots.map(slot => (
-          <div key={slot} className="grid-row">
-            <div className="time-cell">{slot}</div>
+        {timeSlots.map(slot => {
+          const [slotHourStr, slotMinuteStr] = slot.split(':');
+          const slotHour = Number(slotHourStr);
+          const slotMinute = Number(slotMinuteStr);
+          const isTargetSlot = isCurrentDay && slotHour === currentHour && (slotMinute === 0 ? currentMinute < 30 : currentMinute >= 30);
+
+          return (
+            <div key={slot} className="grid-row">
+              {isTargetSlot && (
+                <div 
+                  className="grid-time-indicator" 
+                  style={{ top: `${percentOffset}%` }}
+                >
+                  <div className="grid-time-indicator-line"></div>
+                  <div className="grid-time-indicator-badge">
+                    {String(currentHour).padStart(2, '0')}:{String(currentMinute).padStart(2, '0')}
+                  </div>
+                </div>
+              )}
+              <div className="time-cell">{slot}</div>
             {STAGES.map(stage => {
               // 1. Check if slot is covered by a spanning set card (rendered in an earlier row)
               if (isSlotCovered(stage, slot)) {
@@ -100,15 +128,30 @@ export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetCl
               const isFav = favorites.includes(activeSet.id);
               const status = activeStatusMap[activeSet.id] || '';
 
+              const isPlaying = status === 'active';
+
               return (
                 <div 
                   key={stage} 
-                  className={`grid-cell set-card ${STAGE_CLASSES[stage]} ${status}`}
-                  style={{ gridRow: `span ${spanSlots}` }}
+                  id={`set-card-${activeSet.id}`}
+                  className={`grid-cell set-card ${STAGE_CLASSES[stage]} ${status} stagger-slide-up`}
+                  style={{ 
+                    gridRow: `span ${spanSlots}`,
+                    '--card-index': spanSlots > 2 ? 1 : 2
+                  }}
                   onClick={() => onSetClick(activeSet)}
                 >
                   <div className="set-card-header">
                     <span className="set-time">{activeSet.start} - {activeSet.end}</span>
+                    
+                    {isPlaying && (
+                      <div className="live-wave-indicator" title="Live Now">
+                        <span className="wave-bar bar-1"></span>
+                        <span className="wave-bar bar-2"></span>
+                        <span className="wave-bar bar-3"></span>
+                      </div>
+                    )}
+
                     <button 
                       className="fav-star-btn"
                       onClick={(e) => {
@@ -125,7 +168,8 @@ export default function TimetableGrid({ sets, favorites, toggleFavorite, onSetCl
               );
             })}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
