@@ -1,122 +1,151 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import timetableData from './data/timetable.json';
+import Header from './components/Header';
+import TimeSimulator from './components/TimeSimulator';
+import TimetableGrid from './components/TimetableGrid';
+import ChronologicalFeed from './components/ChronologicalFeed';
+import SetModal from './components/SetModal';
+import { getSetStatus } from './utils/time';
+import { translations } from './utils/lang';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [lang, setLang] = useState('he');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('ozora_favs');
+    return saved ? JSON.parse(saved) : [];
+  });
+  
+  const [selectedDay, setSelectedDay] = useState('DAY 1');
+  const [isSimulated, setIsSimulated] = useState(false);
+  const [simTime, setSimTime] = useState(new Date('2026-07-27T20:00:00').getTime()); // Start of DAY 1
+  const [activeStatusMap, setActiveStatusMap] = useState({});
+  const [selectedSet, setSelectedSet] = useState(null);
+
+  // Save favorites to localStorage
+  useEffect(() => {
+    localStorage.setItem('ozora_favs', JSON.stringify(favorites));
+  }, [favorites]);
+
+  // Update active set statuses
+  useEffect(() => {
+    const statusMap = {};
+    const evalTime = isSimulated ? new Date(simTime) : new Date();
+    
+    // In real-time mode, override year to 2026 for simulation/convenience
+    if (!isSimulated) {
+      evalTime.setFullYear(2026);
+    }
+
+    timetableData.forEach(set => {
+      statusMap[set.id] = getSetStatus(set, evalTime);
+    });
+    setActiveStatusMap(statusMap);
+  }, [isSimulated, simTime]);
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    );
+  };
+
+  // Filter sets based on selected filters
+  const filteredSets = timetableData.filter(set => {
+    // 1. Day Filter (Only filter by day if not showing favorites only, or let favorites show all days, or keep day filter. Day filter is great for grid views!)
+    if (set.day !== selectedDay) return false;
+
+    // 2. Search Query Filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const artistMatch = set.artist.toLowerCase().includes(query);
+      const stageMatch = set.stage.toLowerCase().includes(query);
+      const typeMatch = set.type.toLowerCase().includes(query);
+      if (!artistMatch && !stageMatch && !typeMatch) return false;
+    }
+
+    // 3. Favorites Filter
+    if (showFavoritesOnly && !favorites.includes(set.id)) return false;
+
+    return true;
+  });
+
+  // Unique days list sorted by date
+  const days = Array.from(new Set(timetableData.map(s => s.day)));
+
+  const t = translations[lang];
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-container" style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
+      <Header 
+        lang={lang} 
+        setLang={setLang}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        showFavoritesOnly={showFavoritesOnly}
+        setShowFavoritesOnly={setShowFavoritesOnly}
+      />
 
-      <div className="ticks"></div>
+      <TimeSimulator 
+        lang={lang}
+        simTime={simTime}
+        setSimTime={setSimTime}
+        isSimulated={isSimulated}
+        setIsSimulated={setIsSimulated}
+      />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* Days Selector */}
+      <div className="days-selector">
+        {days.map(d => (
+          <button 
+            key={d} 
+            className={`day-btn ${selectedDay === d ? 'active' : ''}`}
+            onClick={() => setSelectedDay(d)}
+          >
+            {d}
+          </button>
+        ))}
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <main className="main-content">
+        {filteredSets.length === 0 ? (
+          <div className="empty-state">
+            <p>{showFavoritesOnly && favorites.length === 0 ? t.favoritesEmpty : t.noSetsFound}</p>
+          </div>
+        ) : (
+          <>
+            {/* Desktop and Tablet grid view */}
+            <div className="desktop-view-only">
+              <TimetableGrid 
+                sets={filteredSets}
+                favorites={favorites}
+                toggleFavorite={toggleFavorite}
+                onSetClick={setSelectedSet}
+                activeStatusMap={activeStatusMap}
+              />
+            </div>
+            
+            {/* Mobile feed list */}
+            <div className="mobile-view-only">
+              <ChronologicalFeed 
+                sets={filteredSets}
+                favorites={favorites}
+                toggleFavorite={toggleFavorite}
+                onSetClick={setSelectedSet}
+                activeStatusMap={activeStatusMap}
+              />
+            </div>
+          </>
+        )}
+      </main>
+
+      <SetModal 
+        set={selectedSet}
+        lang={lang}
+        favorites={favorites}
+        toggleFavorite={toggleFavorite}
+        onClose={() => setSelectedSet(null)}
+      />
+    </div>
+  );
 }
-
-export default App
