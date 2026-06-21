@@ -1,5 +1,6 @@
 import { Clock, RefreshCw, Radio } from 'lucide-react';
 import { translations } from '../utils/lang';
+import { trackEvent } from '../utils/analytics';
 
 export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, setIsSimulated, onOpenLiveModal, onScrollToActive }) {
   const t = translations[lang];
@@ -58,6 +59,8 @@ export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, 
             step={stepMs} 
             value={simTime} 
             onChange={(e) => setSimTime(Number(e.target.value))}
+            onMouseUp={(e) => trackEvent('change_sim_time', { simulated_time: formatDate(Number(e.target.value)) })}
+            onTouchEnd={(e) => trackEvent('change_sim_time', { simulated_time: formatDate(Number(e.target.value)) })}
             className="time-slider"
           />
           <div className="simulator-details-row">
@@ -65,14 +68,20 @@ export default function TimeSimulator({ lang, simTime, setSimTime, isSimulated, 
             <div className="simulator-actions">
               <button 
                 className="scroll-to-time-btn"
-                onClick={onScrollToActive}
+                onClick={() => {
+                  trackEvent('simulator_take_me_there');
+                  onScrollToActive?.();
+                }}
                 title={lang === 'he' ? 'גלול לשעה הנבחרת בלוח' : 'Scroll to selected time in schedule'}
               >
                 {lang === 'he' ? 'קח אותי לשם' : 'Take Me There'}
               </button>
               <button 
                 className="open-live-status-btn"
-                onClick={onOpenLiveModal}
+                onClick={() => {
+                  trackEvent('view_live_status_board');
+                  onOpenLiveModal?.();
+                }}
               >
                 <Radio size={14} className="live-radio-icon" />
                 <span>{lang === 'he' ? '?מה מנגן עכשיו' : "What's Playing Now?"}</span>

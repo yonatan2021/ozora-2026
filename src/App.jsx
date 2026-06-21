@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
@@ -18,6 +18,7 @@ import InstallPrompt from './components/InstallPrompt';
 import ImportModal from './components/ImportModal';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
+import { trackEvent } from './utils/analytics';
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -64,6 +65,9 @@ const STAGE_CLASSES = {
 };
 
 export default function App() {
+  const isInitialLang = useRef(true);
+  const isInitialSim = useRef(true);
+  
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('ozora_lang');
     return saved === 'en' ? 'en' : 'he';
@@ -108,9 +112,19 @@ export default function App() {
     initializeGA4();
   }, []);
 
-  // Sync lang to localStorage
+  // Track tab views
+  useEffect(() => {
+    trackEvent('tab_view', { tab_name: activeTab });
+  }, [activeTab]);
+
+  // Sync lang to localStorage & track change
   useEffect(() => {
     localStorage.setItem('ozora_lang', lang);
+    if (isInitialLang.current) {
+      isInitialLang.current = false;
+    } else {
+      trackEvent('change_language', { target_language: lang });
+    }
   }, [lang]);
 
   // Save favorites to localStorage
@@ -118,9 +132,14 @@ export default function App() {
     localStorage.setItem('ozora_favs', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Sync simulator states to localStorage
+  // Sync simulator states to localStorage & track change
   useEffect(() => {
     localStorage.setItem('ozora_simulated', String(isSimulated));
+    if (isInitialSim.current) {
+      isInitialSim.current = false;
+    } else {
+      trackEvent('toggle_simulation', { enabled: isSimulated });
+    }
   }, [isSimulated]);
 
   useEffect(() => {
@@ -156,6 +175,7 @@ export default function App() {
   // Synchronize selected day change with simulated time (Calendar -> Slider)
   const handleDayChange = (dayName) => {
     setSelectedDay(dayName);
+    trackEvent('select_day', { day_name: dayName });
     if (isSimulated) {
       const dateStr = Object.keys(DATE_TO_DAY_MAP).find(key => DATE_TO_DAY_MAP[key] === dayName);
       if (dateStr) {
@@ -187,6 +207,7 @@ export default function App() {
 
   const handleImportAll = () => {
     if (!pendingImport) return;
+    trackEvent('import_schedule', { sets_count: pendingImport.length });
     const importedKeys = pendingImport.map(set => getSetUniqueKey(set));
     setFavorites(prev => {
       const merged = new Set([...prev, ...importedKeys]);
@@ -201,6 +222,7 @@ export default function App() {
     const keys = pendingImport.map(set => getSetUniqueKey(set));
     const saved = saveFriend(friendName, keys);
     if (saved) {
+      trackEvent('save_friend', { sets_count: keys.length });
       setToastMessage(translations[lang].friendSaved);
     } else {
       setToastMessage(translations[lang].maxFriendsReached);
@@ -208,10 +230,23 @@ export default function App() {
     setPendingImport(null);
   };
 
-  const toggleFavorite = (id) => {
+  const handleStageChange = (stageName) => {
+    setSelectedStage(stageName);
+    trackEvent('select_stage', { stage_name: stageName });
+  };
+
+  const toggleFavorite = (id, origin = 'timetable') => {
     const matchedSet = timetableData.find(s => s.id === id);
     if (!matchedSet) return;
     const key = getSetUniqueKey(matchedSet);
+    const isFav = favorites.includes(key);
+    trackEvent('toggle_favorite', {
+      artist_name: matchedSet.artist,
+      stage_name: matchedSet.stage,
+      day_name: matchedSet.day,
+      action: isFav ? 'remove' : 'add',
+      origin
+    });
     setFavorites(prev => 
       prev.includes(key) ? prev.filter(f => f !== key) : [...prev, key]
     );
@@ -314,7 +349,7 @@ export default function App() {
           <div className="stages-selector mobile-view-only stagger-slide-up" style={{ '--card-index': 0.5 }}>
             <button 
               className={`stage-filter-btn all-stages ${selectedStage === 'ALL' ? 'active' : ''}`}
-              onClick={() => setSelectedStage('ALL')}
+              onClick={() => handleStageChange('ALL')}
             >
               <span className="stage-legend-dot stage-all-dot"></span>
               <span>{t.allStages}</span>
@@ -328,7 +363,7 @@ export default function App() {
                 <button 
                   key={stage} 
                   className={`stage-filter-btn ${stageClass} ${selectedStage === stage ? 'active' : ''}`}
-                  onClick={() => setSelectedStage(stage)}
+                  onClick={() => handleStageChange(stage)}
                 >
                   <span className="stage-legend-dot"></span>
                   <span>{displayName}</span>
