@@ -70,7 +70,7 @@ export default function App() {
     return migrateFavorites(parsed, timetableData);
   });
   
-  const [selectedDay, setSelectedDay] = useState('DAY 1');
+  const [selectedDay, setSelectedDay] = useState('Warmup Sat');
   const [selectedStage, setSelectedStage] = useState('ALL');
   const [isSimulated, setIsSimulated] = useState(() => {
     return localStorage.getItem('ozora_simulated') === 'true';
@@ -81,6 +81,7 @@ export default function App() {
   });
   const [selectedSet, setSelectedSet] = useState(null);
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   // Sync lang to localStorage
   useEffect(() => {
@@ -100,6 +101,47 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('ozora_sim_time', String(simTime));
   }, [simTime]);
+
+  // Parse and import shared favorites from URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shareParam = params.get('share');
+    if (shareParam) {
+      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
+      const importedKeys = [];
+      
+      indices.forEach(idx => {
+        const set = timetableData[idx];
+        if (set) {
+          importedKeys.push(getSetUniqueKey(set));
+        }
+      });
+
+      if (importedKeys.length > 0) {
+        setFavorites(prev => {
+          const merged = new Set([...prev, ...importedKeys]);
+          return Array.from(merged);
+        });
+
+        // Show import toast
+        setToastMessage(lang === 'he' ? 'לוח ההופעות ששותף איתך התווסף למועדפים!' : 'Shared schedule added to your favorites!');
+      }
+
+      // Clean the URL address bar
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, [lang]);
+
+  // Auto-dismiss toast message
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   // Synchronize simulated time date with selected day (Slider -> Calendar)
   useEffect(() => {
@@ -377,6 +419,14 @@ export default function App() {
         timetableData={timetableData}
         onSelectSet={handleSelectSetFromSearch}
       />
+
+      {toastMessage && (
+        <div className="toast-notification-container">
+          <div className="toast-notification">
+            {toastMessage}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

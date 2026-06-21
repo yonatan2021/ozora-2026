@@ -17,7 +17,10 @@ export const translations = {
     simulatedTimeDesc: "Drag slider to test schedule during festival",
     backToRealTime: "Use Real Time",
     favoritesEmpty: "Tap the star on any artist to add them to your custom schedule!",
-    artist: "Artist"
+    artist: "Artist",
+    shareSchedule: "Share Schedule",
+    copiedToClipboard: "Share link copied to clipboard!",
+    sharedScheduleImported: "Shared schedule added to your favorites!"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -37,6 +40,9 @@ export const translations = {
     simulatedTimeDesc: "גרור את הסליידר כדי לבדוק הופעות במהלך הפסטיבל",
     backToRealTime: "חזור לזמן אמת",
     favoritesEmpty: "לחץ על הכוכב ליד שם האמן כדי להוסיף אותו ללוח האישי שלך!",
-    artist: "אמן"
+    artist: "אמן",
+    shareSchedule: "שתף לוח זמנים",
+    copiedToClipboard: "קישור השיתוף הועתק ללוח!",
+    sharedScheduleImported: "לוח ההופעות ששותף איתך התווסף למועדפים!"
   }
 };
