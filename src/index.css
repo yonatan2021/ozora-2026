@@ -612,10 +612,10 @@ body:has(.theme-day) {
 
 /* Timetable Grid View (Desktop) */
 .grid-view-wrapper {
-  overflow-x: auto;
-  overflow-y: clip;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
+  overscroll-behavior: contain;
+  max-height: 80vh;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--bg);
@@ -725,6 +725,42 @@ body:has(.theme-day) {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Day Navigation at bottom of grid */
+.grid-day-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.grid-day-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.grid-day-nav-btn:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.grid-day-nav-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Collapsed time gap row style */

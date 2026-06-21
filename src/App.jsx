@@ -354,6 +354,10 @@ export default function App() {
                     onSetClick={setSelectedSet}
                     activeStatusMap={activeStatusMap}
                     simTime={simTime}
+                    days={days}
+                    selectedDay={selectedDay}
+                    onDayChange={handleDayChange}
+                    dayLabels={DAY_DATE_LABELS}
                   />
                 </div>
                 

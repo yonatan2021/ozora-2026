@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const STAGES = [
   "OZORA STAGE",
@@ -25,7 +25,7 @@ function timeToMinutes(timeStr) {
   return h * 60 + m;
 }
 
-export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime }) {
+export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, days, selectedDay, onDayChange, dayLabels }) {
   const isHe = lang === 'he';
 
   const evalDate = new Date(simTime);
@@ -140,6 +140,7 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
   });
 
   return (
+    <>
     <div className="grid-view-wrapper">
       <div className="grid-timezone-note">
         {isHe ? '* השעות מוצגות לפי שעון הונגריה (CEST)' : '* Times shown in Hungary timezone (CEST)'}
@@ -277,5 +278,33 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
         </div>
       </div>
     </div>
+
+      {/* Day Navigation */}
+      {days && days.length > 1 && (() => {
+        const currentIndex = days.indexOf(selectedDay);
+        const hasPrev = currentIndex > 0;
+        const hasNext = currentIndex < days.length - 1;
+        return (
+          <div className="grid-day-nav">
+            <button
+              className="grid-day-nav-btn"
+              disabled={!hasPrev}
+              onClick={() => { if (hasPrev) { onDayChange(days[currentIndex - 1]); document.querySelector('.grid-view-wrapper')?.scrollTo(0, 0); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+            >
+              <ChevronRight size={18} />
+              {hasPrev && <span>{dayLabels?.[days[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex - 1]}</span>}
+            </button>
+            <button
+              className="grid-day-nav-btn"
+              disabled={!hasNext}
+              onClick={() => { if (hasNext) { onDayChange(days[currentIndex + 1]); document.querySelector('.grid-view-wrapper')?.scrollTo(0, 0); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+            >
+              {hasNext && <span>{dayLabels?.[days[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex + 1]}</span>}
+              <ChevronLeft size={18} />
+            </button>
+          </div>
+        );
+      })()}
+    </>
   );
 }
