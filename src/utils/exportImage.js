@@ -20,6 +20,42 @@ const STAGE_GLOW_COLORS = {
   "TEK ZERO (2000s Trance)": "rgba(153, 85, 221, 0.12)"
 };
 
+const DAY_DATES = {
+  "Warmup Sat": "25/7",
+  "Warmup Sun": "26/7",
+  "DAY 1": "27/7",
+  "DAY 2": "28/7",
+  "DAY 3": "29/7",
+  "DAY 4": "30/7",
+  "DAY 5": "31/7",
+  "DAY 6": "1/8",
+  "DAY 7": "2/8"
+};
+
+const DAY_WEEKDAYS_HE = {
+  "Warmup Sat": "שבת",
+  "Warmup Sun": "ראשון",
+  "DAY 1": "שני",
+  "DAY 2": "שלישי",
+  "DAY 3": "רביעי",
+  "DAY 4": "חמישי",
+  "DAY 5": "שישי",
+  "DAY 6": "שבת",
+  "DAY 7": "ראשון"
+};
+
+const DAY_WEEKDAYS_EN = {
+  "Warmup Sat": "Sat",
+  "Warmup Sun": "Sun",
+  "DAY 1": "Mon",
+  "DAY 2": "Tue",
+  "DAY 3": "Wed",
+  "DAY 4": "Thu",
+  "DAY 5": "Fri",
+  "DAY 6": "Sat",
+  "DAY 7": "Sun"
+};
+
 const WIDTH = 1080;
 const PADDING = 56;
 const CONTENT_WIDTH = WIDTH - PADDING * 2;
@@ -47,82 +83,64 @@ function drawRoundedRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-export function generateScheduleImage({ groupedByDay, priorities, conflicts, lang, scheduleName }) {
-  const isHe = lang === 'he';
-  const title = scheduleName
-    ? (isHe ? `${scheduleName} — אוזורה 2026` : `${scheduleName} — Ozora 2026`)
-    : (isHe ? 'הלוח שלי — אוזורה 2026' : 'My Ozora 2026 Schedule');
-  const siteUrl = 'yonatan2021.github.io/ozora-2026';
-
-  const dayEntries = Object.entries(groupedByDay);
-  let totalSets = 0;
-  dayEntries.forEach(([, sets]) => { totalSets += sets.length; });
-
-  const logoHeight = 80;
-  const headerHeight = logoHeight + 64;
-  const titleHeight = 52;
-  const dayHeaderHeight = 48;
-  const setRowHeight = 44;
-  const dayGap = 24;
-  const footerHeight = 80;
-  const estimatedHeight = headerHeight + titleHeight + dayEntries.length * (dayHeaderHeight + dayGap) + totalSets * setRowHeight + footerHeight + PADDING * 2;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = estimatedHeight;
-  const ctx = canvas.getContext('2d');
-
-  // Night-sky gradient background matching site's night theme
-  const grad = ctx.createLinearGradient(0, 0, 0, estimatedHeight);
+function drawCosmicBackground(ctx, w, h) {
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, '#0a0518');
   grad.addColorStop(0.3, '#0e0824');
   grad.addColorStop(0.7, '#12082e');
   grad.addColorStop(1, '#0a0518');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
+  ctx.fillRect(0, 0, w, h);
 
-  // Cosmic atmosphere — radial glows like the site's body::before
-  const glow1 = ctx.createRadialGradient(WIDTH * 0.15, estimatedHeight * 0.15, 0, WIDTH * 0.15, estimatedHeight * 0.15, WIDTH * 0.6);
-  glow1.addColorStop(0, 'rgba(120, 40, 180, 0.18)');
+  const glow1 = ctx.createRadialGradient(w * 0.15, h * 0.12, 0, w * 0.15, h * 0.12, w * 0.6);
+  glow1.addColorStop(0, 'rgba(120, 40, 180, 0.16)');
   glow1.addColorStop(1, 'transparent');
   ctx.fillStyle = glow1;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
+  ctx.fillRect(0, 0, w, h);
 
-  const glow2 = ctx.createRadialGradient(WIDTH * 0.85, estimatedHeight * 0.65, 0, WIDTH * 0.85, estimatedHeight * 0.65, WIDTH * 0.5);
-  glow2.addColorStop(0, 'rgba(40, 180, 140, 0.12)');
+  const glow2 = ctx.createRadialGradient(w * 0.85, h * 0.6, 0, w * 0.85, h * 0.6, w * 0.5);
+  glow2.addColorStop(0, 'rgba(40, 180, 140, 0.10)');
   glow2.addColorStop(1, 'transparent');
   ctx.fillStyle = glow2;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
+  ctx.fillRect(0, 0, w, h);
 
-  const glow3 = ctx.createRadialGradient(WIDTH * 0.5, estimatedHeight * 0.9, 0, WIDTH * 0.5, estimatedHeight * 0.9, WIDTH * 0.4);
-  glow3.addColorStop(0, 'rgba(180, 40, 100, 0.10)');
+  const glow3 = ctx.createRadialGradient(w * 0.5, h * 0.9, 0, w * 0.5, h * 0.9, w * 0.35);
+  glow3.addColorStop(0, 'rgba(180, 40, 100, 0.08)');
   glow3.addColorStop(1, 'transparent');
   ctx.fillStyle = glow3;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
+  ctx.fillRect(0, 0, w, h);
+}
 
-  let y = PADDING;
-
-  return { canvas, ctx, y, isHe, title, siteUrl, dayEntries, priorities, conflicts, headerHeight, logoHeight, titleHeight, dayHeaderHeight, setRowHeight, dayGap, footerHeight, estimatedHeight };
+function drawGradientSeparator(ctx, y, inset) {
+  const sep = ctx.createLinearGradient(PADDING + inset, 0, WIDTH - PADDING - inset, 0);
+  sep.addColorStop(0, 'transparent');
+  sep.addColorStop(0.3, 'rgba(140, 80, 220, 0.35)');
+  sep.addColorStop(0.5, 'rgba(140, 80, 220, 0.55)');
+  sep.addColorStop(0.7, 'rgba(140, 80, 220, 0.35)');
+  sep.addColorStop(1, 'transparent');
+  ctx.strokeStyle = sep;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(PADDING + inset, y);
+  ctx.lineTo(WIDTH - PADDING - inset, y);
+  ctx.stroke();
 }
 
 export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName }) {
   const isHe = lang === 'he';
-  const title = scheduleName
-    ? (isHe ? `${scheduleName} — אוזורה 2026` : `${scheduleName} — Ozora 2026`)
-    : (isHe ? 'הלוח שלי — אוזורה 2026' : 'My Ozora 2026 Schedule');
   const siteUrl = 'yonatan2021.github.io/ozora-2026';
 
   const dayEntries = Object.entries(groupedByDay);
   let totalSets = 0;
   dayEntries.forEach(([, sets]) => { totalSets += sets.length; });
 
-  const logoHeight = 80;
-  const headerHeight = logoHeight + 48;
-  const titleHeight = 56;
-  const dayHeaderHeight = 48;
+  const logoHeight = 90;
+  const headerHeight = logoHeight + 40;
+  const titleHeight = scheduleName ? 90 : 50;
+  const dayHeaderHeight = 56;
   const setRowHeight = 44;
   const dayGap = 28;
-  const footerHeight = 100;
+  const footerHeight = 110;
   const estimatedHeight = headerHeight + titleHeight + dayEntries.length * (dayHeaderHeight + dayGap) + totalSets * setRowHeight + footerHeight + PADDING * 2 + 20;
 
   const canvas = document.createElement('canvas');
@@ -130,76 +148,85 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   canvas.height = estimatedHeight;
   const ctx = canvas.getContext('2d');
 
-  // Night-sky gradient
-  const grad = ctx.createLinearGradient(0, 0, 0, estimatedHeight);
-  grad.addColorStop(0, '#0a0518');
-  grad.addColorStop(0.3, '#0e0824');
-  grad.addColorStop(0.7, '#12082e');
-  grad.addColorStop(1, '#0a0518');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
-
-  // Cosmic atmosphere glows
-  const glow1 = ctx.createRadialGradient(WIDTH * 0.15, estimatedHeight * 0.12, 0, WIDTH * 0.15, estimatedHeight * 0.12, WIDTH * 0.6);
-  glow1.addColorStop(0, 'rgba(120, 40, 180, 0.16)');
-  glow1.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow1;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
-
-  const glow2 = ctx.createRadialGradient(WIDTH * 0.85, estimatedHeight * 0.6, 0, WIDTH * 0.85, estimatedHeight * 0.6, WIDTH * 0.5);
-  glow2.addColorStop(0, 'rgba(40, 180, 140, 0.10)');
-  glow2.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow2;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
-
-  const glow3 = ctx.createRadialGradient(WIDTH * 0.5, estimatedHeight * 0.9, 0, WIDTH * 0.5, estimatedHeight * 0.9, WIDTH * 0.35);
-  glow3.addColorStop(0, 'rgba(180, 40, 100, 0.08)');
-  glow3.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow3;
-  ctx.fillRect(0, 0, WIDTH, estimatedHeight);
+  drawCosmicBackground(ctx, WIDTH, estimatedHeight);
 
   let y = PADDING;
 
-  // Logo
+  // Logo — elliptical mask with heavy radial vignette to blend into dark bg
   try {
     const logoImg = await loadImage(logoSrc);
     const logoW = (logoImg.width / logoImg.height) * logoHeight;
     const logoX = (WIDTH - logoW) / 2;
+    const logoCX = logoX + logoW / 2;
+    const logoCY = y + logoHeight / 2;
+
+    // Draw logo into offscreen canvas with radial alpha mask
+    const logoCanvas = document.createElement('canvas');
+    logoCanvas.width = WIDTH;
+    logoCanvas.height = estimatedHeight;
+    const lCtx = logoCanvas.getContext('2d');
+
+    lCtx.drawImage(logoImg, logoX, y, logoW, logoHeight);
+
+    // Apply radial gradient as alpha mask — heavy fade at edges
+    lCtx.globalCompositeOperation = 'destination-in';
+    const mask = lCtx.createRadialGradient(logoCX, logoCY, logoHeight * 0.22, logoCX, logoCY, logoHeight * 0.55);
+    mask.addColorStop(0, 'rgba(255,255,255,1)');
+    mask.addColorStop(0.6, 'rgba(255,255,255,0.9)');
+    mask.addColorStop(0.85, 'rgba(255,255,255,0.3)');
+    mask.addColorStop(1, 'rgba(255,255,255,0)');
+    lCtx.fillStyle = mask;
+    lCtx.fillRect(0, 0, WIDTH, estimatedHeight);
+
+    // Glow behind logo
     ctx.save();
     ctx.shadowColor = 'rgba(140, 60, 200, 0.3)';
-    ctx.shadowBlur = 30;
-    ctx.drawImage(logoImg, logoX, y, logoW, logoHeight);
+    ctx.shadowBlur = 50;
+    ctx.fillStyle = 'rgba(140, 60, 200, 0.06)';
+    ctx.beginPath();
+    ctx.ellipse(logoCX, logoCY, logoW * 0.45, logoHeight * 0.45, 0, 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
-    y += logoHeight + 20;
+
+    // Composite logo with mask onto main canvas
+    ctx.drawImage(logoCanvas, 0, 0);
+
+    y += logoHeight + 16;
   } catch {
     y += 20;
   }
 
-  // Title
-  ctx.fillStyle = '#eee0ff';
-  ctx.font = "800 30px 'Orbitron', 'Heebo', sans-serif";
+  // Title — personalized if name exists
   ctx.textAlign = 'center';
-  ctx.save();
-  ctx.shadowColor = 'rgba(140, 60, 200, 0.4)';
-  ctx.shadowBlur = 20;
-  ctx.fillText(title, WIDTH / 2, y + 30);
-  ctx.restore();
-  y += titleHeight;
+  if (scheduleName) {
+    // Two-line: name prominently, then subtitle
+    ctx.fillStyle = '#eee0ff';
+    ctx.font = "800 28px 'Orbitron', 'Heebo', sans-serif";
+    ctx.save();
+    ctx.shadowColor = 'rgba(140, 60, 200, 0.4)';
+    ctx.shadowBlur = 20;
+    const nameTitle = isHe ? `הלוח של ${scheduleName}` : `${scheduleName}'s Schedule`;
+    ctx.fillText(nameTitle, WIDTH / 2, y + 28);
+    ctx.restore();
 
-  // Thin separator under title
-  const sepGrad = ctx.createLinearGradient(PADDING + 80, 0, WIDTH - PADDING - 80, 0);
-  sepGrad.addColorStop(0, 'transparent');
-  sepGrad.addColorStop(0.3, 'rgba(140, 80, 220, 0.4)');
-  sepGrad.addColorStop(0.5, 'rgba(140, 80, 220, 0.6)');
-  sepGrad.addColorStop(0.7, 'rgba(140, 80, 220, 0.4)');
-  sepGrad.addColorStop(1, 'transparent');
-  ctx.strokeStyle = sepGrad;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(PADDING + 80, y);
-  ctx.lineTo(WIDTH - PADDING - 80, y);
-  ctx.stroke();
-  y += 16;
+    ctx.fillStyle = 'rgba(212, 184, 255, 0.6)';
+    ctx.font = "600 16px 'Exo 2', 'Heebo', sans-serif";
+    ctx.fillText('Ozora Festival 2026', WIDTH / 2, y + 54);
+    y += titleHeight;
+  } else {
+    const title = isHe ? 'הלוח שלי — אוזורה 2026' : 'My Ozora 2026 Schedule';
+    ctx.fillStyle = '#eee0ff';
+    ctx.font = "800 28px 'Orbitron', 'Heebo', sans-serif";
+    ctx.save();
+    ctx.shadowColor = 'rgba(140, 60, 200, 0.4)';
+    ctx.shadowBlur = 20;
+    ctx.fillText(title, WIDTH / 2, y + 30);
+    ctx.restore();
+    y += titleHeight;
+  }
+
+  drawGradientSeparator(ctx, y, 80);
+  y += 20;
 
   ctx.textAlign = isHe ? 'right' : 'left';
 
@@ -212,19 +239,35 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
         .replace('Warmup Sun', 'חימום ראשון');
     }
 
-    // Day header with subtle glow background
+    const dateStr = DAY_DATES[day] || '';
+    const weekday = isHe ? (DAY_WEEKDAYS_HE[day] || '') : (DAY_WEEKDAYS_EN[day] || '');
+
+    // Day header background
     const dayBgGrad = ctx.createLinearGradient(PADDING, 0, WIDTH - PADDING, 0);
-    dayBgGrad.addColorStop(0, isHe ? 'transparent' : 'rgba(140, 80, 220, 0.08)');
-    dayBgGrad.addColorStop(1, isHe ? 'rgba(140, 80, 220, 0.08)' : 'transparent');
+    dayBgGrad.addColorStop(0, isHe ? 'transparent' : 'rgba(140, 80, 220, 0.10)');
+    dayBgGrad.addColorStop(1, isHe ? 'rgba(140, 80, 220, 0.10)' : 'transparent');
     ctx.fillStyle = dayBgGrad;
-    drawRoundedRect(ctx, PADDING, y, CONTENT_WIDTH, dayHeaderHeight - 8, 8);
+    drawRoundedRect(ctx, PADDING, y, CONTENT_WIDTH, dayHeaderHeight - 8, 10);
     ctx.fill();
 
-    ctx.fillStyle = '#d4b8ff';
-    ctx.font = "700 18px 'Orbitron', 'Heebo', sans-serif";
+    // Day name
     const textX = isHe ? WIDTH - PADDING - 16 : PADDING + 16;
-    ctx.fillText(dayLabel, textX, y + 28);
+    ctx.fillStyle = '#d4b8ff';
+    ctx.font = "700 20px 'Orbitron', 'Heebo', sans-serif";
+    ctx.textAlign = isHe ? 'right' : 'left';
+    ctx.fillText(dayLabel, textX, y + 30);
 
+    // Date + weekday on opposite side
+    if (dateStr) {
+      const dateDisplay = isHe ? `יום ${weekday} · ${dateStr}` : `${weekday} · ${dateStr}`;
+      ctx.fillStyle = 'rgba(212, 184, 255, 0.5)';
+      ctx.font = "500 14px 'Exo 2', 'Heebo', sans-serif";
+      const dateX = isHe ? PADDING + 16 : WIDTH - PADDING - 16;
+      ctx.textAlign = isHe ? 'left' : 'right';
+      ctx.fillText(dateDisplay, dateX, y + 30);
+    }
+
+    ctx.textAlign = isHe ? 'right' : 'left';
     y += dayHeaderHeight;
 
     sets.forEach(set => {
@@ -235,7 +278,6 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
       const stageGlow = STAGE_GLOW_COLORS[set.stage] || 'rgba(136, 136, 136, 0.08)';
       const alpha = priority === 'maybe' ? 0.45 : 1.0;
 
-      // Row background
       if (priority === 'must') {
         ctx.fillStyle = 'rgba(230, 96, 64, 0.12)';
         drawRoundedRect(ctx, PADDING + 4, y + 2, CONTENT_WIDTH - 8, setRowHeight - 4, 6);
@@ -248,13 +290,13 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
       ctx.globalAlpha = alpha;
 
-      // Stage color dot
+      // Stage dot with glow
       ctx.fillStyle = stageColor;
       ctx.save();
       ctx.shadowColor = stageColor;
       ctx.shadowBlur = 8;
       ctx.beginPath();
-      const dotX = isHe ? WIDTH - PADDING - 12 : PADDING + 12;
+      const dotX = isHe ? WIDTH - PADDING - 14 : PADDING + 14;
       ctx.arc(dotX, y + setRowHeight / 2, 5, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
@@ -262,7 +304,8 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
       // Artist name
       ctx.fillStyle = '#eee0ff';
       ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
-      const artistX = isHe ? WIDTH - PADDING - 28 : PADDING + 28;
+      const artistX = isHe ? WIDTH - PADDING - 30 : PADDING + 30;
+      ctx.textAlign = isHe ? 'right' : 'left';
       ctx.fillText(set.artist, artistX, y + 27);
 
       // Stage name
@@ -285,12 +328,11 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
       // Must badge
       if (priority === 'must') {
-        ctx.fillStyle = '#e86040';
-        ctx.font = "700 10px 'Exo 2', 'Heebo', sans-serif";
         const mustLabel = isHe ? 'חובה' : 'MUST';
         ctx.textAlign = isHe ? 'right' : 'left';
         ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
         const artistWidth = ctx.measureText(set.artist).width;
+        ctx.fillStyle = '#e86040';
         ctx.font = "700 9px 'Exo 2', 'Heebo', sans-serif";
         const labelOffset = isHe ? -artistWidth - 14 : artistWidth + 14;
         ctx.fillText(mustLabel, artistX + labelOffset, y + 26);
@@ -314,60 +356,41 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
     y += dayGap;
   });
 
-  // Footer separator
+  // Footer
   y += 8;
-  const footSep = ctx.createLinearGradient(PADDING + 60, 0, WIDTH - PADDING - 60, 0);
-  footSep.addColorStop(0, 'transparent');
-  footSep.addColorStop(0.3, 'rgba(140, 80, 220, 0.3)');
-  footSep.addColorStop(0.5, 'rgba(140, 80, 220, 0.5)');
-  footSep.addColorStop(0.7, 'rgba(140, 80, 220, 0.3)');
-  footSep.addColorStop(1, 'transparent');
-  ctx.strokeStyle = footSep;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(PADDING + 60, y);
-  ctx.lineTo(WIDTH - PADDING - 60, y);
-  ctx.stroke();
-  y += 24;
+  drawGradientSeparator(ctx, y, 60);
+  y += 28;
 
-  // Site URL — prominent CTA
+  // Site URL
   ctx.fillStyle = '#d4b8ff';
-  ctx.font = "600 14px 'Exo 2', 'Heebo', sans-serif";
+  ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
   ctx.textAlign = 'center';
   ctx.save();
   ctx.shadowColor = 'rgba(140, 60, 200, 0.3)';
   ctx.shadowBlur = 12;
   ctx.fillText(siteUrl, WIDTH / 2, y);
   ctx.restore();
-  y += 22;
+  y += 24;
 
   // Tagline
   const tagline = isHe ? 'בנה את הלוח שלך עכשיו' : 'Build your schedule now';
   ctx.fillStyle = 'rgba(212, 184, 255, 0.45)';
   ctx.font = "400 12px 'Exo 2', 'Heebo', sans-serif";
   ctx.fillText(tagline, WIDTH / 2, y);
-  y += 20;
+  y += 22;
 
   // Copyright
-  ctx.fillStyle = 'rgba(212, 184, 255, 0.25)';
+  ctx.fillStyle = 'rgba(212, 184, 255, 0.2)';
   ctx.font = "400 10px 'Exo 2', 'Heebo', sans-serif";
   ctx.fillText('© 2026 Bersaglio', WIDTH / 2, y);
 
-  // Trim canvas to actual content height
+  // Trim canvas to actual content
   const finalHeight = y + PADDING;
   const finalCanvas = document.createElement('canvas');
   finalCanvas.width = WIDTH;
   finalCanvas.height = finalHeight;
   const fCtx = finalCanvas.getContext('2d');
-
-  // Redraw background gradient for trimmed canvas
-  const fGrad = fCtx.createLinearGradient(0, 0, 0, finalHeight);
-  fGrad.addColorStop(0, '#0a0518');
-  fGrad.addColorStop(0.3, '#0e0824');
-  fGrad.addColorStop(0.7, '#12082e');
-  fGrad.addColorStop(1, '#0a0518');
-  fCtx.fillStyle = fGrad;
-  fCtx.fillRect(0, 0, WIDTH, finalHeight);
+  drawCosmicBackground(fCtx, WIDTH, finalHeight);
   fCtx.drawImage(canvas, 0, 0);
 
   const blob = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
