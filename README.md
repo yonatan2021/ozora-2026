@@ -40,11 +40,25 @@ This application is built not just as a schedule utility, but as a sensory exper
 *   **Smart Migration:** Utilizes a composite key system (`${artist}::${stage}::${date}::${start}`) instead of unstable array indices. This ensures your saved schedule remains perfectly intact even if the master timetable data is updated.
 *   **Shareable Schedules:** Click **Share Schedule** to generate a custom URL containing your starred sets. When opened on another device, these sets are automatically merged into the user's favorites with a beautiful success toast.
 
-### 6. 🔍 Real-Time Intelligent Search
+### 6. 📴 Offline-First PWA (Works Without Internet)
+*   **Full Offline Support:** The app is a Progressive Web App (PWA) with a service worker that caches all assets and timetable data on first visit. Once loaded, it works perfectly in airplane mode — designed for festivals with near-zero connectivity.
+*   **Install to Home Screen:** A bilingual install prompt encourages users to add the app to their home screen before the festival, ensuring it behaves like a native app with instant launch times.
+
+### 7. 🎯 Smart Schedule Management
+*   **Priority Marking:** Cycle through priority tiers on any favorited set — **Must See** (fire icon), **Want to See** (star), or **Maybe** (dimmed) — to plan your festival days with clarity.
+*   **Personal Notes:** Add short notes to any set (e.g., "meet Dani here", "bring water"). Notes are displayed on your timeline cards and stored locally.
+*   **Conflict Detection:** The app automatically detects when two of your starred sets overlap in time and highlights them with a warning badge showing the overlap duration.
+
+### 8. 📲 QR Code Sharing & Schedule Image Export
+*   **QR Code Exchange:** Generate a QR code of your personal schedule. Friends scan it with their phone camera — no internet needed. The schedule data is encoded directly in the URL, making it perfect for offline phone-to-phone sharing at the festival.
+*   **Schedule Image Export:** Export your entire personal schedule as a beautiful, shareable PNG image (optimized for Instagram/WhatsApp stories). The image is generated client-side using `html2canvas` — no server or internet connection required.
+*   **Friend Schedule Comparison:** Import a friend's schedule (via QR or link) and save it separately with their name. Compare your picks side-by-side: see shared favorites ("Both of you"), discover what your friend picked that you didn't, and coordinate your festival experience.
+
+### 9. 🔍 Real-Time Intelligent Search
 *   **Instant Filtering:** Search by artist, stage, genre, or show type.
 *   **Smooth-Scroll Highlight:** Clicking a search result automatically redirects you to the correct day/stage, smooth-scrolls directly to the artist's card, and applies a temporary glow highlight effect.
 
-### 7. 🇮🇱 GDPR & Israeli Law Compliant Cookie Gating
+### 10. 🇮🇱 GDPR & Israeli Law Compliant Cookie Gating
 *   **Explicit Consent Mode:** Built from the ground up to comply with strict Israeli data protection guidelines.
 *   **Zero-Tracking by Default:** Google Analytics (GA4) script loading is completely blocked until the user explicitly accepts cookie tracking.
 *   **Granular Preferences:** Users can choose to enable or disable functional, analytics, and marketing cookies individually.
