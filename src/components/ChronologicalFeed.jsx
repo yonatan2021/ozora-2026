@@ -58,7 +58,8 @@ export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onS
                       <span>{set.artist}</span>
                     </div>
                     <div className="feed-stage-name">
-                      {set.stage} {set.type ? `• ${set.type}` : ''}
+                      <span className="stage-dot"></span>
+                      <span>{set.stage} {set.type ? `• ${set.type}` : ''}</span>
                     </div>
                     <div className="feed-time-duration">
                       {set.start} - {set.end} {set.endsNextDay ? '(+1d)' : ''}

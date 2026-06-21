@@ -106,7 +106,10 @@ export default function MySchedule({
                     <span>{isHe ? 'מנגן כרגע' : 'Now Playing'}</span>
                   </div>
                   <div className="feed-artist-name">{set.artist}</div>
-                  <div className="feed-stage-name">{set.stage}</div>
+                  <div className="feed-stage-name">
+                    <span className="stage-dot"></span>
+                    <span>{set.stage}</span>
+                  </div>
                   <div className="feed-time-duration">{set.start} - {set.end}</div>
                 </div>
               </div>
@@ -125,7 +128,10 @@ export default function MySchedule({
                     {isHe ? 'ההופעה הבאה שלך' : 'Next Up'}
                   </div>
                   <div className="feed-artist-name">{set.artist}</div>
-                  <div className="feed-stage-name">{set.stage}</div>
+                  <div className="feed-stage-name">
+                    <span className="stage-dot"></span>
+                    <span>{set.stage}</span>
+                  </div>
                   <div className="feed-time-duration">{set.day} • {set.start}</div>
                 </div>
               </div>
@@ -155,7 +161,10 @@ export default function MySchedule({
                     >
                       <div className="feed-set-info">
                         <div className="feed-artist-name">{set.artist}</div>
-                        <div className="feed-stage-name">{set.stage} {set.type ? `• ${set.type}` : ''}</div>
+                        <div className="feed-stage-name">
+                          <span className="stage-dot"></span>
+                          <span>{set.stage} {set.type ? `• ${set.type}` : ''}</span>
+                        </div>
                         <div className="feed-time-duration">{set.start} - {set.end}</div>
                       </div>
                       <button 
