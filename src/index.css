@@ -612,10 +612,12 @@ body:has(.theme-day) {
 
 /* Timetable Grid View (Desktop) */
 .grid-view-wrapper {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  max-height: 80vh;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  max-height: none;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--bg);

@@ -28,6 +28,11 @@ function timeToMinutes(timeStr) {
 export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, days, selectedDay, onDayChange, dayLabels }) {
   const isHe = lang === 'he';
 
+  const navigateToDay = (day) => {
+    onDayChange(day);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const evalDate = new Date(simTime);
   const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');
   const isCurrentDay = sets.length > 0 && sets[0].date === evalDateStr;
@@ -289,7 +294,7 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
             <button
               className="grid-day-nav-btn"
               disabled={!hasPrev}
-              onClick={() => { if (hasPrev) { onDayChange(days[currentIndex - 1]); document.querySelector('.grid-view-wrapper')?.scrollTo(0, 0); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+              onClick={() => { if (hasPrev) navigateToDay(days[currentIndex - 1]); }}
             >
               <ChevronRight size={18} />
               {hasPrev && <span>{dayLabels?.[days[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex - 1]}</span>}
@@ -297,7 +302,7 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
             <button
               className="grid-day-nav-btn"
               disabled={!hasNext}
-              onClick={() => { if (hasNext) { onDayChange(days[currentIndex + 1]); document.querySelector('.grid-view-wrapper')?.scrollTo(0, 0); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+              onClick={() => { if (hasNext) navigateToDay(days[currentIndex + 1]); }}
             >
               {hasNext && <span>{dayLabels?.[days[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex + 1]}</span>}
               <ChevronLeft size={18} />
