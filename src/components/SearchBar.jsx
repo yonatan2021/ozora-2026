@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, X, Star } from 'lucide-react';
 import { searchSchedule } from '../utils/search';
 import { translations } from '../utils/lang';
+import { trackEvent } from '../utils/analytics';
 
 // Helper to determine the CSS class based on the stage name
 const STAGE_CLASSES = {
@@ -40,6 +41,11 @@ export default function SearchBar({
     const searchResults = searchSchedule(query, timetableData);
     setResults(searchResults);
     setActiveIndex(-1);
+
+    const timer = setTimeout(() => {
+      trackEvent('search_artist', { search_query: query, results_count: searchResults.length });
+    }, 500);
+    return () => clearTimeout(timer);
   }, [query, timetableData]);
 
   // Click outside listener to close the dropdown
@@ -75,6 +81,11 @@ export default function SearchBar({
   };
 
   const handleSelect = (set) => {
+    trackEvent('select_search_result', {
+      artist_name: set.artist,
+      stage_name: set.stage,
+      day_name: set.day
+    });
     onSelectSet(set);
     setQuery('');
     setIsOpen(false);
@@ -170,7 +181,7 @@ export default function SearchBar({
                       className="search-item-fav-btn"
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent selecting the set
-                        toggleFavorite(set.id);
+                        toggleFavorite(set.id, 'search');
                       }}
                       title={isFav ? (lang === 'he' ? 'הסר מהלוח שלי' : 'Remove from My Schedule') : (lang === 'he' ? 'הוסף ללוח שלי' : 'Add to My Schedule')}
                     >
