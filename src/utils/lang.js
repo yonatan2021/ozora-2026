@@ -40,7 +40,11 @@ export const translations = {
     developedWithLove: "Developed with love by AI agents",
     installPrompt: "Install the app to your home screen for offline use at the festival",
     installBtn: "Install",
-    installDismiss: "Not now"
+    installDismiss: "Not now",
+    priorityMust: "Must See",
+    priorityWant: "Want to See",
+    priorityMaybe: "Maybe",
+    filterMustSee: "Must See Only"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -83,6 +87,10 @@ export const translations = {
     developedWithLove: "פותח באהבה על ידי סוכני AI",
     installPrompt: "התקן את האפליקציה למסך הבית לשימוש אופליין בפסטיבל",
     installBtn: "התקן",
-    installDismiss: "לא עכשיו"
+    installDismiss: "לא עכשיו",
+    priorityMust: "חובה",
+    priorityWant: "רוצה לראות",
+    priorityMaybe: "אולי",
+    filterMustSee: "רק חובה"
   }
 };

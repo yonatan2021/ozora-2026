@@ -1,5 +1,8 @@
-import { Star, Radio, Share2 } from 'lucide-react';
-import { getSetStatus } from '../utils/time';
+import { useState } from 'react';
+import { Star, Radio, Share2, Flame, StarOff, Filter } from 'lucide-react';
+import { getSetStatus, getSetUniqueKey } from '../utils/time';
+import { translations } from '../utils/lang';
+import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -10,17 +13,27 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
-export default function MySchedule({ 
-  lang, 
-  timetableData, 
-  favorites, 
-  toggleFavorite, 
-  onSetClick, 
-  simTime, 
+export default function MySchedule({
+  lang,
+  timetableData,
+  favorites,
+  toggleFavorite,
+  onSetClick,
+  simTime,
   isSimulated,
   onShowToast
 }) {
   const isHe = lang === 'he';
+  const t = translations[lang];
+
+  const [priorities, setPriorities] = useState(() => getPriorities());
+  const [filterMust, setFilterMust] = useState(false);
+
+  const handleCyclePriority = (e, setKey) => {
+    e.stopPropagation();
+    cyclePriority(setKey);
+    setPriorities(getPriorities());
+  };
 
   const handleShare = () => {
     const indices = favorites.map(id => {
@@ -30,7 +43,7 @@ export default function MySchedule({
     if (indices.length === 0) return;
 
     const shareUrl = `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
-    
+
     navigator.clipboard.writeText(shareUrl).then(() => {
       onShowToast(isHe ? 'קישור השיתוף הועתק ללוח!' : 'Share link copied to clipboard!');
     }).catch(err => {
@@ -38,13 +51,11 @@ export default function MySchedule({
     });
   };
 
-  // 1. Filter timetable data by favorites only
   const favSets = timetableData.filter(set => favorites.includes(set.id));
 
-  // 2. Evaluate current statuses of favorites
   const evalTime = isSimulated ? new Date(simTime) : new Date();
   if (!isSimulated) {
-    evalTime.setFullYear(2026); // Match dataset year
+    evalTime.setFullYear(2026);
   }
 
   const activeFavorites = [];
@@ -59,21 +70,21 @@ export default function MySchedule({
     }
   });
 
-  // Sort upcoming favorites chronologically by start date/time
   upcomingFavorites.sort((a, b) => {
     const dateDiff = a.date.localeCompare(b.date);
     if (dateDiff !== 0) return dateDiff;
     return a.start.localeCompare(b.start);
   });
 
-  // Sort all favorites chronologically for the full feed list
   const sortedFavs = [...favSets].sort((a, b) => {
-    const dateDiff = a.date.localeCompare(b.date);
-    if (dateDiff !== 0) return dateDiff;
+    const dayDiff = a.date.localeCompare(b.date);
+    if (dayDiff !== 0) return dayDiff;
+    const pa = prioritySortValue(getSetUniqueKey(a), priorities);
+    const pb = prioritySortValue(getSetUniqueKey(b), priorities);
+    if (pa !== pb) return pa - pb;
     return a.start.localeCompare(b.start);
   });
 
-  // Group all favorites by day
   const groupedByDay = sortedFavs.reduce((acc, set) => {
     if (!acc[set.day]) {
       acc[set.day] = [];
@@ -82,17 +93,39 @@ export default function MySchedule({
     return acc;
   }, {});
 
+  const displayGroupedByDay = filterMust
+    ? Object.fromEntries(
+        Object.entries(groupedByDay)
+          .map(([day, sets]) => [day, sets.filter(s => priorities[getSetUniqueKey(s)] === 'must')])
+          .filter(([, sets]) => sets.length > 0)
+      )
+    : groupedByDay;
+
   if (favorites.length === 0) {
     return (
       <div className="empty-state stagger-slide-up" style={{ '--card-index': 0 }}>
         <p>
-          {isHe 
-            ? 'לוח הזמנים שלך ריק. לחץ על כוכב (★) בלוח ההופעות כדי להוסיף אמנים.' 
+          {isHe
+            ? 'לוח הזמנים שלך ריק. לחץ על כוכב (★) בלוח ההופעות כדי להוסיף אמנים.'
             : 'Your schedule is empty. Star (★) artists in the timetable to add them here.'}
         </p>
       </div>
     );
   }
+
+  const renderPriorityIcon = (setKey) => {
+    const p = priorities[setKey];
+    if (p === 'must') return <Flame size={14} />;
+    if (p === 'maybe') return <StarOff size={14} />;
+    return <Star size={14} />;
+  };
+
+  const getPriorityCardClass = (setKey) => {
+    const p = priorities[setKey];
+    if (p === 'must') return 'priority-must-card';
+    if (p === 'maybe') return 'priority-maybe-card';
+    return '';
+  };
 
   return (
     <div className="my-schedule-container stagger-slide-up" style={{ '--card-index': 0 }}>
@@ -103,11 +136,10 @@ export default function MySchedule({
             <Radio size={18} className="live-radio-icon" style={{ color: 'var(--primary)' }} />
             <span>{isHe ? 'מה קורה עכשיו בבמות' : 'Live Status Board'}</span>
           </h3>
-          
+
           <div className="live-favs-grid">
-            {/* Active Playing Favorites */}
             {activeFavorites.map((set, index) => (
-              <div 
+              <div
                 key={set.id}
                 className={`feed-set-card ${STAGE_CLASSES[set.stage]} active stagger-slide-up`}
                 style={{ '--card-index': index + 1 }}
@@ -132,9 +164,8 @@ export default function MySchedule({
               </div>
             ))}
 
-            {/* Next Up Favorites (Top 2 upcoming) */}
             {upcomingFavorites.slice(0, 2).map((set, index) => (
-              <div 
+              <div
                 key={set.id}
                 className={`feed-set-card ${STAGE_CLASSES[set.stage]} stagger-slide-up`}
                 style={{ '--card-index': activeFavorites.length + index + 1 }}
@@ -161,13 +192,20 @@ export default function MySchedule({
       <div className="fav-feed-section">
         <div className="fav-feed-header-row">
           <h3>{isHe ? 'ציר הזמן שלי' : 'My Personal Timeline'}</h3>
+          <button
+            className={`filter-must-btn ${filterMust ? 'active' : ''}`}
+            onClick={() => setFilterMust(!filterMust)}
+          >
+            <Filter size={14} />
+            <span>{t.filterMustSee}</span>
+          </button>
           <button className="share-schedule-btn" onClick={handleShare}>
             <Share2 size={16} />
             <span>{isHe ? 'שתף לוח זמנים' : 'Share Schedule'}</span>
           </button>
         </div>
         <div className="feed-view">
-          {Object.entries(groupedByDay).map(([day, daySets]) => (
+          {Object.entries(displayGroupedByDay).map(([day, daySets]) => (
             <div key={day} className="feed-time-block">
               <div className="feed-time-header">
                 {isHe ? day.replace('DAY', 'יום').replace('Warmup Sat', 'חימום שבת').replace('Warmup Sun', 'חימום ראשון') : day}
@@ -175,10 +213,11 @@ export default function MySchedule({
               <div className="feed-sets-list">
                 {daySets.map((set, index) => {
                   const status = getSetStatus(set, evalTime);
+                  const setKey = getSetUniqueKey(set);
                   return (
-                    <div 
-                      key={set.id} 
-                      className={`feed-set-card ${STAGE_CLASSES[set.stage]} ${status} stagger-slide-up`}
+                    <div
+                      key={set.id}
+                      className={`feed-set-card ${STAGE_CLASSES[set.stage]} ${status} ${getPriorityCardClass(setKey)} stagger-slide-up`}
                       style={{ '--card-index': index }}
                       onClick={() => onSetClick(set)}
                     >
@@ -190,15 +229,24 @@ export default function MySchedule({
                         </div>
                         <div className="feed-time-duration">{set.start} - {set.end}</div>
                       </div>
-                      <button 
-                        className="feed-fav-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleFavorite(set.id);
-                        }}
-                      >
-                        <Star size={16} fill="var(--stage-visium)" stroke="var(--stage-visium)" />
-                      </button>
+                      <div className="feed-card-actions">
+                        <button
+                          className={`priority-btn priority-${priorities[setKey] || 'none'}`}
+                          onClick={(e) => handleCyclePriority(e, setKey)}
+                          aria-label="Set priority"
+                        >
+                          {renderPriorityIcon(setKey)}
+                        </button>
+                        <button
+                          className="feed-fav-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(set.id);
+                          }}
+                        >
+                          <Star size={16} fill="var(--stage-visium)" stroke="var(--stage-visium)" />
+                        </button>
+                      </div>
                     </div>
                   );
                 })}

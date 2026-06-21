@@ -2994,6 +2994,71 @@ body:has(.theme-sunrise)::before {
   white-space: nowrap;
 }
 
+/* Priority Marking */
+.feed-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.priority-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.priority-must {
+  color: oklch(0.65 0.22 30);
+}
+
+.priority-want {
+  color: var(--stage-visium);
+}
+
+.priority-maybe {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.priority-none {
+  color: var(--text-muted);
+  opacity: 0.3;
+}
+
+.feed-set-card.priority-must-card {
+  border-inline-start: 3px solid oklch(0.65 0.22 30);
+}
+
+.feed-set-card.priority-maybe-card {
+  opacity: 0.6;
+}
+
+.filter-must-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.filter-must-btn.active {
+  background: oklch(0.65 0.22 30 / 0.15);
+  border-color: oklch(0.65 0.22 30);
+  color: oklch(0.65 0.22 30);
+}
+
 .install-prompt-dismiss {
   background: none;
   border: none;
