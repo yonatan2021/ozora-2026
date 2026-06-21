@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Share2, Link, QrCode, Image } from 'lucide-react';
 import { translations } from '../utils/lang';
 import QRCodeModal from './QRCodeModal';
+import { trackEvent } from '../utils/analytics';
 
 export default function ShareMenu({ shareUrl, lang, onCopyLink, onExportImage }) {
   const [open, setOpen] = useState(false);
@@ -29,15 +30,15 @@ export default function ShareMenu({ shareUrl, lang, onCopyLink, onExportImage })
 
       {open && (
         <div className="share-menu-dropdown">
-          <button onClick={() => { onCopyLink(); setOpen(false); }}>
+          <button onClick={() => { onCopyLink(); trackEvent('share_schedule', { method: 'copy_link' }); setOpen(false); }}>
             <Link size={14} />
             <span>{t.copyLink}</span>
           </button>
-          <button onClick={() => { setShowQR(true); setOpen(false); }}>
+          <button onClick={() => { setShowQR(true); trackEvent('share_schedule', { method: 'qr_code' }); setOpen(false); }}>
             <QrCode size={14} />
             <span>{t.showQR}</span>
           </button>
-          <button onClick={() => { onExportImage(); setOpen(false); }}>
+          <button onClick={() => { onExportImage(); trackEvent('share_schedule', { method: 'export_image' }); setOpen(false); }}>
             <Image size={14} />
             <span>{t.exportImage}</span>
           </button>

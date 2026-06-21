@@ -9,6 +9,7 @@ import { exportScheduleAsImage } from '../utils/exportImage';
 import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
+import { trackEvent } from '../utils/analytics';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -51,12 +52,20 @@ export default function MySchedule({
 
   const handleCyclePriority = (e, setKey) => {
     e.stopPropagation();
-    cyclePriority(setKey);
+    const nextPriority = cyclePriority(setKey);
+    const set = timetableData.find(s => getSetUniqueKey(s) === setKey);
+    if (set) {
+      trackEvent('set_priority', {
+        artist_name: set.artist,
+        priority: nextPriority || 'none'
+      });
+    }
     setPriorities(getPriorities());
   };
 
   const handleNameSave = () => {
     localStorage.setItem('ozora_schedule_name', scheduleName);
+    trackEvent('save_schedule_name');
     setEditingName(false);
   };
 
@@ -273,7 +282,11 @@ export default function MySchedule({
             : (isHe ? 'ציר הזמן שלי' : 'My Personal Timeline')}</h3>
           <button
             className={`filter-must-btn ${filterMust ? 'active' : ''}`}
-            onClick={() => setFilterMust(!filterMust)}
+            onClick={() => {
+              const next = !filterMust;
+              setFilterMust(next);
+              trackEvent('toggle_filter_must', { filter_active: next });
+            }}
           >
             <Filter size={14} />
             <span>{t.filterMustSee}</span>
@@ -341,7 +354,7 @@ export default function MySchedule({
                           className="feed-fav-btn"
                           onClick={(e) => {
                             e.stopPropagation();
-                            toggleFavorite(set.id);
+                            toggleFavorite(set.id, 'favorites');
                           }}
                         >
                           <Star size={16} fill="var(--stage-visium)" stroke="var(--stage-visium)" />

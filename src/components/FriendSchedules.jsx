@@ -3,6 +3,7 @@ import { Users, ChevronDown, ChevronUp, Trash2, GitCompare } from 'lucide-react'
 import { translations } from '../utils/lang';
 import { getFriends, removeFriend } from '../utils/friends';
 import CompareView from './CompareView';
+import { trackEvent } from '../utils/analytics';
 
 export default function FriendSchedules({ lang, timetableData, myFavorites, onSetClick, toggleFavorite, onShowToast }) {
   const [friends, setFriends] = useState(() => getFriends());
@@ -16,7 +17,13 @@ export default function FriendSchedules({ lang, timetableData, myFavorites, onSe
   const handleRemove = (name) => {
     removeFriend(name);
     setFriends(getFriends());
+    trackEvent('remove_friend');
     onShowToast(t.friendRemoved);
+  };
+
+  const handleCompare = (name) => {
+    setComparingFriend(name);
+    trackEvent('compare_friend');
   };
 
   if (comparingFriend) {
@@ -29,7 +36,7 @@ export default function FriendSchedules({ lang, timetableData, myFavorites, onSe
         lang={lang}
         onSetClick={onSetClick}
         onClose={() => setComparingFriend(null)}
-        onAddToFavorites={toggleFavorite}
+        onAddToFavorites={(id) => toggleFavorite(id, 'compare')}
       />
     );
   }
@@ -51,7 +58,7 @@ export default function FriendSchedules({ lang, timetableData, myFavorites, onSe
                 <span className="friend-count">{data.sets.length} {t.friendSets}</span>
               </div>
               <div className="friend-actions">
-                <button onClick={() => setComparingFriend(name)} className="friend-action-btn">
+                <button onClick={() => handleCompare(name)} className="friend-action-btn">
                   <GitCompare size={14} />
                   <span>{t.compare}</span>
                 </button>
