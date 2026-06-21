@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { X, Star, MapPin, Clock, Tag, CalendarPlus, ChevronDown, MessageSquare } from 'lucide-react';
 import { translations } from '../utils/lang';
 import { getCalendarPlatform, generateGoogleCalendarUrl, generateICSFile } from '../utils/calendar';
@@ -6,9 +6,16 @@ import { getNote, setNote as saveNote, NOTE_MAX_LENGTH } from '../utils/notes';
 import { getSetUniqueKey } from '../utils/time';
 
 export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged }) {
+  const setKey = useMemo(() => set ? getSetUniqueKey(set) : null, [set]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [noteText, setNoteText] = useState('');
+  const [noteText, setNoteText] = useState(() => setKey ? getNote(setKey) : '');
+  const [prevSetKey, setPrevSetKey] = useState(setKey);
   const dropdownRef = useRef(null);
+
+  if (setKey !== prevSetKey) {
+    setPrevSetKey(setKey);
+    setNoteText(setKey ? getNote(setKey) : '');
+  }
 
   useEffect(() => {
     if (!dropdownOpen) return;
@@ -21,19 +28,13 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [dropdownOpen]);
 
-  useEffect(() => {
-    if (set) {
-      setNoteText(getNote(getSetUniqueKey(set)));
-    }
-  }, [set]);
-
   if (!set) return null;
   const t = translations[lang];
   const isFav = favorites.includes(set.id);
   const platform = getCalendarPlatform();
 
   const handleNoteBlur = () => {
-    saveNote(getSetUniqueKey(set), noteText);
+    saveNote(setKey, noteText);
     if (onNoteChanged) onNoteChanged();
   };
 

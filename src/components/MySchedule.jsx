@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Star, Radio, Share2, Flame, StarOff, Filter, MessageSquare, AlertTriangle } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Star, Radio, Flame, StarOff, Filter, MessageSquare, AlertTriangle } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
@@ -36,12 +36,11 @@ export default function MySchedule({
 
   const [priorities, setPriorities] = useState(() => getPriorities());
   const [filterMust, setFilterMust] = useState(false);
-  const [notes, setNotesState] = useState(() => getNotes());
   const scheduleImageRef = useRef(null);
 
-  useEffect(() => {
-    setNotesState(getNotes());
-  }, [notesVersion]);
+  // notesVersion prop change triggers re-render; getNotes() reads fresh from localStorage
+  void notesVersion;
+  const notes = getNotes();
 
   const handleCyclePriority = (e, setKey) => {
     e.stopPropagation();

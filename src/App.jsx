@@ -88,7 +88,20 @@ export default function App() {
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [notesVersion, setNotesVersion] = useState(0);
-  const [pendingImport, setPendingImport] = useState(null);
+  const [pendingImport, setPendingImport] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shareParam = params.get('share');
+    if (shareParam) {
+      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
+      const sharedSets = indices
+        .map(idx => timetableData[idx])
+        .filter(Boolean);
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, newUrl);
+      if (sharedSets.length > 0) return sharedSets;
+    }
+    return null;
+  });
 
   // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
@@ -113,23 +126,6 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('ozora_sim_time', String(simTime));
   }, [simTime]);
-
-  // Detect share URL and show import modal instead of silent merge
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const shareParam = params.get('share');
-    if (shareParam) {
-      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const sharedSets = indices
-        .map(idx => timetableData[idx])
-        .filter(Boolean);
-      if (sharedSets.length > 0) {
-        setPendingImport(sharedSets);
-      }
-      const newUrl = window.location.pathname + window.location.hash;
-      window.history.replaceState({}, document.title, newUrl);
-    }
-  }, []);
 
   // Auto-dismiss toast message
   useEffect(() => {
