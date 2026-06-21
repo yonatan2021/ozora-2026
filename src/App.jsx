@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useMemo, useState, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
@@ -6,6 +6,8 @@ import TimetableGrid from './components/TimetableGrid';
 import ChronologicalFeed from './components/ChronologicalFeed';
 import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
+import MySchedule from './components/MySchedule';
+import FestivalGuide from './components/FestivalGuide';
 import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
@@ -18,9 +20,6 @@ import ImportModal from './components/ImportModal';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
-
-const MySchedule = lazy(() => import('./components/MySchedule'));
-const FestivalGuide = lazy(() => import('./components/FestivalGuide'));
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -440,25 +439,21 @@ export default function App() {
       )}
 
       {activeTab === 'favorites' && (
-        <Suspense fallback={<div className="empty-state"><p>{t.loading}</p></div>}>
-          <MySchedule
-            lang={lang}
-            timetableData={timetableData}
-            favorites={childFavorites}
-            toggleFavorite={toggleFavorite}
-            onSetClick={setSelectedSet}
-            simTime={simTime}
-            isSimulated={isSimulated}
-            onShowToast={setToastMessage}
-            notesVersion={notesVersion}
-          />
-        </Suspense>
+        <MySchedule
+          lang={lang}
+          timetableData={timetableData}
+          favorites={childFavorites}
+          toggleFavorite={toggleFavorite}
+          onSetClick={setSelectedSet}
+          simTime={simTime}
+          isSimulated={isSimulated}
+          onShowToast={setToastMessage}
+          notesVersion={notesVersion}
+        />
       )}
 
       {activeTab === 'guide' && (
-        <Suspense fallback={<div className="empty-state"><p>{t.loading}</p></div>}>
-          <FestivalGuide />
-        </Suspense>
+        <FestivalGuide />
       )}
 
       <footer className="app-footer">

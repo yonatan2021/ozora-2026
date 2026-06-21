@@ -20,7 +20,15 @@ export default function Header({
     <header className="app-header">
       <div className="header-top">
         <h1 className="brand-title">
-          <img src={logo} alt={t.title} className="brand-logo" />
+          <img
+            src={logo}
+            alt={t.title}
+            className="brand-logo"
+            width="1000"
+            height="545"
+            decoding="async"
+            fetchPriority="high"
+          />
         </h1>
         
         {/* Desktop/Tablet view Navigation Tabs */}

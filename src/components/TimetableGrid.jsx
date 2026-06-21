@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const STAGES = [
@@ -27,91 +28,112 @@ function timeToMinutes(timeStr) {
 
 export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, days, selectedDay, onDayChange, dayLabels }) {
   const isHe = lang === 'he';
+  const favoriteIds = useMemo(() => new Set(favorites), [favorites]);
 
   const navigateToDay = (day) => {
     onDayChange(day);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const evalDate = new Date(simTime);
-  const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');
-  const isCurrentDay = sets.length > 0 && sets[0].date === evalDateStr;
+  const layout = useMemo(() => {
+    const evalDate = new Date(simTime);
+    const evalDateStr = evalDate.getFullYear() + '-' + String(evalDate.getMonth() + 1).padStart(2, '0') + '-' + String(evalDate.getDate()).padStart(2, '0');
+    const isCurrentDay = sets.length > 0 && sets[0].date === evalDateStr;
+    const currentTotalMinutes = evalDate.getHours() * 60 + evalDate.getMinutes();
+    const simHour = evalDate.getHours();
 
-  const currentTotalMinutes = evalDate.getHours() * 60 + evalDate.getMinutes();
-  const simHour = evalDate.getHours();
+    // 1. Filter stages that have scheduled performances on this day
+    const activeStages = STAGES.filter(stage => sets.some(s => s.stage === stage));
 
-  // 1. Filter stages that have scheduled performances on this day
-  const activeStages = STAGES.filter(stage => sets.some(s => s.stage === stage));
-
-  // 2. Identify active hours (overlapping with sets or the current simulated hour)
-  const isHourActive = Array(24).fill(false);
-  sets.forEach(set => {
-    const startMin = timeToMinutes(set.start);
-    const endMin = set.endsNextDay || timeToMinutes(set.end) <= startMin 
-      ? 24 * 60 
-      : timeToMinutes(set.end);
-    for (let h = 0; h < 24; h++) {
-      const hStart = h * 60;
-      const hEnd = (h + 1) * 60;
-      if (startMin < hEnd && endMin > hStart) {
-        isHourActive[h] = true;
+    // 2. Identify active hours (overlapping with sets or the current simulated hour)
+    const isHourActive = Array(24).fill(false);
+    sets.forEach(set => {
+      const startMin = timeToMinutes(set.start);
+      const endMin = set.endsNextDay || timeToMinutes(set.end) <= startMin
+        ? 24 * 60
+        : timeToMinutes(set.end);
+      for (let h = 0; h < 24; h++) {
+        const hStart = h * 60;
+        const hEnd = (h + 1) * 60;
+        if (startMin < hEnd && endMin > hStart) {
+          isHourActive[h] = true;
+        }
       }
+    });
+    if (isCurrentDay) {
+      isHourActive[simHour] = true;
     }
-  });
-  if (isCurrentDay) {
-    isHourActive[simHour] = true;
-  }
 
-  // 3. Find gaps of 2+ hours and determine hour heights
-  const hourHeights = Array(24).fill(HOUR_HEIGHT);
-  const gaps = [];
-  let inGap = false;
-  let gapStart = 0;
+    // 3. Find gaps of 2+ hours and determine hour heights
+    const hourHeights = Array(24).fill(HOUR_HEIGHT);
+    const gaps = [];
+    let inGap = false;
+    let gapStart = 0;
 
-  for (let h = 0; h < 24; h++) {
-    if (!isHourActive[h]) {
-      if (!inGap) {
-        inGap = true;
-        gapStart = h;
-      }
-    } else {
-      if (inGap) {
-        inGap = false;
-        const gapLen = h - gapStart;
-        if (gapLen >= 2) {
-          gaps.push({ startHour: gapStart, endHour: h });
-          for (let gh = gapStart; gh < h; gh++) {
-            hourHeights[gh] = 50 / gapLen;
+    for (let h = 0; h < 24; h++) {
+      if (!isHourActive[h]) {
+        if (!inGap) {
+          inGap = true;
+          gapStart = h;
+        }
+      } else {
+        if (inGap) {
+          inGap = false;
+          const gapLen = h - gapStart;
+          if (gapLen >= 2) {
+            gaps.push({ startHour: gapStart, endHour: h });
+            for (let gh = gapStart; gh < h; gh++) {
+              hourHeights[gh] = 50 / gapLen;
+            }
           }
         }
       }
     }
-  }
-  if (inGap) {
-    const gapLen = 24 - gapStart;
-    if (gapLen >= 2) {
-      gaps.push({ startHour: gapStart, endHour: 24 });
-      for (let gh = gapStart; gh < 24; gh++) {
-        hourHeights[gh] = 50 / gapLen;
+    if (inGap) {
+      const gapLen = 24 - gapStart;
+      if (gapLen >= 2) {
+        gaps.push({ startHour: gapStart, endHour: 24 });
+        for (let gh = gapStart; gh < 24; gh++) {
+          hourHeights[gh] = 50 / gapLen;
+        }
       }
     }
-  }
 
-  // 4. Calculate cumulative hour offsets
-  const hourOffsets = [0];
-  for (let h = 0; h < 24; h++) {
-    hourOffsets.push(hourOffsets[h] + hourHeights[h]);
-  }
-  const GRID_HEIGHT = hourOffsets[24];
+    // 4. Calculate cumulative hour offsets
+    const hourOffsets = [0];
+    for (let h = 0; h < 24; h++) {
+      hourOffsets.push(hourOffsets[h] + hourHeights[h]);
+    }
+    const gridHeight = hourOffsets[24];
 
-  function getY(minutes) {
-    const hour = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    if (hour >= 24) return hourOffsets[24];
-    const baseOffset = hourOffsets[hour];
-    const hourHeight = hourHeights[hour];
-    return baseOffset + (mins / 60) * hourHeight;
-  }
+    function getY(minutes) {
+      const hour = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      if (hour >= 24) return hourOffsets[24];
+      const baseOffset = hourOffsets[hour];
+      const hourHeight = hourHeights[hour];
+      return baseOffset + (mins / 60) * hourHeight;
+    }
+
+    const indicatorTop = getY(currentTotalMinutes);
+    const setsByStage = {};
+    activeStages.forEach(stage => {
+      setsByStage[stage] = sets.filter(s => s.stage === stage);
+    });
+
+    return {
+      activeStages,
+      evalDate,
+      gaps,
+      getY,
+      gridHeight,
+      hourHeights,
+      hourOffsets,
+      indicatorTop,
+      isCurrentDay,
+      setsByStage
+    };
+  }, [sets, simTime]);
 
   function getCardStyleLocal(set) {
     const startMin = timeToMinutes(set.start);
@@ -124,8 +146,8 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
       durationMin = endMin - startMin;
     }
 
-    const top = getY(startMin);
-    const bottom = getY(startMin + durationMin);
+    const top = layout.getY(startMin);
+    const bottom = layout.getY(startMin + durationMin);
     const height = bottom - top;
 
     return {
@@ -137,24 +159,17 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
     };
   }
 
-  const indicatorTop = getY(currentTotalMinutes);
-
-  const setsByStage = {};
-  activeStages.forEach(stage => {
-    setsByStage[stage] = sets.filter(s => s.stage === stage);
-  });
-
   return (
     <>
     <div className="grid-view-wrapper">
       <div className="grid-timezone-note">
         {isHe ? '* השעות מוצגות לפי שעון הונגריה (CEST)' : '* Times shown in Hungary timezone (CEST)'}
       </div>
-      <div className="grid-table-v2" style={{ minWidth: `${80 + activeStages.length * 190}px` }}>
+      <div className="grid-table-v2" style={{ minWidth: `${80 + layout.activeStages.length * 190}px` }}>
         {/* Sticky Header */}
-        <div className="grid-header-row" style={{ gridTemplateColumns: `80px repeat(${activeStages.length}, 1fr)` }}>
+        <div className="grid-header-row" style={{ gridTemplateColumns: `80px repeat(${layout.activeStages.length}, 1fr)` }}>
           <div className="time-col-header">Time</div>
-          {activeStages.map(stage => (
+          {layout.activeStages.map(stage => (
             <div key={stage} className={`stage-col-header ${STAGE_CLASSES[stage]}`}>
               {stage}
             </div>
@@ -162,18 +177,18 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
         </div>
 
         {/* Grid Body */}
-        <div className="grid-body" style={{ height: `${GRID_HEIGHT}px`, gridTemplateColumns: `80px repeat(${activeStages.length}, 1fr)` }}>
+        <div className="grid-body" style={{ height: `${layout.gridHeight}px`, gridTemplateColumns: `80px repeat(${layout.activeStages.length}, 1fr)` }}>
           {/* Time Labels */}
           <div className="grid-time-labels">
-            {hourOffsets.slice(0, 24).map((offset, i) => {
-              const isInsideGap = gaps.some(g => i > g.startHour && i < g.endHour);
+            {layout.hourOffsets.slice(0, 24).map((offset, i) => {
+              const isInsideGap = layout.gaps.some(g => i > g.startHour && i < g.endHour);
               if (isInsideGap) return null;
 
               return (
                 <div
                   key={`label-${i}`}
                   className="grid-hour-label"
-                  style={{ top: `${offset}px`, height: `${hourHeights[i]}px` }}
+                  style={{ top: `${offset}px`, height: `${layout.hourHeights[i]}px` }}
                 >
                   {String(i).padStart(2, '0') + ':00'}
                 </div>
@@ -182,10 +197,10 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
           </div>
 
           {/* Stage Columns */}
-          {activeStages.map((stage, stageIdx) => (
+          {layout.activeStages.map((stage, stageIdx) => (
             <div key={stage} className="grid-stage-column" style={{ gridColumn: stageIdx + 2, gridRow: 1 }}>
-              {setsByStage[stage].map(set => {
-                const isFav = favorites.includes(set.id);
+              {layout.setsByStage[stage].map(set => {
+                const isFav = favoriteIds.has(set.id);
                 const status = activeStatusMap[set.id] || '';
                 const isPlaying = status === 'active';
                 const cardStyle = getCardStyleLocal(set);
@@ -232,8 +247,8 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
           ))}
 
           {/* Hour grid lines */}
-          {hourOffsets.slice(0, 24).map((offset, i) => {
-            const isInsideGap = gaps.some(g => i > g.startHour && i < g.endHour);
+          {layout.hourOffsets.slice(0, 24).map((offset, i) => {
+            const isInsideGap = layout.gaps.some(g => i > g.startHour && i < g.endHour);
             if (isInsideGap) return null;
 
             return (
@@ -246,9 +261,9 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
           })}
 
           {/* Render Collapsed Gap Banners */}
-          {gaps.map((gap, gapIdx) => {
-            const top = hourOffsets[gap.startHour];
-            const height = hourOffsets[gap.endHour] - top;
+          {layout.gaps.map((gap, gapIdx) => {
+            const top = layout.hourOffsets[gap.startHour];
+            const height = layout.hourOffsets[gap.endHour] - top;
             const startStr = String(gap.startHour).padStart(2, '0') + ':00';
             const endStr = String(gap.endHour === 24 ? 0 : gap.endHour).padStart(2, '0') + ':00';
             return (
@@ -272,11 +287,11 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
           })}
 
           {/* Current Time Indicator */}
-          {isCurrentDay && (
-            <div className="grid-time-indicator" style={{ top: `${indicatorTop}px` }}>
+          {layout.isCurrentDay && (
+            <div className="grid-time-indicator" style={{ top: `${layout.indicatorTop}px` }}>
               <div className="grid-time-indicator-line"></div>
               <div className="grid-time-indicator-badge">
-                {String(evalDate.getHours()).padStart(2, '0')}:{String(evalDate.getMinutes()).padStart(2, '0')}
+                {String(layout.evalDate.getHours()).padStart(2, '0')}:{String(layout.evalDate.getMinutes()).padStart(2, '0')}
               </div>
             </div>
           )}

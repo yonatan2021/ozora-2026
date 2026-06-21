@@ -35,11 +35,6 @@ export default function SearchBar({
     return searchSchedule(deferredQuery, timetableData);
   }, [deferredQuery, timetableData]);
 
-  // Reset keyboard focus when the displayed query results change.
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [results]);
-
   // Track search activity after the query settles.
   useEffect(() => {
     if (deferredQuery.trim() === '') return;
@@ -89,11 +84,13 @@ export default function SearchBar({
     });
     onSelectSet(set);
     setQuery('');
+    setActiveIndex(-1);
     setIsOpen(false);
   };
 
   const handleClear = () => {
     setQuery('');
+    setActiveIndex(-1);
     setIsOpen(false);
     inputRef.current?.focus();
   };
@@ -114,6 +111,7 @@ export default function SearchBar({
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
+            setActiveIndex(-1);
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
