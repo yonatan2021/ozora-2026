@@ -50,7 +50,13 @@ export const translations = {
     noteLabel: "Note",
     conflicts: "Conflicts",
     conflictsWith: "Overlaps with",
-    conflictMinutes: "min"
+    conflictMinutes: "min",
+    shareSchedule: "Share",
+    copyLink: "Copy Link",
+    showQR: "Show QR",
+    exportImage: "Export Image",
+    qrTitle: "Scan to import my schedule",
+    linkCopied: "Share link copied to clipboard!"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -103,6 +109,12 @@ export const translations = {
     noteLabel: "הערה",
     conflicts: "התנגשויות",
     conflictsWith: "חופף עם",
-    conflictMinutes: "דק׳"
+    conflictMinutes: "דק׳",
+    shareSchedule: "שתף לוח",
+    copyLink: "העתק קישור",
+    showQR: "הצג QR",
+    exportImage: "ייצא תמונה",
+    qrTitle: "סרקו כדי לייבא את הלוח שלי",
+    linkCopied: "קישור השיתוף הועתק ללוח!"
   }
 };

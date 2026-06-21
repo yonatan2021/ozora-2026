@@ -6,6 +6,7 @@ import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priori
 import { getNotes } from '../utils/notes';
 import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
 import ConflictBanner from './ConflictBanner';
+import ShareMenu from './ShareMenu';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -44,17 +45,19 @@ export default function MySchedule({
     setPriorities(getPriorities());
   };
 
-  const handleShare = () => {
+  const buildShareUrl = () => {
     const indices = favorites.map(id => {
       return timetableData.findIndex(set => set.id === id);
     }).filter(idx => idx !== -1);
+    if (indices.length === 0) return '';
+    return `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
+  };
 
-    if (indices.length === 0) return;
-
-    const shareUrl = `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
-
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      onShowToast(isHe ? 'קישור השיתוף הועתק ללוח!' : 'Share link copied to clipboard!');
+  const handleCopyLink = () => {
+    const url = buildShareUrl();
+    if (!url) return;
+    navigator.clipboard.writeText(url).then(() => {
+      onShowToast(t.linkCopied);
     }).catch(err => {
       console.error('Failed to copy share link: ', err);
     });
@@ -219,10 +222,12 @@ export default function MySchedule({
             <Filter size={14} />
             <span>{t.filterMustSee}</span>
           </button>
-          <button className="share-schedule-btn" onClick={handleShare}>
-            <Share2 size={16} />
-            <span>{isHe ? 'שתף לוח זמנים' : 'Share Schedule'}</span>
-          </button>
+          <ShareMenu
+            shareUrl={buildShareUrl()}
+            lang={lang}
+            onCopyLink={handleCopyLink}
+            onExportImage={() => {}}
+          />
         </div>
         <div className="feed-view">
           {Object.entries(displayGroupedByDay).map(([day, daySets]) => (
