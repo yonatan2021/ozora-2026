@@ -14,7 +14,7 @@ import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
-import { getStoredConsent, initializeGA4 } from './utils/consent';
+import { initializeGA4 } from './utils/consent';
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -104,12 +104,9 @@ export default function App() {
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  // Initialize Google Analytics if consent was already given
+  // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
-    const consent = getStoredConsent();
-    if (consent && consent.analytics) {
-      initializeGA4();
-    }
+    initializeGA4();
   }, []);
 
   // Sync lang to localStorage

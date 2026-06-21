@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getStoredConsent, setStoredConsent, initializeGA4 } from '../utils/consent';
+import { getStoredConsent, setStoredConsent, updateGAConsent } from '../utils/consent';
 import { translations } from '../utils/lang';
 
 export default function CookieConsent({ lang }) {
@@ -25,7 +25,7 @@ export default function CookieConsent({ lang }) {
       marketing: true
     };
     setStoredConsent(allTrue);
-    initializeGA4();
+    updateGAConsent(allTrue);
     setIsOpen(false);
   };
 
@@ -37,14 +37,13 @@ export default function CookieConsent({ lang }) {
       marketing: false
     };
     setStoredConsent(declined);
+    updateGAConsent(declined);
     setIsOpen(false);
   };
 
   const handleSavePreferences = () => {
     setStoredConsent(preferences);
-    if (preferences.analytics) {
-      initializeGA4();
-    }
+    updateGAConsent(preferences);
     setIsOpen(false);
   };
 
