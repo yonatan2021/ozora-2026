@@ -39,6 +39,24 @@ const DATE_TO_DAY_MAP = {
   '2026-08-03': 'DAY 8'
 };
 
+const STAGES = [
+  "OZORA STAGE",
+  "PUMPUI",
+  "THE DOME",
+  "DRAGON NEST / COOKING GROOVE",
+  "VISIUM GARDEN",
+  "TEK ZERO (2000s Trance)"
+];
+
+const STAGE_CLASSES = {
+  "OZORA STAGE": "stage-ozora",
+  "PUMPUI": "stage-pumpui",
+  "THE DOME": "stage-dome",
+  "DRAGON NEST / COOKING GROOVE": "stage-dragon",
+  "VISIUM GARDEN": "stage-visium",
+  "TEK ZERO (2000s Trance)": "stage-tekzero"
+};
+
 export default function App() {
   const [lang, setLang] = useState('he');
   const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'guide'
@@ -48,6 +66,7 @@ export default function App() {
   });
   
   const [selectedDay, setSelectedDay] = useState('DAY 1');
+  const [selectedStage, setSelectedStage] = useState('ALL');
   const [isSimulated, setIsSimulated] = useState(false);
   const [simTime, setSimTime] = useState(new Date('2026-07-27T20:00:00').getTime()); // Start of DAY 1
   const [selectedSet, setSelectedSet] = useState(null);
@@ -115,6 +134,11 @@ export default function App() {
   // Filter sets based on selected day
   const filteredSets = timetableData.filter(set => set.day === selectedDay);
 
+  // Filter sets for mobile chronological view based on selected stage
+  const mobileFilteredSets = filteredSets.filter(set => 
+    selectedStage === 'ALL' || set.stage === selectedStage
+  );
+
   // Unique days list sorted by date
   const days = Array.from(new Set(timetableData.map(s => s.day)));
   const t = translations[lang];
@@ -122,6 +146,7 @@ export default function App() {
   const handleSelectSetFromSearch = (set) => {
     setActiveTab('timetable');
     handleDayChange(set.day);
+    setSelectedStage(set.stage);
     setSelectedSet(set);
     
     // Smooth scroll and flash highlight effect
@@ -194,6 +219,33 @@ export default function App() {
             ))}
           </div>
 
+          {/* Mobile Stage Selector & Legend */}
+          <div className="stages-selector mobile-view-only stagger-slide-up" style={{ '--card-index': 0.5 }}>
+            <button 
+              className={`stage-filter-btn all-stages ${selectedStage === 'ALL' ? 'active' : ''}`}
+              onClick={() => setSelectedStage('ALL')}
+            >
+              <span className="stage-legend-dot stage-all-dot"></span>
+              <span>{t.allStages}</span>
+            </button>
+            {STAGES.map(stage => {
+              const stageClass = STAGE_CLASSES[stage];
+              const displayName = stage
+                .replace(' / COOKING GROOVE', '')
+                .replace(' (2000s Trance)', '');
+              return (
+                <button 
+                  key={stage} 
+                  className={`stage-filter-btn ${stageClass} ${selectedStage === stage ? 'active' : ''}`}
+                  onClick={() => setSelectedStage(stage)}
+                >
+                  <span className="stage-legend-dot"></span>
+                  <span>{displayName}</span>
+                </button>
+              );
+            })}
+          </div>
+
           <main className="main-content">
             {filteredSets.length === 0 ? (
               <div className="empty-state">
@@ -217,15 +269,21 @@ export default function App() {
                 
                 {/* Mobile feed list */}
                 <div className="mobile-view-only">
-                  <ChronologicalFeed 
-                    sets={filteredSets}
-                    favorites={favorites}
-                    toggleFavorite={toggleFavorite}
-                    onSetClick={setSelectedSet}
-                    activeStatusMap={activeStatusMap}
-                    simTime={simTime}
-                    isSimulated={isSimulated}
-                  />
+                  {mobileFilteredSets.length === 0 ? (
+                    <div className="empty-state">
+                      <p>{t.noSetsFound}</p>
+                    </div>
+                  ) : (
+                    <ChronologicalFeed 
+                      sets={mobileFilteredSets}
+                      favorites={favorites}
+                      toggleFavorite={toggleFavorite}
+                      onSetClick={setSelectedSet}
+                      activeStatusMap={activeStatusMap}
+                      simTime={simTime}
+                      isSimulated={isSimulated}
+                    />
+                  )}
                 </div>
               </>
             )}
