@@ -56,7 +56,10 @@ export const translations = {
     showQR: "Show QR",
     exportImage: "Export Image",
     qrTitle: "Scan to import my schedule",
-    linkCopied: "Share link copied to clipboard!"
+    linkCopied: "Share link copied to clipboard!",
+    exportTitle: "My Ozora 2026 Schedule",
+    exportFooter: "Made with ozora2026.app",
+    exportSuccess: "Image saved!"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -115,6 +118,9 @@ export const translations = {
     showQR: "הצג QR",
     exportImage: "ייצא תמונה",
     qrTitle: "סרקו כדי לייבא את הלוח שלי",
-    linkCopied: "קישור השיתוף הועתק ללוח!"
+    linkCopied: "קישור השיתוף הועתק ללוח!",
+    exportTitle: "הלוח שלי — אוזורה 2026",
+    exportFooter: "נוצר עם ozora2026.app",
+    exportSuccess: "התמונה נשמרה!"
   }
 };

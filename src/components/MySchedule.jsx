@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Star, Radio, Share2, Flame, StarOff, Filter, MessageSquare, AlertTriangle } from 'lucide-react';
+import html2canvas from 'html2canvas';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
 import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
@@ -7,6 +8,7 @@ import { getNotes } from '../utils/notes';
 import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
 import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
+import ScheduleImage from './ScheduleImage';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -34,6 +36,7 @@ export default function MySchedule({
   const [priorities, setPriorities] = useState(() => getPriorities());
   const [filterMust, setFilterMust] = useState(false);
   const [notes, setNotesState] = useState(() => getNotes());
+  const scheduleImageRef = useRef(null);
 
   useEffect(() => {
     setNotesState(getNotes());
@@ -51,6 +54,35 @@ export default function MySchedule({
     }).filter(idx => idx !== -1);
     if (indices.length === 0) return '';
     return `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
+  };
+
+  const handleExportImage = async () => {
+    if (!scheduleImageRef.current) return;
+    try {
+      const canvas = await html2canvas(scheduleImageRef.current, {
+        scale: 1,
+        useCORS: true,
+        backgroundColor: '#0b0713'
+      });
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+      if (navigator.share && navigator.canShare?.({ files: [new File([blob], 'schedule.png', { type: 'image/png' })] })) {
+        await navigator.share({
+          files: [new File([blob], 'ozora-2026-schedule.png', { type: 'image/png' })],
+          title: t.exportTitle
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ozora-2026-schedule.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      onShowToast(t.exportSuccess);
+    } catch (err) {
+      console.error('Export failed:', err);
+    }
   };
 
   const handleCopyLink = () => {
@@ -226,7 +258,7 @@ export default function MySchedule({
             shareUrl={buildShareUrl()}
             lang={lang}
             onCopyLink={handleCopyLink}
-            onExportImage={() => {}}
+            onExportImage={handleExportImage}
           />
         </div>
         <div className="feed-view">
@@ -296,6 +328,16 @@ export default function MySchedule({
             </div>
           ))}
         </div>
+      </div>
+
+      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+        <ScheduleImage
+          ref={scheduleImageRef}
+          priorities={priorities}
+          conflicts={conflicts}
+          lang={lang}
+          groupedByDay={displayGroupedByDay}
+        />
       </div>
     </div>
   );
