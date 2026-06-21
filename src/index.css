@@ -2906,4 +2906,59 @@ body:has(.theme-sunrise)::before {
   }
 }
 
+/* App Footer Styling */
+.app-footer {
+  margin-top: auto;
+  padding: 2.5rem 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 10;
+}
+
+.footer-copyright {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.footer-credits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.footer-credits span {
+  font-weight: 400;
+}
+
+.footer-credits .heart-icon {
+  color: var(--primary);
+  fill: var(--primary);
+  opacity: 0.9;
+  animation: heart-pulse 2s infinite ease-in-out;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes heart-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px var(--glow-primary));
+  }
+  50% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 6px var(--glow-primary));
+  }
+}
+
 

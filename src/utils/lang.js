@@ -35,7 +35,9 @@ export const translations = {
     cookieFunctionalDesc: "Remember user display options and customizations.",
     cookieMarketingTitle: "Marketing & Targeting",
     cookieMarketingDesc: "Used to deliver relevant marketing campaigns or tracking (not used currently).",
-    cookiePrivacyLink: "Privacy Policy"
+    cookiePrivacyLink: "Privacy Policy",
+    copyright: "© 2026 Bersaglio. All rights reserved.",
+    developedWithLove: "Developed with love by AI agents"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -73,6 +75,8 @@ export const translations = {
     cookieFunctionalDesc: "עוגיות הזוכרות את הגדרות התצוגה המותאמות אישית של המשתמש.",
     cookieMarketingTitle: "עוגיות שיווק ופרסום",
     cookieMarketingDesc: "משמשות למעקב אחר משתמשים להצגת פרסומות מותאמות אישית (אינן בשימוש כרגע באתר).",
-    cookiePrivacyLink: "למדיניות הפרטיות המלאה"
+    cookiePrivacyLink: "למדיניות הפרטיות המלאה",
+    copyright: "זכויות יוצרים ל-Bersaglio © 2026",
+    developedWithLove: "פותח באהבה על ידי סוכני AI"
   }
 };

@@ -12,7 +12,7 @@ import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
-import { Calendar, User, BookOpen } from 'lucide-react';
+import { Calendar, User, BookOpen, Heart } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import { initializeGA4 } from './utils/consent';
 
@@ -392,6 +392,14 @@ export default function App() {
       {activeTab === 'guide' && (
         <FestivalGuide />
       )}
+
+      <footer className="app-footer">
+        <p className="footer-copyright">{t.copyright}</p>
+        <p className="footer-credits">
+          <span>{t.developedWithLove}</span>
+          <Heart size={14} className="heart-icon" />
+        </p>
+      </footer>
 
       {/* Bottom Navigation for Mobile Devices */}
       <nav className="bottom-nav">
