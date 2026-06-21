@@ -2962,6 +2962,297 @@ body:has(.theme-sunrise)::before {
 }
 
 /* Install PWA Prompt */
+/* Import Modal */
+.import-modal-content {
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  max-width: 380px;
+  width: 90vw;
+}
+
+.import-modal-icon {
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.import-modal-title {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.import-modal-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.import-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.import-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  width: 100%;
+}
+
+.import-modal-btn.primary {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+.import-modal-btn.secondary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.import-modal-btn.ghost {
+  background: none;
+  color: var(--text-muted);
+}
+
+.import-friend-name-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  width: 100%;
+  outline: none;
+  text-align: center;
+}
+
+.import-friend-name-input:focus {
+  border-color: var(--primary);
+}
+
+/* Friend Schedules Section */
+.friend-schedules-section {
+  margin-top: 20px;
+}
+
+.friend-section-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.friend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  gap: 8px;
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.friend-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.friend-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.friend-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.friend-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.friend-action-btn.danger {
+  color: oklch(0.6 0.2 20);
+  border-color: oklch(0.6 0.2 20 / 0.3);
+}
+
+/* Compare View */
+.compare-view {
+  padding: 0 4px;
+}
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.compare-header h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.compare-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.compare-legend {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.compare-tag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.compare-tag.both {
+  background: oklch(0.55 0.18 145 / 0.15);
+  color: oklch(0.55 0.18 145);
+}
+
+.compare-tag.mine {
+  background: var(--glow-primary);
+  color: var(--primary);
+}
+
+.compare-tag.friend {
+  background: oklch(0.55 0.14 230 / 0.15);
+  color: oklch(0.55 0.14 230);
+}
+
+.compare-set-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.compare-both {
+  border-inline-start: 3px solid oklch(0.55 0.18 145);
+}
+
+.compare-mine {
+  border-inline-start: 3px solid var(--primary);
+}
+
+.compare-friend {
+  border-inline-start: 3px solid oklch(0.55 0.14 230);
+  opacity: 0.75;
+}
+
+.compare-tag-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.compare-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .fav-feed-header-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .conflict-item {
+    font-size: 0.72rem;
+  }
+
+  .friend-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .friend-actions {
+    justify-content: flex-end;
+  }
+
+  .compare-set-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .compare-add-btn {
+    align-self: flex-end;
+  }
+}
+
 /* Share Menu */
 .share-menu-wrapper {
   position: relative;

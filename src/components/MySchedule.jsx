@@ -8,6 +8,7 @@ import { getNotes } from '../utils/notes';
 import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
 import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
+import FriendSchedules from './FriendSchedules';
 import ScheduleImage from './ScheduleImage';
 
 const STAGE_CLASSES = {
@@ -329,6 +330,15 @@ export default function MySchedule({
           ))}
         </div>
       </div>
+
+      <FriendSchedules
+        lang={lang}
+        timetableData={timetableData}
+        myFavorites={favorites}
+        onSetClick={onSetClick}
+        toggleFavorite={toggleFavorite}
+        onShowToast={onShowToast}
+      />
 
       <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
         <ScheduleImage

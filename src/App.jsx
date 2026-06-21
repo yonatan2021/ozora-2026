@@ -15,7 +15,9 @@ import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen, Heart } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
+import ImportModal from './components/ImportModal';
 import { initializeGA4 } from './utils/consent';
+import { saveFriend } from './utils/friends';
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -70,26 +72,7 @@ export default function App() {
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('ozora_favs');
     const parsed = saved ? JSON.parse(saved) : [];
-    let currentFavs = migrateFavorites(parsed, timetableData);
-
-    // Import shared favorites from URL on initial load
-    const params = new URLSearchParams(window.location.search);
-    const shareParam = params.get('share');
-    if (shareParam) {
-      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const importedKeys = [];
-      indices.forEach(idx => {
-        const set = timetableData[idx];
-        if (set) {
-          importedKeys.push(getSetUniqueKey(set));
-        }
-      });
-      if (importedKeys.length > 0) {
-        const merged = new Set([...currentFavs, ...importedKeys]);
-        currentFavs = Array.from(merged);
-      }
-    }
-    return currentFavs;
+    return migrateFavorites(parsed, timetableData);
   });
   
   const [selectedDay, setSelectedDay] = useState('Warmup Sat');
@@ -105,6 +88,7 @@ export default function App() {
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [notesVersion, setNotesVersion] = useState(0);
+  const [pendingImport, setPendingImport] = useState(null);
 
   // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
@@ -130,24 +114,22 @@ export default function App() {
     localStorage.setItem('ozora_sim_time', String(simTime));
   }, [simTime]);
 
-  // Handle URL cleanup and toast notification for shared favorites
+  // Detect share URL and show import modal instead of silent merge
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
     if (shareParam) {
       const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const hasValidSets = indices.some(idx => timetableData[idx]);
-      if (hasValidSets) {
-        setTimeout(() => {
-          setToastMessage(lang === 'he' ? 'לוח ההופעות ששותף איתך התווסף למועדפים!' : 'Shared schedule added to your favorites!');
-        }, 50);
+      const sharedSets = indices
+        .map(idx => timetableData[idx])
+        .filter(Boolean);
+      if (sharedSets.length > 0) {
+        setPendingImport(sharedSets);
       }
-
-      // Clean the URL address bar
       const newUrl = window.location.pathname + window.location.hash;
       window.history.replaceState({}, document.title, newUrl);
     }
-  }, [lang]);
+  }, []);
 
   // Auto-dismiss toast message
   useEffect(() => {
@@ -206,6 +188,29 @@ export default function App() {
   timetableData.forEach(set => {
     activeStatusMap[set.id] = getSetStatus(set, evalTime);
   });
+
+  const handleImportAll = () => {
+    if (!pendingImport) return;
+    const importedKeys = pendingImport.map(set => getSetUniqueKey(set));
+    setFavorites(prev => {
+      const merged = new Set([...prev, ...importedKeys]);
+      return Array.from(merged);
+    });
+    setToastMessage(translations[lang].sharedScheduleImported);
+    setPendingImport(null);
+  };
+
+  const handleSaveAsFriend = (friendName) => {
+    if (!pendingImport) return;
+    const keys = pendingImport.map(set => getSetUniqueKey(set));
+    const saved = saveFriend(friendName, keys);
+    if (saved) {
+      setToastMessage(translations[lang].friendSaved);
+    } else {
+      setToastMessage(translations[lang].maxFriendsReached);
+    }
+    setPendingImport(null);
+  };
 
   const toggleFavorite = (id) => {
     const matchedSet = timetableData.find(s => s.id === id);
@@ -446,6 +451,16 @@ export default function App() {
         timetableData={timetableData}
         onSelectSet={handleSelectSetFromSearch}
       />
+
+      {pendingImport && (
+        <ImportModal
+          sharedSets={pendingImport}
+          lang={lang}
+          onImportAll={handleImportAll}
+          onSaveAsFriend={handleSaveAsFriend}
+          onDismiss={() => setPendingImport(null)}
+        />
+      )}
 
       {toastMessage && (
         <div className="toast-notification-container">
