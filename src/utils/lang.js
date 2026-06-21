@@ -20,7 +20,22 @@ export const translations = {
     artist: "Artist",
     shareSchedule: "Share Schedule",
     copiedToClipboard: "Share link copied to clipboard!",
-    sharedScheduleImported: "Shared schedule added to your favorites!"
+    sharedScheduleImported: "Shared schedule added to your favorites!",
+    cookieTitle: "Cookie Preferences",
+    cookieMessage: "We use cookies to improve your browsing experience and analyze site traffic.",
+    cookieAcceptAll: "Accept All",
+    cookieDeclineAll: "Decline All",
+    cookieCustomize: "Customize Preferences",
+    cookieSave: "Save My Choices",
+    cookieNecessaryTitle: "Strictly Necessary",
+    cookieNecessaryDesc: "Required for basic website functions (e.g. language selection, saved schedule, and consent state). Cannot be disabled.",
+    cookieAnalyticsTitle: "Statistics & Performance",
+    cookieAnalyticsDesc: "Collects anonymous details on site traffic, popular pages, and session duration using Google Analytics.",
+    cookieFunctionalTitle: "Functional Settings",
+    cookieFunctionalDesc: "Remember user display options and customizations.",
+    cookieMarketingTitle: "Marketing & Targeting",
+    cookieMarketingDesc: "Used to deliver relevant marketing campaigns or tracking (not used currently).",
+    cookiePrivacyLink: "Privacy Policy"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -43,6 +58,21 @@ export const translations = {
     artist: "אמן",
     shareSchedule: "שתף לוח זמנים",
     copiedToClipboard: "קישור השיתוף הועתק ללוח!",
-    sharedScheduleImported: "לוח ההופעות ששותף איתך התווסף למועדפים!"
+    sharedScheduleImported: "לוח ההופעות ששותף איתך התווסף למועדפים!",
+    cookieTitle: "הגדרות עוגיות (Cookies)",
+    cookieMessage: "אנחנו משתמשים בקבצי עוגיות כדי לשפר את חווית הגלישה והאנליטיקס באתר.",
+    cookieAcceptAll: "אישור של כל העוגיות",
+    cookieDeclineAll: "דחיית עוגיות",
+    cookieCustomize: "התאמת העדפות",
+    cookieSave: "שמור את הבחירות שלי",
+    cookieNecessaryTitle: "עוגיות הכרחיות / חיוניות",
+    cookieNecessaryDesc: "עוגיות שבלעדיהן האתר לא יכול לתפקד (כמו שפת האתר, המועדפים שלך והגדרות הפרטיות הללו).",
+    cookieAnalyticsTitle: "עוגיות סטטיסטיקה וביצועים",
+    cookieAnalyticsDesc: "מאפשר איסוף נתונים אנונימיים על אופן השימוש באתר באמצעות גוגל אנליטיקס (עמודים פופולריים, זמן שהייה וכו').",
+    cookieFunctionalTitle: "עוגיות פונקציונליות",
+    cookieFunctionalDesc: "עוגיות הזוכרות את הגדרות התצוגה המותאמות אישית של המשתמש.",
+    cookieMarketingTitle: "עוגיות שיווק ופרסום",
+    cookieMarketingDesc: "משמשות למעקב אחר משתמשים להצגת פרסומות מותאמות אישית (אינן בשימוש כרגע באתר).",
+    cookiePrivacyLink: "למדיניות הפרטיות המלאה"
   }
 };
