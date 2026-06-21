@@ -727,6 +727,41 @@ body:has(.theme-day) {
   justify-content: center;
 }
 
+/* Collapsed time gap row style */
+.grid-collapsed-gap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--surface) 0px,
+    var(--surface) 10px,
+    var(--surface-hover) 10px,
+    var(--surface-hover) 20px
+  );
+  border-top: 1px dashed var(--border-strong);
+  border-bottom: 1px dashed var(--border-strong);
+  opacity: 0.85;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.grid-collapsed-gap-content {
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 1rem;
+  background: var(--surface-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.1);
+}
+
 /* Set Card Styles - Clean Rounded Cards */
 .set-card {
   padding: 0.75rem;
