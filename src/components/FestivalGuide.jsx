@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useGuides from '../hooks/useGuides';
 import { getGuideIcon } from '../utils/guideIcons';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { trackEvent } from '../utils/analytics';
 
 export default function FestivalGuide() {
   const { guides } = useGuides();
@@ -9,10 +10,19 @@ export default function FestivalGuide() {
   const [openTopics, setOpenTopics] = useState({});
 
   const toggleTopic = (index) => {
+    const topic = selectedGuide?.topics?.[index];
+    const nextOpen = !openTopics[index];
     setOpenTopics(prev => ({ ...prev, [index]: !prev[index] }));
+    if (topic) {
+      trackEvent('guide_topic_toggle', {
+        topic_heading: topic.heading,
+        action: nextOpen ? 'open' : 'close'
+      });
+    }
   };
 
   const handleBack = () => {
+    trackEvent('guide_back_click');
     setSelectedGuide(null);
     setOpenTopics({});
   };
@@ -79,7 +89,10 @@ export default function FestivalGuide() {
               key={guide.slug}
               className="guide-card"
               style={{ '--card-index': index + 1 }}
-              onClick={() => setSelectedGuide(guide)}
+              onClick={() => {
+                setSelectedGuide(guide);
+                trackEvent('guide_card_click', { guide_title: guide.title });
+              }}
             >
               <div className="guide-card-icon">
                 <Icon size={20} />

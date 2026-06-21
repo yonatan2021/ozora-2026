@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getStoredConsent, setStoredConsent, updateGAConsent } from '../utils/consent';
 import { translations } from '../utils/lang';
+import { trackEvent } from '../utils/analytics';
 
 export default function CookieConsent({ lang }) {
   const [isOpen, setIsOpen] = useState(() => {
@@ -26,6 +27,12 @@ export default function CookieConsent({ lang }) {
     };
     setStoredConsent(allTrue);
     updateGAConsent(allTrue);
+    trackEvent('cookie_consent', {
+      action: 'accept_all',
+      analytics_allowed: true,
+      functional_allowed: true,
+      marketing_allowed: true
+    });
     setIsOpen(false);
   };
 
@@ -38,12 +45,24 @@ export default function CookieConsent({ lang }) {
     };
     setStoredConsent(declined);
     updateGAConsent(declined);
+    trackEvent('cookie_consent', {
+      action: 'deny_all',
+      analytics_allowed: false,
+      functional_allowed: false,
+      marketing_allowed: false
+    });
     setIsOpen(false);
   };
 
   const handleSavePreferences = () => {
     setStoredConsent(preferences);
     updateGAConsent(preferences);
+    trackEvent('cookie_consent', {
+      action: 'save_custom',
+      analytics_allowed: preferences.analytics,
+      functional_allowed: preferences.functional,
+      marketing_allowed: preferences.marketing
+    });
     setIsOpen(false);
   };
 

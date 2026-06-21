@@ -4,6 +4,7 @@ import { translations } from '../utils/lang';
 import { getCalendarPlatform, generateGoogleCalendarUrl, generateICSFile } from '../utils/calendar';
 import { getNote, setNote as saveNote, NOTE_MAX_LENGTH } from '../utils/notes';
 import { getSetUniqueKey } from '../utils/time';
+import { trackEvent } from '../utils/analytics';
 
 export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged }) {
   const setKey = useMemo(() => set ? getSetUniqueKey(set) : null, [set]);
@@ -16,6 +17,16 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
     setPrevSetKey(setKey);
     setNoteText(setKey ? getNote(setKey) : '');
   }
+
+  useEffect(() => {
+    if (set) {
+      trackEvent('view_set_details', {
+        artist_name: set.artist,
+        stage_name: set.stage,
+        day_name: set.day
+      });
+    }
+  }, [set]);
 
   useEffect(() => {
     if (!dropdownOpen) return;
@@ -35,10 +46,18 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
 
   const handleNoteBlur = () => {
     saveNote(setKey, noteText);
+    trackEvent('save_note', {
+      artist_name: set.artist,
+      note_length: noteText.length
+    });
     if (onNoteChanged) onNoteChanged();
   };
 
   const handleAddToCalendar = () => {
+    trackEvent('add_to_calendar', {
+      artist_name: set.artist,
+      method: platform === 'apple' ? 'apple_ics' : 'google_url'
+    });
     if (platform === 'apple') {
       generateICSFile(set);
     } else {
@@ -47,6 +66,10 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
   };
 
   const handleDropdownSelect = (type) => {
+    trackEvent('add_to_calendar', {
+      artist_name: set.artist,
+      method: type === 'google' ? 'google_url' : 'apple_ics'
+    });
     if (type === 'google') {
       window.open(generateGoogleCalendarUrl(set), '_blank');
     } else {
@@ -106,7 +129,7 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
 
         <button
           className={`modal-fav-btn ${isFav ? 'active' : ''}`}
-          onClick={() => toggleFavorite(set.id)}
+          onClick={() => toggleFavorite(set.id, 'modal')}
         >
           <Star size={18} fill={isFav ? 'var(--stage-visium)' : 'none'} stroke={isFav ? 'var(--stage-visium)' : 'currentColor'} />
           <span>{isFav ? (lang === 'he' ? 'הסר מהלוח שלי' : 'Remove from My Schedule') : (lang === 'he' ? 'הוסף ללוח שלי' : 'Add to My Schedule')}</span>

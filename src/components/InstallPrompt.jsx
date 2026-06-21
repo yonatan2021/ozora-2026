@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Download, X } from 'lucide-react';
 import { translations } from '../utils/lang';
+import { trackEvent } from '../utils/analytics';
 
 export default function InstallPrompt({ lang }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -17,6 +18,12 @@ export default function InstallPrompt({ lang }) {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
+  useEffect(() => {
+    if (deferredPrompt && !dismissed) {
+      trackEvent('pwa_install', { action: 'prompt_shown' });
+    }
+  }, [deferredPrompt, dismissed]);
+
   if (!deferredPrompt || dismissed) return null;
 
   const t = translations[lang];
@@ -24,6 +31,7 @@ export default function InstallPrompt({ lang }) {
   const handleInstall = async () => {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
+    trackEvent('pwa_install', { action: outcome });
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
     }
@@ -32,6 +40,7 @@ export default function InstallPrompt({ lang }) {
   const handleDismiss = () => {
     setDismissed(true);
     localStorage.setItem('ozora_install_dismissed', 'true');
+    trackEvent('pwa_install', { action: 'dismissed_banner' });
   };
 
   return (
