@@ -104,6 +104,7 @@ export default function App() {
   const [selectedSet, setSelectedSet] = useState(null);
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [notesVersion, setNotesVersion] = useState(0);
 
   // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
@@ -378,7 +379,7 @@ export default function App() {
       )}
 
       {activeTab === 'favorites' && (
-        <MySchedule 
+        <MySchedule
           lang={lang}
           timetableData={timetableData}
           favorites={childFavorites}
@@ -387,6 +388,7 @@ export default function App() {
           simTime={simTime}
           isSimulated={isSimulated}
           onShowToast={setToastMessage}
+          notesVersion={notesVersion}
         />
       )}
 
@@ -427,12 +429,13 @@ export default function App() {
         </button>
       </nav>
 
-      <SetModal 
+      <SetModal
         set={selectedSet}
         lang={lang}
         favorites={childFavorites}
         toggleFavorite={toggleFavorite}
         onClose={() => setSelectedSet(null)}
+        onNoteChanged={() => setNotesVersion(v => v + 1)}
       />
 
       <LiveStatusModal 

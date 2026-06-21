@@ -44,7 +44,10 @@ export const translations = {
     priorityMust: "Must See",
     priorityWant: "Want to See",
     priorityMaybe: "Maybe",
-    filterMustSee: "Must See Only"
+    filterMustSee: "Must See Only",
+    addNote: "Add note...",
+    notePlaceholder: "Personal note (max 100 chars)",
+    noteLabel: "Note"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -91,6 +94,9 @@ export const translations = {
     priorityMust: "חובה",
     priorityWant: "רוצה לראות",
     priorityMaybe: "אולי",
-    filterMustSee: "רק חובה"
+    filterMustSee: "רק חובה",
+    addNote: "הוסף הערה...",
+    notePlaceholder: "הערה אישית (עד 100 תווים)",
+    noteLabel: "הערה"
   }
 };

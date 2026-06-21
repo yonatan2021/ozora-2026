@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Star, Radio, Share2, Flame, StarOff, Filter } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Star, Radio, Share2, Flame, StarOff, Filter, MessageSquare } from 'lucide-react';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
 import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
+import { getNotes } from '../utils/notes';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -21,13 +22,19 @@ export default function MySchedule({
   onSetClick,
   simTime,
   isSimulated,
-  onShowToast
+  onShowToast,
+  notesVersion
 }) {
   const isHe = lang === 'he';
   const t = translations[lang];
 
   const [priorities, setPriorities] = useState(() => getPriorities());
   const [filterMust, setFilterMust] = useState(false);
+  const [notes, setNotesState] = useState(() => getNotes());
+
+  useEffect(() => {
+    setNotesState(getNotes());
+  }, [notesVersion]);
 
   const handleCyclePriority = (e, setKey) => {
     e.stopPropagation();
@@ -228,6 +235,12 @@ export default function MySchedule({
                           <span>{set.stage} {set.type ? `• ${set.type}` : ''}</span>
                         </div>
                         <div className="feed-time-duration">{set.start} - {set.end}</div>
+                        {notes[setKey] && (
+                          <div className="feed-note-text">
+                            <MessageSquare size={11} />
+                            <span>{notes[setKey]}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="feed-card-actions">
                         <button
