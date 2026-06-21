@@ -1,4 +1,4 @@
-import { Star, Radio } from 'lucide-react';
+import { Star, Radio, Share2 } from 'lucide-react';
 import { getSetStatus } from '../utils/time';
 
 const STAGE_CLASSES = {
@@ -17,9 +17,26 @@ export default function MySchedule({
   toggleFavorite, 
   onSetClick, 
   simTime, 
-  isSimulated 
+  isSimulated,
+  onShowToast
 }) {
   const isHe = lang === 'he';
+
+  const handleShare = () => {
+    const indices = favorites.map(id => {
+      return timetableData.findIndex(set => set.id === id);
+    }).filter(idx => idx !== -1);
+
+    if (indices.length === 0) return;
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
+    
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      onShowToast(isHe ? 'קישור השיתוף הועתק ללוח!' : 'Share link copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy share link: ', err);
+    });
+  };
 
   // 1. Filter timetable data by favorites only
   const favSets = timetableData.filter(set => favorites.includes(set.id));
@@ -142,7 +159,13 @@ export default function MySchedule({
 
       {/* Full Timeline List */}
       <div className="fav-feed-section">
-        <h3>{isHe ? 'ציר הזמן שלי' : 'My Personal Timeline'}</h3>
+        <div className="fav-feed-header-row">
+          <h3>{isHe ? 'ציר הזמן שלי' : 'My Personal Timeline'}</h3>
+          <button className="share-schedule-btn" onClick={handleShare}>
+            <Share2 size={16} />
+            <span>{isHe ? 'שתף לוח זמנים' : 'Share Schedule'}</span>
+          </button>
+        </div>
         <div className="feed-view">
           {Object.entries(groupedByDay).map(([day, daySets]) => (
             <div key={day} className="feed-time-block">

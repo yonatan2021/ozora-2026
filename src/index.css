@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg: oklch(1.0 0 0);
-  --text-primary: oklch(0.15 0.02 265);
-  --text-secondary: oklch(0.40 0.03 265);
-  --text-muted: oklch(0.55 0.02 265);
-  --border: oklch(0.85 0.01 265 / 0.5);
-  --border-strong: oklch(0.75 0.02 265 / 0.5);
-  --ring: oklch(0.50 0.20 265);
-  --surface: oklch(0.97 0.005 265);
-  --surface-card: oklch(0.94 0.01 265);
-  --surface-hover: oklch(0.90 0.015 265);
-  --primary: oklch(0.45 0.18 265);
-  --primary-hover: oklch(0.38 0.16 265);
-  --accent: oklch(0.58 0.22 330);
-  --accent-hover: oklch(0.50 0.20 330);
-  --glow-primary: oklch(0.50 0.20 265 / 0.3);
-  --glow-accent: oklch(0.58 0.22 330 / 0.3);
+  --bg: oklch(0.97 0.015 85);
+  --text-primary: oklch(0.18 0.04 300);
+  --text-secondary: oklch(0.38 0.06 300);
+  --text-muted: oklch(0.50 0.04 300);
+  --border: oklch(0.82 0.04 85 / 0.5);
+  --border-strong: oklch(0.72 0.06 300 / 0.4);
+  --ring: oklch(0.58 0.22 330);
+  --surface: oklch(0.95 0.02 85 / 0.85);
+  --surface-card: oklch(0.93 0.025 70 / 0.8);
+  --surface-hover: oklch(0.90 0.04 330 / 0.7);
+  --primary: oklch(0.55 0.24 330);
+  --primary-hover: oklch(0.48 0.22 330);
+  --accent: oklch(0.62 0.22 160);
+  --accent-hover: oklch(0.55 0.20 160);
+  --glow-primary: oklch(0.55 0.24 330 / 0.3);
+  --glow-accent: oklch(0.62 0.22 160 / 0.3);
 
   /* Stage color accents — high visibility, distinct hues */
   --stage-ozora: oklch(0.55 0.22 350);
@@ -54,7 +54,7 @@
 }
 
 body {
-  background: oklch(1.0 0 0);
+  background: oklch(0.97 0.015 85);
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.5;
@@ -64,19 +64,19 @@ body {
 }
 
 body:has(.theme-night) {
-  background: oklch(0.06 0.025 270);
+  background: oklch(0.08 0.04 280);
 }
 
 body:has(.theme-sunset) {
-  background: oklch(0.10 0.03 40);
+  background: oklch(0.12 0.06 35);
 }
 
 body:has(.theme-sunrise) {
-  background: oklch(0.08 0.03 300);
+  background: oklch(0.10 0.05 310);
 }
 
 body:has(.theme-day) {
-  background: oklch(1.0 0 0);
+  background: oklch(0.97 0.015 85);
 }
 
 /* Subtle noise texture for depth */
@@ -470,6 +470,8 @@ body:has(.theme-day) {
 /* Time Simulator Styles - Compact Control Panel */
 .time-simulator {
   background: var(--surface);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.25rem 1.5rem;
@@ -550,6 +552,8 @@ body:has(.theme-day) {
   overflow-x: auto;
   padding: 0.375rem;
   background: var(--surface);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   scrollbar-width: none;
@@ -727,6 +731,8 @@ body:has(.theme-day) {
 .set-card {
   padding: 0.75rem;
   background: var(--surface-card);
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -811,12 +817,17 @@ body:has(.theme-day) {
 /* Mobile Stage Selector */
 .stages-selector {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   overflow-x: auto;
-  padding: 0.25rem 1rem 0.75rem 1rem;
+  padding: 0.375rem;
+  background: var(--surface);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  margin-bottom: 0.5rem;
 }
 
 .stages-selector::-webkit-scrollbar {
@@ -827,37 +838,36 @@ body:has(.theme-day) {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border);
-  background: var(--surface-card);
+  padding: 0.625rem 1.15rem;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
   color: var(--text-secondary);
   font-family: 'Exo 2', 'Heebo', sans-serif;
-  font-weight: 500;
-  font-size: 0.8rem;
+  font-weight: 600;
+  font-size: 0.85rem;
   white-space: nowrap;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   transition: var(--transition-smooth);
 }
 
 .stage-filter-btn:hover {
-  border-color: var(--border-strong);
+  color: var(--text-primary);
   background: var(--surface-hover);
 }
 
 .stage-filter-btn.active {
-  color: var(--stage-text-color, var(--text-primary));
-  background: color-mix(in oklch, var(--stage-color) 12%, var(--surface-card));
-  border-color: var(--stage-color);
-  box-shadow: 0 0 10px color-mix(in oklch, var(--stage-color) 15%, transparent);
+  color: oklch(1.0 0 0);
+  background: var(--stage-color, var(--primary));
+  box-shadow: 0 4px 16px color-mix(in oklch, var(--stage-color, var(--primary)) 40%, transparent);
 }
 
-/* All Stages button active glow */
 .stage-filter-btn.all-stages.active {
-  color: var(--primary);
-  background: color-mix(in oklch, var(--primary) 12%, var(--surface-card));
-  border-color: var(--primary);
-  box-shadow: 0 0 10px var(--glow-primary);
+  color: oklch(1.0 0 0);
+  background: var(--primary);
+  box-shadow: 0 4px 16px var(--glow-primary);
 }
 
 .stage-legend-dot {
@@ -995,6 +1005,8 @@ body:has(.theme-day) {
 
 .feed-set-card {
   background: var(--surface-card);
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.875rem 1.15rem;
@@ -1327,6 +1339,10 @@ body:has(.theme-day) {
   
   .mobile-view-only {
     display: block;
+  }
+
+  .mobile-view-only.stages-selector {
+    display: flex;
   }
   
   .app-container {
@@ -1700,117 +1716,116 @@ body:has(.theme-day) {
    DYNAMIC THEMES (SKY MODE)
    ========================================== */
 
-/* ===== DAY THEME — crisp, high-contrast, indigo identity ===== */
+/* ===== DAY THEME — bright, warm, psychedelic festival energy ===== */
 :root, .theme-day {
-  --bg: oklch(1.0 0 0);
-  --text-primary: oklch(0.15 0.02 265);
-  --text-secondary: oklch(0.40 0.03 265);
-  --text-muted: oklch(0.55 0.02 265);
-  --border: oklch(0.85 0.015 265 / 0.5);
-  --border-strong: oklch(0.75 0.02 265 / 0.5);
-  --ring: oklch(0.50 0.20 265);
-  --surface: oklch(0.97 0.005 265);
-  --surface-card: oklch(0.94 0.01 265);
-  --surface-hover: oklch(0.90 0.015 265);
-  --primary: oklch(0.45 0.18 265);
-  --primary-hover: oklch(0.38 0.16 265);
-  --accent: oklch(0.58 0.22 330);
-  --glow-primary: oklch(0.50 0.20 265 / 0.15);
-  --glow-accent: oklch(0.58 0.22 330 / 0.15);
-  --simulator-tint: oklch(0.96 0.02 265);
-  --dropdown-bg: oklch(1.0 0 0 / 0.96);
+  --bg: oklch(0.97 0.015 85);
+  --text-primary: oklch(0.18 0.04 300);
+  --text-secondary: oklch(0.38 0.06 300);
+  --text-muted: oklch(0.50 0.04 300);
+  --border: oklch(0.82 0.04 85 / 0.5);
+  --border-strong: oklch(0.72 0.06 300 / 0.4);
+  --ring: oklch(0.58 0.22 330);
+  --surface: oklch(0.95 0.02 85 / 0.85);
+  --surface-card: oklch(0.93 0.025 70 / 0.8);
+  --surface-hover: oklch(0.90 0.04 330 / 0.7);
+  --primary: oklch(0.55 0.24 330);
+  --primary-hover: oklch(0.48 0.22 330);
+  --accent: oklch(0.62 0.22 160);
+  --glow-primary: oklch(0.55 0.24 330 / 0.2);
+  --glow-accent: oklch(0.62 0.22 160 / 0.2);
+  --simulator-tint: oklch(0.94 0.03 85);
+  --dropdown-bg: oklch(0.97 0.015 85 / 0.96);
 
-  --stage-ozora-text: oklch(0.42 0.18 350);
-  --stage-pumpui-text: oklch(0.42 0.14 145);
-  --stage-dome-text: oklch(0.42 0.12 230);
-  --stage-dragon-text: oklch(0.45 0.14 55);
-  --stage-visium-text: oklch(0.45 0.14 85);
-  --stage-tekzero-text: oklch(0.40 0.18 300);
+  --stage-ozora-text: oklch(0.45 0.22 350);
+  --stage-pumpui-text: oklch(0.45 0.18 145);
+  --stage-dome-text: oklch(0.42 0.16 230);
+  --stage-dragon-text: oklch(0.50 0.18 55);
+  --stage-visium-text: oklch(0.48 0.18 85);
+  --stage-tekzero-text: oklch(0.42 0.22 300);
 }
 
-/* ===== SUNSET — deep amber warmth, golden hour ===== */
+/* ===== SUNSET — molten orange sky, festival golden hour ===== */
 .theme-sunset {
-  --bg: oklch(0.10 0.03 40);
-  --text-primary: oklch(0.92 0.02 55);
-  --text-secondary: oklch(0.70 0.04 55);
-  --text-muted: oklch(0.50 0.03 40);
-  --border: oklch(0.28 0.04 40 / 0.7);
-  --border-strong: oklch(0.38 0.05 40 / 0.7);
-  --ring: oklch(0.65 0.20 45);
-  --surface: oklch(0.15 0.04 40);
-  --surface-card: oklch(0.20 0.05 40);
-  --surface-hover: oklch(0.26 0.06 40);
-  --primary: oklch(0.65 0.20 45);
-  --primary-hover: oklch(0.58 0.18 45);
-  --accent: oklch(0.60 0.22 15);
-  --glow-primary: oklch(0.65 0.20 45 / 0.3);
-  --glow-accent: oklch(0.60 0.22 15 / 0.3);
-  --simulator-tint: oklch(0.14 0.05 30);
-  --dropdown-bg: oklch(0.10 0.03 40 / 0.96);
+  --bg: oklch(0.12 0.06 35);
+  --text-primary: oklch(0.93 0.03 55);
+  --text-secondary: oklch(0.72 0.06 50);
+  --text-muted: oklch(0.52 0.04 40);
+  --border: oklch(0.30 0.06 35 / 0.7);
+  --border-strong: oklch(0.40 0.08 35 / 0.7);
+  --ring: oklch(0.68 0.24 40);
+  --surface: oklch(0.17 0.06 35 / 0.85);
+  --surface-card: oklch(0.22 0.07 35 / 0.8);
+  --surface-hover: oklch(0.28 0.08 40 / 0.75);
+  --primary: oklch(0.70 0.24 40);
+  --primary-hover: oklch(0.62 0.22 40);
+  --accent: oklch(0.62 0.24 10);
+  --glow-primary: oklch(0.70 0.24 40 / 0.35);
+  --glow-accent: oklch(0.62 0.24 10 / 0.35);
+  --simulator-tint: oklch(0.16 0.07 30);
+  --dropdown-bg: oklch(0.12 0.06 35 / 0.96);
 
-  --stage-ozora-text: oklch(0.72 0.20 350);
-  --stage-pumpui-text: oklch(0.70 0.16 145);
-  --stage-dome-text: oklch(0.70 0.12 230);
-  --stage-dragon-text: oklch(0.72 0.16 55);
-  --stage-visium-text: oklch(0.75 0.16 85);
-  --stage-tekzero-text: oklch(0.70 0.18 300);
-}
-
-/* ===== NIGHT — cosmic deep void, neon energy, the main event ===== */
-.theme-night {
-  --bg: oklch(0.06 0.025 270);
-  --text-primary: oklch(0.95 0.01 270);
-  --text-secondary: oklch(0.70 0.03 270);
-  --text-muted: oklch(0.48 0.03 270);
-  --border: oklch(0.25 0.04 270 / 0.7);
-  --border-strong: oklch(0.35 0.05 270 / 0.7);
-  --ring: oklch(0.60 0.22 265);
-  --surface: oklch(0.12 0.03 270);
-  --surface-card: oklch(0.18 0.04 270);
-  --surface-hover: oklch(0.24 0.05 270);
-  --primary: oklch(0.60 0.22 265);
-  --primary-hover: oklch(0.52 0.20 265);
-  --accent: oklch(0.65 0.22 330);
-  --glow-primary: oklch(0.60 0.22 265 / 0.35);
-  --glow-accent: oklch(0.65 0.22 330 / 0.35);
-  --simulator-tint: oklch(0.10 0.04 280);
-  --dropdown-bg: oklch(0.08 0.025 270 / 0.96);
-
-  /* Neon glowing stage colors */
-  --stage-ozora-text: oklch(0.72 0.22 350);
+  --stage-ozora-text: oklch(0.75 0.22 350);
   --stage-pumpui-text: oklch(0.72 0.18 145);
   --stage-dome-text: oklch(0.72 0.14 230);
-  --stage-dragon-text: oklch(0.72 0.16 55);
-  --stage-visium-text: oklch(0.78 0.16 85);
-  --stage-tekzero-text: oklch(0.70 0.20 300);
+  --stage-dragon-text: oklch(0.75 0.18 55);
+  --stage-visium-text: oklch(0.78 0.18 85);
+  --stage-tekzero-text: oklch(0.72 0.22 300);
 }
 
-/* ===== SUNRISE — deep violet dawn, mystical emergence ===== */
-.theme-sunrise {
-  --bg: oklch(0.08 0.03 300);
-  --text-primary: oklch(0.93 0.01 300);
-  --text-secondary: oklch(0.68 0.04 300);
-  --text-muted: oklch(0.46 0.03 300);
-  --border: oklch(0.26 0.04 300 / 0.7);
-  --border-strong: oklch(0.34 0.05 300 / 0.7);
-  --ring: oklch(0.58 0.20 300);
-  --surface: oklch(0.14 0.04 300);
-  --surface-card: oklch(0.20 0.045 300);
-  --surface-hover: oklch(0.26 0.05 300);
-  --primary: oklch(0.58 0.20 300);
-  --primary-hover: oklch(0.50 0.18 300);
-  --accent: oklch(0.65 0.18 200);
-  --glow-primary: oklch(0.58 0.20 300 / 0.3);
-  --glow-accent: oklch(0.65 0.18 200 / 0.3);
-  --simulator-tint: oklch(0.12 0.04 310);
-  --dropdown-bg: oklch(0.08 0.03 300 / 0.96);
+/* ===== NIGHT — deep cosmic canvas, neon psychedelia, the main event ===== */
+.theme-night {
+  --bg: oklch(0.08 0.04 280);
+  --text-primary: oklch(0.95 0.02 200);
+  --text-secondary: oklch(0.72 0.05 200);
+  --text-muted: oklch(0.50 0.04 280);
+  --border: oklch(0.26 0.06 280 / 0.7);
+  --border-strong: oklch(0.36 0.08 280 / 0.7);
+  --ring: oklch(0.65 0.26 180);
+  --surface: oklch(0.13 0.05 280 / 0.8);
+  --surface-card: oklch(0.18 0.06 280 / 0.75);
+  --surface-hover: oklch(0.24 0.07 300 / 0.7);
+  --primary: oklch(0.68 0.26 180);
+  --primary-hover: oklch(0.60 0.24 180);
+  --accent: oklch(0.70 0.24 330);
+  --glow-primary: oklch(0.68 0.26 180 / 0.4);
+  --glow-accent: oklch(0.70 0.24 330 / 0.4);
+  --simulator-tint: oklch(0.12 0.06 290);
+  --dropdown-bg: oklch(0.08 0.04 280 / 0.96);
 
-  --stage-ozora-text: oklch(0.72 0.20 350);
-  --stage-pumpui-text: oklch(0.70 0.16 145);
-  --stage-dome-text: oklch(0.70 0.12 230);
-  --stage-dragon-text: oklch(0.72 0.16 55);
-  --stage-visium-text: oklch(0.75 0.16 85);
-  --stage-tekzero-text: oklch(0.68 0.20 300);
+  --stage-ozora-text: oklch(0.75 0.24 350);
+  --stage-pumpui-text: oklch(0.75 0.20 145);
+  --stage-dome-text: oklch(0.74 0.16 230);
+  --stage-dragon-text: oklch(0.75 0.18 55);
+  --stage-visium-text: oklch(0.80 0.18 85);
+  --stage-tekzero-text: oklch(0.72 0.22 300);
+}
+
+/* ===== SUNRISE — mystical violet-rose dawn, awakening ===== */
+.theme-sunrise {
+  --bg: oklch(0.10 0.05 310);
+  --text-primary: oklch(0.94 0.02 340);
+  --text-secondary: oklch(0.70 0.06 330);
+  --text-muted: oklch(0.48 0.04 310);
+  --border: oklch(0.28 0.06 310 / 0.7);
+  --border-strong: oklch(0.36 0.08 320 / 0.7);
+  --ring: oklch(0.62 0.24 340);
+  --surface: oklch(0.15 0.06 310 / 0.8);
+  --surface-card: oklch(0.20 0.07 310 / 0.75);
+  --surface-hover: oklch(0.26 0.08 330 / 0.7);
+  --primary: oklch(0.62 0.24 340);
+  --primary-hover: oklch(0.54 0.22 340);
+  --accent: oklch(0.68 0.20 200);
+  --glow-primary: oklch(0.62 0.24 340 / 0.35);
+  --glow-accent: oklch(0.68 0.20 200 / 0.35);
+  --simulator-tint: oklch(0.14 0.06 320);
+  --dropdown-bg: oklch(0.10 0.05 310 / 0.96);
+
+  --stage-ozora-text: oklch(0.75 0.22 350);
+  --stage-pumpui-text: oklch(0.72 0.18 145);
+  --stage-dome-text: oklch(0.72 0.14 230);
+  --stage-dragon-text: oklch(0.75 0.18 55);
+  --stage-visium-text: oklch(0.78 0.18 85);
+  --stage-tekzero-text: oklch(0.70 0.22 300);
 }
 
 /* Smooth theme transitions */
@@ -1837,13 +1852,22 @@ body::before {
   transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.theme-day body::before,
+body:has(.theme-day)::before {
+  opacity: 1;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 80%, oklch(0.85 0.08 330 / 0.2), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 20%, oklch(0.88 0.06 180 / 0.15), transparent),
+    radial-gradient(ellipse 50% 35% at 50% 50%, oklch(0.90 0.05 60 / 0.1), transparent);
+}
+
 .theme-night body::before,
 body:has(.theme-night)::before {
   opacity: 1;
   background:
-    radial-gradient(ellipse 80% 50% at 15% 15%, oklch(0.22 0.14 280 / 0.5), transparent),
-    radial-gradient(ellipse 60% 40% at 85% 65%, oklch(0.20 0.12 330 / 0.4), transparent),
-    radial-gradient(ellipse 40% 50% at 50% 90%, oklch(0.15 0.10 265 / 0.3), transparent);
+    radial-gradient(ellipse 80% 50% at 15% 15%, oklch(0.25 0.16 300 / 0.5), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 65%, oklch(0.22 0.14 180 / 0.4), transparent),
+    radial-gradient(ellipse 40% 50% at 50% 90%, oklch(0.18 0.12 340 / 0.3), transparent);
   animation: cosmic-breathe 12s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
 
@@ -1860,16 +1884,18 @@ body:has(.theme-night)::before {
 body:has(.theme-sunset)::before {
   opacity: 1;
   background:
-    radial-gradient(ellipse 80% 50% at 30% 10%, oklch(0.25 0.12 30 / 0.4), transparent),
-    radial-gradient(ellipse 60% 40% at 70% 80%, oklch(0.20 0.10 15 / 0.25), transparent);
+    radial-gradient(ellipse 80% 50% at 30% 10%, oklch(0.28 0.16 30 / 0.45), transparent),
+    radial-gradient(ellipse 60% 40% at 70% 80%, oklch(0.22 0.14 350 / 0.3), transparent),
+    radial-gradient(ellipse 50% 30% at 50% 50%, oklch(0.20 0.10 60 / 0.2), transparent);
 }
 
 .theme-sunrise body::before,
 body:has(.theme-sunrise)::before {
   opacity: 1;
   background:
-    radial-gradient(ellipse 70% 50% at 60% 20%, oklch(0.22 0.12 310 / 0.4), transparent),
-    radial-gradient(ellipse 50% 40% at 30% 70%, oklch(0.18 0.10 250 / 0.25), transparent);
+    radial-gradient(ellipse 70% 50% at 60% 20%, oklch(0.25 0.16 320 / 0.45), transparent),
+    radial-gradient(ellipse 50% 40% at 30% 70%, oklch(0.20 0.12 250 / 0.3), transparent),
+    radial-gradient(ellipse 40% 30% at 80% 50%, oklch(0.18 0.10 180 / 0.2), transparent);
 }
 
 .app-container {
@@ -2428,6 +2454,7 @@ body:has(.theme-sunrise)::before {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  direction: ltr;
 }
 
 .countdown-sep {
@@ -2479,6 +2506,87 @@ body:has(.theme-sunrise)::before {
 
   .countdown-unit {
     min-width: 38px;
+  }
+}
+
+/* ==========================================
+   SCHEDULE SHARE BUTTON & TOAST NOTIFICATION
+   ========================================== */
+
+.fav-feed-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.share-schedule-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, var(--stage-pumpui), var(--stage-dome));
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+}
+
+.share-schedule-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(121, 40, 202, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.share-schedule-btn:active {
+  transform: translateY(0);
+}
+
+/* Toast Notifications */
+.toast-notification-container {
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast-notification {
+  background: rgba(15, 10, 25, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--primary);
+  box-shadow: 0 8px 32px rgba(121, 40, 202, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  padding: 0.8rem 1.6rem;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  animation: toast-slide-up-fade 3s forwards cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+@keyframes toast-slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 

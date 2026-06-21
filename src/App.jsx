@@ -67,7 +67,26 @@ export default function App() {
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('ozora_favs');
     const parsed = saved ? JSON.parse(saved) : [];
-    return migrateFavorites(parsed, timetableData);
+    let currentFavs = migrateFavorites(parsed, timetableData);
+
+    // Import shared favorites from URL on initial load
+    const params = new URLSearchParams(window.location.search);
+    const shareParam = params.get('share');
+    if (shareParam) {
+      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
+      const importedKeys = [];
+      indices.forEach(idx => {
+        const set = timetableData[idx];
+        if (set) {
+          importedKeys.push(getSetUniqueKey(set));
+        }
+      });
+      if (importedKeys.length > 0) {
+        const merged = new Set([...currentFavs, ...importedKeys]);
+        currentFavs = Array.from(merged);
+      }
+    }
+    return currentFavs;
   });
   
   const [selectedDay, setSelectedDay] = useState('Warmup Sat');
@@ -102,29 +121,17 @@ export default function App() {
     localStorage.setItem('ozora_sim_time', String(simTime));
   }, [simTime]);
 
-  // Parse and import shared favorites from URL
+  // Handle URL cleanup and toast notification for shared favorites
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
     if (shareParam) {
       const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const importedKeys = [];
-      
-      indices.forEach(idx => {
-        const set = timetableData[idx];
-        if (set) {
-          importedKeys.push(getSetUniqueKey(set));
-        }
-      });
-
-      if (importedKeys.length > 0) {
-        setFavorites(prev => {
-          const merged = new Set([...prev, ...importedKeys]);
-          return Array.from(merged);
-        });
-
-        // Show import toast
-        setToastMessage(lang === 'he' ? 'לוח ההופעות ששותף איתך התווסף למועדפים!' : 'Shared schedule added to your favorites!');
+      const hasValidSets = indices.some(idx => timetableData[idx]);
+      if (hasValidSets) {
+        setTimeout(() => {
+          setToastMessage(lang === 'he' ? 'לוח ההופעות ששותף איתך התווסף למועדפים!' : 'Shared schedule added to your favorites!');
+        }, 50);
       }
 
       // Clean the URL address bar
@@ -371,6 +378,7 @@ export default function App() {
           onSetClick={setSelectedSet}
           simTime={simTime}
           isSimulated={isSimulated}
+          onShowToast={setToastMessage}
         />
       )}
 
