@@ -14,6 +14,7 @@ import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen, Heart } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
+import InstallPrompt from './components/InstallPrompt';
 import { initializeGA4 } from './utils/consent';
 
 const DAY_DATE_LABELS = {
@@ -452,6 +453,7 @@ export default function App() {
       )}
 
       <CookieConsent lang={lang} />
+      <InstallPrompt lang={lang} />
     </div>
   );
 }
