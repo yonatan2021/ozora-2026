@@ -54,6 +54,9 @@ export const customTranslationMap = {
   'יום 8': 'day 8'
 };
 
+const customTranslationEntries = Object.entries(customTranslationMap);
+const searchIndexCache = new WeakMap();
+
 // Hebrew-to-English letter mappings for phonetic transliteration
 const hebrewToEnglishMap = {
   'א': '',
@@ -212,6 +215,27 @@ function preprocessQuery(query) {
   return cleaned;
 }
 
+function getSearchIndex(sets) {
+  const cached = searchIndexCache.get(sets);
+  if (cached) return cached;
+
+  const indexedSets = sets.map(set => ({
+    set,
+    artistLower: set.artist.toLowerCase(),
+    stageLower: set.stage.toLowerCase(),
+    dayLower: set.day.toLowerCase(),
+    typeLower: set.type.toLowerCase(),
+    normalizedArtistWords: set.artist
+      .split(/[^a-zA-Z0-9\u0590-\u05FF]+/)
+      .filter(Boolean)
+      .map(word => normalizePhonetics(word))
+      .filter(Boolean)
+  }));
+
+  searchIndexCache.set(sets, indexedSets);
+  return indexedSets;
+}
+
 // Smart bilingual multi-term search
 export function searchSchedule(query, sets) {
   const rawQuery = query.trim();
@@ -223,12 +247,16 @@ export function searchSchedule(query, sets) {
   
   const results = [];
   
-  for (let set of sets) {
-    const artistLower = set.artist.toLowerCase();
-    const stageLower = set.stage.toLowerCase();
-    const dayLower = set.day.toLowerCase();
-    const typeLower = set.type.toLowerCase();
-    
+  for (let indexedSet of getSearchIndex(sets)) {
+    const {
+      set,
+      artistLower,
+      stageLower,
+      dayLower,
+      typeLower,
+      normalizedArtistWords
+    } = indexedSet;
+
     let allTermsMatch = true;
     let totalScore = 0;
     
@@ -238,9 +266,9 @@ export function searchSchedule(query, sets) {
       
       // 1. Check custom translation dictionary
       let translated = '';
-      for (let key in customTranslationMap) {
+      for (let [key, value] of customTranslationEntries) {
         if (term.includes(key) || key.includes(term)) {
-          translated = customTranslationMap[key];
+          translated = value;
           break;
         }
       }
@@ -274,14 +302,8 @@ export function searchSchedule(query, sets) {
       const normTerm = normalizePhonetics(term);
       
       if (normTerm) {
-        // Split artist name into words and check if any word matches the query term phonetically
-        const artistWords = set.artist.split(/[^a-zA-Z0-9\u0590-\u05FF]+/).filter(Boolean);
-        
         let wordMatched = false;
-        for (let word of artistWords) {
-          const normArtistWord = normalizePhonetics(word);
-          if (!normArtistWord) continue;
-          
+        for (let normArtistWord of normalizedArtistWords) {
           const isPhoneticSub = normTerm.length >= 2 && normArtistWord.includes(normTerm);
           const distance = getEditDistance(normTerm, normArtistWord);
           

@@ -2,9 +2,50 @@ import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
+const createStorageMock = () => {
+  let store = {};
+
+  return {
+    getItem: (key) => store[key] ?? null,
+    setItem: (key, value) => {
+      store[key] = String(value);
+    },
+    removeItem: (key) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+};
+
+const localStorageMock = createStorageMock();
+const sessionStorageMock = createStorageMock();
+
+Object.defineProperty(window, 'localStorage', {
+  configurable: true,
+  value: localStorageMock,
+});
+
+Object.defineProperty(window, 'sessionStorage', {
+  configurable: true,
+  value: sessionStorageMock,
+});
+
+Object.defineProperty(globalThis, 'localStorage', {
+  configurable: true,
+  value: localStorageMock,
+});
+
+Object.defineProperty(globalThis, 'sessionStorage', {
+  configurable: true,
+  value: sessionStorageMock,
+});
+
 afterEach(() => {
   cleanup();
-  localStorage.clear();
+  window.localStorage.clear();
+  window.sessionStorage.clear();
 });
 
 // Mock matchMedia
@@ -43,4 +84,3 @@ HTMLCanvasElement.prototype.getContext = function (type) {
   }
   return null;
 };
-

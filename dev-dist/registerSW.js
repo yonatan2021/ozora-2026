@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/ozora-2026/dev-sw.js?dev-sw', { scope: '/ozora-2026/', type: 'classic' })

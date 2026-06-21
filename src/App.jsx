@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, lazy, useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
@@ -6,8 +6,6 @@ import TimetableGrid from './components/TimetableGrid';
 import ChronologicalFeed from './components/ChronologicalFeed';
 import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
-import MySchedule from './components/MySchedule';
-import FestivalGuide from './components/FestivalGuide';
 import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
@@ -15,10 +13,14 @@ import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen, Heart } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
+import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
+
+const MySchedule = lazy(() => import('./components/MySchedule'));
+const FestivalGuide = lazy(() => import('./components/FestivalGuide'));
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -64,6 +66,15 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
+const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
+const TIMETABLE_SETS_BY_KEY = new Map(timetableData.map(set => [getSetUniqueKey(set), set]));
+const DAYS = Array.from(new Set(timetableData.map(set => set.day)));
+const SETS_BY_DAY = timetableData.reduce((acc, set) => {
+  if (!acc[set.day]) acc[set.day] = [];
+  acc[set.day].push(set);
+  return acc;
+}, {});
+
 export default function App() {
   const isInitialLang = useRef(true);
   const isInitialSim = useRef(true);
@@ -106,6 +117,8 @@ export default function App() {
     }
     return null;
   });
+
+  const favoritesSet = useMemo(() => new Set(favorites), [favorites]);
 
   // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
@@ -193,17 +206,21 @@ export default function App() {
   };
 
   // Derive active set statuses directly in render
-  const activeStatusMap = {};
-  const evalTime = isSimulated ? new Date(simTime) : new Date();
-  
-  // In real-time mode, override year to 2026 for simulation/convenience
-  if (!isSimulated) {
-    evalTime.setFullYear(2026);
-  }
+  const activeStatusMap = useMemo(() => {
+    const statuses = {};
+    const evalTime = isSimulated ? new Date(simTime) : new Date();
 
-  timetableData.forEach(set => {
-    activeStatusMap[set.id] = getSetStatus(set, evalTime);
-  });
+    // In real-time mode, override year to 2026 for simulation/convenience
+    if (!isSimulated) {
+      evalTime.setFullYear(2026);
+    }
+
+    timetableData.forEach(set => {
+      statuses[set.id] = getSetStatus(set, evalTime);
+    });
+
+    return statuses;
+  }, [isSimulated, simTime]);
 
   const handleImportAll = () => {
     if (!pendingImport) return;
@@ -235,11 +252,11 @@ export default function App() {
     trackEvent('select_stage', { stage_name: stageName });
   };
 
-  const toggleFavorite = (id, origin = 'timetable') => {
-    const matchedSet = timetableData.find(s => s.id === id);
+  const toggleFavorite = useCallback((id, origin = 'timetable') => {
+    const matchedSet = TIMETABLE_SETS_BY_ID.get(id);
     if (!matchedSet) return;
     const key = getSetUniqueKey(matchedSet);
-    const isFav = favorites.includes(key);
+    const isFav = favoritesSet.has(key);
     trackEvent('toggle_favorite', {
       artist_name: matchedSet.artist,
       stage_name: matchedSet.stage,
@@ -250,22 +267,26 @@ export default function App() {
     setFavorites(prev => 
       prev.includes(key) ? prev.filter(f => f !== key) : [...prev, key]
     );
-  };
+  }, [favoritesSet]);
 
-  const childFavorites = timetableData
-    .filter(set => favorites.includes(getSetUniqueKey(set)))
-    .map(set => set.id);
+  const childFavorites = useMemo(() => (
+    favorites
+      .map(key => TIMETABLE_SETS_BY_KEY.get(key)?.id)
+      .filter(Boolean)
+  ), [favorites]);
 
   // Filter sets based on selected day
-  const filteredSets = timetableData.filter(set => set.day === selectedDay);
+  const filteredSets = useMemo(() => SETS_BY_DAY[selectedDay] || [], [selectedDay]);
 
   // Filter sets for mobile chronological view based on selected stage
-  const mobileFilteredSets = filteredSets.filter(set => 
-    selectedStage === 'ALL' || set.stage === selectedStage
-  );
+  const mobileFilteredSets = useMemo(() => (
+    selectedStage === 'ALL'
+      ? filteredSets
+      : filteredSets.filter(set => set.stage === selectedStage)
+  ), [filteredSets, selectedStage]);
 
   // Unique days list sorted by date
-  const days = Array.from(new Set(timetableData.map(s => s.day)));
+  const days = DAYS;
   const t = translations[lang];
 
   const handleSelectSetFromSearch = (set) => {
@@ -419,24 +440,29 @@ export default function App() {
       )}
 
       {activeTab === 'favorites' && (
-        <MySchedule
-          lang={lang}
-          timetableData={timetableData}
-          favorites={childFavorites}
-          toggleFavorite={toggleFavorite}
-          onSetClick={setSelectedSet}
-          simTime={simTime}
-          isSimulated={isSimulated}
-          onShowToast={setToastMessage}
-          notesVersion={notesVersion}
-        />
+        <Suspense fallback={<div className="empty-state"><p>{t.loading}</p></div>}>
+          <MySchedule
+            lang={lang}
+            timetableData={timetableData}
+            favorites={childFavorites}
+            toggleFavorite={toggleFavorite}
+            onSetClick={setSelectedSet}
+            simTime={simTime}
+            isSimulated={isSimulated}
+            onShowToast={setToastMessage}
+            notesVersion={notesVersion}
+          />
+        </Suspense>
       )}
 
       {activeTab === 'guide' && (
-        <FestivalGuide />
+        <Suspense fallback={<div className="empty-state"><p>{t.loading}</p></div>}>
+          <FestivalGuide />
+        </Suspense>
       )}
 
       <footer className="app-footer">
+        <FooterInstallCTA lang={lang} />
         <p className="footer-copyright">{t.copyright}</p>
         <p className="footer-credits">
           <span>{t.developedWithLove}</span>

@@ -5,6 +5,14 @@ import App from './App';
 describe('App End-to-End Flows', () => {
   beforeEach(() => {
     localStorage.clear();
+    Object.defineProperty(window.navigator, 'userAgent', {
+      configurable: true,
+      value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)',
+    });
+    Object.defineProperty(window.navigator, 'maxTouchPoints', {
+      configurable: true,
+      value: 5,
+    });
   });
 
   it('should support switching languages between Hebrew and English', () => {
@@ -36,5 +44,14 @@ describe('App End-to-End Flows', () => {
     const guideNavBtn = screen.getAllByRole('button', { name: /Guide/i })[0];
     fireEvent.click(guideNavBtn);
     expect(screen.getByText(/מדריך הפסטיבל/i)).toBeInTheDocument();
+  });
+
+  it('should render the footer offline install CTA', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: /English/i }));
+
+    expect(screen.getByText("Haven't saved it offline yet?")).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
 });

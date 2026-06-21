@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { marked } from 'marked';
 
 const guideModules = import.meta.glob('/content/guides/*.md', {
@@ -47,30 +48,33 @@ function parseTopics(markdownBody) {
 }
 
 export default function useGuides() {
-  const guides = [];
+  const guides = useMemo(() => {
+    const parsedGuides = [];
 
-  for (const [filepath, raw] of Object.entries(guideModules)) {
-    const filename = filepath.split('/').pop().replace('.md', '');
+    for (const [filepath, raw] of Object.entries(guideModules)) {
+      const filename = filepath.split('/').pop().replace('.md', '');
 
-    if (filename === 'README') continue;
+      if (filename === 'README') continue;
 
-    const { data, content } = parseFrontmatter(raw);
+      const { data, content } = parseFrontmatter(raw);
 
-    if (!data.title) continue;
+      if (!data.title) continue;
 
-    const topics = parseTopics(content);
+      const topics = parseTopics(content);
 
-    guides.push({
-      slug: filename,
-      title: data.title,
-      icon: data.icon || 'compass',
-      order: data.order ?? 999,
-      description: topics.length > 0 ? topics[0].heading : '',
-      topics
-    });
-  }
+      parsedGuides.push({
+        slug: filename,
+        title: data.title,
+        icon: data.icon || 'compass',
+        order: data.order ?? 999,
+        description: topics.length > 0 ? topics[0].heading : '',
+        topics
+      });
+    }
 
-  guides.sort((a, b) => a.order - b.order);
+    parsedGuides.sort((a, b) => a.order - b.order);
+    return parsedGuides;
+  }, []);
 
   return { guides, loading: false };
 }

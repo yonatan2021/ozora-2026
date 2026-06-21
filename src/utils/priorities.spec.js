@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getPriorities, getPriority, cyclePriority, prioritySortValue } from './priorities.js';
+import { getPriority, cyclePriority, prioritySortValue } from './priorities.js';
 
 describe('priorities utils', () => {
   beforeEach(() => {

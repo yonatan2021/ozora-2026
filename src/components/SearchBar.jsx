@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useDeferredValue, useMemo, useState, useEffect, useRef } from 'react';
 import { Search, X, Star } from 'lucide-react';
 import { searchSchedule } from '../utils/search';
 import { translations } from '../utils/lang';
@@ -23,30 +23,31 @@ export default function SearchBar({
 }) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [results, setResults] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const deferredQuery = useDeferredValue(query);
   
   const containerRef = useRef(null);
   const inputRef = useRef(null);
   const t = translations[lang];
 
-  // Perform search whenever query or timetableData changes
-  useEffect(() => {
-    if (query.trim() === '') {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResults([]);
-      setActiveIndex(-1);
-      return;
-    }
-    const searchResults = searchSchedule(query, timetableData);
-    setResults(searchResults);
-    setActiveIndex(-1);
+  const results = useMemo(() => {
+    if (deferredQuery.trim() === '') return [];
+    return searchSchedule(deferredQuery, timetableData);
+  }, [deferredQuery, timetableData]);
 
+  // Reset keyboard focus when the displayed query results change.
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [results]);
+
+  // Track search activity after the query settles.
+  useEffect(() => {
+    if (deferredQuery.trim() === '') return;
     const timer = setTimeout(() => {
-      trackEvent('search_artist', { search_query: query, results_count: searchResults.length });
+      trackEvent('search_artist', { search_query: deferredQuery, results_count: results.length });
     }, 500);
     return () => clearTimeout(timer);
-  }, [query, timetableData]);
+  }, [deferredQuery, results.length]);
 
   // Click outside listener to close the dropdown
   useEffect(() => {
