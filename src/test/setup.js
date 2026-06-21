@@ -25,3 +25,22 @@ Object.defineProperty(window, 'matchMedia', {
 // Mock URL APIs
 window.URL.createObjectURL = () => 'blob:mock-url';
 window.URL.revokeObjectURL = () => {};
+
+// Mock Canvas context
+HTMLCanvasElement.prototype.getContext = function (type) {
+  if (type === '2d') {
+    return {
+      setTransform: () => {},
+      clearRect: () => {},
+      beginPath: () => {},
+      arc: () => {},
+      fill: () => {},
+      createRadialGradient: () => ({
+        addColorStop: () => {},
+      }),
+      fillStyle: null,
+    };
+  }
+  return null;
+};
+
