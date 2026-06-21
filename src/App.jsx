@@ -253,7 +253,7 @@ export default function App() {
               </div>
             ) : (
               <>
-                {/* Desktop and Tablet grid view */}
+                 {/* Desktop and Tablet grid view */}
                 <div className="desktop-view-only">
                   <TimetableGrid
                     lang={lang}
@@ -263,7 +263,6 @@ export default function App() {
                     onSetClick={setSelectedSet}
                     activeStatusMap={activeStatusMap}
                     simTime={simTime}
-                    isSimulated={isSimulated}
                   />
                 </div>
                 
@@ -280,8 +279,6 @@ export default function App() {
                       toggleFavorite={toggleFavorite}
                       onSetClick={setSelectedSet}
                       activeStatusMap={activeStatusMap}
-                      simTime={simTime}
-                      isSimulated={isSimulated}
                     />
                   )}
                 </div>
@@ -304,7 +301,7 @@ export default function App() {
       )}
 
       {activeTab === 'guide' && (
-        <FestivalGuide lang={lang} />
+        <FestivalGuide />
       )}
 
       {/* Bottom Navigation for Mobile Devices */}

@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { translations } from '../utils/lang';
 
 const GATES_OPEN = new Date('2026-07-24T12:00:00+02:00').getTime();
 
 export default function CountdownBanner({ lang }) {
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);

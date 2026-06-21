@@ -3,7 +3,7 @@ import useGuides from '../hooks/useGuides';
 import { getGuideIcon } from '../utils/guideIcons';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
-export default function FestivalGuide({ lang }) {
+export default function FestivalGuide() {
   const { guides } = useGuides();
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [openTopics, setOpenTopics] = useState({});

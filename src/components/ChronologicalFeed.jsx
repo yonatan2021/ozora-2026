@@ -9,7 +9,7 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
-export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap }) {
   // Sort sets chronologically by start time, and then by stage name
   const sortedSets = [...sets].sort((a, b) => {
 

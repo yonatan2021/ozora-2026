@@ -50,7 +50,7 @@ function getCardStyle(set) {
   };
 }
 
-export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime, isSimulated }) {
+export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, onSetClick, activeStatusMap, simTime }) {
   const isHe = lang === 'he';
 
   const evalDate = new Date(simTime);
