@@ -41,7 +41,7 @@ This application is built not just as a schedule utility, but as a sensory exper
 *   **Shareable Schedules:** Click **Share Schedule** to generate a custom URL containing your starred sets. When opened on another device, these sets are automatically merged into the user's favorites with a beautiful success toast.
 
 ### 6. 📴 Offline-First PWA (Works Without Internet)
-*   **Full Offline Support:** The app is a Progressive Web App (PWA) with a service worker that caches all assets and timetable data on first visit. Once loaded, it works perfectly in airplane mode — designed for festivals with near-zero connectivity.
+*   **Full Offline Support:** The app is a Progressive Web App (PWA) with a service worker that caches all assets and timetable data on first visit. Open it once with internet before the festival; after that first load, it works in airplane mode — designed for festivals with near-zero connectivity.
 *   **Install to Home Screen:** A bilingual install prompt encourages users to add the app to their home screen before the festival, ensuring it behaves like a native app with instant launch times.
 
 ### 7. 🎯 Smart Schedule Management

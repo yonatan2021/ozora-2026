@@ -43,7 +43,7 @@ describe('FooterInstallCTA', () => {
   it('renders the mobile footer CTA copy', () => {
     render(<FooterInstallCTA lang="en" />);
 
-    expect(screen.getByText("Haven't saved it offline yet?")).toBeInTheDocument();
+    expect(screen.getByText('Open once with internet before the festival to save it offline.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
 
@@ -57,7 +57,7 @@ describe('FooterInstallCTA', () => {
 
     render(<FooterInstallCTA lang="en" />);
 
-    expect(screen.queryByText("Haven't saved it offline yet?")).not.toBeInTheDocument();
+    expect(screen.queryByText('Open once with internet before the festival to save it offline.')).not.toBeInTheDocument();
   });
 
   it('tracks footer CTA view and click with consent', () => {
@@ -82,7 +82,7 @@ describe('FooterInstallCTA', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Install now/i }));
 
-    expect(screen.getByText(/tap Share, then Add to Home Screen/i)).toBeInTheDocument();
+    expect(screen.getByText(/open this page online first/i)).toBeInTheDocument();
   });
 
   it('uses the deferred prompt and tracks the result when available', async () => {

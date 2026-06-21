@@ -51,7 +51,7 @@ describe('App End-to-End Flows', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /English/i }));
 
-    expect(screen.getByText("Haven't saved it offline yet?")).toBeInTheDocument();
+    expect(screen.getByText('Open once with internet before the festival to save it offline.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
 });
