@@ -23,3 +23,24 @@ export function getSetStatus(set, simDateTime) {
     return 'past';
   }
 }
+
+// Generate a stable composite key for a set
+export function getSetUniqueKey(set) {
+  return `${set.artist}::${set.stage}::${set.date}::${set.start}`;
+}
+
+// Migrate legacy 'set-X' IDs to stable composite keys
+export function migrateFavorites(savedFavs, timetableData) {
+  if (!Array.isArray(savedFavs)) return [];
+  return savedFavs.map(fav => {
+    if (typeof fav === 'string') {
+      if (fav.startsWith('set-')) {
+        const matchedSet = timetableData.find(s => s.id === fav);
+        return matchedSet ? getSetUniqueKey(matchedSet) : null;
+      }
+      const exists = timetableData.some(s => getSetUniqueKey(s) === fav);
+      return exists ? fav : null;
+    }
+    return null;
+  }).filter(Boolean);
+}
