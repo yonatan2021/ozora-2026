@@ -1,15 +1,14 @@
 import { useState, useRef } from 'react';
-import { Star, Radio, Flame, StarOff, Filter, MessageSquare, AlertTriangle } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import { Star, Radio, Filter, MessageSquare, AlertTriangle, Pencil } from 'lucide-react';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
 import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
 import { getNotes } from '../utils/notes';
 import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
+import { exportScheduleAsImage } from '../utils/exportImage';
 import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
-import ScheduleImage from './ScheduleImage';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -18,6 +17,11 @@ const STAGE_CLASSES = {
   "DRAGON NEST / COOKING GROOVE": "stage-dragon",
   "VISIUM GARDEN": "stage-visium",
   "TEK ZERO (2000s Trance)": "stage-tekzero"
+};
+
+const PRIORITY_LABELS = {
+  he: { must: 'חובה', want: 'רוצה', maybe: 'אולי' },
+  en: { must: 'Must', want: 'Want', maybe: 'Maybe' }
 };
 
 export default function MySchedule({
@@ -36,9 +40,12 @@ export default function MySchedule({
 
   const [priorities, setPriorities] = useState(() => getPriorities());
   const [filterMust, setFilterMust] = useState(false);
-  const scheduleImageRef = useRef(null);
+  const [scheduleName, setScheduleName] = useState(() => {
+    return localStorage.getItem('ozora_schedule_name') || '';
+  });
+  const [editingName, setEditingName] = useState(false);
+  const nameInputRef = useRef(null);
 
-  // notesVersion prop change triggers re-render; getNotes() reads fresh from localStorage
   void notesVersion;
   const notes = getNotes();
 
@@ -48,41 +55,17 @@ export default function MySchedule({
     setPriorities(getPriorities());
   };
 
+  const handleNameSave = () => {
+    localStorage.setItem('ozora_schedule_name', scheduleName);
+    setEditingName(false);
+  };
+
   const buildShareUrl = () => {
     const indices = favorites.map(id => {
       return timetableData.findIndex(set => set.id === id);
     }).filter(idx => idx !== -1);
     if (indices.length === 0) return '';
     return `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
-  };
-
-  const handleExportImage = async () => {
-    if (!scheduleImageRef.current) return;
-    try {
-      const canvas = await html2canvas(scheduleImageRef.current, {
-        scale: 1,
-        useCORS: true,
-        backgroundColor: '#0b0713'
-      });
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-
-      if (navigator.share && navigator.canShare?.({ files: [new File([blob], 'schedule.png', { type: 'image/png' })] })) {
-        await navigator.share({
-          files: [new File([blob], 'ozora-2026-schedule.png', { type: 'image/png' })],
-          title: t.exportTitle
-        });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'ozora-2026-schedule.png';
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-      onShowToast(t.exportSuccess);
-    } catch (err) {
-      console.error('Export failed:', err);
-    }
   };
 
   const handleCopyLink = () => {
@@ -150,6 +133,21 @@ export default function MySchedule({
       )
     : groupedByDay;
 
+  const handleExportImage = async () => {
+    try {
+      await exportScheduleAsImage({
+        groupedByDay: displayGroupedByDay,
+        priorities,
+        conflicts,
+        lang,
+        scheduleName
+      });
+      onShowToast(t.exportSuccess);
+    } catch (err) {
+      console.error('Export failed:', err);
+    }
+  };
+
   if (favorites.length === 0) {
     return (
       <div className="empty-state stagger-slide-up" style={{ '--card-index': 0 }}>
@@ -162,13 +160,6 @@ export default function MySchedule({
     );
   }
 
-  const renderPriorityIcon = (setKey) => {
-    const p = priorities[setKey];
-    if (p === 'must') return <Flame size={14} />;
-    if (p === 'maybe') return <StarOff size={14} />;
-    return <Star size={14} />;
-  };
-
   const getPriorityCardClass = (setKey) => {
     const p = priorities[setKey];
     if (p === 'must') return 'priority-must-card';
@@ -176,8 +167,39 @@ export default function MySchedule({
     return '';
   };
 
+  const priorityLabels = PRIORITY_LABELS[lang] || PRIORITY_LABELS.en;
+
   return (
     <div className="my-schedule-container stagger-slide-up" style={{ '--card-index': 0 }}>
+      {/* Schedule Name */}
+      <div className="schedule-name-section">
+        {editingName ? (
+          <div className="schedule-name-edit">
+            <input
+              ref={nameInputRef}
+              type="text"
+              className="schedule-name-input"
+              placeholder={isHe ? 'השם שלך (אופציונלי)' : 'Your name (optional)'}
+              value={scheduleName}
+              onChange={(e) => setScheduleName(e.target.value.slice(0, 30))}
+              onBlur={handleNameSave}
+              onKeyDown={(e) => e.key === 'Enter' && handleNameSave()}
+              autoFocus
+              maxLength={30}
+            />
+          </div>
+        ) : (
+          <button className="schedule-name-display" onClick={() => setEditingName(true)}>
+            <span>
+              {scheduleName
+                ? (isHe ? `הלוח של ${scheduleName}` : `${scheduleName}'s Schedule`)
+                : (isHe ? 'ציר הזמן שלי' : 'My Personal Timeline')}
+            </span>
+            <Pencil size={12} className="schedule-name-edit-icon" />
+          </button>
+        )}
+      </div>
+
       <ConflictBanner
         conflicts={conflicts}
         lang={lang}
@@ -246,7 +268,9 @@ export default function MySchedule({
       {/* Full Timeline List */}
       <div className="fav-feed-section">
         <div className="fav-feed-header-row">
-          <h3>{isHe ? 'ציר הזמן שלי' : 'My Personal Timeline'}</h3>
+          <h3>{scheduleName
+            ? (isHe ? `הלוח של ${scheduleName}` : `${scheduleName}'s Schedule`)
+            : (isHe ? 'ציר הזמן שלי' : 'My Personal Timeline')}</h3>
           <button
             className={`filter-must-btn ${filterMust ? 'active' : ''}`}
             onClick={() => setFilterMust(!filterMust)}
@@ -271,6 +295,7 @@ export default function MySchedule({
                 {daySets.map((set, index) => {
                   const status = getSetStatus(set, evalTime);
                   const setKey = getSetUniqueKey(set);
+                  const currentPriority = priorities[setKey] || null;
                   return (
                     <div
                       key={set.id}
@@ -305,11 +330,12 @@ export default function MySchedule({
                       </div>
                       <div className="feed-card-actions">
                         <button
-                          className={`priority-btn priority-${priorities[setKey] || 'none'}`}
+                          className={`priority-pill priority-pill-${currentPriority || 'none'}`}
                           onClick={(e) => handleCyclePriority(e, setKey)}
                           aria-label="Set priority"
+                          title={isHe ? 'לחץ לשנות עדיפות' : 'Click to change priority'}
                         >
-                          {renderPriorityIcon(setKey)}
+                          {currentPriority ? priorityLabels[currentPriority] : (isHe ? 'עדיפות' : 'Priority')}
                         </button>
                         <button
                           className="feed-fav-btn"
@@ -338,16 +364,6 @@ export default function MySchedule({
         toggleFavorite={toggleFavorite}
         onShowToast={onShowToast}
       />
-
-      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-        <ScheduleImage
-          ref={scheduleImageRef}
-          priorities={priorities}
-          conflicts={conflicts}
-          lang={lang}
-          groupedByDay={displayGroupedByDay}
-        />
-      </div>
     </div>
   );
 }

@@ -12,7 +12,6 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "html2canvas": "^1.4.1",
     "lucide-react": "^1.21.0",
     "marked": "^18.0.5",
     "qrcode": "^1.5.4",

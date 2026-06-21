@@ -3472,6 +3472,59 @@ body:has(.theme-sunrise)::before {
   white-space: nowrap;
 }
 
+/* Schedule Name */
+.schedule-name-section {
+  margin-bottom: 12px;
+}
+
+.schedule-name-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: var(--transition-smooth);
+}
+
+.schedule-name-display:hover {
+  color: var(--text-secondary);
+}
+
+.schedule-name-edit-icon {
+  opacity: 0.4;
+}
+
+.schedule-name-display:hover .schedule-name-edit-icon {
+  opacity: 0.8;
+}
+
+.schedule-name-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-name-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  width: 200px;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.schedule-name-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--glow-primary);
+}
+
 /* Priority Marking */
 .feed-card-actions {
   display: flex;
@@ -3480,37 +3533,44 @@ body:has(.theme-sunrise)::before {
   flex-shrink: 0;
 }
 
-.priority-btn {
-  background: none;
-  border: none;
+.priority-pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 4px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
   transition: var(--transition-smooth);
+  white-space: nowrap;
+  background: none;
+  line-height: 1.4;
 }
 
-.priority-must {
-  color: oklch(0.65 0.22 30);
-}
-
-.priority-want {
-  color: var(--stage-visium);
-}
-
-.priority-maybe {
+.priority-pill-none {
   color: var(--text-muted);
   opacity: 0.5;
 }
 
-.priority-none {
+.priority-pill-must {
+  color: #e86040;
+  border-color: #e86040;
+  background: rgba(232, 96, 64, 0.1);
+}
+
+.priority-pill-want {
+  color: var(--stage-visium);
+  border-color: var(--stage-visium);
+  background: oklch(0.60 0.16 85 / 0.1);
+}
+
+.priority-pill-maybe {
   color: var(--text-muted);
-  opacity: 0.3;
+  border-color: var(--border);
+  opacity: 0.6;
 }
 
 .feed-set-card.priority-must-card {
-  border-inline-start: 3px solid oklch(0.65 0.22 30);
+  border-inline-start: 3px solid #e86040;
 }
 
 .feed-set-card.priority-maybe-card {
@@ -3532,9 +3592,9 @@ body:has(.theme-sunrise)::before {
 }
 
 .filter-must-btn.active {
-  background: oklch(0.65 0.22 30 / 0.15);
-  border-color: oklch(0.65 0.22 30);
-  color: oklch(0.65 0.22 30);
+  background: rgba(232, 96, 64, 0.15);
+  border-color: #e86040;
+  color: #e86040;
 }
 
 .install-prompt-dismiss {
