@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getStoredConsent, setStoredConsent, initializeGA4 } from '../utils/consent';
 import { translations } from '../utils/lang';
 
 export default function CookieConsent({ lang }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => {
+    const stored = getStoredConsent();
+    return !stored;
+  });
   const [showPreferences, setShowPreferences] = useState(false);
   const [preferences, setPreferences] = useState({
     necessary: true,
@@ -13,13 +16,6 @@ export default function CookieConsent({ lang }) {
   });
 
   const t = translations[lang] || translations.en;
-
-  useEffect(() => {
-    const stored = getStoredConsent();
-    if (!stored) {
-      setIsOpen(true);
-    }
-  }, []);
 
   const handleAcceptAll = () => {
     const allTrue = {

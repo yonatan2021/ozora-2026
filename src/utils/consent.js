@@ -8,7 +8,7 @@ export const getStoredConsent = () => {
   if (!stored) return null;
   try {
     return JSON.parse(stored);
-  } catch (e) {
+  } catch {
     return null;
   }
 };
