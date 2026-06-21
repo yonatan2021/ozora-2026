@@ -8,9 +8,10 @@ import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
 import MySchedule from './components/MySchedule';
 import FestivalGuide from './components/FestivalGuide';
-import { getSetStatus } from './utils/time';
+import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
+import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen } from 'lucide-react';
 
 const DAY_DATE_LABELS = {
@@ -58,24 +59,47 @@ const STAGE_CLASSES = {
 };
 
 export default function App() {
-  const [lang, setLang] = useState('he');
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('ozora_lang');
+    return saved === 'en' ? 'en' : 'he';
+  });
   const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'guide'
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('ozora_favs');
-    return saved ? JSON.parse(saved) : [];
+    const parsed = saved ? JSON.parse(saved) : [];
+    return migrateFavorites(parsed, timetableData);
   });
   
   const [selectedDay, setSelectedDay] = useState('DAY 1');
   const [selectedStage, setSelectedStage] = useState('ALL');
-  const [isSimulated, setIsSimulated] = useState(false);
-  const [simTime, setSimTime] = useState(new Date('2026-07-27T20:00:00').getTime()); // Start of DAY 1
+  const [isSimulated, setIsSimulated] = useState(() => {
+    return localStorage.getItem('ozora_simulated') === 'true';
+  });
+  const [simTime, setSimTime] = useState(() => {
+    const saved = localStorage.getItem('ozora_sim_time');
+    return saved ? parseInt(saved, 10) : new Date('2026-07-27T14:00:00').getTime();
+  });
   const [selectedSet, setSelectedSet] = useState(null);
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
+
+  // Sync lang to localStorage
+  useEffect(() => {
+    localStorage.setItem('ozora_lang', lang);
+  }, [lang]);
 
   // Save favorites to localStorage
   useEffect(() => {
     localStorage.setItem('ozora_favs', JSON.stringify(favorites));
   }, [favorites]);
+
+  // Sync simulator states to localStorage
+  useEffect(() => {
+    localStorage.setItem('ozora_simulated', String(isSimulated));
+  }, [isSimulated]);
+
+  useEffect(() => {
+    localStorage.setItem('ozora_sim_time', String(simTime));
+  }, [simTime]);
 
   // Synchronize simulated time date with selected day (Slider -> Calendar)
   useEffect(() => {
@@ -126,10 +150,17 @@ export default function App() {
   });
 
   const toggleFavorite = (id) => {
+    const matchedSet = timetableData.find(s => s.id === id);
+    if (!matchedSet) return;
+    const key = getSetUniqueKey(matchedSet);
     setFavorites(prev => 
-      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+      prev.includes(key) ? prev.filter(f => f !== key) : [...prev, key]
     );
   };
+
+  const childFavorites = timetableData
+    .filter(set => favorites.includes(getSetUniqueKey(set)))
+    .map(set => set.id);
 
   // Filter sets based on selected day
   const filteredSets = timetableData.filter(set => set.day === selectedDay);
@@ -181,13 +212,14 @@ export default function App() {
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
+      <PsychedelicBackground themeClass={activeThemeClass} />
       <CountdownBanner lang={lang} />
 
       <Header
         lang={lang}
         setLang={setLang}
         timetableData={timetableData}
-        favorites={favorites}
+        favorites={childFavorites}
         toggleFavorite={toggleFavorite}
         onSelectSet={handleSelectSetFromSearch}
         activeTab={activeTab}
@@ -258,7 +290,7 @@ export default function App() {
                   <TimetableGrid
                     lang={lang}
                     sets={filteredSets}
-                    favorites={favorites}
+                    favorites={childFavorites}
                     toggleFavorite={toggleFavorite}
                     onSetClick={setSelectedSet}
                     activeStatusMap={activeStatusMap}
@@ -275,7 +307,7 @@ export default function App() {
                   ) : (
                     <ChronologicalFeed 
                       sets={mobileFilteredSets}
-                      favorites={favorites}
+                      favorites={childFavorites}
                       toggleFavorite={toggleFavorite}
                       onSetClick={setSelectedSet}
                       activeStatusMap={activeStatusMap}
@@ -292,7 +324,7 @@ export default function App() {
         <MySchedule 
           lang={lang}
           timetableData={timetableData}
-          favorites={favorites}
+          favorites={childFavorites}
           toggleFavorite={toggleFavorite}
           onSetClick={setSelectedSet}
           simTime={simTime}
@@ -332,7 +364,7 @@ export default function App() {
       <SetModal 
         set={selectedSet}
         lang={lang}
-        favorites={favorites}
+        favorites={childFavorites}
         toggleFavorite={toggleFavorite}
         onClose={() => setSelectedSet(null)}
       />
