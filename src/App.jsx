@@ -13,6 +13,8 @@ import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import { Calendar, User, BookOpen } from 'lucide-react';
+import CookieConsent from './components/CookieConsent';
+import { getStoredConsent, initializeGA4 } from './utils/consent';
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -101,6 +103,14 @@ export default function App() {
   const [selectedSet, setSelectedSet] = useState(null);
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  // Initialize Google Analytics if consent was already given
+  useEffect(() => {
+    const consent = getStoredConsent();
+    if (consent && consent.analytics) {
+      initializeGA4();
+    }
+  }, []);
 
   // Sync lang to localStorage
   useEffect(() => {
@@ -435,6 +445,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <CookieConsent lang={lang} />
     </div>
   );
 }
