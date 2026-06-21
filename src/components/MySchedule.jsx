@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Star, Radio, Share2, Flame, StarOff, Filter, MessageSquare } from 'lucide-react';
+import { Star, Radio, Share2, Flame, StarOff, Filter, MessageSquare, AlertTriangle } from 'lucide-react';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
 import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
 import { getNotes } from '../utils/notes';
+import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
+import ConflictBanner from './ConflictBanner';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -59,6 +61,11 @@ export default function MySchedule({
   };
 
   const favSets = timetableData.filter(set => favorites.includes(set.id));
+
+  const conflicts = detectConflicts(favSets);
+  const conflictSetIds = new Set(
+    conflicts.flatMap(c => [c.setA.id, c.setB.id])
+  );
 
   const evalTime = isSimulated ? new Date(simTime) : new Date();
   if (!isSimulated) {
@@ -136,6 +143,12 @@ export default function MySchedule({
 
   return (
     <div className="my-schedule-container stagger-slide-up" style={{ '--card-index': 0 }}>
+      <ConflictBanner
+        conflicts={conflicts}
+        lang={lang}
+        onSetClick={onSetClick}
+      />
+
       {/* Live Status Board */}
       {(activeFavorites.length > 0 || upcomingFavorites.length > 0) && (
         <div className="live-favs-section">
@@ -239,6 +252,17 @@ export default function MySchedule({
                           <div className="feed-note-text">
                             <MessageSquare size={11} />
                             <span>{notes[setKey]}</span>
+                          </div>
+                        )}
+                        {conflictSetIds.has(set.id) && (
+                          <div className="feed-conflict-badge">
+                            <AlertTriangle size={11} />
+                            <span>
+                              {t.conflictsWith}{' '}
+                              {getConflictsForSet(set.id, conflicts)
+                                .map(c => getConflictPartner(set.id, c).artist)
+                                .join(', ')}
+                            </span>
                           </div>
                         )}
                       </div>

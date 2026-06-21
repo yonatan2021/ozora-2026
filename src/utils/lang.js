@@ -47,7 +47,10 @@ export const translations = {
     filterMustSee: "Must See Only",
     addNote: "Add note...",
     notePlaceholder: "Personal note (max 100 chars)",
-    noteLabel: "Note"
+    noteLabel: "Note",
+    conflicts: "Conflicts",
+    conflictsWith: "Overlaps with",
+    conflictMinutes: "min"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -97,6 +100,9 @@ export const translations = {
     filterMustSee: "רק חובה",
     addNote: "הוסף הערה...",
     notePlaceholder: "הערה אישית (עד 100 תווים)",
-    noteLabel: "הערה"
+    noteLabel: "הערה",
+    conflicts: "התנגשויות",
+    conflictsWith: "חופף עם",
+    conflictMinutes: "דק׳"
   }
 };
