@@ -22,7 +22,7 @@
       "nameHe": "במת אוזורה הראשית",
       "type": "stage",
       "stageName": "OZORA STAGE",
-      "coords": [46.7721, 18.4334],
+      "coords": [46.773164, 18.435942],
       "color": "#e040a0",
       "tags": ["main", "psy", "trance", "music"]
     },
@@ -32,7 +32,7 @@
       "nameHe": "פאמפוי",
       "type": "stage",
       "stageName": "PUMPUI",
-      "coords": [46.7690, 18.4316],
+      "coords": [46.769936, 18.433367],
       "color": "#38a169",
       "tags": ["chill", "progressive", "music"]
     },
@@ -42,7 +42,7 @@
       "nameHe": "הכיפה",
       "type": "stage",
       "stageName": "THE DOME",
-      "coords": [46.7707, 18.4338],
+      "coords": [46.771823, 18.431491],
       "color": "#3182ce",
       "tags": ["dome", "electronic", "music"]
     },
@@ -52,7 +52,7 @@
       "nameHe": "דרגון נסט / קוקינג גרוב",
       "type": "stage",
       "stageName": "DRAGON NEST / COOKING GROOVE",
-      "coords": [46.7698, 18.4325],
+      "coords": [46.770563, 18.434113],
       "color": "#dd6b20",
       "tags": ["groove", "cooking", "music"]
     },
@@ -62,7 +62,7 @@
       "nameHe": "ויזיום גארדן",
       "type": "stage",
       "stageName": "VISIUM GARDEN",
-      "coords": [46.7714, 18.4344],
+      "coords": [46.76958, 18.43357],
       "color": "#68d391",
       "tags": ["garden", "ambient", "healing", "music"]
     },
@@ -72,7 +72,7 @@
       "nameHe": "טק זירו (טראנס 2000)",
       "type": "stage",
       "stageName": "TEK ZERO (2000s Trance)",
-      "coords": [46.7686, 18.4346],
+      "coords": [46.771823, 18.431491],
       "color": "#805ad5",
       "tags": ["tek", "2000s", "trance", "music"]
     },

@@ -81,7 +81,7 @@ define(['./workbox-1d840b8c'], (function (workbox) { 'use strict';
     "revision": "198eedf187a4a037f8e1d68231e331a4"
   }, {
     "url": "index.html",
-    "revision": "0.ak8d4f4q7s"
+    "revision": "0.kh06ho36jk"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -95,6 +95,14 @@ define(['./workbox-1d840b8c'], (function (workbox) { 'use strict';
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 12,
       maxAgeSeconds: 604800
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/tile\.openstreetmap\.org\/.*/, new workbox.CacheFirst({
+    "cacheName": "ozora-map-tiles",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 500,
+      maxAgeSeconds: 7776000,
+      purgeOnQuotaError: true
     })]
   }), 'GET');
   workbox.registerRoute(({
