@@ -3696,3 +3696,435 @@ body:has(.theme-sunrise)::before {
   display: flex;
   align-items: center;
 }
+
+/* ==========================================
+   VENUE MAP
+   ========================================== */
+
+.venue-map-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 140px);
+  min-height: 400px;
+}
+
+.venue-leaflet-map {
+  flex: 1;
+  z-index: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 8px;
+}
+
+/* Fix Leaflet box-sizing conflicts */
+.leaflet-container,
+.leaflet-container * {
+  box-sizing: content-box;
+}
+
+/* Category filter bar */
+.map-filter-bar {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 2;
+  -webkit-overflow-scrolling: touch;
+}
+
+.map-filter-bar::-webkit-scrollbar { display: none; }
+
+.map-filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.map-filter-chip .chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.map-filter-chip.active {
+  background: color-mix(in oklch, var(--chip-color) 15%, var(--surface));
+  border-color: var(--chip-color);
+  color: var(--text-primary);
+}
+
+.map-filter-chip.show-all {
+  border-style: dashed;
+  font-weight: 500;
+}
+
+/* GPS center FAB */
+.map-fab {
+  position: absolute;
+  bottom: 24px;
+  inset-inline-end: 20px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px oklch(0 0 0 / 0.3);
+  transition: all 0.2s ease;
+}
+
+.map-fab:active {
+  transform: scale(0.92);
+}
+
+/* Map download overlay */
+.map-download-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0 0 0 / 0.6);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  margin: 0 8px;
+  pointer-events: none;
+}
+
+.map-download-content {
+  text-align: center;
+  color: var(--text-primary);
+  padding: 24px;
+}
+
+.map-download-content p {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.map-download-bar {
+  width: 200px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.map-download-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.map-download-pct {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: inline-block;
+}
+
+/* Map marker icon reset */
+.map-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Popups */
+.map-popup .leaflet-popup-content-wrapper {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px oklch(0 0 0 / 0.4);
+}
+
+.map-popup .leaflet-popup-tip {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+}
+
+.map-popup .leaflet-popup-close-button {
+  color: var(--text-muted);
+}
+
+.map-popup-content {
+  padding: 4px 0;
+}
+
+.popup-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.popup-stage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.popup-now, .popup-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.popup-label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.popup-time {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.popup-closed {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.popup-distance {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 6px 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.popup-walk {
+  color: var(--text-muted);
+}
+
+.popup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.15s ease;
+}
+
+.popup-btn:hover {
+  background: var(--surface-hover);
+}
+
+.popup-timetable-btn {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.popup-nav-btn {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Night mode map adjustments */
+.theme-night .leaflet-tile-pane,
+.theme-sunrise .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.65) contrast(1.15);
+}
+
+.theme-night .marker-dot,
+.theme-sunrise .marker-dot {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* GPS dot night glow */
+.theme-night .gps-dot,
+.theme-sunrise .gps-dot {
+  filter: drop-shadow(0 0 10px oklch(0.68 0.26 210));
+}
+
+@keyframes gps-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.gps-dot path {
+  animation: gps-pulse 2s ease-in-out infinite;
+}
+
+/* Responsive: reduce filter bar padding on small screens */
+@media (max-width: 480px) {
+  .venue-map-container {
+    height: calc(100dvh - 180px);
+  }
+  .venue-leaflet-map {
+    margin: 0 4px;
+    border-radius: 8px;
+  }
+  .map-filter-bar {
+    padding: 6px 8px;
+  }
+  .map-filter-chip {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+  }
+}
+
+/* View mode toggle (map / nearby) */
+.map-view-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.map-view-toggle.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.filter-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* Nearby list */
+.nearby-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px 80px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nearby-no-gps {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 24px 16px;
+}
+
+.nearby-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: start;
+  transition: background 0.15s ease;
+}
+
+.nearby-item:active {
+  background: var(--surface-hover);
+}
+
+.nearby-rank {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 18px;
+  text-align: center;
+}
+
+.nearby-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nearby-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.nearby-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nearby-playing {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.nearby-category {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nearby-dist {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  gap: 1px;
+}
+
+.nearby-dist-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.nearby-dist-walk {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}

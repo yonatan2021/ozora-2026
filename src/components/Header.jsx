@@ -1,4 +1,4 @@
-import { Languages, Calendar, BookOpen, User } from 'lucide-react';
+import { Languages, Calendar, BookOpen, User, Map as MapIcon } from 'lucide-react';
 import { translations } from '../utils/lang';
 import SearchBar from './SearchBar';
 import logo from '../assets/logo.png';
@@ -48,7 +48,14 @@ export default function Header({
               <User size={16} />
               <span>{isHe ? 'הלוח שלי' : 'My Schedule'}</span>
             </button>
-            <button 
+            <button
+              className={`tab-btn ${activeTab === 'map' ? 'active' : ''}`}
+              onClick={() => setActiveTab('map')}
+            >
+              <MapIcon size={16} />
+              <span>{isHe ? 'מפה' : 'Map'}</span>
+            </button>
+            <button
               className={`tab-btn ${activeTab === 'guide' ? 'active' : ''}`}
               onClick={() => setActiveTab('guide')}
             >

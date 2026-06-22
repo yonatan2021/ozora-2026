@@ -79,7 +79,20 @@ export const translations = {
     comparingWith: "Comparing with",
     friendRemoved: "Friend's schedule removed",
     friendSaved: "Schedule saved!",
-    maxFriendsReached: "Max 10 friend schedules"
+    maxFriendsReached: "Max 10 friend schedules",
+    mapTab: "Map",
+    showOnMap: "Show on map",
+    stageClosed: "Stage closed",
+    nextOpening: "Next opening",
+    walkTime: "walk",
+    showAll: "Show All",
+    downloadingMap: "Downloading map for offline use...",
+    mapReady: "Map ready for offline use!",
+    gpsUnavailable: "GPS unavailable",
+    centerOnMe: "Center on me",
+    navigate: "Navigate",
+    viewInTimetable: "View in Timetable",
+    distance: "away"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -161,6 +174,19 @@ export const translations = {
     comparingWith: "משווה עם",
     friendRemoved: "הלוח של החבר/ה הוסר",
     friendSaved: "הלוח נשמר!",
-    maxFriendsReached: "ניתן לשמור עד 10 לוחות חברים"
+    maxFriendsReached: "ניתן לשמור עד 10 לוחות חברים",
+    mapTab: "מפה",
+    showOnMap: "הצג במפה",
+    stageClosed: "הבמה סגורה",
+    nextOpening: "הפתיחה הבאה",
+    walkTime: "הליכה",
+    showAll: "הצג הכל",
+    downloadingMap: "מוריד מפה לשימוש אופליין...",
+    mapReady: "המפה מוכנה לשימוש אופליין!",
+    gpsUnavailable: "GPS לא זמין",
+    centerOnMe: "מרכז עליי",
+    navigate: "נווט",
+    viewInTimetable: "הצג בלוח",
+    distance: "מרחק"
   }
 };

@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { X, Star, MapPin, Clock, Tag, CalendarPlus, ChevronDown, MessageSquare } from 'lucide-react';
+import { X, Star, MapPin, Clock, Tag, CalendarPlus, ChevronDown, MessageSquare, Map as MapIcon } from 'lucide-react';
 import { translations } from '../utils/lang';
 import { getCalendarPlatform, generateGoogleCalendarUrl, generateICSFile } from '../utils/calendar';
 import { getNote, setNote as saveNote, NOTE_MAX_LENGTH } from '../utils/notes';
 import { getSetUniqueKey } from '../utils/time';
 import { trackEvent } from '../utils/analytics';
 
-export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged }) {
+export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged, onShowOnMap }) {
   const setKey = useMemo(() => set ? getSetUniqueKey(set) : null, [set]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [noteText, setNoteText] = useState(() => setKey ? getNote(setKey) : '');
@@ -134,6 +134,16 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
           <Star size={18} fill={isFav ? 'var(--stage-visium)' : 'none'} stroke={isFav ? 'var(--stage-visium)' : 'currentColor'} />
           <span>{isFav ? (lang === 'he' ? 'הסר מהלוח שלי' : 'Remove from My Schedule') : (lang === 'he' ? 'הוסף ללוח שלי' : 'Add to My Schedule')}</span>
         </button>
+
+        {onShowOnMap && (
+          <button
+            className="modal-fav-btn"
+            onClick={() => { onShowOnMap(set.stage); onClose(); }}
+          >
+            <MapIcon size={18} />
+            <span>{lang === 'he' ? 'הצג במפה' : 'Show on map'}</span>
+          </button>
+        )}
 
         <div className="modal-calendar-wrapper" ref={dropdownRef}>
           <div className="modal-calendar-btn-group">

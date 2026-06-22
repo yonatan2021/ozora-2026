@@ -1,0 +1,425 @@
+{
+  "center": [46.7710, 18.4340],
+  "bounds": [[46.7620, 18.4260], [46.7760, 18.4420]],
+  "zoomRange": [15, 18],
+  "defaultZoom": 16,
+  "categories": [
+    { "id": "stage", "label": "Stages", "labelHe": "במות", "icon": "music", "color": "#e040a0" },
+    { "id": "medical", "label": "Medical", "labelHe": "עזרה ראשונה", "icon": "cross", "color": "#e53e3e" },
+    { "id": "food", "label": "Food & Bars", "labelHe": "אוכל ובר", "icon": "utensils", "color": "#ed8936" },
+    { "id": "water", "label": "Water", "labelHe": "מים", "icon": "droplet", "color": "#4299e1" },
+    { "id": "toilet", "label": "Toilets", "labelHe": "שירותים", "icon": "circle-dot", "color": "#a0aec0" },
+    { "id": "shower", "label": "Showers", "labelHe": "מקלחות", "icon": "droplet", "color": "#76e4f7" },
+    { "id": "camping", "label": "Camping", "labelHe": "קמפינג", "icon": "tent", "color": "#48bb78" },
+    { "id": "entrance", "label": "Entrances", "labelHe": "כניסות", "icon": "log-in", "color": "#ffffff" },
+    { "id": "parking", "label": "Parking", "labelHe": "חניה", "icon": "car", "color": "#cbd5e0" },
+    { "id": "landmark", "label": "Landmarks", "labelHe": "ציוני דרך", "icon": "info", "color": "#ecc94b" }
+  ],
+  "pois": [
+    {
+      "id": "ozora-stage",
+      "name": "Ozora Main Stage",
+      "nameHe": "במת אוזורה הראשית",
+      "type": "stage",
+      "stageName": "OZORA STAGE",
+      "coords": [46.7721, 18.4334],
+      "color": "#e040a0",
+      "tags": ["main", "psy", "trance", "music"]
+    },
+    {
+      "id": "pumpui",
+      "name": "Pumpui",
+      "nameHe": "פאמפוי",
+      "type": "stage",
+      "stageName": "PUMPUI",
+      "coords": [46.7690, 18.4316],
+      "color": "#38a169",
+      "tags": ["chill", "progressive", "music"]
+    },
+    {
+      "id": "the-dome",
+      "name": "The Dome",
+      "nameHe": "הכיפה",
+      "type": "stage",
+      "stageName": "THE DOME",
+      "coords": [46.7707, 18.4338],
+      "color": "#3182ce",
+      "tags": ["dome", "electronic", "music"]
+    },
+    {
+      "id": "dragon-nest",
+      "name": "Dragon Nest / Cooking Groove",
+      "nameHe": "דרגון נסט / קוקינג גרוב",
+      "type": "stage",
+      "stageName": "DRAGON NEST / COOKING GROOVE",
+      "coords": [46.7698, 18.4325],
+      "color": "#dd6b20",
+      "tags": ["groove", "cooking", "music"]
+    },
+    {
+      "id": "visium-garden",
+      "name": "Visium Garden",
+      "nameHe": "ויזיום גארדן",
+      "type": "stage",
+      "stageName": "VISIUM GARDEN",
+      "coords": [46.7714, 18.4344],
+      "color": "#68d391",
+      "tags": ["garden", "ambient", "healing", "music"]
+    },
+    {
+      "id": "tek-zero",
+      "name": "Tek Zero (2000s Trance)",
+      "nameHe": "טק זירו (טראנס 2000)",
+      "type": "stage",
+      "stageName": "TEK ZERO (2000s Trance)",
+      "coords": [46.7686, 18.4346],
+      "color": "#805ad5",
+      "tags": ["tek", "2000s", "trance", "music"]
+    },
+
+    {
+      "id": "medical-main",
+      "name": "Main Medical Center",
+      "nameHe": "מרכז רפואי ראשי",
+      "type": "medical",
+      "coords": [46.7705, 18.4345],
+      "tags": ["first aid", "doctor", "emergency"]
+    },
+    {
+      "id": "medical-camping",
+      "name": "Camping Medical Point",
+      "nameHe": "נקודת עזרה ראשונה - קמפינג",
+      "type": "medical",
+      "coords": [46.7661, 18.4345],
+      "tags": ["first aid"]
+    },
+
+    {
+      "id": "food-langos",
+      "name": "Lángos Restaurant",
+      "nameHe": "מסעדת לאנגוש",
+      "type": "food",
+      "coords": [46.7698, 18.4318],
+      "tags": ["langos", "hungarian", "eat", "takeaway"]
+    },
+    {
+      "id": "food-main-street",
+      "name": "Main Street Food Stalls",
+      "nameHe": "דוכני אוכל ברחוב הראשי",
+      "type": "food",
+      "coords": [46.7707, 18.4338],
+      "tags": ["food", "eat", "vegan", "falafel", "pizza"]
+    },
+    {
+      "id": "food-south",
+      "name": "South Food Area",
+      "nameHe": "אזור אוכל דרומי",
+      "type": "food",
+      "coords": [46.7670, 18.4340],
+      "tags": ["food", "eat", "snacks"]
+    },
+    {
+      "id": "shop-tobacco",
+      "name": "Tobacco Shop",
+      "nameHe": "חנות טבק",
+      "type": "food",
+      "coords": [46.7703, 18.4361],
+      "tags": ["tobacco", "shop", "dohany"]
+    },
+
+    {
+      "id": "water-1",
+      "name": "Water Point - South",
+      "nameHe": "נקודת מים - דרום",
+      "type": "water",
+      "coords": [46.7645, 18.4357],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-2",
+      "name": "Water Point - Center East",
+      "nameHe": "נקודת מים - מרכז מזרח",
+      "type": "water",
+      "coords": [46.7701, 18.4371],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-3",
+      "name": "Water Point - Center",
+      "nameHe": "נקודת מים - מרכז",
+      "type": "water",
+      "coords": [46.7702, 18.4382],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-4",
+      "name": "Water Point - North",
+      "nameHe": "נקודת מים - צפון",
+      "type": "water",
+      "coords": [46.7735, 18.4365],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-5",
+      "name": "Water Point - West",
+      "nameHe": "נקודת מים - מערב",
+      "type": "water",
+      "coords": [46.7704, 18.4315],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-6",
+      "name": "Water Point - Northwest",
+      "nameHe": "נקודת מים - צפון מערב",
+      "type": "water",
+      "coords": [46.7720, 18.4321],
+      "tags": ["drinking water", "refill"]
+    },
+    {
+      "id": "water-7",
+      "name": "Water Point - Main Stage",
+      "nameHe": "נקודת מים - במה ראשית",
+      "type": "water",
+      "coords": [46.7733, 18.4336],
+      "tags": ["drinking water", "refill"]
+    },
+
+    {
+      "id": "toilet-1",
+      "name": "Toilets - South Gate",
+      "nameHe": "שירותים - שער דרומי",
+      "type": "toilet",
+      "coords": [46.7649, 18.4356],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-2",
+      "name": "Toilets - South West",
+      "nameHe": "שירותים - דרום מערב",
+      "type": "toilet",
+      "coords": [46.7653, 18.4332],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-3",
+      "name": "Toilets - South Center",
+      "nameHe": "שירותים - מרכז דרום",
+      "type": "toilet",
+      "coords": [46.7661, 18.4345],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-4",
+      "name": "Toilets - Pumpui West",
+      "nameHe": "שירותים - פאמפוי מערב",
+      "type": "toilet",
+      "coords": [46.7668, 18.4310],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-5",
+      "name": "Toilets - Center",
+      "nameHe": "שירותים - מרכז",
+      "type": "toilet",
+      "coords": [46.7676, 18.4339],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-6",
+      "name": "Toilets - West",
+      "nameHe": "שירותים - מערב",
+      "type": "toilet",
+      "coords": [46.7686, 18.4288],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-7",
+      "name": "Toilets - Center North",
+      "nameHe": "שירותים - מרכז צפון",
+      "type": "toilet",
+      "coords": [46.7687, 18.4345],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-8",
+      "name": "Toilets - Main Street",
+      "nameHe": "שירותים - רחוב ראשי",
+      "type": "toilet",
+      "coords": [46.7697, 18.4340],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-9",
+      "name": "Toilets - Dome Area",
+      "nameHe": "שירותים - אזור הכיפה",
+      "type": "toilet",
+      "coords": [46.7705, 18.4345],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-10",
+      "name": "Toilets - North West",
+      "nameHe": "שירותים - צפון מערב",
+      "type": "toilet",
+      "coords": [46.7724, 18.4311],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-11",
+      "name": "Toilets - North",
+      "nameHe": "שירותים - צפון",
+      "type": "toilet",
+      "coords": [46.7740, 18.4363],
+      "tags": ["wc", "bathroom"]
+    },
+    {
+      "id": "toilet-12",
+      "name": "Toilets - Lookout Area",
+      "nameHe": "שירותים - אזור תצפית",
+      "type": "toilet",
+      "coords": [46.7743, 18.4337],
+      "tags": ["wc", "bathroom"]
+    },
+
+    {
+      "id": "shower-south",
+      "name": "Showers - South (24/7)",
+      "nameHe": "מקלחות - דרום (24/7)",
+      "type": "shower",
+      "coords": [46.7670, 18.4371],
+      "tags": ["shower", "cold water", "24h"]
+    },
+    {
+      "id": "shower-west",
+      "name": "Showers - West",
+      "nameHe": "מקלחות - מערב",
+      "type": "shower",
+      "coords": [46.7687, 18.4287],
+      "tags": ["shower"]
+    },
+    {
+      "id": "shower-north",
+      "name": "Showers - North (Private)",
+      "nameHe": "מקלחות - צפון",
+      "type": "shower",
+      "coords": [46.7716, 18.4371],
+      "tags": ["shower", "drinking water available"]
+    },
+
+    {
+      "id": "camping-south",
+      "name": "South Camping Area",
+      "nameHe": "אזור קמפינג דרומי",
+      "type": "camping",
+      "coords": [46.7650, 18.4340],
+      "tags": ["tent", "sleep", "camp"]
+    },
+    {
+      "id": "camping-west",
+      "name": "West Camping (Quiet)",
+      "nameHe": "קמפינג מערבי (שקט)",
+      "type": "camping",
+      "coords": [46.7680, 18.4290],
+      "tags": ["tent", "sleep", "quiet"]
+    },
+    {
+      "id": "camping-north",
+      "name": "North Camping Area",
+      "nameHe": "אזור קמפינג צפוני",
+      "type": "camping",
+      "coords": [46.7745, 18.4350],
+      "tags": ["tent", "sleep", "forest", "shade"]
+    },
+
+    {
+      "id": "entrance-main",
+      "name": "Main Entrance",
+      "nameHe": "כניסה ראשית",
+      "type": "entrance",
+      "coords": [46.7695, 18.4369],
+      "tags": ["gate", "entry", "tickets"]
+    },
+    {
+      "id": "entrance-north",
+      "name": "North Gate",
+      "nameHe": "שער צפוני",
+      "type": "entrance",
+      "coords": [46.7738, 18.4340],
+      "tags": ["gate", "entry"]
+    },
+
+    {
+      "id": "parking-main",
+      "name": "Main Parking (O.Z.O.R.A.)",
+      "nameHe": "חניון ראשי",
+      "type": "parking",
+      "coords": [46.7699, 18.4374],
+      "tags": ["car", "vehicle", "gravel"]
+    },
+
+    {
+      "id": "lake-halomi",
+      "name": "Halomi Lake",
+      "nameHe": "אגם האלומי",
+      "type": "landmark",
+      "coords": [46.7739, 18.4328],
+      "tags": ["lake", "water", "swim", "relax"]
+    },
+    {
+      "id": "magic-garden",
+      "name": "Magic Garden (Zen Garden)",
+      "nameHe": "הגן הקסום (גן זן)",
+      "type": "landmark",
+      "coords": [46.7709, 18.4334],
+      "tags": ["zen", "garden", "healing", "meditation", "chill"]
+    },
+    {
+      "id": "art-adam-eve",
+      "name": "Ádám és Éva Sculpture",
+      "nameHe": "פסל אדם וחוה",
+      "type": "landmark",
+      "coords": [46.7704, 18.4324],
+      "tags": ["art", "sculpture", "wood", "landmark"]
+    },
+    {
+      "id": "art-world-tree",
+      "name": "Világfa (World Tree)",
+      "nameHe": "עץ העולם (וילאגפה)",
+      "type": "landmark",
+      "coords": [46.7732, 18.4360],
+      "tags": ["art", "sculpture", "wood", "landmark"]
+    },
+    {
+      "id": "butterfly-lookout",
+      "name": "Pillangó Kilátó (Butterfly Lookout)",
+      "nameHe": "מצפה הפרפרים",
+      "type": "landmark",
+      "coords": [46.7738, 18.4347],
+      "tags": ["viewpoint", "lookout", "panorama"]
+    },
+    {
+      "id": "herb-garden",
+      "name": "Herb Garden",
+      "nameHe": "גן תבלינים",
+      "type": "landmark",
+      "coords": [46.7714, 18.4343],
+      "tags": ["herbs", "garden", "community"]
+    },
+    {
+      "id": "main-street",
+      "name": "Festival Main Street",
+      "nameHe": "הרחוב הראשי של הפסטיבל",
+      "type": "landmark",
+      "coords": [46.7707, 18.4338],
+      "tags": ["main street", "bazaar", "market", "shops"]
+    },
+    {
+      "id": "recycling",
+      "name": "Recycling Center",
+      "nameHe": "מרכז מיחזור",
+      "type": "landmark",
+      "coords": [46.7726, 18.4382],
+      "tags": ["recycling", "waste", "eco"]
+    }
+  ]
+}

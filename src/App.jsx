@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useEffect, useRef } from 'react';
+import { lazy, Suspense, useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
@@ -12,7 +12,7 @@ import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
-import { Calendar, User, BookOpen, Heart } from 'lucide-react';
+import { Calendar, User, BookOpen, Heart, Map as MapIcon } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
@@ -20,6 +20,8 @@ import ImportModal from './components/ImportModal';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
+
+const VenueMap = lazy(() => import('./components/VenueMap'));
 
 const DAY_DATE_LABELS = {
   'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
@@ -82,7 +84,9 @@ export default function App() {
     const saved = localStorage.getItem('ozora_lang');
     return saved === 'en' ? 'en' : 'he';
   });
-  const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'guide'
+  const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'map' | 'guide'
+  const [flyToStageId, setFlyToStageId] = useState(null);
+  const mapViewStateRef = useRef(null);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('ozora_favs');
     const parsed = saved ? JSON.parse(saved) : [];
@@ -288,6 +292,12 @@ export default function App() {
   const days = DAYS;
   const t = translations[lang];
 
+  const handleShowOnMap = useCallback((stageName) => {
+    setFlyToStageId(stageName);
+    setActiveTab('map');
+    trackEvent('map_show_on_map', { stage_name: stageName });
+  }, []);
+
   const handleSelectSetFromSearch = (set) => {
     setActiveTab('timetable');
     handleDayChange(set.day);
@@ -452,6 +462,22 @@ export default function App() {
         />
       )}
 
+      {activeTab === 'map' && (
+        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading map...</div>}>
+          <VenueMap
+            lang={lang}
+            timetableData={timetableData}
+            simTime={simTime}
+            isSimulated={isSimulated}
+            activeStatusMap={activeStatusMap}
+            flyToStageId={flyToStageId}
+            onFlyToComplete={() => setFlyToStageId(null)}
+            onViewInTimetable={(set) => handleSelectSetFromSearch(set)}
+            savedViewState={mapViewStateRef.current}
+          />
+        </Suspense>
+      )}
+
       {activeTab === 'guide' && (
         <FestivalGuide />
       )}
@@ -474,14 +500,21 @@ export default function App() {
           <Calendar size={20} />
           <span>{lang === 'he' ? 'לוח הופעות' : 'Timetable'}</span>
         </button>
-        <button 
+        <button
           className={`bottom-nav-btn ${activeTab === 'favorites' ? 'active' : ''}`}
           onClick={() => setActiveTab('favorites')}
         >
           <User size={20} />
           <span>{lang === 'he' ? 'הלוח שלי' : 'My Schedule'}</span>
         </button>
-        <button 
+        <button
+          className={`bottom-nav-btn ${activeTab === 'map' ? 'active' : ''}`}
+          onClick={() => setActiveTab('map')}
+        >
+          <MapIcon size={20} />
+          <span>{lang === 'he' ? 'מפה' : 'Map'}</span>
+        </button>
+        <button
           className={`bottom-nav-btn ${activeTab === 'guide' ? 'active' : ''}`}
           onClick={() => setActiveTab('guide')}
         >
@@ -497,6 +530,7 @@ export default function App() {
         toggleFavorite={toggleFavorite}
         onClose={() => setSelectedSet(null)}
         onNoteChanged={() => setNotesVersion(v => v + 1)}
+        onShowOnMap={handleShowOnMap}
       />
 
       <LiveStatusModal 
