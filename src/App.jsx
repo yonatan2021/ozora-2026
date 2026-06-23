@@ -12,6 +12,7 @@ import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
+import SacredGeometry from './components/SacredGeometry';
 import { Calendar, User, BookOpen, Heart, Map as MapIcon } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
@@ -337,6 +338,7 @@ export default function App() {
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
       <PsychedelicBackground themeClass={activeThemeClass} />
+      <SacredGeometry themeClass={activeThemeClass} />
       <CountdownBanner lang={lang} />
 
       <Header

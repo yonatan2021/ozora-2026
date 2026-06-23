@@ -1977,6 +1977,47 @@ body:has(.theme-sunrise)::before {
 }
 
 /* ==========================================
+   SACRED GEOMETRY — ambient rotating patterns
+   ========================================== */
+.sacred-geo {
+  opacity: 0;
+  animation: geo-fade-in 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sacred-geo-1 {
+  animation: geo-fade-in 3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+             geo-rotate-cw 90s linear infinite;
+  transform-origin: center;
+}
+
+.sacred-geo-2 {
+  animation: geo-fade-in 3s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+             geo-rotate-ccw 120s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes geo-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes geo-rotate-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes geo-rotate-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sacred-geo {
+    animation: geo-fade-in 0.01s forwards !important;
+  }
+}
+
+/* ==========================================
    STAGGERED SUNRISE ENTRANCE
    ========================================== */
 .stagger-slide-up {
