@@ -107,6 +107,20 @@ export default function App() {
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [notesVersion, setNotesVersion] = useState(0);
+  const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));
+
+  // Periodically check if a camp is pinned/removed (safeguard since storage event doesn't fire in the same window)
+  useEffect(() => {
+    const handleStorage = () => {
+      setHasCamp(!!localStorage.getItem('ozora_my_camp'));
+    };
+    window.addEventListener('storage', handleStorage);
+    const interval = setInterval(handleStorage, 1000);
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(interval);
+    };
+  }, []);
   const [pendingImport, setPendingImport] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
@@ -350,6 +364,11 @@ export default function App() {
         onSelectSet={handleSelectSetFromSearch}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        hasCamp={hasCamp}
+        onCampClick={() => {
+          setActiveTab('map');
+          setFlyToStageId('my-camp');
+        }}
       />
 
       {/* Render Tab Contents */}

@@ -1,4 +1,4 @@
-import { Languages, Calendar, BookOpen, User, Map as MapIcon } from 'lucide-react';
+import { Languages, Calendar, BookOpen, User, Map as MapIcon, Tent } from 'lucide-react';
 import { translations } from '../utils/lang';
 import SearchBar from './SearchBar';
 import logo from '../assets/logo.png';
@@ -11,7 +11,9 @@ export default function Header({
   toggleFavorite,
   onSelectSet,
   activeTab,
-  setActiveTab
+  setActiveTab,
+  hasCamp,
+  onCampClick
 }) {
   const t = translations[lang];
   const isHe = lang === 'he';
@@ -66,6 +68,15 @@ export default function Header({
         </div>
 
         <div className="header-actions">
+          {hasCamp && (
+            <button 
+              className="camp-shortcut-btn" 
+              onClick={onCampClick}
+              title={isHe ? 'ניווט לאוהל שלי' : 'Navigate to my camp'}
+            >
+              <Tent size={18} />
+            </button>
+          )}
           <button 
             className="lang-toggle" 
             onClick={() => setLang(lang === 'en' ? 'he' : 'en')}
