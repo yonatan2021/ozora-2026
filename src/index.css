@@ -1986,13 +1986,13 @@ body:has(.theme-sunrise)::before {
 
 .sacred-geo-1 {
   animation: geo-fade-in 3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-             geo-rotate-cw 90s linear infinite;
+             geo-rotate-cw var(--rotate-duration, 90s) linear infinite;
   transform-origin: center;
 }
 
 .sacred-geo-2 {
   animation: geo-fade-in 3s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-             geo-rotate-ccw 120s linear infinite;
+             geo-rotate-ccw var(--rotate-duration, 120s) linear infinite;
   transform-origin: center;
 }
 

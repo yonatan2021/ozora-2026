@@ -1,37 +1,80 @@
 import { memo } from 'react';
 
-function SacredGeometry({ themeClass }) {
+// Static configurations for stage-specific colors and animation durations
+const STAGE_CONFIGS = {
+  'OZORA STAGE': { hue: 350, duration1: '40s', duration2: '60s' },
+  'PUMPUI': { hue: 145, duration1: '50s', duration2: '70s' },
+  'THE DOME': { hue: 230, duration1: '180s', duration2: '240s' },
+  'DRAGON NEST / COOKING GROOVE': { hue: 55, duration1: '80s', duration2: '110s' },
+  'DRAGON NEST': { hue: 55, duration1: '80s', duration2: '110s' },
+  'VISIUM GARDEN': { hue: 85, duration1: '90s', duration2: '120s' },
+  'TEK ZERO (2000s Trance)': { hue: 300, duration1: '90s', duration2: '120s' },
+  'TEK ZERO': { hue: 300, duration1: '90s', duration2: '120s' }
+};
+
+// Static coordinate calculations to avoid allocations/recalculations on every render
+const FLOWER_OF_LIFE_CIRCLES = [];
+const r = 60;
+const cx = 250;
+const cy = 250;
+
+FLOWER_OF_LIFE_CIRCLES.push({ x: cx, y: cy });
+for (let i = 0; i < 6; i++) {
+  const angle = (i * 60) * Math.PI / 180;
+  FLOWER_OF_LIFE_CIRCLES.push({
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle),
+  });
+}
+for (let i = 0; i < 6; i++) {
+  const angle = (i * 60) * Math.PI / 180;
+  FLOWER_OF_LIFE_CIRCLES.push({
+    x: cx + r * 2 * Math.cos(angle),
+    y: cy + r * 2 * Math.sin(angle),
+  });
+}
+for (let i = 0; i < 6; i++) {
+  const angle = (i * 60 + 30) * Math.PI / 180;
+  FLOWER_OF_LIFE_CIRCLES.push({
+    x: cx + r * Math.sqrt(3) * Math.cos(angle),
+    y: cy + r * Math.sqrt(3) * Math.sin(angle),
+  });
+}
+
+const OUTER_HEXAGON_POINTS = Array.from({ length: 6 }, (_, i) => {
+  const angle = (i * 60 - 30) * Math.PI / 180;
+  return `${200 + 150 * Math.cos(angle)},${200 + 150 * Math.sin(angle)}`;
+}).join(' ');
+
+const INNER_HEXAGON_POINTS = Array.from({ length: 6 }, (_, i) => {
+  const angle = (i * 60) * Math.PI / 180;
+  return `${200 + 80 * Math.cos(angle)},${200 + 80 * Math.sin(angle)}`;
+}).join(' ');
+
+const TETRAHEDRON_1_POINTS = Array.from({ length: 3 }, (_, i) => {
+  const angle = (i * 120 - 90) * Math.PI / 180;
+  return `${200 + 140 * Math.cos(angle)},${200 + 140 * Math.sin(angle)}`;
+}).join(' ');
+
+const TETRAHEDRON_2_POINTS = Array.from({ length: 3 }, (_, i) => {
+  const angle = (i * 120 + 30) * Math.PI / 180;
+  return `${200 + 140 * Math.cos(angle)},${200 + 140 * Math.sin(angle)}`;
+}).join(' ');
+
+function SacredGeometry({ themeClass, selectedStage = 'ALL' }) {
   const isDark = themeClass === 'theme-night' || themeClass === 'theme-sunset' || themeClass === 'theme-sunrise';
-  const strokeColor = isDark ? 'oklch(0.70 0.15 280 / 0.06)' : 'oklch(0.45 0.12 300 / 0.04)';
-  const glowColor = isDark ? 'oklch(0.65 0.20 300 / 0.08)' : 'oklch(0.50 0.15 330 / 0.05)';
+  
+  const stageConfig = STAGE_CONFIGS[selectedStage] || {};
+  const stageHue = stageConfig.hue !== undefined ? stageConfig.hue : (isDark ? 280 : 300);
+  const duration1 = stageConfig.duration1 || '90s';
+  const duration2 = stageConfig.duration2 || '120s';
 
-  const flowerOfLifeCircles = [];
-  const r = 60;
-  const cx = 250;
-  const cy = 250;
-
-  flowerOfLifeCircles.push({ x: cx, y: cy });
-  for (let i = 0; i < 6; i++) {
-    const angle = (i * 60) * Math.PI / 180;
-    flowerOfLifeCircles.push({
-      x: cx + r * Math.cos(angle),
-      y: cy + r * Math.sin(angle),
-    });
-  }
-  for (let i = 0; i < 6; i++) {
-    const angle = (i * 60) * Math.PI / 180;
-    flowerOfLifeCircles.push({
-      x: cx + r * 2 * Math.cos(angle),
-      y: cy + r * 2 * Math.sin(angle),
-    });
-  }
-  for (let i = 0; i < 6; i++) {
-    const angle = (i * 60 + 30) * Math.PI / 180;
-    flowerOfLifeCircles.push({
-      x: cx + r * Math.sqrt(3) * Math.cos(angle),
-      y: cy + r * Math.sqrt(3) * Math.sin(angle),
-    });
-  }
+  const strokeColor = isDark 
+    ? `oklch(0.70 0.15 ${stageHue} / 0.08)` 
+    : `oklch(0.45 0.12 ${stageHue} / 0.05)`;
+  const glowColor = isDark 
+    ? `oklch(0.75 0.22 ${stageHue} / 0.12)` 
+    : `oklch(0.50 0.15 ${stageHue} / 0.07)`;
 
   return (
     <div
@@ -54,6 +97,7 @@ function SacredGeometry({ themeClass }) {
           right: '-5%',
           width: 'clamp(300px, 35vw, 500px)',
           height: 'clamp(300px, 35vw, 500px)',
+          '--rotate-duration': duration1,
         }}
       >
         <defs>
@@ -66,7 +110,7 @@ function SacredGeometry({ themeClass }) {
           </filter>
         </defs>
         <g filter="url(#geo-glow-1)">
-          {flowerOfLifeCircles.map((c, i) => (
+          {FLOWER_OF_LIFE_CIRCLES.map((c, i) => (
             <circle
               key={i}
               cx={c.x}
@@ -90,6 +134,7 @@ function SacredGeometry({ themeClass }) {
           left: '-8%',
           width: 'clamp(250px, 28vw, 420px)',
           height: 'clamp(250px, 28vw, 420px)',
+          '--rotate-duration': duration2,
         }}
       >
         <defs>
@@ -104,39 +149,27 @@ function SacredGeometry({ themeClass }) {
         <g filter="url(#geo-glow-2)">
           {/* Outer hexagon */}
           <polygon
-            points={Array.from({ length: 6 }, (_, i) => {
-              const angle = (i * 60 - 30) * Math.PI / 180;
-              return `${200 + 150 * Math.cos(angle)},${200 + 150 * Math.sin(angle)}`;
-            }).join(' ')}
+            points={OUTER_HEXAGON_POINTS}
             fill="none"
             stroke={strokeColor}
             strokeWidth="0.6"
           />
           {/* Inner hexagon */}
           <polygon
-            points={Array.from({ length: 6 }, (_, i) => {
-              const angle = (i * 60) * Math.PI / 180;
-              return `${200 + 80 * Math.cos(angle)},${200 + 80 * Math.sin(angle)}`;
-            }).join(' ')}
+            points={INNER_HEXAGON_POINTS}
             fill="none"
             stroke={glowColor}
             strokeWidth="0.8"
           />
           {/* Connecting lines (star tetrahedron) */}
           <polygon
-            points={Array.from({ length: 3 }, (_, i) => {
-              const angle = (i * 120 - 90) * Math.PI / 180;
-              return `${200 + 140 * Math.cos(angle)},${200 + 140 * Math.sin(angle)}`;
-            }).join(' ')}
+            points={TETRAHEDRON_1_POINTS}
             fill="none"
             stroke={strokeColor}
             strokeWidth="0.5"
           />
           <polygon
-            points={Array.from({ length: 3 }, (_, i) => {
-              const angle = (i * 120 + 30) * Math.PI / 180;
-              return `${200 + 140 * Math.cos(angle)},${200 + 140 * Math.sin(angle)}`;
-            }).join(' ')}
+            points={TETRAHEDRON_2_POINTS}
             fill="none"
             stroke={strokeColor}
             strokeWidth="0.5"
