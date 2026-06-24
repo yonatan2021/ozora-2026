@@ -12,7 +12,7 @@ describe('StageTotem Component', () => {
   it('renders correct totem for PUMPUI', () => {
     const { container } = render(<StageTotem stage="PUMPUI" />);
     expect(container.querySelector('svg')).toBeTruthy();
-    expect(container.innerHTML).toContain('pumpui-speaker');
+    expect(container.innerHTML).toContain('totem-pumpui');
   });
 
   it('renders correct totem for THE DOME', () => {
