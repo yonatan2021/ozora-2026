@@ -14,6 +14,9 @@ describe('TimeSimulator Component', () => {
         setSimTime={setSimTime}
         isSimulated={false}
         setIsSimulated={setIsSimulated}
+        selectedDay="DAY 1"
+        isThemeLocked={false}
+        setIsThemeLocked={vi.fn()}
         onOpenLiveModal={vi.fn()}
       />
     );
@@ -35,6 +38,9 @@ describe('TimeSimulator Component', () => {
         setSimTime={setSimTime}
         isSimulated={true}
         setIsSimulated={vi.fn()}
+        selectedDay="DAY 1"
+        isThemeLocked={false}
+        setIsThemeLocked={vi.fn()}
         onOpenLiveModal={mockOpenLiveModal}
         onScrollToActive={mockScrollToActive}
       />
@@ -42,7 +48,7 @@ describe('TimeSimulator Component', () => {
 
     // Range input
     const slider = screen.getByRole('slider');
-    fireEvent.change(slider, { target: { value: new Date('2026-07-28T10:00:00').getTime().toString() } });
+    fireEvent.change(slider, { target: { value: new Date('2026-07-27T15:00:00').getTime().toString() } });
     expect(setSimTime).toHaveBeenCalled();
 
     // Take Me There
@@ -54,5 +60,26 @@ describe('TimeSimulator Component', () => {
     const whatsPlayingBtn = screen.getByRole('button', { name: /What's Playing Now\?/i });
     fireEvent.click(whatsPlayingBtn);
     expect(mockOpenLiveModal).toHaveBeenCalled();
+  });
+
+  it('should call setIsThemeLocked when theme lock button is clicked', () => {
+    const setIsThemeLocked = vi.fn();
+    render(
+      <TimeSimulator 
+        lang="en"
+        simTime={new Date('2026-07-27T12:00:00').getTime()}
+        setSimTime={vi.fn()}
+        isSimulated={true}
+        setIsSimulated={vi.fn()}
+        selectedDay="DAY 1"
+        isThemeLocked={false}
+        setIsThemeLocked={setIsThemeLocked}
+        onOpenLiveModal={vi.fn()}
+      />
+    );
+
+    const lockBtn = screen.getByRole('button', { name: /🔒 Lock Colors/i });
+    fireEvent.click(lockBtn);
+    expect(setIsThemeLocked).toHaveBeenCalledWith(true);
   });
 });
