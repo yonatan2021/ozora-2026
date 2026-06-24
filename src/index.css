@@ -4516,3 +4516,285 @@ body:has(.theme-sunrise)::before {
   opacity: 1;
   filter: drop-shadow(0 0 4px var(--glow-primary));
 }
+
+/* Offline Camp Pinning Styles */
+.map-fab-camp {
+  bottom: 140px; /* Positioned above center-on-me button */
+  border-color: #ecc94b !important;
+  color: var(--text-muted) !important;
+}
+.map-fab-camp.has-camp {
+  color: #ecc94b !important;
+  background: rgba(236, 201, 75, 0.1) !important;
+  box-shadow: 0 0 10px rgba(236, 201, 75, 0.3) !important;
+}
+
+.calibration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(11, 7, 19, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1.5rem;
+}
+
+.calibration-card {
+  background: var(--card-bg, #181424);
+  border: 1px solid var(--border-strong, #322b46);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.calibration-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.calibration-close:hover {
+  color: var(--text-primary);
+}
+
+.calibration-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.calibration-header h3 {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.calibration-icon {
+  color: #ecc94b;
+}
+
+.sacred-geometry-loader {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem auto;
+  position: relative;
+}
+
+.sacred-svg {
+  width: 100%;
+  height: 100%;
+  animation: spin-geometry 20s linear infinite;
+}
+
+@keyframes spin-geometry {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.calibration-tip {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.calibration-stats {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.stat-row:last-child {
+  margin-bottom: 0;
+}
+
+.good-signal {
+  color: #48bb78;
+}
+.poor-signal {
+  color: #e53e3e;
+}
+
+.calibration-progress-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.calibration-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ecc94b, #ed8936);
+  transition: width 0.1s linear;
+}
+
+/* Nearby Pinned Camp Card */
+.nearby-camp-card {
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background: var(--card-bg, #181424);
+  border: 1px solid var(--border, #2d263f);
+  text-align: right;
+  direction: rtl;
+}
+
+.nearby-camp-card.cta-card {
+  border: 1px dashed rgba(236, 201, 75, 0.4);
+  box-shadow: 0 0 12px rgba(236, 201, 75, 0.05);
+}
+
+.nearby-camp-card.active-card {
+  border: 1px solid #ecc94b;
+  box-shadow: 0 0 15px rgba(236, 201, 75, 0.08);
+}
+
+.nearby-camp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.nearby-camp-header h4 {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.nearby-camp-header .title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pulsing-camp-icon {
+  color: var(--text-muted);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.active-camp-icon {
+  color: #ecc94b;
+  filter: drop-shadow(0 0 4px rgba(236, 201, 75, 0.5));
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.nearby-camp-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0 0 1rem 0;
+}
+
+.pin-camp-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #ecc94b, #ed8936);
+  color: #12100e;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+}
+
+.delete-camp-btn {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+}
+
+.camp-dist-info {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.camp-dist-info strong {
+  color: #ecc94b;
+}
+.camp-dist-info span {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.camp-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.camp-nav-action-btn {
+  flex: 2;
+  background: #ecc94b;
+  color: #12100e;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+}
+
+.camp-recalibrate-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-strong, #322b46);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+}
+
+.camp-shortcut-btn {
+  background: none;
+  border: none;
+  color: #ecc94b;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  filter: drop-shadow(0 0 3px rgba(236, 201, 75, 0.3));
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+.camp-shortcut-btn:hover {
+  background: rgba(236, 201, 75, 0.1);
+}
+

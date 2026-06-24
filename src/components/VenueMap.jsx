@@ -635,42 +635,107 @@ export default function VenueMap({
           )}
 
           <div className="nearby-list">
-            {nearbyByCategory.map((poi, idx) => {
-              const poiName = poi.type === 'stage' ? poi.name : (isHe ? poi.nameHe : poi.name);
-              const cat = categoryMap[poi.type];
-              const isSelected = compassTarget?.id === poi.id;
-              const catColor = poi.color || cat?.color || 'var(--primary)';
-              return (
-                <button
-                  key={poi.id}
-                  className={`nearby-item ${isSelected ? 'selected' : ''}`}
-                  style={{ '--item-color': catColor }}
-                  onClick={() => selectCompassTarget(poi)}
-                >
-                  <span className="nearby-rank-badge" style={{ background: catColor }}>
-                    {idx + 1}
-                  </span>
-                  <div className="nearby-info">
-                    <span className="nearby-name">{poiName}</span>
-                    <span className="nearby-meta">
-                      {poi.distance != null ? (
-                        <>
-                          <span className="nearby-dist">{formatDistance(poi.distance)}</span>
-                          <span className="nearby-dot">·</span>
-                          <span>{formatWalkTime(poi.distance, isHe)}</span>
-                        </>
-                      ) : (
-                        <>{isHe ? cat?.labelHe : cat?.label}</>
-                      )}
-                    </span>
+            {nearbyCategory === 'camping' && (() => {
+              const camp = pois.find(p => p.id === 'my-camp');
+              if (!camp) {
+                return (
+                  <div className="nearby-camp-card cta-card">
+                    <div className="nearby-camp-header">
+                      <div className="title-section">
+                        <Tent className="pulsing-camp-icon" size={24} />
+                        <h4>{isHe ? 'מיקום האוהל שלי' : 'My Camp Location'}</h4>
+                      </div>
+                    </div>
+                    <p>{isHe ? 'לא סימנת את מיקום האוהל שלך עדיין. נעץ אותו עכשיו כדי למצוא אותו בקלות בחושך באופליין.' : 'You haven\'t pinned your tent location yet. Pin it now to easily find it in the dark offline.'}</p>
+                    <button className="pin-camp-btn" onClick={() => setIsCalibrating(true)}>
+                      {isHe ? 'נעץ את האוהל שלי' : 'Pin My Camp'}
+                    </button>
                   </div>
-                  <span className={`nearby-arrow ${isSelected ? 'nearby-arrow-active' : ''}`}>
-                    <Navigation size={14} />
-                  </span>
-                </button>
+                );
+              }
+
+              const campDist = userPosition ? haversineDistance(userPosition.lat, userPosition.lng, camp.coords[0], camp.coords[1]) : null;
+              return (
+                <div className="nearby-camp-card active-card">
+                  <div className="nearby-camp-header">
+                    <div className="title-section">
+                      <Tent className="active-camp-icon" size={20} />
+                      <h4>{isHe ? 'האוהל שלי' : 'My Camp'}</h4>
+                    </div>
+                    <button 
+                      className="delete-camp-btn" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (confirm(isHe ? 'האם למחוק את מיקום האוהל?' : 'Delete camp location?')) {
+                          localStorage.removeItem('ozora_my_camp');
+                          refreshPois();
+                        }
+                      }}
+                    >
+                      {isHe ? 'מחק' : 'Delete'}
+                    </button>
+                  </div>
+                  
+                  {campDist != null ? (
+                    <div className="camp-dist-info">
+                      <strong>{formatDistance(campDist)}</strong>
+                      <span>· {formatWalkTime(campDist, isHe)}</span>
+                    </div>
+                  ) : (
+                    <p className="no-gps-alert">{isHe ? 'אפשר GPS כדי לראות מרחק' : 'Enable GPS to see distance'}</p>
+                  )}
+
+                  <div className="camp-card-actions">
+                    <button className="camp-nav-action-btn" onClick={() => selectCompassTarget(camp)}>
+                      <Navigation size={14} />
+                      <span>{isHe ? 'נווט במצפן' : 'Navigate with Compass'}</span>
+                    </button>
+                    <button className="camp-recalibrate-btn" onClick={() => setIsCalibrating(true)}>
+                      {isHe ? 'כייל מחדש' : 'Recalibrate'}
+                    </button>
+                  </div>
+                </div>
               );
-            })}
-            {nearbyByCategory.length === 0 && (
+            })()}
+
+            {nearbyByCategory
+              .filter(poi => poi.id !== 'my-camp')
+              .map((poi, idx) => {
+                const poiName = poi.type === 'stage' ? poi.name : (isHe ? poi.nameHe : poi.name);
+                const cat = categoryMap[poi.type];
+                const isSelected = compassTarget?.id === poi.id;
+                const catColor = poi.color || cat?.color || 'var(--primary)';
+                return (
+                  <button
+                    key={poi.id}
+                    className={`nearby-item ${isSelected ? 'selected' : ''}`}
+                    style={{ '--item-color': catColor }}
+                    onClick={() => selectCompassTarget(poi)}
+                  >
+                    <span className="nearby-rank-badge" style={{ background: catColor }}>
+                      {idx + 1}
+                    </span>
+                    <div className="nearby-info">
+                      <span className="nearby-name">{poiName}</span>
+                      <span className="nearby-meta">
+                        {poi.distance != null ? (
+                          <>
+                            <span className="nearby-dist">{formatDistance(poi.distance)}</span>
+                            <span className="nearby-dot">·</span>
+                            <span>{formatWalkTime(poi.distance, isHe)}</span>
+                          </>
+                        ) : (
+                          <>{isHe ? cat?.labelHe : cat?.label}</>
+                        )}
+                      </span>
+                    </div>
+                    <span className={`nearby-arrow ${isSelected ? 'nearby-arrow-active' : ''}`}>
+                      <Navigation size={14} />
+                    </span>
+                  </button>
+                );
+              })}
+            {nearbyByCategory.filter(poi => poi.id !== 'my-camp').length === 0 && nearbyCategory !== 'camping' && (
               <div className="nearby-no-gps">
                 {isHe ? 'אין פריטים בקטגוריה זו' : 'No items in this category'}
               </div>
@@ -803,6 +868,28 @@ export default function VenueMap({
         )}
       </MapContainer>}
 
+      {/* Tent FAB */}
+      {viewMode === 'map' && (
+        <button
+          className={`map-fab map-fab-camp ${pois.some(p => p.id === 'my-camp') ? 'has-camp' : ''}`}
+          onClick={() => {
+            const camp = pois.find(p => p.id === 'my-camp');
+            if (camp) {
+              if (mapRef.current) {
+                mapRef.current.flyTo(camp.coords, 17, { animate: true, duration: 0.3 });
+              }
+              setCompassTarget(camp);
+              requestNavigationLocation();
+            } else {
+              setIsCalibrating(true);
+            }
+          }}
+          aria-label={isHe ? 'האוהל שלי' : 'My Camp'}
+        >
+          <Tent size={22} />
+        </button>
+      )}
+
       {/* GPS center FAB */}
       {viewMode === 'map' && userPosition && !gpsError && (
         <button
@@ -816,6 +903,29 @@ export default function VenueMap({
 
       {/* Tile cache progress */}
       <TileCacheOverlay lang={lang} />
+
+      {/* Calibration Modal */}
+      {isCalibrating && (
+        <CalibrationModal
+          lang={lang}
+          onClose={() => setIsCalibrating(false)}
+          onComplete={(calibratedCoords) => {
+            const newCamp = {
+              id: 'my-camp',
+              name: 'My Camp',
+              nameHe: 'האוהל שלי',
+              type: 'camping',
+              coords: [calibratedCoords.lat, calibratedCoords.lng],
+              color: '#ecc94b',
+              accuracy: calibratedCoords.accuracy,
+              pinnedAt: Date.now()
+            };
+            localStorage.setItem('ozora_my_camp', JSON.stringify(newCamp));
+            refreshPois();
+            setIsCalibrating(false);
+          }}
+        />
+      )}
     </div>
   );
 }
