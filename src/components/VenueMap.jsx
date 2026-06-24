@@ -10,7 +10,8 @@ import {
   startLocationWatch,
   stopLocationWatch,
 } from '../utils/navigationPermissions';
-import { Crosshair, Navigation, List, MapPin, X } from 'lucide-react';
+import { Crosshair, Navigation, List, MapPin, X, Tent } from 'lucide-react';
+import CalibrationModal from './CalibrationModal';
 
 const FESTIVAL_WALK_SPEED = 67; // meters per minute (~4 km/h)
 
@@ -377,6 +378,35 @@ export default function VenueMap({
   const [viewMode, setViewMode] = useState('nearby'); // 'map' | 'nearby'
   const [nearbyCategory, setNearbyCategory] = useState('food');
   const [compassTarget, setCompassTarget] = useState(null);
+  const [isCalibrating, setIsCalibrating] = useState(false);
+
+  const [pois, setPois] = useState(() => {
+    const savedCamp = localStorage.getItem('ozora_my_camp');
+    if (savedCamp) {
+      try {
+        const camp = JSON.parse(savedCamp);
+        return [...venueMapData.pois, camp];
+      } catch (e) {
+        console.error("Error loading camp location", e);
+      }
+    }
+    return venueMapData.pois;
+  });
+
+  const refreshPois = useCallback(() => {
+    const savedCamp = localStorage.getItem('ozora_my_camp');
+    if (savedCamp) {
+      try {
+        const camp = JSON.parse(savedCamp);
+        const basePois = venueMapData.pois.filter(p => p.id !== 'my-camp');
+        setPois([...basePois, camp]);
+        return;
+      } catch (e) {
+        console.error("Error updating camp POI", e);
+      }
+    }
+    setPois(venueMapData.pois);
+  }, []);
 
   const categoryMap = useMemo(() => {
     const m = {};
@@ -386,7 +416,7 @@ export default function VenueMap({
 
   const markerIcons = useMemo(() => {
     const icons = {};
-    venueMapData.pois.forEach(poi => {
+    pois.forEach(poi => {
       const cat = categoryMap[poi.type];
       icons[poi.id] = createMarkerIcon(
         { ...cat, color: poi.color || cat?.color },
@@ -394,7 +424,7 @@ export default function VenueMap({
       );
     });
     return icons;
-  }, [categoryMap]);
+  }, [categoryMap, pois]);
 
   const handlePosition = useCallback((position) => {
     setUserPosition(position);
@@ -449,11 +479,22 @@ export default function VenueMap({
   // flyTo logic
   const flyToCoords = useMemo(() => {
     if (!flyToStageId) return null;
-    const poi = venueMapData.pois.find(
+    const poi = pois.find(
       p => p.stageName === flyToStageId || p.id === flyToStageId
     );
     return poi ? poi.coords : null;
-  }, [flyToStageId]);
+  }, [flyToStageId, pois]);
+
+  useEffect(() => {
+    if (flyToStageId === 'my-camp') {
+      const campPoi = pois.find(p => p.id === 'my-camp');
+      if (campPoi) {
+        setCompassTarget(campPoi);
+        requestNavigationLocation();
+        onFlyToComplete?.();
+      }
+    }
+  }, [flyToStageId, pois, onFlyToComplete, requestNavigationLocation]);
 
   const toggleCategory = useCallback((catId) => {
     setActiveCategories(prev => {
@@ -492,20 +533,20 @@ export default function VenueMap({
   }, [timetableData, activeStatusMap]);
 
   const filteredPois = useMemo(
-    () => venueMapData.pois.filter(poi => activeCategories.has(poi.type)),
-    [activeCategories]
+    () => pois.filter(poi => activeCategories.has(poi.type)),
+    [activeCategories, pois]
   );
 
   const nearbyByCategory = useMemo(() => {
-    const pois = venueMapData.pois.filter(p => p.type === nearbyCategory);
-    if (!userPosition) return pois;
-    return pois
+    const categoryPois = pois.filter(p => p.type === nearbyCategory);
+    if (!userPosition) return categoryPois;
+    return categoryPois
       .map(poi => ({
         ...poi,
         distance: haversineDistance(userPosition.lat, userPosition.lng, poi.coords[0], poi.coords[1])
       }))
       .sort((a, b) => a.distance - b.distance);
-  }, [nearbyCategory, userPosition]);
+  }, [nearbyCategory, userPosition, pois]);
 
   const initialCenter = savedViewState?.center || venueMapData.center;
   const initialZoom = savedViewState?.zoom || venueMapData.defaultZoom;
