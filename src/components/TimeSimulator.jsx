@@ -84,7 +84,8 @@ export default function TimeSimulator({
             const nextSim = !isSimulated;
             setIsSimulated(nextSim);
             if (nextSim) {
-              setSimTime(new Date('2026-07-27T20:00:00').getTime());
+              // Initialize to 20:00 of the active day for standard demo
+              setSimTime(new Date(`${activeDateStr}T20:00:00`).getTime());
             }
           }}
         >
