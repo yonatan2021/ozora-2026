@@ -369,10 +369,15 @@ export default function App() {
   };
 
   useEffect(() => {
+    let timer;
     if (pinnedTheme) {
       localStorage.setItem('ozora_pinned_theme', pinnedTheme);
-      setDebouncedThemeClass(pinnedTheme);
-      return;
+      timer = setTimeout(() => {
+        setDebouncedThemeClass(pinnedTheme);
+      }, 0);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
     }
     localStorage.removeItem('ozora_pinned_theme');
     const timeBasedTheme = getThemeClass(simTime);
