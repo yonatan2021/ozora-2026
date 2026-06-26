@@ -4906,3 +4906,171 @@ body:has(.theme-sunrise)::before {
   background: rgba(236, 201, 75, 0.1);
 }
 
+/* ===== MANDALA & STAGE SELECTOR STYLES ===== */
+.mandala-container {
+  width: 100%;
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* Mobile Row */
+.mandala-mobile-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+}
+.mandala-mobile-row::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
+}
+
+.mandala-mobile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.mandala-mobile-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+.mandala-mobile-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 12px var(--glow-primary);
+}
+
+/* Desktop Wheel styling */
+.mandala-desktop-wheel {
+  display: none; /* Default hidden, display flex on tablet/desktop */
+  width: 320px;
+  height: 320px;
+  position: relative;
+}
+
+.mandala-ring-structure {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mandala-vector-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mandala-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.mandala-node:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  z-index: 15;
+}
+.mandala-node.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--glow-primary);
+}
+
+/* Tooltip styles */
+.node-tooltip {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+.mandala-node:hover .node-tooltip {
+  opacity: 1;
+}
+
+/* Rotating animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.rotating-slow {
+  animation: spin-slow var(--rotate-duration, 80s) linear infinite;
+}
+.rotating-pulse {
+  animation: spin-slow 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1;
+}
+
+/* Responsive displays */
+@media (min-width: 768px) {
+  .mandala-mobile-row {
+    display: none;
+  }
+  .mandala-desktop-wheel {
+    display: flex;
+  }
+}
+
+/* Theme Lock styles */
+.theme-lock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.theme-lock-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+.theme-lock-btn.locked {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 8px var(--glow-primary);
+}
+
