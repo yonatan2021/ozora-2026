@@ -765,6 +765,40 @@ body:has(.theme-day) {
   pointer-events: none;
 }
 
+.mobile-day-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  margin-top: 0.5rem;
+}
+
+.mobile-day-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(8px);
+}
+
+.mobile-day-nav-btn:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.mobile-day-nav-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Collapsed time gap row style */
 .grid-collapsed-gap {
   display: flex;
@@ -3605,32 +3639,35 @@ body:has(.theme-sunrise)::before {
 
 /* Schedule Name */
 .schedule-name-section {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .schedule-name-display {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 0.78rem;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 1rem;
   cursor: pointer;
-  padding: 4px 0;
+  padding: 8px 14px;
   transition: var(--transition-smooth);
 }
 
 .schedule-name-display:hover {
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  border-color: var(--primary);
+  background: var(--surface-hover);
 }
 
 .schedule-name-edit-icon {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .schedule-name-display:hover .schedule-name-edit-icon {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .schedule-name-edit {
@@ -3642,11 +3679,12 @@ body:has(.theme-sunrise)::before {
 .schedule-name-input {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
   color: var(--text-primary);
-  font-size: 0.85rem;
-  width: 200px;
+  font-size: 1rem;
+  width: 250px;
+  max-width: 100%;
   outline: none;
   transition: var(--transition-smooth);
 }
