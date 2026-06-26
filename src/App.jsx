@@ -18,6 +18,7 @@ import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
+import MandalaStageSelector from './components/MandalaStageSelector';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
@@ -122,21 +123,24 @@ export default function App() {
     };
   }, []);
 
-  const [pinnedTheme, setPinnedTheme] = useState(() => {
-    return localStorage.getItem('ozora_pinned_theme') || null;
+  const [isThemeLocked, setIsThemeLocked] = useState(() => {
+    return localStorage.getItem('ozora_theme_locked') === 'true';
   });
-  const [debouncedThemeClass, setDebouncedThemeClass] = useState(() => {
-    const saved = localStorage.getItem('ozora_pinned_theme');
-    if (saved) return saved;
-    const savedTime = localStorage.getItem('ozora_sim_time');
-    const ts = savedTime ? parseInt(savedTime, 10) : new Date('2026-07-27T14:00:00').getTime();
-    const hour = new Date(ts).getHours();
-    if (hour >= 20 || hour < 5) return 'theme-night';
-    if (hour >= 5 && hour < 7) return 'theme-sunrise';
-    if (hour >= 7 && hour < 18) return 'theme-day';
-    return 'theme-sunset';
-  });
-  const themeDebounceRef = useRef(null);
+  const [themeSimTime, setThemeSimTime] = useState(simTime);
+
+  useEffect(() => {
+    localStorage.setItem('ozora_theme_locked', String(isThemeLocked));
+  }, [isThemeLocked]);
+
+  // Debounce updates to themeSimTime when simTime changes
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setThemeSimTime(simTime);
+    }, 150); // 150ms debounce
+    return () => clearTimeout(handler);
+  }, [simTime]);
+
+  const lastThemeClassRef = useRef(localStorage.getItem('ozora_locked_theme_class') || 'theme-night');
   const [pendingImport, setPendingImport] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
@@ -356,46 +360,31 @@ export default function App() {
 
   // Dynamic theme classifier based on simulated or current time
   const getThemeClass = (ts) => {
-    const hour = new Date(ts).getHours();
-    if (hour >= 20 || hour < 5) {
-      return 'theme-night';
-    } else if (hour >= 5 && hour < 7) {
-      return 'theme-sunrise';
-    } else if (hour >= 7 && hour < 18) {
-      return 'theme-day';
-    } else {
-      return 'theme-sunset';
+    if (isThemeLocked) {
+      return lastThemeClassRef.current;
     }
+    const hour = new Date(ts).getHours();
+    let theme = 'theme-night';
+    if (hour >= 20 || hour < 5) {
+      theme = 'theme-night';
+    } else if (hour >= 5 && hour < 7) {
+      theme = 'theme-sunrise';
+    } else if (hour >= 7 && hour < 18) {
+      theme = 'theme-day';
+    } else {
+      theme = 'theme-sunset';
+    }
+    lastThemeClassRef.current = theme;
+    localStorage.setItem('ozora_locked_theme_class', theme);
+    return theme;
   };
 
-  useEffect(() => {
-    let timer;
-    if (pinnedTheme) {
-      localStorage.setItem('ozora_pinned_theme', pinnedTheme);
-      timer = setTimeout(() => {
-        setDebouncedThemeClass(pinnedTheme);
-      }, 0);
-      return () => {
-        if (timer) clearTimeout(timer);
-      };
-    }
-    localStorage.removeItem('ozora_pinned_theme');
-    const timeBasedTheme = getThemeClass(simTime);
-    if (themeDebounceRef.current) clearTimeout(themeDebounceRef.current);
-    themeDebounceRef.current = setTimeout(() => {
-      setDebouncedThemeClass(timeBasedTheme);
-    }, 600);
-    return () => {
-      if (themeDebounceRef.current) clearTimeout(themeDebounceRef.current);
-    };
-  }, [simTime, pinnedTheme]);
-
-  const activeThemeClass = debouncedThemeClass;
+  const activeThemeClass = getThemeClass(themeSimTime);
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
-      <PsychedelicBackground themeClass={activeThemeClass} />
-      <SacredGeometry themeClass={activeThemeClass} />
+      <PsychedelicBackground themeClass={activeThemeClass} selectedStage={selectedStage} />
+      <SacredGeometry themeClass={activeThemeClass} selectedStage={selectedStage} />
       <CountdownBanner lang={lang} />
 
       <Header
@@ -424,10 +413,9 @@ export default function App() {
             isSimulated={isSimulated}
             setIsSimulated={setIsSimulated}
             onOpenLiveModal={() => setIsLiveModalOpen(true)}
-            pinnedTheme={pinnedTheme}
-            setPinnedTheme={setPinnedTheme}
-            activeThemeClass={activeThemeClass}
             selectedDay={selectedDay}
+            isThemeLocked={isThemeLocked}
+            setIsThemeLocked={setIsThemeLocked}
           />
 
           {/* Days Selector */}
@@ -443,32 +431,11 @@ export default function App() {
             ))}
           </div>
 
-          {/* Mobile Stage Selector & Legend */}
-          <div className="stages-selector mobile-view-only stagger-slide-up" style={{ '--card-index': 0.5 }}>
-            <button
-              className={`stage-filter-btn all-stages ${selectedStage === 'ALL' ? 'active' : ''}`}
-              onClick={() => handleStageChange('ALL')}
-            >
-              <span className="stage-legend-dot stage-all-dot"></span>
-              <span>{t.allStages}</span>
-            </button>
-            {STAGES.filter(stage => filteredSets.some(s => s.stage === stage)).map(stage => {
-              const stageClass = STAGE_CLASSES[stage];
-              const displayName = stage
-                .replace(' / COOKING GROOVE', '')
-                .replace(' (2000s Trance)', '');
-              return (
-                <button
-                  key={stage}
-                  className={`stage-filter-btn ${stageClass} ${selectedStage === stage ? 'active' : ''}`}
-                  onClick={() => handleStageChange(stage)}
-                >
-                  <span className="stage-legend-dot"></span>
-                  <span>{displayName}</span>
-                </button>
-              );
-            })}
-          </div>
+          <MandalaStageSelector
+            selectedStage={selectedStage}
+            onChange={handleStageChange}
+            lang={lang}
+          />
 
           <main className="main-content">
             {filteredSets.length === 0 ? (

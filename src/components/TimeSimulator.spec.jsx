@@ -15,9 +15,8 @@ describe('TimeSimulator Component', () => {
         isSimulated={false}
         setIsSimulated={setIsSimulated}
         selectedDay="DAY 1"
-        pinnedTheme={null}
-        setPinnedTheme={vi.fn()}
-        activeThemeClass="theme-day"
+        isThemeLocked={false}
+        setIsThemeLocked={vi.fn()}
         onOpenLiveModal={vi.fn()}
       />
     );
@@ -64,9 +63,8 @@ describe('TimeSimulator Component', () => {
         isSimulated={true}
         setIsSimulated={vi.fn()}
         selectedDay="DAY 1"
-        pinnedTheme={null}
-        setPinnedTheme={vi.fn()}
-        activeThemeClass="theme-day"
+        isThemeLocked={false}
+        setIsThemeLocked={vi.fn()}
         onOpenLiveModal={mockOpenLiveModal}
         onScrollToActive={mockScrollToActive}
       />
@@ -88,8 +86,8 @@ describe('TimeSimulator Component', () => {
     expect(mockOpenLiveModal).toHaveBeenCalled();
   });
 
-  it('should call setPinnedTheme when a theme option is clicked', () => {
-    const setPinnedTheme = vi.fn();
+  it('should call setIsThemeLocked when theme lock button is clicked', () => {
+    const setIsThemeLocked = vi.fn();
     render(
       <TimeSimulator 
         lang="en"
@@ -98,16 +96,14 @@ describe('TimeSimulator Component', () => {
         isSimulated={true}
         setIsSimulated={vi.fn()}
         selectedDay="DAY 1"
-        pinnedTheme={null}
-        setPinnedTheme={setPinnedTheme}
-        activeThemeClass="theme-day"
+        isThemeLocked={false}
+        setIsThemeLocked={setIsThemeLocked}
         onOpenLiveModal={vi.fn()}
       />
     );
 
-    // Select the "Sunset" theme button
-    const sunsetBtn = screen.getByRole('button', { name: /Sunset/i });
-    fireEvent.click(sunsetBtn);
-    expect(setPinnedTheme).toHaveBeenCalledWith('theme-sunset');
+    const lockBtn = screen.getByRole('button', { name: /🔒 Lock Colors/i });
+    fireEvent.click(lockBtn);
+    expect(setIsThemeLocked).toHaveBeenCalledWith(true);
   });
 });

@@ -54,4 +54,16 @@ describe('App End-to-End Flows', () => {
     expect(screen.getByText('Open once with internet before the festival to save it offline.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
+
+  it('should toggle theme lock and save state to localStorage', () => {
+    const { container } = render(<App />);
+
+    // Click lock button inside simulator using its class name
+    const lockBtn = container.querySelector('.theme-lock-btn');
+    expect(lockBtn).toBeTruthy();
+    fireEvent.click(lockBtn);
+
+    // Verify localStorage updated
+    expect(localStorage.getItem('ozora_theme_locked')).toBe('true');
+  });
 });
