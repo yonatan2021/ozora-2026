@@ -188,7 +188,7 @@ export default function MySchedule({
               ref={nameInputRef}
               type="text"
               className="schedule-name-input"
-              placeholder={isHe ? 'השם שלך (אופציונלי)' : 'Your name (optional)'}
+              placeholder={isHe ? 'הכנס את השם שלך...' : 'Enter your name...'}
               value={scheduleName}
               onChange={(e) => setScheduleName(e.target.value.slice(0, 30))}
               onBlur={handleNameSave}
@@ -199,12 +199,12 @@ export default function MySchedule({
           </div>
         ) : (
           <button className="schedule-name-display" onClick={() => setEditingName(true)}>
+            <Pencil size={14} className="schedule-name-edit-icon" />
             <span>
               {scheduleName
                 ? (isHe ? `הלוח של ${scheduleName}` : `${scheduleName}'s Schedule`)
-                : (isHe ? 'ציר הזמן שלי' : 'My Personal Timeline')}
+                : (isHe ? 'לחץ להוסיף את השם שלך ללוח' : 'Tap to add your name')}
             </span>
-            <Pencil size={12} className="schedule-name-edit-icon" />
           </button>
         )}
       </div>

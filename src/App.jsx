@@ -13,7 +13,7 @@ import { translations } from './utils/lang';
 import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import SacredGeometry from './components/SacredGeometry';
-import { Calendar, User, BookOpen, Heart, Map as MapIcon } from 'lucide-react';
+import { Calendar, User, BookOpen, Heart, Map as MapIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
@@ -223,17 +223,21 @@ export default function App() {
   const handleDayChange = (dayName) => {
     setSelectedDay(dayName);
     trackEvent('select_day', { day_name: dayName });
+    const daySets = SETS_BY_DAY[dayName] || [];
+    if (selectedStage !== 'ALL' && !daySets.some(s => s.stage === selectedStage)) {
+      setSelectedStage('ALL');
+    }
     if (isSimulated) {
       const dateStr = Object.keys(DATE_TO_DAY_MAP).find(key => DATE_TO_DAY_MAP[key] === dayName);
       if (dateStr) {
         const currentDate = new Date(simTime);
         const [year, month, day] = dateStr.split('-').map(Number);
-        
+
         const newSimDate = new Date(currentDate);
         newSimDate.setFullYear(year);
         newSimDate.setMonth(month - 1);
         newSimDate.setDate(day);
-        
+
         setSimTime(newSimDate.getTime());
       }
     }
@@ -436,21 +440,21 @@ export default function App() {
 
           {/* Mobile Stage Selector & Legend */}
           <div className="stages-selector mobile-view-only stagger-slide-up" style={{ '--card-index': 0.5 }}>
-            <button 
+            <button
               className={`stage-filter-btn all-stages ${selectedStage === 'ALL' ? 'active' : ''}`}
               onClick={() => handleStageChange('ALL')}
             >
               <span className="stage-legend-dot stage-all-dot"></span>
               <span>{t.allStages}</span>
             </button>
-            {STAGES.map(stage => {
+            {STAGES.filter(stage => filteredSets.some(s => s.stage === stage)).map(stage => {
               const stageClass = STAGE_CLASSES[stage];
               const displayName = stage
                 .replace(' / COOKING GROOVE', '')
                 .replace(' (2000s Trance)', '');
               return (
-                <button 
-                  key={stage} 
+                <button
+                  key={stage}
                   className={`stage-filter-btn ${stageClass} ${selectedStage === stage ? 'active' : ''}`}
                   onClick={() => handleStageChange(stage)}
                 >
@@ -492,7 +496,7 @@ export default function App() {
                       <p>{t.noSetsFound}</p>
                     </div>
                   ) : (
-                    <ChronologicalFeed 
+                    <ChronologicalFeed
                       sets={mobileFilteredSets}
                       favorites={childFavorites}
                       toggleFavorite={toggleFavorite}
@@ -500,6 +504,35 @@ export default function App() {
                       activeStatusMap={activeStatusMap}
                     />
                   )}
+                  {days.length > 1 && (() => {
+                    const currentIndex = days.indexOf(selectedDay);
+                    const hasPrev = currentIndex > 0;
+                    const hasNext = currentIndex < days.length - 1;
+                    const navigateToDay = (day) => {
+                      handleDayChange(day);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+                    return (
+                      <div className="mobile-day-nav">
+                        <button
+                          className="mobile-day-nav-btn"
+                          disabled={!hasPrev}
+                          onClick={() => { if (hasPrev) navigateToDay(days[currentIndex - 1]); }}
+                        >
+                          <ChevronRight size={18} />
+                          {hasPrev && <span>{DAY_DATE_LABELS[days[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex - 1]}</span>}
+                        </button>
+                        <button
+                          className="mobile-day-nav-btn"
+                          disabled={!hasNext}
+                          onClick={() => { if (hasNext) navigateToDay(days[currentIndex + 1]); }}
+                        >
+                          {hasNext && <span>{DAY_DATE_LABELS[days[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex + 1]}</span>}
+                          <ChevronLeft size={18} />
+                        </button>
+                      </div>
+                    );
+                  })()}
                 </div>
               </>
             )}
