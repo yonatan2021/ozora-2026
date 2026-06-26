@@ -92,7 +92,15 @@ export const translations = {
     centerOnMe: "Center on me",
     navigate: "Navigate",
     viewInTimetable: "View in Timetable",
-    distance: "away"
+    distance: "away",
+    themeAuto: "Auto",
+    themeDay: "Day",
+    themeSunset: "Sunset",
+    themeNight: "Night",
+    themeSunrise: "Sunrise",
+    themePinned: "Theme locked",
+    themeUnpinned: "Theme follows time",
+    themeLabel: "Atmosphere"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -187,6 +195,14 @@ export const translations = {
     centerOnMe: "מרכז עליי",
     navigate: "נווט",
     viewInTimetable: "הצג בלוח",
-    distance: "מרחק"
+    distance: "מרחק",
+    themeAuto: "אוטומטי",
+    themeDay: "יום",
+    themeSunset: "שקיעה",
+    themeNight: "לילה",
+    themeSunrise: "זריחה",
+    themePinned: "העיצוב נעול",
+    themeUnpinned: "העיצוב עוקב אחרי הזמן",
+    themeLabel: "אווירה"
   }
 };

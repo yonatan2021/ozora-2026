@@ -108,7 +108,7 @@ export default function PsychedelicBackground({ themeClass }) {
 
         blob.hueShift = Math.sin(time * 0.5 + blob.phase) * 40;
 
-        const hue = (blob.baseHue + blob.hueShift + time * 15) % 360;
+        const hue = (blob.baseHue + blob.hueShift + time * 5) % 360;
         const breathe = 1 + Math.sin(time * 1.2 + blob.phase) * 0.18;
         const r = blob.radius * breathe;
         const saturation = isDark ? 85 : 90;
@@ -149,7 +149,7 @@ export default function PsychedelicBackground({ themeClass }) {
         if (p.y > h + 20) p.y = -20;
 
         const twinkle = 0.3 + Math.sin(time * p.twinkleSpeed + p.twinklePhase) * 0.35 + 0.35;
-        const pHue = (p.hue + time * 10) % 360;
+        const pHue = (p.hue + time * 3) % 360;
         const pAlpha = isDark ? twinkle * 0.85 : twinkle * 0.5;
         const glowSize = p.size * (isDark ? 4 : 2.5);
 
