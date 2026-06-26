@@ -176,21 +176,21 @@ export default function PsychedelicBackground({ themeClass, selectedStage = 'ALL
 
         blob.hueShift = Math.sin(time * 0.5 + blob.phase) * 40;
 
-        let hue = (blob.baseHue + blob.hueShift + time * 15) % 360;
+        let hue = (blob.baseHue + blob.hueShift + time * 5) % 360;
 
         // Stage color overwrites
         if (currentStage === 'OZORA STAGE') {
-          hue = (310 + Math.sin(time + blob.phase) * 40) % 360;
+          hue = (310 + Math.sin(time * 0.33 + blob.phase) * 40) % 360;
         } else if (currentStage === 'PUMPUI') {
-          hue = (145 + Math.sin(time + blob.phase) * 35) % 360;
+          hue = (145 + Math.sin(time * 0.33 + blob.phase) * 35) % 360;
         } else if (currentStage === 'THE DOME') {
-          hue = (210 + Math.sin(time + blob.phase) * 20) % 360;
+          hue = (210 + Math.sin(time * 0.33 + blob.phase) * 20) % 360;
         } else if (currentStage === 'DRAGON NEST / COOKING GROOVE' || currentStage === 'DRAGON NEST') {
-          hue = (35 + Math.cos(time + blob.phase) * 25) % 360;
+          hue = (35 + Math.cos(time * 0.33 + blob.phase) * 25) % 360;
         } else if (currentStage === 'VISIUM GARDEN') {
-          hue = (70 + Math.sin(time + blob.phase) * 30) % 360;
+          hue = (70 + Math.sin(time * 0.33 + blob.phase) * 30) % 360;
         } else if (currentStage === 'TEK ZERO (2000s Trance)' || currentStage === 'TEK ZERO') {
-          hue = (280 + Math.sin(time + blob.phase) * 40) % 360;
+          hue = (280 + Math.sin(time * 0.33 + blob.phase) * 40) % 360;
         }
 
         const breathe = 1 + Math.sin(time * 1.2 + blob.phase) * 0.18;
@@ -240,12 +240,12 @@ export default function PsychedelicBackground({ themeClass, selectedStage = 'ALL
         if (p.y > h + 20) p.y = -20;
 
         const twinkle = 0.3 + Math.sin(time * p.twinkleSpeed + p.twinklePhase) * 0.35 + 0.35;
-        let pHue = (p.hue + time * 10) % 360;
+        let pHue = (p.hue + time * 3) % 360;
 
         if (currentStage === 'OZORA STAGE') {
           pHue = 50; // golden sparks
         } else if (currentStage === 'DRAGON NEST / COOKING GROOVE' || currentStage === 'DRAGON NEST') {
-          pHue = (15 + Math.sin(time * 3 + p.twinklePhase) * 10) % 360; // embers
+          pHue = (15 + Math.sin(time * 1 + p.twinklePhase) * 10) % 360; // embers
         }
 
         const pAlpha = currentIsDark ? twinkle * 0.85 : twinkle * 0.5;

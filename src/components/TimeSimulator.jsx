@@ -1,6 +1,13 @@
-import { Clock, RefreshCw, Radio } from 'lucide-react';
+import { Clock, RefreshCw, Radio, Sun, Sunset, Moon, Sunrise, Lock, Unlock } from 'lucide-react';
 import { translations } from '../utils/lang';
 import { trackEvent } from '../utils/analytics';
+
+const THEMES = [
+  { id: 'theme-day', icon: Sun, labelKey: 'themeDay' },
+  { id: 'theme-sunset', icon: Sunset, labelKey: 'themeSunset' },
+  { id: 'theme-night', icon: Moon, labelKey: 'themeNight' },
+  { id: 'theme-sunrise', icon: Sunrise, labelKey: 'themeSunrise' },
+];
 
 export default function TimeSimulator({ 
   lang, 
@@ -11,8 +18,9 @@ export default function TimeSimulator({
   onOpenLiveModal, 
   onScrollToActive,
   selectedDay = 'DAY 1',
-  isThemeLocked = false,
-  setIsThemeLocked = () => {}
+  pinnedTheme,
+  setPinnedTheme,
+  activeThemeClass
 }) {
   const t = translations[lang];
 
@@ -53,6 +61,16 @@ export default function TimeSimulator({
     transition: 'background 0.5s ease'
   };
 
+  const handleThemeSelect = (themeId) => {
+    if (pinnedTheme === themeId) {
+      setPinnedTheme(null);
+      trackEvent('unpin_theme', { theme: themeId });
+    } else {
+      setPinnedTheme(themeId);
+      trackEvent('pin_theme', { theme: themeId });
+    }
+  };
+
   return (
     <div className="time-simulator" style={bgStyle}>
       <div className="simulator-header">
@@ -60,13 +78,12 @@ export default function TimeSimulator({
           <Clock size={18} className={isSimulated ? 'pulse-green' : ''} />
           <span>{isSimulated ? t.simulatingTime : (lang === 'he' ? 'זמן אמת (מדמה פסטיבל)' : 'Real Time (Festival Sim)')}</span>
         </div>
-        <button 
-          className="reset-time-btn" 
+        <button
+          className="reset-time-btn"
           onClick={() => {
             const nextSim = !isSimulated;
             setIsSimulated(nextSim);
             if (nextSim) {
-              // Initialize to the middle of festival (e.g. DAY 2 Mon 27 Jul 20:00) for standard demo
               setSimTime(new Date('2026-07-27T20:00:00').getTime());
             }
           }}
@@ -74,24 +91,16 @@ export default function TimeSimulator({
           <RefreshCw size={14} />
           <span>{isSimulated ? t.backToRealTime : (lang === 'he' ? 'הדמיית פסטיבל' : 'Simulate Festival')}</span>
         </button>
-        <button 
-          type="button"
-          className={`theme-lock-btn ${isThemeLocked ? 'locked' : ''}`}
-          onClick={() => setIsThemeLocked(!isThemeLocked)}
-          title={lang === 'he' ? 'נעל צבעים / ערכת נושא' : 'Lock Colors / Theme'}
-        >
-          <span>{isThemeLocked ? (lang === 'he' ? '🔓 שחרר צבעים' : '🔓 Unlock Colors') : (lang === 'he' ? '🔒 נעל צבעים' : '🔒 Lock Colors')}</span>
-        </button>
       </div>
 
       {isSimulated && (
         <div className="simulator-controls">
-          <input 
-            type="range" 
-            min={minTimestamp} 
-            max={maxTimestamp} 
-            step={stepMs} 
-            value={simTime} 
+          <input
+            type="range"
+            min={minTimestamp}
+            max={maxTimestamp}
+            step={stepMs}
+            value={simTime}
             onChange={(e) => setSimTime(Number(e.target.value))}
             onMouseUp={(e) => trackEvent('change_sim_time', { simulated_time: formatDate(Number(e.target.value)) })}
             onTouchEnd={(e) => trackEvent('change_sim_time', { simulated_time: formatDate(Number(e.target.value)) })}
@@ -100,7 +109,7 @@ export default function TimeSimulator({
           <div className="simulator-details-row">
             <div className="time-display">{formatDate(simTime)}</div>
             <div className="simulator-actions">
-              <button 
+              <button
                 className="scroll-to-time-btn"
                 onClick={() => {
                   trackEvent('simulator_take_me_there');
@@ -110,7 +119,7 @@ export default function TimeSimulator({
               >
                 {lang === 'he' ? 'קח אותי לשם' : 'Take Me There'}
               </button>
-              <button 
+              <button
                 className="open-live-status-btn"
                 onClick={() => {
                   trackEvent('view_live_status_board');
@@ -122,6 +131,34 @@ export default function TimeSimulator({
               </button>
             </div>
           </div>
+
+          {/* Theme Picker */}
+          <div className="theme-picker">
+            <span className="theme-picker-label">{t.themeLabel}</span>
+            <div className="theme-picker-options">
+              <button
+                className={`theme-option theme-option-auto ${!pinnedTheme ? 'active' : ''}`}
+                onClick={() => setPinnedTheme(null)}
+                title={t.themeUnpinned}
+              >
+                <Unlock size={14} />
+                <span>{t.themeAuto}</span>
+              </button>
+              {THEMES.map(({ id, icon: Icon, labelKey }) => (
+                <button
+                  key={id}
+                  className={`theme-option theme-option-${id.replace('theme-', '')} ${pinnedTheme === id ? 'active' : ''} ${activeThemeClass === id && !pinnedTheme ? 'current' : ''}`}
+                  onClick={() => handleThemeSelect(id)}
+                  title={pinnedTheme === id ? t.themePinned : t[labelKey]}
+                >
+                  {pinnedTheme === id && <Lock size={10} className="theme-lock-icon" />}
+                  <Icon size={14} />
+                  <span>{t[labelKey]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <p className="sim-desc">{t.simulatedTimeDesc}</p>
         </div>
       )}

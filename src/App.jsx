@@ -121,6 +121,22 @@ export default function App() {
       clearInterval(interval);
     };
   }, []);
+
+  const [pinnedTheme, setPinnedTheme] = useState(() => {
+    return localStorage.getItem('ozora_pinned_theme') || null;
+  });
+  const [debouncedThemeClass, setDebouncedThemeClass] = useState(() => {
+    const saved = localStorage.getItem('ozora_pinned_theme');
+    if (saved) return saved;
+    const savedTime = localStorage.getItem('ozora_sim_time');
+    const ts = savedTime ? parseInt(savedTime, 10) : new Date('2026-07-27T14:00:00').getTime();
+    const hour = new Date(ts).getHours();
+    if (hour >= 20 || hour < 5) return 'theme-night';
+    if (hour >= 5 && hour < 7) return 'theme-sunrise';
+    if (hour >= 7 && hour < 18) return 'theme-day';
+    return 'theme-sunset';
+  });
+  const themeDebounceRef = useRef(null);
   const [pendingImport, setPendingImport] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
@@ -347,7 +363,25 @@ export default function App() {
       return 'theme-sunset';
     }
   };
-  const activeThemeClass = getThemeClass(simTime);
+
+  useEffect(() => {
+    if (pinnedTheme) {
+      localStorage.setItem('ozora_pinned_theme', pinnedTheme);
+      setDebouncedThemeClass(pinnedTheme);
+      return;
+    }
+    localStorage.removeItem('ozora_pinned_theme');
+    const timeBasedTheme = getThemeClass(simTime);
+    if (themeDebounceRef.current) clearTimeout(themeDebounceRef.current);
+    themeDebounceRef.current = setTimeout(() => {
+      setDebouncedThemeClass(timeBasedTheme);
+    }, 600);
+    return () => {
+      if (themeDebounceRef.current) clearTimeout(themeDebounceRef.current);
+    };
+  }, [simTime, pinnedTheme]);
+
+  const activeThemeClass = debouncedThemeClass;
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
@@ -381,6 +415,10 @@ export default function App() {
             isSimulated={isSimulated}
             setIsSimulated={setIsSimulated}
             onOpenLiveModal={() => setIsLiveModalOpen(true)}
+            pinnedTheme={pinnedTheme}
+            setPinnedTheme={setPinnedTheme}
+            activeThemeClass={activeThemeClass}
+            selectedDay={selectedDay}
           />
 
           {/* Days Selector */}
