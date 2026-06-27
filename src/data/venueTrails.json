@@ -1,0 +1,60 @@
+{
+  "trails": [
+    {
+      "id": "main-trail-1",
+      "name": "Main Street Path",
+      "nameHe": "ציר הרחוב הראשי",
+      "type": "main",
+      "coords": [
+        [46.7695, 18.4369],
+        [46.7707, 18.4338],
+        [46.7714, 18.4320]
+      ]
+    },
+    {
+      "id": "dome-trail",
+      "name": "Dome Trail",
+      "nameHe": "שביל הכיפה",
+      "type": "secondary",
+      "coords": [
+        [46.7707, 18.4338],
+        [46.7718, 18.4315],
+        [46.7739, 18.4328]
+      ]
+    },
+    {
+      "id": "main-stage-trail",
+      "name": "Main Stage Trail",
+      "nameHe": "שביל הבמה הראשית",
+      "type": "main",
+      "coords": [
+        [46.7707, 18.4338],
+        [46.773164, 18.435942]
+      ]
+    }
+  ],
+  "restrictedZones": [
+    {
+      "id": "main-stage-backstage",
+      "name": "Main Stage Backstage",
+      "nameHe": "במה ראשית - מאחורי הקלעים",
+      "coords": [
+        [46.7733, 18.4357],
+        [46.7737, 18.4359],
+        [46.7735, 18.4365],
+        [46.7731, 18.4363]
+      ]
+    },
+    {
+      "id": "lake-halomi-deep",
+      "name": "Lake Halomi - No Crossing Zone",
+      "nameHe": "אגם האלומי - מים עמוקים",
+      "coords": [
+        [46.7737, 18.4324],
+        [46.7741, 18.4323],
+        [46.7743, 18.4333],
+        [46.7738, 18.4331]
+      ]
+    }
+  ]
+}
