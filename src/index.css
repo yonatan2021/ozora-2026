@@ -5193,3 +5193,145 @@ body:has(.theme-sunrise)::before {
   background: rgba(0, 0, 0, 0.1);
 }
 
+/* --- Compass calibration --- */
+.compass-cal-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 12px;
+  transition: var(--transition-smooth);
+}
+
+.compass-cal-toggle-btn:hover {
+  background: var(--border);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.compass-cal-panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compass-cal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compass-cal-step-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.compass-cal-instructions {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.figure8-svg {
+  width: 120px;
+  height: auto;
+  margin: 4px auto;
+  opacity: 0.85;
+}
+
+.compass-cal-no-gps {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  margin: 0;
+  background: rgba(229, 62, 62, 0.05);
+  border: 1px solid rgba(229, 62, 62, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  text-align: center;
+}
+
+.compass-cal-select {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.compass-cal-select:focus {
+  border-color: var(--primary);
+}
+
+.compass-cal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.compass-cal-btn {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.compass-cal-btn.align-btn {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+}
+
+.compass-cal-btn.align-btn:hover {
+  opacity: 0.9;
+  box-shadow: 0 2px 8px var(--glow-primary);
+}
+
+.compass-cal-btn.reset-btn {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+
+.compass-cal-btn.reset-btn:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.compass-cal-success-msg {
+  font-size: 0.72rem;
+  color: var(--accent);
+  background: rgba(72, 187, 120, 0.08);
+  border: 1px solid rgba(72, 187, 120, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  text-align: center;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+

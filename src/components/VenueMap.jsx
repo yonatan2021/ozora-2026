@@ -10,7 +10,7 @@ import {
   startLocationWatch,
   stopLocationWatch,
 } from '../utils/navigationPermissions';
-import { Crosshair, Navigation, List, MapPin, X, Tent } from 'lucide-react';
+import { Crosshair, Navigation, List, MapPin, X, Tent, Sliders } from 'lucide-react';
 import CalibrationModal from './CalibrationModal';
 import venueTrailsData from '../data/venueTrails.json';
 import { calculateBearing, doesSegmentCrossPolygon } from '../utils/mapMath';
@@ -139,9 +139,18 @@ function CompassCard({
   lang,
   onClose,
   onRequestLocation,
+  pois,
 }) {
   const { heading, permissionState, calibrating, requestPermission } = useDeviceOrientation();
   const isHe = lang === 'he';
+
+  const [compassOffset, setCompassOffset] = useState(() => {
+    const saved = localStorage.getItem('ozora_compass_offset');
+    return saved ? parseFloat(saved) : 0;
+  });
+  const [showCalPanel, setShowCalPanel] = useState(false);
+  const [selectedPoiId, setSelectedPoiId] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   const distance = userPosition
     ? haversineDistance(userPosition.lat, userPosition.lng, target.coords[0], target.coords[1])
@@ -151,7 +160,57 @@ function CompassCard({
     ? calculateBearing(userPosition.lat, userPosition.lng, target.coords[0], target.coords[1])
     : 0;
 
-  const needleRotation = heading != null ? bearing - heading : 0;
+  const adjustedHeading = heading != null ? (heading + compassOffset + 360) % 360 : null;
+  const needleRotation = adjustedHeading != null ? bearing - adjustedHeading : 0;
+
+  const alignmentOptions = useMemo(() => {
+    if (!userPosition || !pois) return [];
+    return pois
+      .map(poi => {
+        const dist = haversineDistance(userPosition.lat, userPosition.lng, poi.coords[0], poi.coords[1]);
+        const name = poi.id === 'my-camp' 
+          ? (isHe ? 'האוהל שלי' : 'My Camp')
+          : (poi.type === 'stage' ? poi.name : (isHe ? poi.nameHe : poi.name));
+        const bearingToPoi = calculateBearing(userPosition.lat, userPosition.lng, poi.coords[0], poi.coords[1]);
+        return { ...poi, name, dist, bearing: bearingToPoi };
+      })
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, 6);
+  }, [userPosition, pois, isHe]);
+
+  useEffect(() => {
+    if (alignmentOptions.length > 0 && !selectedPoiId) {
+      setSelectedPoiId(alignmentOptions[0].id);
+    }
+  }, [alignmentOptions, selectedPoiId]);
+
+  useEffect(() => {
+    if (successMsg) {
+      const timer = setTimeout(() => setSuccessMsg(''), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMsg]);
+
+  const handleAlign = () => {
+    if (heading == null) return;
+    const selectedPoi = alignmentOptions.find(p => p.id === selectedPoiId);
+    if (!selectedPoi) return;
+    const targetBearing = selectedPoi.bearing;
+    const newOffset = (targetBearing - heading + 360) % 360;
+    setCompassOffset(newOffset);
+    localStorage.setItem('ozora_compass_offset', newOffset.toString());
+    const displayOffset = Math.round(newOffset > 180 ? newOffset - 360 : newOffset);
+    setSuccessMsg(isHe 
+      ? `כיוון! היסט של ${displayOffset}° הוחל.` 
+      : `Aligned! Offset of ${displayOffset}° applied.`
+    );
+  };
+
+  const handleReset = () => {
+    setCompassOffset(0);
+    localStorage.removeItem('ozora_compass_offset');
+    setSuccessMsg(isHe ? 'היסט המצפן אופס' : 'Compass offset reset');
+  };
   const targetName = target.type === 'stage' ? target.name : (isHe ? target.nameHe : target.name);
   const atFestival = isAtFestival(distance);
   const compassActive = heading != null;
@@ -293,6 +352,81 @@ function CompassCard({
             </div>
           )}
         </div>
+
+        {compassActive && (
+          <button 
+            className="compass-cal-toggle-btn"
+            onClick={() => setShowCalPanel(!showCalPanel)}
+          >
+            <Sliders size={12} />
+            <span>{isHe ? 'כייל מצפן' : 'Calibrate Compass'}</span>
+          </button>
+        )}
+
+        {showCalPanel && (
+          <div className="compass-cal-panel">
+            <div className="compass-cal-step">
+              <div className="compass-cal-step-title">
+                {isHe ? 'שלב 1: כיול חיישן פיזי' : 'Step 1: Physical Sensor Calibration'}
+              </div>
+              <p className="compass-cal-instructions">
+                {isHe 
+                  ? 'הנף את המכשיר בתנועת שמיניה באוויר כדי לאפס את מצפן המכשיר.' 
+                  : 'Wave your device in a figure-8 pattern to calibrate your phone\'s compass.'}
+              </p>
+              <svg viewBox="0 0 100 40" className="figure8-svg">
+                <path d="M 20 20 C 20 10, 35 10, 50 20 C 65 30, 80 30, 80 20 C 80 10, 65 10, 50 20 C 35 30, 20 30, 20 20 Z" fill="none" stroke="var(--primary)" strokeWidth="3" strokeDasharray="6, 6" />
+                <circle r="4" fill="var(--accent)">
+                  <animateMotion dur="3s" repeatCount="indefinite" path="M 20 20 C 20 10, 35 10, 50 20 C 65 30, 80 30, 80 20 C 80 10, 65 10, 50 20 C 35 30, 20 30, 20 20 Z" />
+                </circle>
+              </svg>
+            </div>
+
+            <div className="compass-cal-step">
+              <div className="compass-cal-step-title">
+                {isHe ? 'שלב 2: יישור לפי ציוני דרך' : 'Step 2: Landmark Alignment'}
+              </div>
+              {!userPosition ? (
+                <p className="compass-cal-no-gps">
+                  {isHe ? 'כיול לפי ציוני דרך דורש קליטת GPS פעילה.' : 'Landmark alignment requires active GPS.'}
+                </p>
+              ) : (
+                <>
+                  <p className="compass-cal-instructions">
+                    {isHe 
+                      ? 'עמוד מול ציון דרך מוכר, בחר אותו ולחץ על "כיוון".' 
+                      : 'Face a known landmark, select it, and click "Align".'}
+                  </p>
+                  <select 
+                    className="compass-cal-select"
+                    value={selectedPoiId}
+                    onChange={(e) => setSelectedPoiId(e.target.value)}
+                  >
+                    {alignmentOptions.map(option => (
+                      <option key={option.id} value={option.id}>
+                        {option.name} ({Math.round(option.dist)}m)
+                      </option>
+                    ))}
+                  </select>
+                  <div className="compass-cal-buttons">
+                    <button className="compass-cal-btn align-btn" onClick={handleAlign}>
+                      {isHe ? 'כיוון' : 'Align'}
+                    </button>
+                    <button className="compass-cal-btn reset-btn" onClick={handleReset}>
+                      {isHe ? 'איפוס' : 'Reset'}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {successMsg && (
+              <div className="compass-cal-success-msg">
+                {successMsg}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -695,6 +829,7 @@ export default function VenueMap({
               lang={lang}
               onClose={() => setCompassTarget(null)}
               onRequestLocation={requestNavigationLocation}
+              pois={pois}
             />
           )}
 
