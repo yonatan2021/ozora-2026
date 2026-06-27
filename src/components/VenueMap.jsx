@@ -461,11 +461,15 @@ export default function VenueMap({
   const selectCompassTarget = useCallback((poi) => {
     const nextTarget = compassTarget?.id === poi.id ? null : poi;
     setCompassTarget(nextTarget);
-    if (nextTarget) requestNavigationLocation();
+    if (nextTarget) {
+      setNavTarget(null);
+      requestNavigationLocation();
+    }
   }, [compassTarget, requestNavigationLocation]);
 
   const startMapNavigation = useCallback((coords) => {
     setNavTarget(coords);
+    setCompassTarget(null);
     requestNavigationLocation();
   }, [requestNavigationLocation]);
 
@@ -543,6 +547,15 @@ export default function VenueMap({
 
   const crossedZone = useMemo(() => {
     if (!userPosition) return null;
+
+    const distToCenter = haversineDistance(
+      userPosition.lat,
+      userPosition.lng,
+      venueMapData.center[0],
+      venueMapData.center[1]
+    );
+    if (!isAtFestival(distToCenter)) return null;
+
     const userPt = [userPosition.lat, userPosition.lng];
     let targetPt = null;
 
@@ -882,11 +895,11 @@ export default function VenueMap({
         )}
 
         {/* Navigation line */}
-        {navTarget && userPosition && (
+        {(navTarget || compassTarget) && userPosition && (
           <Polyline
             positions={[
               [userPosition.lat, userPosition.lng],
-              navTarget
+              compassTarget ? compassTarget.coords : navTarget
             ]}
             pathOptions={{ color: '#e040a0', weight: 3, dashArray: '8, 8', opacity: 0.8 }}
           />
