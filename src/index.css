@@ -5070,3 +5070,20 @@ body:has(.theme-sunrise)::before {
   to { transform: translate(-50%, 0); opacity: 1; }
 }
 
+.nearby-warning-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(229, 62, 62, 0.15);
+  border: 1.5px solid rgba(229, 62, 62, 0.4);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  margin: 12px 16px;
+  backdrop-filter: blur(8px);
+}
+.nearby-warning-banner .warning-icon {
+  font-size: 1.1rem;
+}
+

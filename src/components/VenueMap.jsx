@@ -467,11 +467,17 @@ export default function VenueMap({
     }
   }, [compassTarget, requestNavigationLocation]);
 
-  const startMapNavigation = useCallback((coords) => {
-    setNavTarget(coords);
-    setCompassTarget(null);
+  const startMapNavigation = useCallback((poi) => {
+    setNavTarget(poi.coords);
+    setCompassTarget(poi);
     requestNavigationLocation();
   }, [requestNavigationLocation]);
+
+  useEffect(() => {
+    if (flyToStageId && flyToStageId !== 'my-camp') {
+      setViewMode('map');
+    }
+  }, [flyToStageId]);
 
   // flyTo logic
   const flyToCoords = useMemo(() => {
@@ -580,7 +586,7 @@ export default function VenueMap({
 
   return (
     <div className={`venue-map-container ${viewMode === 'nearby' ? 'venue-map-nearby-mode' : ''}`}>
-      {crossedZone && (
+      {viewMode === 'map' && crossedZone && (
         <div className="map-warning-banner">
           <span className="warning-icon">⚠️</span>
           <span className="warning-text">
@@ -640,6 +646,18 @@ export default function VenueMap({
               <span>{isHe ? 'מפה' : 'Map'}</span>
             </button>
           </div>
+
+          {crossedZone && (
+            <div className="nearby-warning-banner">
+              <span className="warning-icon">⚠️</span>
+              <span className="warning-text">
+                {isHe 
+                  ? `שים לב: קו הניווט הישר חוצה את "${crossedZone.nameHe}". מומלץ לעקוף דרך השבילים המוזהבים.`
+                  : `Warning: Direct path crosses "${crossedZone.name}". Please bypass via the gold paths.`
+                }
+              </span>
+            </div>
+          )}
 
           {compassTarget && (
             <CompassCard
@@ -860,13 +878,13 @@ export default function VenueMap({
                   {distInfo !== null && (
                     <div className="popup-distance">
                       <span>{formatDistance(distInfo)} {t.distance}</span>
-                      <span className="popup-walk">{formatWalkTime(distInfo)} {t.walkTime}</span>
+                      <span className="popup-walk">{formatWalkTime(distInfo, isHe)} {t.walkTime}</span>
                     </div>
                   )}
 
                   <button
                     className="popup-btn popup-nav-btn"
-                    onClick={() => startMapNavigation(poi.coords)}
+                    onClick={() => startMapNavigation(poi)}
                   >
                     <Navigation size={14} />
                     {t.navigate}
