@@ -104,7 +104,7 @@ export default function CalibrationModal({ lang, onClose, onComplete }) {
           </div>
 
           <div className="calibration-progress-bar">
-            <div className="calibration-progress-fill" style={{ width: `${progress}%` }} />
+            <div className="calibration-progress-fill" style={{ transform: `scaleX(${progress / 100})` }} />
           </div>
         </div>
       </div>
