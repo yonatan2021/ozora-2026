@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker, Circle, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker, Circle, Polyline, Polygon, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import venueMapData from '../data/venueMap.json';
@@ -12,6 +12,8 @@ import {
 } from '../utils/navigationPermissions';
 import { Crosshair, Navigation, List, MapPin, X, Tent } from 'lucide-react';
 import CalibrationModal from './CalibrationModal';
+import venueTrailsData from '../data/venueTrails.json';
+import { calculateBearing, doesSegmentCrossPolygon } from '../utils/mapMath';
 
 const FESTIVAL_WALK_SPEED = 67; // meters per minute (~4 km/h)
 
@@ -80,16 +82,7 @@ function isAtFestival(meters) {
   return meters != null && meters < 8000;
 }
 
-function calculateBearing(lat1, lon1, lat2, lon2) {
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const y = Math.sin(dLon) * Math.cos((lat2 * Math.PI) / 180);
-  const x =
-    Math.cos((lat1 * Math.PI) / 180) * Math.sin((lat2 * Math.PI) / 180) -
-    Math.sin((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.cos(dLon);
-  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
-}
+
 
 function useDeviceOrientation() {
   const [heading, setHeading] = useState(null);
@@ -548,11 +541,43 @@ export default function VenueMap({
       .sort((a, b) => a.distance - b.distance);
   }, [nearbyCategory, userPosition, pois]);
 
+  const crossedZone = useMemo(() => {
+    if (!userPosition) return null;
+    const userPt = [userPosition.lat, userPosition.lng];
+    let targetPt = null;
+
+    if (compassTarget) {
+      targetPt = compassTarget.coords;
+    } else if (navTarget) {
+      targetPt = navTarget;
+    }
+
+    if (!targetPt) return null;
+
+    for (const zone of venueTrailsData.restrictedZones) {
+      if (doesSegmentCrossPolygon(userPt, targetPt, zone.coords)) {
+        return zone;
+      }
+    }
+    return null;
+  }, [userPosition, compassTarget, navTarget]);
+
   const initialCenter = savedViewState?.center || venueMapData.center;
   const initialZoom = savedViewState?.zoom || venueMapData.defaultZoom;
 
   return (
     <div className={`venue-map-container ${viewMode === 'nearby' ? 'venue-map-nearby-mode' : ''}`}>
+      {crossedZone && (
+        <div className="map-warning-banner">
+          <span className="warning-icon">⚠️</span>
+          <span className="warning-text">
+            {isHe 
+              ? `שים לב: קו הניווט הישר חוצה את "${crossedZone.nameHe}". מומלץ לעקוף דרך השבילים המוזהבים.`
+              : `Warning: Direct path crosses "${crossedZone.name}". Please bypass via the gold paths.`
+            }
+          </span>
+        </div>
+      )}
       {/* Category filter bar — map mode only */}
       {viewMode === 'map' && (
         <div className="map-filter-bar">
@@ -866,6 +891,35 @@ export default function VenueMap({
             pathOptions={{ color: '#e040a0', weight: 3, dashArray: '8, 8', opacity: 0.8 }}
           />
         )}
+
+        {/* Render trails */}
+        {venueTrailsData.trails.map(t => (
+          <Polyline
+            key={t.id}
+            positions={t.coords}
+            pathOptions={{
+              color: t.type === 'main' ? '#ecc94b' : '#9f7aea',
+              weight: t.type === 'main' ? 4 : 2,
+              dashArray: t.type === 'main' ? null : '5, 5',
+              opacity: 0.7
+            }}
+          />
+        ))}
+
+        {/* Render restricted zones */}
+        {venueTrailsData.restrictedZones.map(z => (
+          <Polygon
+            key={z.id}
+            positions={z.coords}
+            pathOptions={{
+              color: '#e53e3e',
+              fillColor: '#e53e3e',
+              fillOpacity: 0.15,
+              weight: 1.5,
+              dashArray: '3, 6'
+            }}
+          />
+        ))}
       </MapContainer>}
 
       {/* Tent FAB */}
