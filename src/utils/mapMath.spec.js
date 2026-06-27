@@ -52,6 +52,14 @@ describe('mapMath utility tests', () => {
       expect(normalizeCoord(null)).toBeNull();
       expect(normalizeCoord(undefined)).toBeNull();
     });
+
+    it('should reject coordinates with NaN values', () => {
+      expect(normalizeCoord([NaN, 56.78])).toBeNull();
+      expect(normalizeCoord([12.34, NaN])).toBeNull();
+      expect(normalizeCoord({ lat: NaN, lng: 56.78 })).toBeNull();
+      expect(normalizeCoord({ lat: 12.34, lng: NaN })).toBeNull();
+      expect(normalizeCoord(['abc', 'def'])).toBeNull();
+    });
   });
 
   describe('isPointInPolygon tests', () => {

@@ -1,8 +1,17 @@
 export function normalizeCoord(p) {
   if (!p) return null;
-  if (Array.isArray(p)) return p.length >= 2 ? [Number(p[0]), Number(p[1])] : null;
-  if (p.lat != null && p.lng != null) return [Number(p.lat), Number(p.lng)];
-  return null;
+  let lat, lng;
+  if (Array.isArray(p)) {
+    if (p.length < 2) return null;
+    lat = Number(p[0]);
+    lng = Number(p[1]);
+  } else if (p.lat != null && p.lng != null) {
+    lat = Number(p.lat);
+    lng = Number(p.lng);
+  } else {
+    return null;
+  }
+  return (isNaN(lat) || isNaN(lng)) ? null : [lat, lng];
 }
 
 export function calculateBearing(lat1, lon1, lat2, lon2) {
@@ -45,14 +54,7 @@ function onSegment(p, q, r) {
          q[1] <= Math.max(p[1], r[1]) && q[1] >= Math.min(p[1], r[1]);
 }
 
-export function intersect(A, B, C, D) {
-  const pA = normalizeCoord(A);
-  const pB = normalizeCoord(B);
-  const pC = normalizeCoord(C);
-  const pD = normalizeCoord(D);
-
-  if (!pA || !pB || !pC || !pD) return false;
-
+function _intersect(pA, pB, pC, pD) {
   const o1 = orientation(pA, pB, pC);
   const o2 = orientation(pA, pB, pD);
   const o3 = orientation(pC, pD, pA);
@@ -70,25 +72,45 @@ export function intersect(A, B, C, D) {
   return false;
 }
 
-export function isPointInPolygon(point, polygon) {
-  const pt = normalizeCoord(point);
-  if (!pt || !polygon || !Array.isArray(polygon) || polygon.length < 3) return false;
-  
-  const x = pt[0], y = pt[1];
-  let inside = false;
-  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const pi = normalizeCoord(polygon[i]);
-    const pj = normalizeCoord(polygon[j]);
-    if (!pi || !pj) continue;
+export function intersect(A, B, C, D) {
+  const pA = normalizeCoord(A);
+  const pB = normalizeCoord(B);
+  const pC = normalizeCoord(C);
+  const pD = normalizeCoord(D);
 
-    const xi = pi[0], yi = pi[1];
-    const xj = pj[0], yj = pj[1];
+  if (!pA || !pB || !pC || !pD) return false;
+
+  return _intersect(pA, pB, pC, pD);
+}
+
+function _isPointInPolygon(pt, normalizedPolygon) {
+  const lat = pt[0], lng = pt[1];
+  let inside = false;
+  for (let i = 0, j = normalizedPolygon.length - 1; i < normalizedPolygon.length; j = i++) {
+    const latI = normalizedPolygon[i][0], lngI = normalizedPolygon[i][1];
+    const latJ = normalizedPolygon[j][0], lngJ = normalizedPolygon[j][1];
     
-    const intersect = ((yi > y) !== (yj > y)) &&
-                      (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
+    // Cast horizontal ray to the right from point (lng, lat)
+    const intersect = ((latI > lat) !== (latJ > lat)) &&
+                      (lng < ((lngJ - lngI) * (lat - latI)) / (latJ - latI) + lngI);
     if (intersect) inside = !inside;
   }
   return inside;
+}
+
+export function isPointInPolygon(point, polygon) {
+  const pt = normalizeCoord(point);
+  if (!pt || !polygon || !Array.isArray(polygon)) return false;
+
+  const normalizedPolygon = [];
+  for (let i = 0; i < polygon.length; i++) {
+    const p = normalizeCoord(polygon[i]);
+    if (!p) return false;
+    normalizedPolygon.push(p);
+  }
+  if (normalizedPolygon.length < 3) return false;
+
+  return _isPointInPolygon(pt, normalizedPolygon);
 }
 
 export function doesSegmentCrossPolygon(p1, p2, polygonCoords) {
@@ -96,19 +118,28 @@ export function doesSegmentCrossPolygon(p1, p2, polygonCoords) {
   const pt2 = normalizeCoord(p2);
 
   if (!pt1 || !pt2) return false;
-  if (!polygonCoords || !Array.isArray(polygonCoords) || polygonCoords.length < 3) return false;
+  if (!polygonCoords || !Array.isArray(polygonCoords)) return false;
+
+  // Pre-normalize polygon coords once
+  const normalizedPolygon = [];
+  for (let i = 0; i < polygonCoords.length; i++) {
+    const p = normalizeCoord(polygonCoords[i]);
+    if (!p) return false;
+    normalizedPolygon.push(p);
+  }
+  if (normalizedPolygon.length < 3) return false;
 
   // 1. Point in polygon check (if either endpoint is inside, it crosses/is inside the polygon)
-  if (isPointInPolygon(pt1, polygonCoords) || isPointInPolygon(pt2, polygonCoords)) {
+  if (_isPointInPolygon(pt1, normalizedPolygon) || _isPointInPolygon(pt2, normalizedPolygon)) {
     return true;
   }
 
   // 2. Line segment intersection check with all sides
-  for (let i = 0; i < polygonCoords.length; i++) {
-    const nextIdx = (i + 1) % polygonCoords.length;
-    const sideStart = polygonCoords[i];
-    const sideEnd = polygonCoords[nextIdx];
-    if (intersect(pt1, pt2, sideStart, sideEnd)) {
+  for (let i = 0; i < normalizedPolygon.length; i++) {
+    const nextIdx = (i + 1) % normalizedPolygon.length;
+    const sideStart = normalizedPolygon[i];
+    const sideEnd = normalizedPolygon[nextIdx];
+    if (_intersect(pt1, pt2, sideStart, sideEnd)) {
       return true;
     }
   }
