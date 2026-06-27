@@ -1,0 +1,139 @@
+# Artists Still Missing Origin Flags
+
+Updated after reviewing `/Users/yonig/Downloads/artist-origin-researched.md`.
+
+The research file verified origins for 127 of the previous 260 `needs_review` artists. The following 133 artists still do not have a sufficiently reliable origin source, so no flag should render for them yet.
+
+- 8ternal Beings
+- Abstrakt
+- ADX
+- Aka Nina
+- Alagi & Papa
+- Alexander Descroix
+- Aliji
+- All Stars Fire Show
+- Alma Deya
+- Amigdala
+- Anicca
+- Antique
+- Atia in Peace
+- Aux25
+- Axeev
+- Bass Kovac
+- Baumb
+- Benho & Psymon
+- Bernathy
+- Bodoo
+- Broken Breger
+- Chillum Trio
+- Cinema
+- Circus Cabaret
+- Coloboma & Filip Varial
+- Cord
+- Crimson
+- Cyber Aghori
+- Dance and Theatre Impro Jam
+- Danger and Beyond
+- Deerfeeder
+- Detective Kelly
+- Detune
+- DJ Josko
+- DJ Reload
+- DJ Solitare
+- Djembejam! Drum & Dance Circle
+- Dork
+- DTNB.
+- Eltawave & Yury
+- Encounters
+- Faktor X
+- Fluidum x Peao x Fanni Zahár
+- Garpo & Ferenc Szanati
+- Gino Sonica
+- Giolibrí
+- Giuseppe
+- Giuseppe in Dub
+- Gong Zen
+- Griffin Cloud
+- He She It
+- Heavy Hertz
+- Hèt Hat Club feat. Freak Fusion
+- Hodworks & Artmenok - Idol
+- Hruscsov
+- Humanoids
+- Ikoza & Alphakey
+- In Between
+- Isu
+- Kebab Symphonie /Danaël
+- Korruptcop
+- Lazy Calm Raga
+- Mankind
+- Mavvi & Antonia
+- Merlyn Silva
+- Metaverse
+- Mist
+- Mode & Valens
+- Muteless
+- Mysticism
+- Nathalia
+- Nautis
+- Neo Shaman
+- Ness
+- Neutron
+- Nevo
+- Nick Interchill
+- Nora Matis
+- Nova Gravity
+- Novelty Engine
+- Oleg
+- Ondrej Psyla
+- One Million Toys
+- Opening
+- Opening Ceremony
+- Originz & Rajax
+- Ouoa
+- Panache & Grabuge
+- Patajana & Karlo Kurbel
+- Pause.dxa
+- Perfect Sphere
+- Phobos
+- Porat
+- Professor Chill
+- Pusher
+- Ramizes
+- Robot Bennett
+- Roland Handrick
+- Rook
+- Saalyx
+- Sabee
+- Savaborsa & Richietyerra
+- Sebastian Venu
+- Shenanigan
+- Shred'er
+- Siblicity
+- Sibu Manaï
+- Simon
+- Sindh
+- Smooglers
+- Spoink
+- Strontium Dogs
+- Subotage
+- Sudden Reverb
+- Sundi
+- Sundi Jr & Paradiddle
+- Swanasa
+- Symbionts
+- Szamy
+- Taiga
+- Taku
+- Tatoo
+- Tom Bini
+- Tom_Ato
+- Trubble
+- Tündérke
+- Veronika Szabó - Kingdom
+- Vox Fabri
+- Wavecheck
+- Weirdos
+- Wonky Swing Trio
+- Yoy Project
+- Zsom
