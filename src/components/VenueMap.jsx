@@ -476,7 +476,7 @@ export default function VenueMap({
   useEffect(() => {
     // Attempt automatic request on map tab activation
     requestNavigationLocation();
-  }, []);
+  }, [requestNavigationLocation]);
 
   useEffect(() => {
     if (flyToStageId && flyToStageId !== 'my-camp') {
@@ -691,7 +691,7 @@ export default function VenueMap({
             ))}
           </div>
 
-          {!userPosition && (
+          {!userPosition && (locationStatus === 'denied' || locationStatus === 'unavailable' || gpsError) && (
             <div className="gps-onboarding-card">
               <div className="gps-onboarding-header">
                 <span className="gps-glow-icon">🔮</span>
@@ -720,7 +720,7 @@ export default function VenueMap({
                     <summary>{isHe ? 'כיצד לאפשר מיקום ידנית?' : 'How to enable location manually?'}</summary>
                     <div className="troubleshoot-content">
                       <p><strong>Safari:</strong> {isHe ? 'הגדרות -> פרטיות -> שירותי מיקום -> דפדפן ספארי -> אפשר תמיד' : 'Settings -> Privacy -> Location Services -> Safari -> Allow'}</p>
-                      <p><strong>Chrome:</strong> {isHe ? 'לחוץ על מנעול האבטחה בשורת הכתובת -> הרשאות אתר -> מיקום -> אפשר' : 'Tap site settings icon in url bar -> Site Settings -> Location -> Allow'}</p>
+                      <p><strong>Chrome:</strong> {isHe ? 'לחץ על מנעול האבטחה בשורת הכתובת -> הרשאות אתר -> מיקום -> אפשר' : 'Tap site settings icon in url bar -> Site Settings -> Location -> Allow'}</p>
                     </div>
                   </details>
                 </div>
@@ -1018,7 +1018,7 @@ export default function VenueMap({
         <button
           className={`map-fab ${!userPosition ? 'gps-warning' : ''}`}
           onClick={userPosition ? centerOnMe : requestNavigationLocation}
-          aria-label={t.centerOnMe}
+          aria-label={userPosition ? t.centerOnMe : (isHe ? 'בקש גישת מיקום' : 'Request location access')}
         >
           {userPosition ? <Crosshair size={22} /> : <MapPin size={22} className="warning-pulse" />}
         </button>

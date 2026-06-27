@@ -5144,6 +5144,7 @@ body:has(.theme-sunrise)::before {
 .map-fab.gps-warning .warning-pulse {
   color: #e53e3e;
   animation: pulse-red 1.5s infinite;
+  transform-origin: center;
 }
 
 .gps-requesting-spinner {
