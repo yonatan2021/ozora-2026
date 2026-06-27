@@ -110,16 +110,17 @@ export default function App() {
   const [notesVersion, setNotesVersion] = useState(0);
   const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));
 
-  // Periodically check if a camp is pinned/removed (safeguard since storage event doesn't fire in the same window)
+  const handleCampChange = useCallback(() => {
+    setHasCamp(!!localStorage.getItem('ozora_my_camp'));
+  }, []);
+
   useEffect(() => {
     const handleStorage = () => {
       setHasCamp(!!localStorage.getItem('ozora_my_camp'));
     };
     window.addEventListener('storage', handleStorage);
-    const interval = setInterval(handleStorage, 1000);
     return () => {
       window.removeEventListener('storage', handleStorage);
-      clearInterval(interval);
     };
   }, []);
 
@@ -544,6 +545,7 @@ export default function App() {
             onViewInTimetable={(set) => handleSelectSetFromSearch(set)}
             savedViewState={mapViewStateRef.current}
             onViewStateChange={(state) => { mapViewStateRef.current = state; }}
+            onCampChange={handleCampChange}
           />
         </Suspense>
       )}

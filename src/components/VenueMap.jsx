@@ -373,7 +373,8 @@ export default function VenueMap({
   onFlyToComplete,
   onViewInTimetable,
   savedViewState,
-  onViewStateChange
+  onViewStateChange,
+  onCampChange
 }) {
   const t = translations[lang];
   const isHe = lang === 'he';
@@ -713,7 +714,7 @@ export default function VenueMap({
             ))}
           </div>
 
-          {!userPosition && (showOnboarding || locationStatus === 'denied' || locationStatus === 'unavailable' || gpsError) && (
+          {!userPosition && (showOnboarding || locationStatus === 'requesting' || locationStatus === 'denied' || locationStatus === 'unavailable' || gpsError) && (
             <div className="gps-onboarding-card">
               <div className="gps-onboarding-header">
                 <span className="gps-glow-icon">🔮</span>
@@ -785,6 +786,7 @@ export default function VenueMap({
                         if (confirm(isHe ? 'האם למחוק את מיקום האוהל?' : 'Delete camp location?')) {
                           localStorage.removeItem('ozora_my_camp');
                           refreshPois();
+                          onCampChange?.();
                         }
                       }}
                     >
@@ -1069,6 +1071,7 @@ export default function VenueMap({
             localStorage.setItem('ozora_my_camp', JSON.stringify(newCamp));
             refreshPois();
             setIsCalibrating(false);
+            onCampChange?.();
           }}
         />
       )}

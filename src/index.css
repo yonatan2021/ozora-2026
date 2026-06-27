@@ -5128,7 +5128,7 @@ body:has(.theme-sunrise)::before {
   margin-top: 16px;
   text-align: start;
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .gps-troubleshoot summary {
@@ -5174,5 +5174,22 @@ body:has(.theme-sunrise)::before {
   0% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.15); opacity: 0.6; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+/* Light Theme Contrast Overrides */
+.theme-day .camp-shortcut-btn {
+  color: var(--primary);
+}
+.theme-day .camp-shortcut-btn:hover {
+  background: var(--surface-hover);
+}
+.theme-day .good-signal {
+  color: var(--accent);
+}
+.theme-day .calibration-stats {
+  background: rgba(0, 0, 0, 0.04);
+}
+.theme-day .calibration-progress-bar {
+  background: rgba(0, 0, 0, 0.1);
 }
 
