@@ -474,6 +474,11 @@ export default function VenueMap({
   }, [requestNavigationLocation]);
 
   useEffect(() => {
+    // Attempt automatic request on map tab activation
+    requestNavigationLocation();
+  }, []);
+
+  useEffect(() => {
     if (flyToStageId && flyToStageId !== 'my-camp') {
       setViewMode('map');
     }
@@ -687,7 +692,40 @@ export default function VenueMap({
           </div>
 
           {!userPosition && (
-            <div className="nearby-no-gps">{t.gpsUnavailable}</div>
+            <div className="gps-onboarding-card">
+              <div className="gps-onboarding-header">
+                <span className="gps-glow-icon">🔮</span>
+                <h3>{isHe ? 'למצוא את הדרך באורות אוזורה' : 'Unlock the Ozora Lights Map'}</h3>
+              </div>
+              <p>
+                {isHe 
+                  ? 'בשטחי הגבעות של דאדפושטה ובמיוחד בחושך באופליין, ה-GPS חיוני כדי למצוא את האוהל שלך, מקורות מים ולנווט בבטחה בין הבמות.' 
+                  : 'In the hills of Dádpuszta and especially in the dark offline, GPS is crucial for finding your tent, water, and stages safely.'}
+              </p>
+              
+              {locationStatus === 'requesting' ? (
+                <div className="gps-requesting-spinner">
+                  <div className="spinner-ring"></div>
+                  <span>{isHe ? 'מחפש לווינים...' : 'Searching satellites...'}</span>
+                </div>
+              ) : (
+                <button className="gps-grant-btn" onClick={requestNavigationLocation}>
+                  {isHe ? 'אפשר גישת מיקום (GPS)' : 'Allow Location Access'}
+                </button>
+              )}
+
+              {gpsError && (
+                <div className="gps-troubleshoot">
+                  <details>
+                    <summary>{isHe ? 'כיצד לאפשר מיקום ידנית?' : 'How to enable location manually?'}</summary>
+                    <div className="troubleshoot-content">
+                      <p><strong>Safari:</strong> {isHe ? 'הגדרות -> פרטיות -> שירותי מיקום -> דפדפן ספארי -> אפשר תמיד' : 'Settings -> Privacy -> Location Services -> Safari -> Allow'}</p>
+                      <p><strong>Chrome:</strong> {isHe ? 'לחוץ על מנעול האבטחה בשורת הכתובת -> הרשאות אתר -> מיקום -> אפשר' : 'Tap site settings icon in url bar -> Site Settings -> Location -> Allow'}</p>
+                    </div>
+                  </details>
+                </div>
+              )}
+            </div>
           )}
 
           <div className="nearby-list">
@@ -975,14 +1013,14 @@ export default function VenueMap({
         </button>
       )}
 
-      {/* GPS center FAB */}
-      {viewMode === 'map' && userPosition && !gpsError && (
+      {/* GPS Status / Center FAB */}
+      {viewMode === 'map' && (
         <button
-          className="map-fab"
-          onClick={centerOnMe}
+          className={`map-fab ${!userPosition ? 'gps-warning' : ''}`}
+          onClick={userPosition ? centerOnMe : requestNavigationLocation}
           aria-label={t.centerOnMe}
         >
-          <Crosshair size={22} />
+          {userPosition ? <Crosshair size={22} /> : <MapPin size={22} className="warning-pulse" />}
         </button>
       )}
 
