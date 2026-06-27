@@ -86,7 +86,13 @@ function isAtFestival(meters) {
 
 function useDeviceOrientation() {
   const [heading, setHeading] = useState(null);
-  const [permissionState, setPermissionState] = useState('unknown');
+  const [permissionState, setPermissionState] = useState(() => {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      return 'unknown';
+    }
+    return 'granted';
+  });
   const [calibrating, setCalibrating] = useState(false);
 
   const requestPermission = useCallback(async () => {
@@ -111,6 +117,9 @@ function useDeviceOrientation() {
     if (permissionState !== 'granted') return;
 
     let sampleCount = 0;
+    let lastUpdate = 0;
+    const throttleMs = 80;
+
     const handler = (e) => {
       let h = null;
       if (e.webkitCompassHeading != null) {
@@ -121,7 +130,12 @@ function useDeviceOrientation() {
       if (h != null) {
         sampleCount++;
         if (sampleCount > 5) setCalibrating(false);
-        setHeading(h);
+        
+        const now = Date.now();
+        if (now - lastUpdate >= throttleMs) {
+          setHeading(h);
+          lastUpdate = now;
+        }
       }
     };
 
@@ -170,7 +184,7 @@ function CompassCard({
         const dist = haversineDistance(userPosition.lat, userPosition.lng, poi.coords[0], poi.coords[1]);
         const name = poi.id === 'my-camp' 
           ? (isHe ? 'האוהל שלי' : 'My Camp')
-          : (poi.type === 'stage' ? poi.name : (isHe ? poi.nameHe : poi.name));
+          : (isHe ? (poi.nameHe || poi.name) : poi.name);
         const bearingToPoi = calculateBearing(userPosition.lat, userPosition.lng, poi.coords[0], poi.coords[1]);
         return { ...poi, name, dist, bearing: bearingToPoi };
       })
@@ -179,8 +193,11 @@ function CompassCard({
   }, [userPosition, pois, isHe]);
 
   useEffect(() => {
-    if (alignmentOptions.length > 0 && !selectedPoiId) {
-      setSelectedPoiId(alignmentOptions[0].id);
+    if (alignmentOptions.length > 0) {
+      const exists = alignmentOptions.some(p => p.id === selectedPoiId);
+      if (!exists) {
+        setSelectedPoiId(alignmentOptions[0].id);
+      }
     }
   }, [alignmentOptions, selectedPoiId]);
 
@@ -201,7 +218,7 @@ function CompassCard({
     localStorage.setItem('ozora_compass_offset', newOffset.toString());
     const displayOffset = Math.round(newOffset > 180 ? newOffset - 360 : newOffset);
     setSuccessMsg(isHe 
-      ? `כיוון! היסט של ${displayOffset}° הוחל.` 
+      ? "כיול המצפן הושלם!" 
       : `Aligned! Offset of ${displayOffset}° applied.`
     );
   };
@@ -248,109 +265,124 @@ function CompassCard({
         </button>
       </div>
 
-      <div className={`compass-card-body ${!userPosition ? 'compass-no-gps' : ''}`}>
-        <div className="compass-dial">
-          <svg viewBox="0 0 160 160" className="compass-dial-svg">
-            <defs>
-              <radialGradient id="compass-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.12" />
-                <stop offset="70%" stopColor="var(--primary)" stopOpacity="0.04" />
-                <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-              </radialGradient>
-              <filter id="needle-glow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
+      <div className="compass-card-content">
+        <div className={`compass-card-body ${!userPosition ? 'compass-no-gps' : ''}`}>
+          <div className="compass-dial">
+            <svg viewBox="0 0 160 160" className="compass-dial-svg">
+              <defs>
+                <radialGradient id="compass-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.12" />
+                  <stop offset="70%" stopColor="var(--primary)" stopOpacity="0.04" />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                </radialGradient>
+                <filter id="needle-glow">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
 
-            {compassActive && <circle cx="80" cy="80" r="72" fill="url(#compass-glow)" />}
+              {compassActive && <circle cx="80" cy="80" r="72" fill="url(#compass-glow)" />}
 
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
-              <line
-                key={deg}
-                x1="80" y1={deg % 90 === 0 ? 14 : 18}
-                x2="80" y2={deg % 90 === 0 ? 24 : 22}
-                stroke={deg % 90 === 0 ? 'var(--text-secondary)' : 'var(--border-strong)'}
-                strokeWidth={deg % 90 === 0 ? 2 : 1}
-                strokeLinecap="round"
-                transform={`rotate(${deg}, 80, 80)`}
-                opacity={deg % 90 === 0 ? 0.8 : 0.4}
-              />
-            ))}
+              {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
+                <line
+                  key={deg}
+                  x1="80" y1={deg % 90 === 0 ? 14 : 18}
+                  x2="80" y2={deg % 90 === 0 ? 24 : 22}
+                  stroke={deg % 90 === 0 ? 'var(--text-secondary)' : 'var(--border-strong)'}
+                  strokeWidth={deg % 90 === 0 ? 2 : 1}
+                  strokeLinecap="round"
+                  transform={`rotate(${deg}, 80, 80)`}
+                  opacity={deg % 90 === 0 ? 0.8 : 0.4}
+                />
+              ))}
 
-            <circle cx="80" cy="80" r="68" fill="none" stroke="var(--border-strong)" strokeWidth="1" opacity="0.5" />
-            <circle cx="80" cy="80" r="46" fill="none" stroke="var(--border)" strokeWidth="0.5" opacity="0.2" />
+              <circle cx="80" cy="80" r="68" fill="none" stroke="var(--border-strong)" strokeWidth="1" opacity="0.5" />
+              <circle cx="80" cy="80" r="46" fill="none" stroke="var(--border)" strokeWidth="0.5" opacity="0.2" />
 
-            <text x="80" y="36" textAnchor="middle" fill="var(--primary)" fontSize="11" fontWeight="800" fontFamily="'Exo 2', sans-serif">N</text>
-            <text x="80" y="138" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">S</text>
-            <text x="138" y="84" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">E</text>
-            <text x="22" y="84" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">W</text>
+              <text x="80" y="36" textAnchor="middle" fill="var(--primary)" fontSize="11" fontWeight="800" fontFamily="'Exo 2', sans-serif">N</text>
+              <text x="80" y="138" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">S</text>
+              <text x="138" y="84" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">E</text>
+              <text x="22" y="84" textAnchor="middle" fill="var(--text-muted)" fontSize="9" fontWeight="600" fontFamily="'Exo 2', sans-serif">W</text>
 
-            {compassActive ? (
-              <g transform={`rotate(${needleRotation}, 80, 80)`} className="compass-needle-group">
-                <line x1="80" y1="80" x2="80" y2="30" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" filter="url(#needle-glow)" />
-                <polygon points="80,26 76,38 84,38" fill="var(--primary)" filter="url(#needle-glow)" />
-                <line x1="80" y1="80" x2="80" y2="120" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" opacity="0.25" />
-                <circle cx="80" cy="80" r="5" fill="var(--primary)" opacity="0.9" />
-                <circle cx="80" cy="80" r="2.5" fill="var(--bg)" />
-              </g>
-            ) : (
-              <g opacity="0.2">
-                <line x1="80" y1="32" x2="80" y2="128" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" />
-                <circle cx="80" cy="80" r="4" fill="var(--text-muted)" />
-              </g>
-            )}
-          </svg>
-        </div>
-
-        <div className="compass-info">
-          {distance != null && (
-            <div className="compass-distance-row">
-              <span className="compass-distance-value">{formatDistance(distance)}</span>
-              {atFestival && userPosition && (
-                <span className="compass-accuracy">±{Math.round(userPosition.accuracy)}m</span>
+              {compassActive && userPosition ? (
+                <g transform={`rotate(${needleRotation}, 80, 80)`} className="compass-needle-group">
+                  <line x1="80" y1="80" x2="80" y2="30" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" filter="url(#needle-glow)" />
+                  <polygon points="80,26 76,38 84,38" fill="var(--primary)" filter="url(#needle-glow)" />
+                  <line x1="80" y1="80" x2="80" y2="120" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" opacity="0.25" />
+                  <circle cx="80" cy="80" r="5" fill="var(--primary)" opacity="0.9" />
+                  <circle cx="80" cy="80" r="2.5" fill="var(--bg)" />
+                </g>
+              ) : compassActive ? (
+                <g transform={`rotate(${-adjustedHeading}, 80, 80)`} className="compass-needle-group-inactive">
+                  <line x1="80" y1="80" x2="80" y2="30" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                  <polygon points="80,26 76,38 84,38" fill="var(--text-muted)" opacity="0.6" />
+                  <line x1="80" y1="80" x2="80" y2="120" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" opacity="0.15" />
+                  <circle cx="80" cy="80" r="4" fill="var(--text-muted)" opacity="0.6" />
+                </g>
+              ) : (
+                <g opacity="0.2">
+                  <line x1="80" y1="32" x2="80" y2="128" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="80" cy="80" r="4" fill="var(--text-muted)" />
+                </g>
               )}
-            </div>
-          )}
-          {distance != null && (
-            <div className={`compass-walk-time ${!atFestival ? 'compass-far' : ''}`}>
-              {formatWalkTime(distance, isHe)}
-            </div>
-          )}
 
-          {locationMessage && (
-            <p className={`compass-location-status ${locationStatus === 'requesting' ? 'is-loading' : ''}`}>
-              {locationMessage}
-            </p>
-          )}
+              {compassActive && !userPosition && (
+                <text x="80" y="96" textAnchor="middle" fill="var(--text-muted)" fontSize="8" fontWeight="600">
+                  {isHe ? 'ממתין ל-GPS...' : 'Awaiting GPS...'}
+                </text>
+              )}
+            </svg>
+          </div>
 
-          {needsLocation && locationStatus !== 'requesting' && locationStatus !== 'unavailable' && (
-            <button className="compass-enable-btn" onClick={onRequestLocation}>
-              <MapPin size={14} />
-              <span>{isHe ? 'אפשר מיקום' : 'Allow location'}</span>
-            </button>
-          )}
+          <div className="compass-info">
+            {distance != null && (
+              <div className="compass-distance-row">
+                <span className="compass-distance-value">{formatDistance(distance)}</span>
+                {atFestival && userPosition && (
+                  <span className="compass-accuracy">±{Math.round(userPosition.accuracy)}m</span>
+                )}
+              </div>
+            )}
+            {distance != null && (
+              <div className={`compass-walk-time ${!atFestival ? 'compass-far' : ''}`}>
+                {formatWalkTime(distance, isHe)}
+              </div>
+            )}
 
-          {!needsLocation && permissionState !== 'granted' && (
-            <button className="compass-enable-btn" onClick={requestPermission}>
-              <Navigation size={14} />
-              <span>{isHe ? 'הפעל מצפן' : 'Enable compass'}</span>
-            </button>
-          )}
-          {calibrating && (
-            <p className="compass-calibrating">
-              {isHe ? 'מכייל מצפן...' : 'Calibrating...'}
-            </p>
-          )}
-          {compassActive && !calibrating && atFestival && (
-            <div className="compass-status-active">
-              <span className="compass-status-dot" />
-              {isHe ? 'מצפן פעיל' : 'Compass active'}
-            </div>
-          )}
+            {locationMessage && (
+              <p className={`compass-location-status ${locationStatus === 'requesting' ? 'is-loading' : ''}`}>
+                {locationMessage}
+              </p>
+            )}
+
+            {needsLocation && locationStatus !== 'requesting' && locationStatus !== 'unavailable' && (
+              <button className="compass-enable-btn" onClick={onRequestLocation}>
+                <MapPin size={14} />
+                <span>{isHe ? 'אפשר מיקום' : 'Allow location'}</span>
+              </button>
+            )}
+
+            {!needsLocation && permissionState !== 'granted' && (
+              <button className="compass-enable-btn" onClick={requestPermission}>
+                <Navigation size={14} />
+                <span>{isHe ? 'הפעל מצפן' : 'Enable compass'}</span>
+              </button>
+            )}
+            {calibrating && (
+              <p className="compass-calibrating">
+                {isHe ? 'מכייל מצפן...' : 'Calibrating...'}
+              </p>
+            )}
+            {compassActive && !calibrating && atFestival && (
+              <div className="compass-status-active">
+                <span className="compass-status-dot" />
+                {isHe ? 'מצפן פעיל' : 'Compass active'}
+              </div>
+            )}
+          </div>
         </div>
 
         {compassActive && (

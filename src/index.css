@@ -4297,6 +4297,12 @@ body:has(.theme-sunrise)::before {
   transform: scale(0.9);
 }
 
+.compass-card-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .compass-card-body {
   display: flex;
   align-items: center;
