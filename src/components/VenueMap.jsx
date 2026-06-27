@@ -310,6 +310,24 @@ function MapController({ flyToCoords, onFlyComplete }) {
   return null;
 }
 
+function MapStateTracker({ onStateChange }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!map) return;
+    const handleMoveEnd = () => {
+      onStateChange?.({
+        center: [map.getCenter().lat, map.getCenter().lng],
+        zoom: map.getZoom()
+      });
+    };
+    map.on('moveend', handleMoveEnd);
+    return () => {
+      map.off('moveend', handleMoveEnd);
+    };
+  }, [map, onStateChange]);
+  return null;
+}
+
 function TileCacheOverlay({ lang }) {
   const [progress, setProgress] = useState(null);
   const [done, setDone] = useState(isCacheComplete());
@@ -354,7 +372,8 @@ export default function VenueMap({
   flyToStageId,
   onFlyToComplete,
   onViewInTimetable,
-  savedViewState
+  savedViewState,
+  onViewStateChange
 }) {
   const t = translations[lang];
   const isHe = lang === 'he';
@@ -372,6 +391,7 @@ export default function VenueMap({
   const [nearbyCategory, setNearbyCategory] = useState('food');
   const [compassTarget, setCompassTarget] = useState(null);
   const [isCalibrating, setIsCalibrating] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const [pois, setPois] = useState(() => {
     const savedCamp = localStorage.getItem('ozora_my_camp');
@@ -423,6 +443,7 @@ export default function VenueMap({
     setUserPosition(position);
     setLocationStatus('granted');
     setGpsError(false);
+    setShowOnboarding(false);
   }, []);
 
   useEffect(() => {
@@ -454,6 +475,7 @@ export default function VenueMap({
       const nextStatus = navigator.geolocation ? 'denied' : 'unavailable';
       setGpsError(true);
       setLocationStatus(nextStatus);
+      setShowOnboarding(true);
       return false;
     }
   }, [handlePosition]);
@@ -691,7 +713,7 @@ export default function VenueMap({
             ))}
           </div>
 
-          {!userPosition && (locationStatus === 'denied' || locationStatus === 'unavailable' || gpsError) && (
+          {!userPosition && (showOnboarding || locationStatus === 'denied' || locationStatus === 'unavailable' || gpsError) && (
             <div className="gps-onboarding-card">
               <div className="gps-onboarding-header">
                 <span className="gps-glow-icon">🔮</span>
@@ -857,6 +879,7 @@ export default function VenueMap({
         />
 
         <MapController flyToCoords={flyToCoords} onFlyComplete={onFlyToComplete} />
+        <MapStateTracker onStateChange={onViewStateChange} />
 
         {/* POI markers */}
         {filteredPois.map(poi => {

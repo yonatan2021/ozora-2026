@@ -543,6 +543,7 @@ export default function App() {
             onFlyToComplete={() => setFlyToStageId(null)}
             onViewInTimetable={(set) => handleSelectSetFromSearch(set)}
             savedViewState={mapViewStateRef.current}
+            onViewStateChange={(state) => { mapViewStateRef.current = state; }}
           />
         </Suspense>
       )}
