@@ -17,29 +17,19 @@ describe('MandalaStageSelector Component', () => {
     ];
 
     stages.forEach(({ name, title }) => {
-      // Expecting 2 buttons matching this title: one in mobile scrollbar, one in desktop wheel
-      const buttons = screen.getAllByTitle(title);
-      expect(buttons.length).toBe(2);
+      // Expecting 1 button matching this title
+      const button = screen.getByTitle(title);
+      expect(button).toBeTruthy();
       
-      // Test mobile button click
-      fireEvent.click(buttons[0]);
-      expect(onChange).toHaveBeenLastCalledWith(name);
-
-      // Test desktop button click
-      fireEvent.click(buttons[1]);
+      fireEvent.click(button);
       expect(onChange).toHaveBeenLastCalledWith(name);
     });
 
-    // Also verify 'ALL' button for both views
-    const allButtons = screen.getAllByTitle(/All Stages/i);
-    expect(allButtons.length).toBe(2);
+    // Also verify 'ALL' button
+    const allButton = screen.getByTitle(/All Stages/i);
+    expect(allButton).toBeTruthy();
 
-    // Test mobile 'ALL' click
-    fireEvent.click(allButtons[0]);
-    expect(onChange).toHaveBeenLastCalledWith('ALL');
-
-    // Test desktop 'ALL' click
-    fireEvent.click(allButtons[1]);
+    fireEvent.click(allButton);
     expect(onChange).toHaveBeenLastCalledWith('ALL');
   });
 

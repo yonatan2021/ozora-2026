@@ -55,15 +55,22 @@ describe('App End-to-End Flows', () => {
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
 
-  it('should toggle theme lock and save state to localStorage', () => {
+  it('should pin a specific theme and save state to localStorage', () => {
     const { container } = render(<App />);
 
-    // Click lock button inside simulator using its class name
-    const lockBtn = container.querySelector('.theme-lock-btn');
-    expect(lockBtn).toBeTruthy();
-    fireEvent.click(lockBtn);
+    // Switch to English to simplify element matching
+    fireEvent.click(screen.getByRole('button', { name: /English/i }));
+
+    // Click on simulate festival button to open simulator controls
+    const simBtn = screen.getByRole('button', { name: /Simulate Festival/i });
+    fireEvent.click(simBtn);
+
+    // Find the Sunset theme option button
+    const sunsetBtn = screen.getByRole('button', { name: /Sunset/i });
+    expect(sunsetBtn).toBeTruthy();
+    fireEvent.click(sunsetBtn);
 
     // Verify localStorage updated
-    expect(localStorage.getItem('ozora_theme_locked')).toBe('true');
+    expect(localStorage.getItem('ozora_pinned_theme')).toBe('theme-sunset');
   });
 });

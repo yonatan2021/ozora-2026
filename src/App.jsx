@@ -123,14 +123,18 @@ export default function App() {
     };
   }, []);
 
-  const [isThemeLocked, setIsThemeLocked] = useState(() => {
-    return localStorage.getItem('ozora_theme_locked') === 'true';
+  const [pinnedTheme, setPinnedTheme] = useState(() => {
+    return localStorage.getItem('ozora_pinned_theme') || null;
   });
   const [themeSimTime, setThemeSimTime] = useState(simTime);
 
   useEffect(() => {
-    localStorage.setItem('ozora_theme_locked', String(isThemeLocked));
-  }, [isThemeLocked]);
+    if (pinnedTheme) {
+      localStorage.setItem('ozora_pinned_theme', pinnedTheme);
+    } else {
+      localStorage.removeItem('ozora_pinned_theme');
+    }
+  }, [pinnedTheme]);
 
   // Debounce updates to themeSimTime when simTime changes
   useEffect(() => {
@@ -360,8 +364,8 @@ export default function App() {
 
   // Dynamic theme classifier based on simulated or current time
   const getThemeClass = (ts) => {
-    if (isThemeLocked) {
-      return lastThemeClassRef.current;
+    if (pinnedTheme) {
+      return pinnedTheme;
     }
     const hour = new Date(ts).getHours();
     let theme = 'theme-night';
@@ -414,8 +418,9 @@ export default function App() {
             setIsSimulated={setIsSimulated}
             onOpenLiveModal={() => setIsLiveModalOpen(true)}
             selectedDay={selectedDay}
-            isThemeLocked={isThemeLocked}
-            setIsThemeLocked={setIsThemeLocked}
+            pinnedTheme={pinnedTheme}
+            setPinnedTheme={setPinnedTheme}
+            activeThemeClass={activeThemeClass}
           />
 
           {/* Days Selector */}

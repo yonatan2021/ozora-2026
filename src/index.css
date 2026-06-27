@@ -5037,3 +5037,9 @@ body:has(.theme-sunrise)::before {
   box-shadow: 0 0 10px var(--glow-primary);
 }
 
+@media (min-width: 768px) {
+  .mandala-row {
+    justify-content: center;
+  }
+}
+
