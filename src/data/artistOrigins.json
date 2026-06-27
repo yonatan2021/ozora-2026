@@ -15,9 +15,14 @@
     "confidence": "needs_review"
   },
   "Ace Ventura": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://fr.wikipedia.org/wiki/Ace_Ventura_(musicien)",
+      "https://de.wikipedia.org/wiki/Ace_Ventura_(Musiker)"
+    ],
+    "confidence": "medium"
   },
   "Acid Echoes": {
     "countries": [],
@@ -50,9 +55,13 @@
     "confidence": "needs_review"
   },
   "Ajja": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CH"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ajja_(musician)"
+    ],
+    "confidence": "medium"
   },
   "Ajja & Tanina": {
     "countries": [],
@@ -150,14 +159,22 @@
     "confidence": "needs_review"
   },
   "Astral Projection": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Astral_Projection_(band)"
+    ],
+    "confidence": "medium"
   },
   "Astrix": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Astrix"
+    ],
+    "confidence": "medium"
   },
   "Atia": {
     "countries": [],
@@ -185,9 +202,13 @@
     "confidence": "needs_review"
   },
   "Avalon": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://de.wikipedia.org/wiki/Avalon_(Musiker)"
+    ],
+    "confidence": "medium"
   },
   "Axeev": {
     "countries": [],
@@ -215,9 +236,13 @@
     "confidence": "needs_review"
   },
   "BCUC": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ZA"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bantu_Continua_Uhuru_Consciousness"
+    ],
+    "confidence": "medium"
   },
   "Bellegance & Fraser": {
     "countries": [],
@@ -230,9 +255,15 @@
     "confidence": "needs_review"
   },
   "Benji Vaughan": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Younger_Brother",
+      "https://en.wikipedia.org/wiki/A_Flock_of_Bleeps"
+    ],
+    "confidence": "medium",
+    "notes": "Sources identify Younger Brother as British/English and name Benji Vaughan as one of the project's producers/members."
   },
   "Bernathy": {
     "countries": [],
@@ -255,9 +286,13 @@
     "confidence": "needs_review"
   },
   "Blue Planet Corporation": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://ru.wikipedia.org/wiki/Blue_Planet_corporation"
+    ],
+    "confidence": "medium"
   },
   "Blue Sun pres. Hanussen & Kozmo D": {
     "countries": [],
@@ -310,9 +345,14 @@
     "confidence": "needs_review"
   },
   "Chicha Libre": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "US"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Chicha_Libre"
+    ],
+    "confidence": "medium",
+    "notes": "Source identifies the project as an American, Brooklyn-based band."
   },
   "Chillum Trio": {
     "countries": [],
@@ -345,9 +385,13 @@
     "confidence": "needs_review"
   },
   "Colorstar": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://fr.wikipedia.org/wiki/ColorStar"
+    ],
+    "confidence": "medium"
   },
   "Cord": {
     "countries": [],
@@ -385,9 +429,14 @@
     "confidence": "needs_review"
   },
   "Deedrah": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Holyszewski"
+    ],
+    "confidence": "medium",
+    "notes": "Deedrah is listed as an alias/project of French producer Frederic Holyszewski."
   },
   "Deerfeeder": {
     "countries": [],
@@ -440,9 +489,14 @@
     "confidence": "needs_review"
   },
   "Domestic": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/7deaad1b-82e1-4412-ad77-d610551b4858"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz identifies the psytrance project as from Tel Aviv-Jaffa, Israel."
   },
   "Dork": {
     "countries": [],
@@ -465,9 +519,13 @@
     "confidence": "needs_review"
   },
   "Dymons": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/3d2bdb71-0816-42a7-9448-4a78b9b7af77"
+    ],
+    "confidence": "medium"
   },
   "Earthly Measures": {
     "countries": [],
@@ -475,29 +533,52 @@
     "confidence": "needs_review"
   },
   "Eat Static": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/9cd39202-6c67-400a-b96e-df351c9f9484"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area lists England."
   },
   "Eclektic": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CH"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/d1a4324d-1220-473a-aab8-d6c4746500d3"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area lists Zurich."
   },
   "Efdemin": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/db0425d6-0d79-42bc-a9a3-c8b55b709911"
+    ],
+    "confidence": "medium"
   },
   "Egorythmia": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MK"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/71465f45-6f45-4a73-aaf0-a79d736c6222"
+    ],
+    "confidence": "medium"
   },
   "Ekkel": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NO"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/cc03abdb-fe37-4aab-a9d1-6c602a67dc7b"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz disambiguation says Norwegian DJ."
   },
   "Eltawave & Yury": {
     "countries": [],
@@ -520,19 +601,33 @@
     "confidence": "needs_review"
   },
   "Enrico Sanguliano": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/fe69b211-d470-48e7-a7a0-64cecb5bc991"
+    ],
+    "confidence": "medium",
+    "notes": "Matched corrected spelling Enrico Sangiuliano."
   },
   "Entangled Mind": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "US"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/6b13bd98-bf7d-451d-8ec5-19e246632466"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area lists Boston."
   },
   "Entheogenic": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/9dbe0453-2f86-45a2-a54c-df0d947f857e"
+    ],
+    "confidence": "medium"
   },
   "Erro": {
     "countries": [],
@@ -540,9 +635,13 @@
     "confidence": "needs_review"
   },
   "Etnica": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/9abb82ae-4bbb-4460-bf56-0aff131ae963"
+    ],
+    "confidence": "medium"
   },
   "Ewake": {
     "countries": [],
@@ -555,19 +654,31 @@
     "confidence": "needs_review"
   },
   "Fantazma": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "SI"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/6be48604-18b9-45bc-af57-88199a4af909"
+    ],
+    "confidence": "medium"
   },
   "Farebi Jalebi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/f6069ebe-844f-41fa-9250-ad1d5d27726c"
+    ],
+    "confidence": "medium"
   },
   "Felix Laband": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ZA"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/a36e9173-2c46-42c6-b319-e9a4155ef2aa"
+    ],
+    "confidence": "medium"
   },
   "Fidju Kitxora": {
     "countries": [],
@@ -580,19 +691,32 @@
     "confidence": "needs_review"
   },
   "Frederika": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/f4bd61fd-3fa4-4969-b401-56cf7bbd8cb8"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz disambiguation says French electronic music artist."
   },
   "Freedom Fighters": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/5d4d6e7c-9009-419f-9da7-20de92d113af"
+    ],
+    "confidence": "medium"
   },
   "Gabriel Le Mar": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/8b97e9c8-61f5-4615-9a96-276f24204e34"
+    ],
+    "confidence": "medium"
   },
   "Garpo & Ferenc Szanati": {
     "countries": [],
@@ -600,14 +724,29 @@
     "confidence": "needs_review"
   },
   "Gaudi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT",
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/ecbe7008-86ad-4eb2-a75d-25e9c91c750d"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz describes Gaudi as Anglo-Italian and lists begin area Bologna and area London."
   },
   "Gaudi + Don Letts + Earl 16": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT",
+      "GB",
+      "JM"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/ecbe7008-86ad-4eb2-a75d-25e9c91c750d",
+      "https://musicbrainz.org/artist/d21b6598-b010-43f6-bc84-b2160f003a0f",
+      "https://musicbrainz.org/artist/88a6b8e9-9388-456e-86f1-e2835316e12d"
+    ],
+    "confidence": "medium",
+    "notes": "Listed collaboration; countries represent each named participant."
   },
   "Geoglyph": {
     "countries": [],
@@ -615,9 +754,14 @@
     "confidence": "needs_review"
   },
   "Gerö": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/29267ca8-14dd-400d-855e-ca76fd8fb61f"
+    ],
+    "confidence": "medium",
+    "notes": "Matched MusicBrainz entry for Hungarian musician Gergely Nagy."
   },
   "Gino Sonica": {
     "countries": [],
@@ -640,14 +784,25 @@
     "confidence": "needs_review"
   },
   "Globular": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/ccdce929-84c9-4013-a8c9-12ae3f531447"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area lists Bristol."
   },
   "GMS & Dickster": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL",
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/cc4a1329-5b2c-4d09-826d-931a92683789",
+      "https://musicbrainz.org/artist/6d642546-8188-4189-b25a-3a0bedab5b45"
+    ],
+    "confidence": "medium"
   },
   "Gong Zen": {
     "countries": [],
@@ -675,24 +830,41 @@
     "confidence": "needs_review"
   },
   "Grouch": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NZ"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/0317e0ff-245e-4ee2-a398-dda248361dc5"
+    ],
+    "confidence": "medium"
   },
   "Grouch in Dub": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NZ"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/0317e0ff-245e-4ee2-a398-dda248361dc5"
+    ],
+    "confidence": "medium"
   },
   "Gumi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/8a37703b-33dd-44d3-8963-65ffd52cfc71"
+    ],
+    "confidence": "medium",
+    "notes": "Matched downtempo artist Maor Hasbani; MusicBrainz area lists Tel Aviv."
   },
   "Hallucinogen": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/37186f53-8d72-44e6-81e6-7dfd18223747"
+    ],
+    "confidence": "medium"
   },
   "Hatta": {
     "countries": [],
@@ -705,9 +877,14 @@
     "confidence": "needs_review"
   },
   "Headroom": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ZA"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/fc097f91-7ee8-44c3-9c9d-ced5751b38fa"
+    ],
+    "confidence": "medium",
+    "notes": "Matched South African psytrance producer Adam Metcalfe."
   },
   "Heavy Hertz": {
     "countries": [],
@@ -720,9 +897,14 @@
     "confidence": "needs_review"
   },
   "Herrhausen & Treindl": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/25f21582-dd41-4af0-bcf7-58e3d78e2f63"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area lists Berlin."
   },
   "Hèt Hat Club feat. Freak Fusion": {
     "countries": [],
@@ -730,9 +912,13 @@
     "confidence": "needs_review"
   },
   "Hilight Tribe": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/1c8f8ab5-ba03-4aa6-9eab-850e1d3a2ff7"
+    ],
+    "confidence": "medium"
   },
   "Hodworks & Artmenok - Idol": {
     "countries": [],
@@ -770,9 +956,14 @@
     "confidence": "needs_review"
   },
   "Irgum Burgum": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/1bf38343-254d-4cf2-88b6-74a520c8aa28"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz spelling is 1rgum 3urgum."
   },
   "Isu": {
     "countries": [],
@@ -780,24 +971,41 @@
     "confidence": "needs_review"
   },
   "Jane Fitz": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/0922ebc1-9440-469b-9bf1-13f419561bd2"
+    ],
+    "confidence": "medium"
   },
   "Jedidiah": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MX"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/28983322-8a01-465f-a6d5-db1e33932506"
+    ],
+    "confidence": "medium",
+    "notes": "Matched psychill/downtempo artist."
   },
   "Jimi Green": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/1c40314d-2ff1-4855-b82f-d972cb0ceb34"
+    ],
+    "confidence": "medium"
   },
   "John 00 Fleming": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/c6920169-f502-48ce-a908-dae34f2c9bdb"
+    ],
+    "confidence": "medium"
   },
   "Jossie Telch": {
     "countries": [],
@@ -805,29 +1013,52 @@
     "confidence": "needs_review"
   },
   "Justin Chaos": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/0796f7ab-f169-4f72-bac0-489f29a58840"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz begin area lists Argentina; area lists London."
   },
   "Kalikamo": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/c18d89e8-4e21-4237-8caa-c218354cea2a"
+    ],
+    "confidence": "medium"
   },
   "Kalki": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/ae05b4cd-acbc-4b38-b27b-55942f900ffe"
+    ],
+    "confidence": "medium",
+    "notes": "Matched psytrance artist Thibault Fontaine; MusicBrainz area lists Lyon."
   },
   "Kalumet": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/d98a55a2-e311-438b-b285-4b9384f6e947"
+    ],
+    "confidence": "medium",
+    "notes": "MusicBrainz area/begin area lists Budapest."
   },
   "Kalya Scintilla": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/d5e3296d-085d-447e-9b2b-0877ff815aa4"
+    ],
+    "confidence": "medium"
   },
   "Katamii": {
     "countries": [],
@@ -850,9 +1081,13 @@
     "confidence": "needs_review"
   },
   "Konono N°1": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CD"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Konono_N%E1%B5%921"
+    ],
+    "confidence": "high"
   },
   "Korruptcop": {
     "countries": [],
@@ -860,14 +1095,23 @@
     "confidence": "needs_review"
   },
   "Koxbox": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DK"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Koxbox"
+    ],
+    "confidence": "high"
   },
   "Koxbox / Saiko Pod": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DK"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Koxbox"
+    ],
+    "confidence": "high",
+    "notes": "Koxbox source identifies the Danish group and states Psychopod was renamed Saiko-Pod."
   },
   "Kukan Dub Ambient": {
     "countries": [],
@@ -975,9 +1219,13 @@
     "confidence": "needs_review"
   },
   "Mitsoura": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/M%C3%B3nika_Juh%C3%A1sz_Miczura"
+    ],
+    "confidence": "high"
   },
   "Mode & Valens": {
     "countries": [],
@@ -1005,9 +1253,15 @@
     "confidence": "needs_review"
   },
   "My Baby": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL",
+      "NZ"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/My_Baby_%28band%29"
+    ],
+    "confidence": "high",
+    "notes": "Source describes My Baby as a Dutch-New Zealand band from Amsterdam."
   },
   "Mysticism": {
     "countries": [],
@@ -1075,9 +1329,13 @@
     "confidence": "needs_review"
   },
   "Noura Mint Seymali": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MR"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Noura_Mint_Seymali"
+    ],
+    "confidence": "high"
   },
   "Nova Gravity": {
     "countries": [],
@@ -1090,9 +1348,13 @@
     "confidence": "needs_review"
   },
   "Oforia": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Oforia"
+    ],
+    "confidence": "high"
   },
   "OK EG": {
     "countries": [],
@@ -1105,9 +1367,13 @@
     "confidence": "needs_review"
   },
   "Om Unit": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Om_Unit"
+    ],
+    "confidence": "high"
   },
   "Ondrej Psyla": {
     "countries": [],
@@ -1130,9 +1396,14 @@
     "confidence": "needs_review"
   },
   "Óperentzia": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/F%C3%A9lix_Lajk%C3%B3"
+    ],
+    "confidence": "medium",
+    "notes": "Source describes Operentzia as a Hungarian dub-trance duo."
   },
   "Originz & Rajax": {
     "countries": [],
@@ -1140,9 +1411,14 @@
     "confidence": "needs_review"
   },
   "OTT": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ott_%28record_producer%29"
+    ],
+    "confidence": "medium",
+    "notes": "Mapped as Ott the British psychedelic dub producer."
   },
   "Ouoa": {
     "countries": [],
@@ -1180,9 +1456,13 @@
     "confidence": "needs_review"
   },
   "Phil Hartnoll (Orbital)": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Orbital_%28band%29"
+    ],
+    "confidence": "high"
   },
   "Phobos": {
     "countries": [],
@@ -1195,14 +1475,23 @@
     "confidence": "needs_review"
   },
   "Platon Karataev Duo": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Platon_Karataev"
+    ],
+    "confidence": "high",
+    "notes": "Mapped from Platon Karataev, sourced as a Budapest/Hungarian group."
   },
   "Populous": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://fr.wikipedia.org/wiki/Populous_%28musicien%29"
+    ],
+    "confidence": "medium"
   },
   "Porat": {
     "countries": [],
@@ -1215,9 +1504,14 @@
     "confidence": "needs_review"
   },
   "Prometheus": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Younger_Brother_%28band%29"
+    ],
+    "confidence": "medium",
+    "notes": "Source identifies Benji Vaughan, aka Prometheus, as an English psytrance producer."
   },
   "Psynonima": {
     "countries": [],
@@ -1250,9 +1544,13 @@
     "confidence": "needs_review"
   },
   "Red Snapper": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Red_Snapper_%28band%29"
+    ],
+    "confidence": "high"
   },
   "Regan": {
     "countries": [],
@@ -1280,9 +1578,13 @@
     "confidence": "needs_review"
   },
   "Rumpistol": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DK"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Rumpistol"
+    ],
+    "confidence": "medium"
   },
   "S&A in Dub": {
     "countries": [],
@@ -1325,9 +1627,14 @@
     "confidence": "needs_review"
   },
   "Shpongle": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Shpongle"
+    ],
+    "confidence": "medium",
+    "notes": "Origin listed as Chobham, Surrey, England."
   },
   "Shred'er": {
     "countries": [],
@@ -1380,9 +1687,14 @@
     "confidence": "needs_review"
   },
   "Solar Fields": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "SE"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Solar_Fields"
+    ],
+    "confidence": "medium",
+    "notes": "Origin listed as Gothenburg, Sweden."
   },
   "Sonido Tupinamba": {
     "countries": [],
@@ -1410,9 +1722,14 @@
     "confidence": "needs_review"
   },
   "Star Sounds Orchestra": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://de.wikipedia.org/wiki/Steve_Schroyder"
+    ],
+    "confidence": "medium",
+    "notes": "Source describes German musician Steve Schroyder founding Star Sounds Orchestra with Jens Zygar."
   },
   "Starlab": {
     "countries": [],
@@ -1550,9 +1867,14 @@
     "confidence": "needs_review"
   },
   "Tristan": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Tristan_(musician)"
+    ],
+    "confidence": "medium",
+    "notes": "Source identifies Tristan Cooke as a British DJ and producer."
   },
   "Tron": {
     "countries": [],
@@ -1575,9 +1897,14 @@
     "confidence": "needs_review"
   },
   "Tsuyoshi Suzuki": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "JP"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Joujouka_(band)"
+    ],
+    "confidence": "medium",
+    "notes": "Source identifies Joujouka as a Japanese project from Tokyo formed by Takeshi Isogai and Tsuyoshi Suzuki."
   },
   "Tündérke": {
     "countries": [],
@@ -1595,9 +1922,15 @@
     "confidence": "needs_review"
   },
   "Vibrasphere": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "SE",
+      "BE"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Vibrasphere"
+    ],
+    "confidence": "medium",
+    "notes": "Origin listed as Uppsala, Sweden and Brussels, Belgium."
   },
   "Vlastur": {
     "countries": [],
@@ -1635,9 +1968,14 @@
     "confidence": "needs_review"
   },
   "Younger Brother": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Younger_Brother"
+    ],
+    "confidence": "medium",
+    "notes": "Origin listed as England."
   },
   "Yoy Project": {
     "countries": [],
@@ -1645,9 +1983,14 @@
     "confidence": "needs_review"
   },
   "Yuli Fershtat": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perfect_Stranger_(musician)"
+    ],
+    "confidence": "medium",
+    "notes": "Source identifies Yuli Fershtat / Perfect Stranger as an Israeli musician with origin in Yad Natan, Israel."
   },
   "Zagi": {
     "countries": [],
