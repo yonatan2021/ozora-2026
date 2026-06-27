@@ -1,4 +1,7 @@
-import { Star } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Star, Music } from 'lucide-react';
+import { trackEvent } from '../utils/analytics';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -8,6 +11,48 @@ const STAGE_CLASSES = {
   "VISIUM GARDEN": "stage-visium",
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
+
+function MusicDropdown({ artist }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function close(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, [open]);
+
+  return (
+    <div className="feed-music-wrapper" ref={ref}>
+      <button
+        className="feed-music-btn"
+        onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
+        aria-label="Listen to music"
+      >
+        <Music size={14} />
+      </button>
+      {open && (
+        <div className="feed-music-dropdown">
+          <button onClick={(e) => {
+            e.stopPropagation();
+            trackEvent('listen_music', { platform: 'youtube', artist_name: artist });
+            window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(artist)}+music`, '_blank', 'noopener,noreferrer');
+            setOpen(false);
+          }}>YouTube</button>
+          <button onClick={(e) => {
+            e.stopPropagation();
+            trackEvent('listen_music', { platform: 'soundcloud', artist_name: artist });
+            window.open(`https://soundcloud.com/search?q=${encodeURIComponent(artist)}`, '_blank', 'noopener,noreferrer');
+            setOpen(false);
+          }}>SoundCloud</button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap }) {
   // Sort sets chronologically by start time, and then by stage name
@@ -55,7 +100,7 @@ export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onS
                           <span className="wave-bar bar-3"></span>
                         </span>
                       )}
-                      <span>{set.artist}</span>
+                      <ArtistNameWithFlags artist={set.artist} />
                     </div>
                     <div className="feed-stage-name">
                       <span className="stage-dot"></span>
@@ -65,7 +110,8 @@ export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onS
                       {set.start} - {set.end} {set.endsNextDay ? '(+1d)' : ''}
                     </div>
                   </div>
-                  <button 
+                  <MusicDropdown artist={set.artist} />
+                  <button
                     className="feed-fav-btn"
                     onClick={(e) => {
                       e.stopPropagation();

@@ -1499,6 +1499,78 @@ body:has(.theme-day) {
   border-top: 1px solid var(--border);
 }
 
+/* Music Links */
+.modal-music-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.modal-music-links .modal-fav-btn {
+  flex: 1;
+  font-size: 0.85rem;
+  padding: 0.75rem 0.5rem;
+}
+
+.feed-music-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.feed-music-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.125rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.feed-music-btn:hover {
+  color: var(--primary);
+  background: var(--surface-hover);
+}
+
+.feed-music-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 120px;
+}
+
+.feed-music-dropdown button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: start;
+  transition: var(--transition-smooth);
+}
+
+.feed-music-dropdown button:hover {
+  background: var(--surface-hover);
+}
+
+.feed-music-dropdown button + button {
+  border-top: 1px solid var(--border);
+}
+
 /* Dynamic Time Indicator Line Across Grid */
 .grid-time-indicator {
   position: absolute;
@@ -3465,15 +3537,15 @@ body:has(.theme-sunrise)::before {
 }
 
 .compare-both {
-  border-inline-start: 3px solid oklch(0.55 0.18 145);
+  background: oklch(0.55 0.18 145 / 0.08);
 }
 
 .compare-mine {
-  border-inline-start: 3px solid var(--primary);
+  background: oklch(from var(--primary) l c h / 0.08);
 }
 
 .compare-friend {
-  border-inline-start: 3px solid oklch(0.55 0.14 230);
+  background: oklch(0.55 0.14 230 / 0.08);
   opacity: 0.75;
 }
 
@@ -3850,7 +3922,7 @@ body:has(.theme-sunrise)::before {
 }
 
 .feed-set-card.priority-must-card {
-  border-inline-start: 3px solid #e86040;
+  background: oklch(0.65 0.2 25 / 0.08);
 }
 
 .feed-set-card.priority-maybe-card {
@@ -4029,7 +4101,8 @@ body:has(.theme-sunrise)::before {
   height: 100%;
   border-radius: 3px;
   background: var(--primary);
-  transition: width 0.3s ease;
+  transform-origin: left;
+  transition: transform 0.3s ease;
 }
 
 .map-download-pct {
@@ -4801,7 +4874,8 @@ body:has(.theme-sunrise)::before {
 .calibration-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #ecc94b, #ed8936);
-  transition: width 0.1s linear;
+  transform-origin: left;
+  transition: transform 0.1s linear;
 }
 
 /* Nearby Pinned Camp Card */

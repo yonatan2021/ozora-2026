@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const STAGES = [
   "OZORA STAGE",
@@ -238,7 +239,9 @@ export default function TimetableGrid({ lang, sets, favorites, toggleFavorite, o
                         <Star size={12} fill={isFav ? 'var(--stage-visium)' : 'none'} stroke={isFav ? 'var(--stage-visium)' : 'currentColor'} />
                       </button>
                     </div>
-                    <div className="set-artist" title={set.artist}>{set.artist}</div>
+                    <div className="set-artist" title={set.artist}>
+                      <ArtistNameWithFlags artist={set.artist} />
+                    </div>
                     {!isCompact && <div className="set-type">{set.type}</div>}
                   </div>
                 );

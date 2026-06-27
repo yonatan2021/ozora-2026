@@ -1,6 +1,7 @@
 import { X, Plus } from 'lucide-react';
 import { translations } from '../utils/lang';
 import { getSetUniqueKey } from '../utils/time';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -79,7 +80,9 @@ export default function CompareView({ friendName, friendSetKeys, myFavorites, ti
                       tag === 'mine' ? t.onlyYou :
                       `${t.onlyFriend} ${friendName}`
                     }</span>
-                    <div className="feed-artist-name">{set.artist}</div>
+                    <div className="feed-artist-name">
+                      <ArtistNameWithFlags artist={set.artist} />
+                    </div>
                     <div className="feed-stage-name">
                       <span className="stage-dot"></span>
                       <span>{set.stage}</span>

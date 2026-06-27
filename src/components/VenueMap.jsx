@@ -14,6 +14,7 @@ import { Crosshair, Navigation, List, MapPin, X, Tent, Sliders } from 'lucide-re
 import CalibrationModal from './CalibrationModal';
 import venueTrailsData from '../data/venueTrails.json';
 import { calculateBearing, doesSegmentCrossPolygon } from '../utils/mapMath';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const FESTIVAL_WALK_SPEED = 67; // meters per minute (~4 km/h)
 
@@ -523,7 +524,7 @@ function TileCacheOverlay({ lang }) {
       <div className="map-download-content">
         <p>{t.downloadingMap}</p>
         <div className="map-download-bar">
-          <div className="map-download-fill" style={{ width: `${pct}%` }} />
+          <div className="map-download-fill" style={{ transform: `scaleX(${pct / 100})` }} />
         </div>
         <span className="map-download-pct">{pct}%</span>
       </div>
@@ -1080,7 +1081,9 @@ export default function VenueMap({
                         {now ? (
                           <div className="popup-now">
                             <span className="popup-label">{t.nowPlaying}:</span>
-                            <strong>{now.artist}</strong>
+                            <strong>
+                              <ArtistNameWithFlags artist={now.artist} />
+                            </strong>
                             <span className="popup-time">{now.start}–{now.end}</span>
                           </div>
                         ) : (
@@ -1089,7 +1092,9 @@ export default function VenueMap({
                         {next && (
                           <div className="popup-next">
                             <span className="popup-label">{t.nextUp}:</span>
-                            <span>{next.artist}</span>
+                            <span>
+                              <ArtistNameWithFlags artist={next.artist} />
+                            </span>
                             <span className="popup-time">{next.start}</span>
                           </div>
                         )}

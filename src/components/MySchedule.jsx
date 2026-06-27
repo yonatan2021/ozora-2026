@@ -10,6 +10,7 @@ import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
 import { trackEvent } from '../utils/analytics';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -240,7 +241,9 @@ export default function MySchedule({
                     </span>
                     <span>{isHe ? 'מנגן כרגע' : 'Now Playing'}</span>
                   </div>
-                  <div className="feed-artist-name">{set.artist}</div>
+                  <div className="feed-artist-name">
+                    <ArtistNameWithFlags artist={set.artist} />
+                  </div>
                   <div className="feed-stage-name">
                     <span className="stage-dot"></span>
                     <span>{set.stage}</span>
@@ -261,7 +264,9 @@ export default function MySchedule({
                   <div className="feed-stage-name" style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>
                     {isHe ? 'ההופעה הבאה שלך' : 'Next Up'}
                   </div>
-                  <div className="feed-artist-name">{set.artist}</div>
+                  <div className="feed-artist-name">
+                    <ArtistNameWithFlags artist={set.artist} />
+                  </div>
                   <div className="feed-stage-name">
                     <span className="stage-dot"></span>
                     <span>{set.stage}</span>
@@ -317,7 +322,9 @@ export default function MySchedule({
                       onClick={() => onSetClick(set)}
                     >
                       <div className="feed-set-info">
-                        <div className="feed-artist-name">{set.artist}</div>
+                        <div className="feed-artist-name">
+                          <ArtistNameWithFlags artist={set.artist} />
+                        </div>
                         <div className="feed-stage-name">
                           <span className="stage-dot"></span>
                           <span>{set.stage} {set.type ? `• ${set.type}` : ''}</span>

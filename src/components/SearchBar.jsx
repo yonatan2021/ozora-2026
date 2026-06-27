@@ -3,6 +3,7 @@ import { Search, X, Star } from 'lucide-react';
 import { searchSchedule } from '../utils/search';
 import { translations } from '../utils/lang';
 import { trackEvent } from '../utils/analytics';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 // Helper to determine the CSS class based on the stage name
 const STAGE_CLASSES = {
@@ -162,7 +163,9 @@ export default function SearchBar({
                     onClick={() => handleSelect(set)}
                   >
                     <div className="search-item-info">
-                      <div className="search-item-artist">{set.artist}</div>
+                      <div className="search-item-artist">
+                        <ArtistNameWithFlags artist={set.artist} />
+                      </div>
                       <div className="search-item-meta">
                         <span className={`search-item-stage-badge ${stageClass}`}>
                           {set.stage}

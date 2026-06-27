@@ -5,9 +5,13 @@
     "confidence": "needs_review"
   },
   "Aardvarkk": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.facebook.com/indianspiritfestival/posts/aardvarkk-brings-a-healthy-dose-of-humor-and-underground-spirit-to-the-dance-flo/1496620995162644/"
+    ],
+    "confidence": "high"
   },
   "Abstrakt": {
     "countries": [],
@@ -25,19 +29,31 @@
     "confidence": "medium"
   },
   "Acid Echoes": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CN"
+    ],
+    "sources": [
+      "https://www.instagram.com/p/DWX3K1_E9t2/"
+    ],
+    "confidence": "high"
   },
   "Acideal": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://www.instagram.com/p/DZZefOhjeOz/"
+    ],
+    "confidence": "high"
   },
   "Act One": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://bomshanka.com/artist/act-one/"
+    ],
+    "confidence": "high"
   },
   "ADX": {
     "countries": [],
@@ -45,14 +61,22 @@
     "confidence": "needs_review"
   },
   "Airydisc": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CN"
+    ],
+    "sources": [
+      "https://soundcloud.com/dovgiljjocxq"
+    ],
+    "confidence": "high"
   },
   "Aiwa": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/dj/aiwa"
+    ],
+    "confidence": "high"
   },
   "Ajja": {
     "countries": [
@@ -64,10 +88,13 @@
     "confidence": "medium"
   },
   "Ajja & Tanina": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review",
-    "notes": "Ajja is verified as Switzerland, but Tanina origin is not verified yet; keep the collaboration unrendered to avoid a partial flag."
+    "countries": [
+      "CH"
+    ],
+    "sources": [
+      "https://harmonic-festival.com/project/ajja-tanina/"
+    ],
+    "confidence": "high"
   },
   "Aka Nina": {
     "countries": [],
@@ -100,14 +127,22 @@
     "confidence": "needs_review"
   },
   "Altruism": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "BR"
+    ],
+    "sources": [
+      "https://idmmag.com/featured/altruism-interview-ahead-origin-2016-festival/"
+    ],
+    "confidence": "high"
   },
   "Amenti Theater Company": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL"
+    ],
+    "sources": [
+      "https://dutchculture.nl/en/organisation/amenti-theatre-company"
+    ],
+    "confidence": "high"
   },
   "Amigdala": {
     "countries": [],
@@ -115,19 +150,31 @@
     "confidence": "needs_review"
   },
   "Anatolian Weapons": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GR"
+    ],
+    "sources": [
+      "https://anatolianweapons.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Andras Bader": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://andrasbader.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Andras Toth": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/dj/andrastoth/biography"
+    ],
+    "confidence": "high"
   },
   "Anicca": {
     "countries": [],
@@ -135,9 +182,13 @@
     "confidence": "needs_review"
   },
   "Anoebis": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "BE"
+    ],
+    "sources": [
+      "https://www.psybient.org/love/interview-anoebis/"
+    ],
+    "confidence": "high"
   },
   "Antique": {
     "countries": [],
@@ -145,19 +196,31 @@
     "confidence": "needs_review"
   },
   "Arhetip": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "RS"
+    ],
+    "sources": [
+      "https://www.instagram.com/p/ChU1nqerf3P/"
+    ],
+    "confidence": "high"
   },
   "Arökem": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://www.youtube.com/@ar%C3%B6kem_music"
+    ],
+    "confidence": "high"
   },
   "Asgard": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.facebook.com/ibogarecords/posts/10159556573329836/"
+    ],
+    "confidence": "high"
   },
   "Astral Projection": {
     "countries": [
@@ -178,9 +241,13 @@
     "confidence": "medium"
   },
   "Atia": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GR"
+    ],
+    "sources": [
+      "https://atia.bandcamp.com/community"
+    ],
+    "confidence": "high"
   },
   "Atia in Peace": {
     "countries": [],
@@ -188,14 +255,22 @@
     "confidence": "needs_review"
   },
   "Atmos": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "SE"
+    ],
+    "sources": [
+      "https://www.fractaltribe.org/fractalfest2022/music/atmos"
+    ],
+    "confidence": "high"
   },
   "Aurafood": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://soundcloud.com/aurafood"
+    ],
+    "confidence": "high"
   },
   "Aux25": {
     "countries": [],
@@ -217,9 +292,13 @@
     "confidence": "needs_review"
   },
   "Banyek": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://kontaktor.lv/artist/banyek/"
+    ],
+    "confidence": "high"
   },
   "Bass Kovac": {
     "countries": [],
@@ -232,9 +311,13 @@
     "confidence": "needs_review"
   },
   "Bayawaka": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://www.instagram.com/bayawaka.golanski/"
+    ],
+    "confidence": "high"
   },
   "BCUC": {
     "countries": [
@@ -246,9 +329,13 @@
     "confidence": "medium"
   },
   "Bellegance & Fraser": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://www.durerkert.com/en/event/winter_sun_2024_durer"
+    ],
+    "confidence": "high"
   },
   "Benho & Psymon": {
     "countries": [],
@@ -272,19 +359,32 @@
     "confidence": "needs_review"
   },
   "Beta": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/the-dome/beta/"
+    ],
+    "confidence": "high"
   },
   "Biomigrant": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "US"
+    ],
+    "sources": [
+      "https://www.biomigrant.com/"
+    ],
+    "confidence": "high",
+    "notes": "Born in the United States; project later developed in Colombia"
   },
   "Bioterranean": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ES"
+    ],
+    "sources": [
+      "https://hypnoxock.bandcamp.com/album/bioterranean-2015-2018"
+    ],
+    "confidence": "high"
   },
   "Blue Planet Corporation": {
     "countries": [
@@ -296,9 +396,13 @@
     "confidence": "medium"
   },
   "Blue Sun pres. Hanussen & Kozmo D": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/ambyss/blue-sun-pres-hanussen-kozmo-d/"
+    ],
+    "confidence": "high"
   },
   "Bodoo": {
     "countries": [],
@@ -306,24 +410,40 @@
     "confidence": "needs_review"
   },
   "Boogie Knight": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://www.facebook.com/forestdelic/posts/4373239059423922/"
+    ],
+    "confidence": "high"
   },
   "Braincell": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CH"
+    ],
+    "sources": [
+      "https://braincell-nano.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Breger": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://breger.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Britta Arnold": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://ra.co/dj/brittaarnold/biography"
+    ],
+    "confidence": "high"
   },
   "Broken Breger": {
     "countries": [],
@@ -331,19 +451,31 @@
     "confidence": "needs_review"
   },
   "Brooklyn Gypsies": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "US"
+    ],
+    "sources": [
+      "https://brooklyngypsies.com/"
+    ],
+    "confidence": "high"
   },
   "Captain Hook": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://djcaptainhook.bandcamp.com/album/origin"
+    ],
+    "confidence": "high"
   },
   "Captain Pastek": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://captain-pastek.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Chicha Libre": {
     "countries": [
@@ -371,14 +503,24 @@
     "confidence": "needs_review"
   },
   "Codex Spiralis": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "BR"
+    ],
+    "sources": [
+      "https://parvati-records.com/codex-spiralis/"
+    ],
+    "confidence": "high"
   },
   "Collignon": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL",
+      "PT"
+    ],
+    "sources": [
+      "https://collignon.bandcamp.com/"
+    ],
+    "confidence": "high",
+    "notes": "Band based in the Netherlands and Portugal"
   },
   "Coloboma & Filip Varial": {
     "countries": [],
@@ -400,14 +542,22 @@
     "confidence": "needs_review"
   },
   "Cosmic Trigger": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.psybient.org/love/interview-cosmic-trigger/"
+    ],
+    "confidence": "high"
   },
   "Crazy Baldhead": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "US"
+    ],
+    "sources": [
+      "https://crazybaldhead.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Crimson": {
     "countries": [],
@@ -445,9 +595,15 @@
     "confidence": "needs_review"
   },
   "Delysid": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ES",
+      "MX"
+    ],
+    "sources": [
+      "https://www.goabase.net/party/noize-conspiracy-rec-party-delysidkhopatbrainhunters/36452"
+    ],
+    "confidence": "high",
+    "notes": "Juan Fontoira (Spain) and Andrew Olavarrieta (Mexico)"
   },
   "Detective Kelly": {
     "countries": [],
@@ -460,14 +616,22 @@
     "confidence": "needs_review"
   },
   "Digital Talk (25th Anniv.)": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/93856-Digital-Talk"
+    ],
+    "confidence": "high"
   },
   "Dirty Saffi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.facebook.com/bomshankamusic/posts/1546620787468328/"
+    ],
+    "confidence": "high"
   },
   "DJ Josko": {
     "countries": [],
@@ -510,14 +674,24 @@
     "confidence": "needs_review"
   },
   "Dubapest Hifi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://www.uprising.sk/en/artist/2018/dubapest-hifi-2/"
+    ],
+    "confidence": "high"
   },
   "Dubsahara Meets Vlastur": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB",
+      "GR"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/440503-Dubsahara"
+    ],
+    "confidence": "high",
+    "notes": "Dubsahara is London UK; Vlastur is Greek"
   },
   "Dymons": {
     "countries": [
@@ -529,9 +703,13 @@
     "confidence": "medium"
   },
   "Earthly Measures": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://earthlymeasures.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Eat Static": {
     "countries": [
@@ -587,9 +765,13 @@
     "confidence": "needs_review"
   },
   "Emiri": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "JP"
+    ],
+    "sources": [
+      "https://www.zenonrecords.com/artist/emiri"
+    ],
+    "confidence": "high"
   },
   "Encounters": {
     "countries": [],
@@ -597,9 +779,13 @@
     "confidence": "needs_review"
   },
   "Enki": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://www.facebook.com/enkitribe/"
+    ],
+    "confidence": "high"
   },
   "Enrico Sanguliano": {
     "countries": [
@@ -631,9 +817,13 @@
     "confidence": "medium"
   },
   "Erro": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/dj/erro"
+    ],
+    "confidence": "high"
   },
   "Etnica": {
     "countries": [
@@ -645,9 +835,13 @@
     "confidence": "medium"
   },
   "Ewake": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://linktr.ee/ewake"
+    ],
+    "confidence": "high"
   },
   "Faktor X": {
     "countries": [],
@@ -682,9 +876,13 @@
     "confidence": "medium"
   },
   "Fidju Kitxora": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CV"
+    ],
+    "sources": [
+      "https://fidjukitxora.bandcamp.com/community"
+    ],
+    "confidence": "high"
   },
   "Fluidum x Peao x Fanni Zahár": {
     "countries": [],
@@ -750,9 +948,13 @@
     "notes": "Listed collaboration; countries represent each named participant."
   },
   "Geoglyph": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://geoglyph.bandcamp.com/album/otherworldly"
+    ],
+    "confidence": "high"
   },
   "Gerö": {
     "countries": [
@@ -811,19 +1013,31 @@
     "confidence": "needs_review"
   },
   "Gorovich": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://gorovich.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Grant Darshan": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/6791150-Grant-Darshan"
+    ],
+    "confidence": "high"
   },
   "Greg Hunter": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://greghunter.co.uk/"
+    ],
+    "confidence": "high"
   },
   "Griffin Cloud": {
     "countries": [],
@@ -868,9 +1082,13 @@
     "confidence": "medium"
   },
   "Hatta": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "JP"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/2703817-DJ-Hatta"
+    ],
+    "confidence": "high"
   },
   "He She It": {
     "countries": [],
@@ -893,9 +1111,13 @@
     "confidence": "needs_review"
   },
   "Heimya": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://bmss.eu/?id=123&t=con_artists"
+    ],
+    "confidence": "high"
   },
   "Herrhausen & Treindl": {
     "countries": [
@@ -937,9 +1159,13 @@
     "confidence": "needs_review"
   },
   "Ignez": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL"
+    ],
+    "sources": [
+      "https://ra.co/dj/ignez/biography"
+    ],
+    "confidence": "high"
   },
   "Ikoza & Alphakey": {
     "countries": [],
@@ -952,9 +1178,13 @@
     "confidence": "needs_review"
   },
   "Infragandhi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://trafo.hu/en/programs/etrafo_fulbevalo_11_infragandhi"
+    ],
+    "confidence": "high"
   },
   "Irgum Burgum": {
     "countries": [
@@ -1009,9 +1239,13 @@
     "confidence": "medium"
   },
   "Jossie Telch": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MX"
+    ],
+    "sources": [
+      "https://ra.co/dj/jossietelch"
+    ],
+    "confidence": "high"
   },
   "Justin Chaos": {
     "countries": [
@@ -1062,9 +1296,13 @@
     "confidence": "medium"
   },
   "Katamii": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/dj/katamii"
+    ],
+    "confidence": "high"
   },
   "Kebab Symphonie /Danaël": {
     "countries": [],
@@ -1072,14 +1310,22 @@
     "confidence": "needs_review"
   },
   "Klipsun": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "BR"
+    ],
+    "sources": [
+      "https://www.zenon-education.com/faculty/klipsun"
+    ],
+    "confidence": "high"
   },
   "Ko Shin Moon": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "FR"
+    ],
+    "sources": [
+      "https://koshinmoon.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Konono N°1": {
     "countries": [
@@ -1115,14 +1361,22 @@
     "notes": "Koxbox source identifies the Danish group and states Psychopod was renamed Saiko-Pod."
   },
   "Kukan Dub Ambient": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.psybient.org/love/interview-kukan-dub-lagan/"
+    ],
+    "confidence": "high"
   },
   "Kynethik": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://www.facebook.com/100063591219199/posts/1624944666301892/"
+    ],
+    "confidence": "high"
   },
   "Lazy Calm Raga": {
     "countries": [],
@@ -1130,19 +1384,31 @@
     "confidence": "needs_review"
   },
   "Lensky": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/events/1491560"
+    ],
+    "confidence": "high"
   },
   "Lo.Renzo": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://lorenzochill.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Lucas in Dub": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.tiprecords.com/artists/lucas/"
+    ],
+    "confidence": "high"
   },
   "Mankind": {
     "countries": [],
@@ -1150,24 +1416,42 @@
     "confidence": "needs_review"
   },
   "Mantismash": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.psybient.org/love/interview-mantismash/"
+    ],
+    "confidence": "high"
   },
   "Martian Arts": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GR"
+    ],
+    "sources": [
+      "https://www.beatport.com/artist/martian-arts/276330"
+    ],
+    "confidence": "high"
   },
   "Marysia Osu": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "PL"
+    ],
+    "sources": [
+      "https://ra.co/events/2049088"
+    ],
+    "confidence": "high"
   },
   "Marysia Osu & Kibir La Amlak": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "PL",
+      "GB"
+    ],
+    "sources": [
+      "https://www.healthandbass.com/post/sacredness-of-sound-system-culture-with-kibir-la-amlak"
+    ],
+    "confidence": "high",
+    "notes": "Marysia Osu is Polish-born; Kibir La Amlak is London UK"
   },
   "Mavvi & Antonia": {
     "countries": [],
@@ -1175,19 +1459,31 @@
     "confidence": "needs_review"
   },
   "Meo Culpa": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/the-dome/m%CF%83o-culpa/"
+    ],
+    "confidence": "high"
   },
   "Meo Culpa & Zakhorov": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://zakhorov.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Merkaba": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://merkabamusic.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Merlyn Silva": {
     "countries": [],
@@ -1200,19 +1496,31 @@
     "confidence": "needs_review"
   },
   "Miles From Mars": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ZA"
+    ],
+    "sources": [
+      "https://ra.co/dj/milesfrommars"
+    ],
+    "confidence": "high"
   },
   "Mirror System": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://mirrorsystem.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Misled Convoy": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NZ"
+    ],
+    "sources": [
+      "https://misledconvoy.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Mist": {
     "countries": [],
@@ -1234,19 +1542,31 @@
     "confidence": "needs_review"
   },
   "Modern Biology": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CA"
+    ],
+    "sources": [
+      "https://www.perfectcircuit.com/signal/modern-biology-interview"
+    ],
+    "confidence": "high"
   },
   "Modus": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://modusofficial.bandcamp.com/music"
+    ],
+    "confidence": "high"
   },
   "Moonclipse": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://fm-booking.com/artists/moonclipse"
+    ],
+    "confidence": "high"
   },
   "Muteless": {
     "countries": [],
@@ -1270,14 +1590,22 @@
     "confidence": "needs_review"
   },
   "Nana Benz Du Togo": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "TG"
+    ],
+    "sources": [
+      "https://nanabenzdutogo.bandcamp.com/album/ago"
+    ],
+    "confidence": "high"
   },
   "Nanoplex": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://www.instagram.com/nanoplexmusic/"
+    ],
+    "confidence": "high"
   },
   "Nathalia": {
     "countries": [],
@@ -1315,14 +1643,22 @@
     "confidence": "needs_review"
   },
   "Ninesense": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "PT"
+    ],
+    "sources": [
+      "https://reversible-records.com/artists/ninesense/"
+    ],
+    "confidence": "high"
   },
   "Noface": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.thebeyondmanagement.com/artists/noface"
+    ],
+    "confidence": "high"
   },
   "Nora Matis": {
     "countries": [],
@@ -1358,9 +1694,13 @@
     "confidence": "high"
   },
   "OK EG": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://okegmusic.bandcamp.com/album/geko01"
+    ],
+    "confidence": "high"
   },
   "Oleg": {
     "countries": [],
@@ -1427,9 +1767,13 @@
     "confidence": "needs_review"
   },
   "Out of Orbit": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.insomniac.com/music/artists/out-of-orbit/"
+    ],
+    "confidence": "high"
   },
   "Panache & Grabuge": {
     "countries": [],
@@ -1437,9 +1781,13 @@
     "confidence": "needs_review"
   },
   "Para Halu": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://parahalu.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Patajana & Karlo Kurbel": {
     "countries": [],
@@ -1471,9 +1819,13 @@
     "confidence": "needs_review"
   },
   "Pistamashina": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "BG"
+    ],
+    "sources": [
+      "https://www.instagram.com/p/DUSiBeLjQ_J/"
+    ],
+    "confidence": "high"
   },
   "Platon Karataev Duo": {
     "countries": [
@@ -1515,9 +1867,13 @@
     "notes": "Source identifies Benji Vaughan, aka Prometheus, as an English psytrance producer."
   },
   "Psynonima": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ES"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/ozora-stage/psynonima/"
+    ],
+    "confidence": "high"
   },
   "Pusher": {
     "countries": [],
@@ -1525,9 +1881,15 @@
     "confidence": "needs_review"
   },
   "Raja Ram & Lucas": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU",
+      "GB"
+    ],
+    "sources": [
+      "https://www.tiprecords.com/artists/lucas/"
+    ],
+    "confidence": "high",
+    "notes": "Australian-born Raja Ram and UK DJ Lucas"
   },
   "Ramizes": {
     "countries": [],
@@ -1535,14 +1897,22 @@
     "confidence": "needs_review"
   },
   "Rastaliens": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://rastaliensmemo604.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Rawar": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "PT"
+    ],
+    "sources": [
+      "https://www.thebeyondmanagement.com/artists/rawar"
+    ],
+    "confidence": "high"
   },
   "Red Snapper": {
     "countries": [
@@ -1554,9 +1924,13 @@
     "confidence": "high"
   },
   "Regan": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "ZA"
+    ],
+    "sources": [
+      "https://nanomusic.net/artist/regan-nano/"
+    ],
+    "confidence": "high"
   },
   "Robot Bennett": {
     "countries": [],
@@ -1574,9 +1948,13 @@
     "confidence": "needs_review"
   },
   "Roy Sason": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://matsuri-digital.com/en/artist/roy-sason/"
+    ],
+    "confidence": "high"
   },
   "Rumpistol": {
     "countries": [
@@ -1588,9 +1966,13 @@
     "confidence": "medium"
   },
   "S&A in Dub": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "NL"
+    ],
+    "sources": [
+      "https://www.facebook.com/synthbiontanassimandrus/"
+    ],
+    "confidence": "high"
   },
   "Saalyx": {
     "countries": [],
@@ -1613,14 +1995,22 @@
     "confidence": "needs_review"
   },
   "Sensient": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://www.zenonrecords.com/artist/sensient"
+    ],
+    "confidence": "high"
   },
   "Shadow FX": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://www.weaponrecords.com/shadow-fx"
+    ],
+    "confidence": "high"
   },
   "Shenanigan": {
     "countries": [],
@@ -1658,9 +2048,13 @@
     "confidence": "needs_review"
   },
   "Simon Borg Olivier (Meditation)": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://simonborgolivier.com/"
+    ],
+    "confidence": "high"
   },
   "Sindh": {
     "countries": [],
@@ -1668,19 +2062,31 @@
     "confidence": "needs_review"
   },
   "Skizologic": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.warehouse-nantes.fr/artist/skizologic-1"
+    ],
+    "confidence": "high"
   },
   "Slym & Szoliver": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://techlabbp.bandcamp.com/album/vir-g-ep"
+    ],
+    "confidence": "high"
   },
   "Smag På Dig Selv": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DK"
+    ],
+    "sources": [
+      "https://ebbmusic.eu/artists/smag-pa-dig-selv/"
+    ],
+    "confidence": "high"
   },
   "Smooglers": {
     "countries": [],
@@ -1698,19 +2104,31 @@
     "notes": "Origin listed as Gothenburg, Sweden."
   },
   "Sonido Tupinamba": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AR"
+    ],
+    "sources": [
+      "https://ra.co/dj/sonidotupinamba/biography"
+    ],
+    "confidence": "high"
   },
   "Sorian": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/500773-Itay-Berger"
+    ],
+    "confidence": "high"
   },
   "Spinal Fusion": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IN"
+    ],
+    "sources": [
+      "https://www.insomniac.com/music/artists/spinal-fusion/"
+    ],
+    "confidence": "high"
   },
   "Spoink": {
     "countries": [],
@@ -1718,9 +2136,13 @@
     "confidence": "needs_review"
   },
   "Ssiege": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IT"
+    ],
+    "sources": [
+      "https://ssiege.bandcamp.com/album/meteora"
+    ],
+    "confidence": "high"
   },
   "Star Sounds Orchestra": {
     "countries": [
@@ -1733,14 +2155,22 @@
     "notes": "Source describes German musician Steve Schroyder founding Star Sounds Orchestra with Jens Zygar."
   },
   "Starlab": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IN"
+    ],
+    "sources": [
+      "https://nanomusic.net/artist/starlab/"
+    ],
+    "confidence": "high"
   },
   "Stereomantra": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://om-mantra-records.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Strontium Dogs": {
     "countries": [],
@@ -1768,9 +2198,13 @@
     "confidence": "needs_review"
   },
   "Sunju Hargun": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "TH"
+    ],
+    "sources": [
+      "https://mixmag.asia/feature/asia-artist-focus-sunju-hargun"
+    ],
+    "confidence": "high"
   },
   "Swanasa": {
     "countries": [],
@@ -1778,14 +2212,22 @@
     "confidence": "needs_review"
   },
   "Switch Nollie": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/ambyss/switch-nollie-3/"
+    ],
+    "confidence": "high"
   },
   "Switch Nollie & Tsu": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/events/2337461"
+    ],
+    "confidence": "high"
   },
   "Symbionts": {
     "countries": [],
@@ -1808,9 +2250,13 @@
     "confidence": "needs_review"
   },
   "Talpa": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "RS"
+    ],
+    "sources": [
+      "https://tesseract.studio/talpa"
+    ],
+    "confidence": "high"
   },
   "Tatoo": {
     "countries": [],
@@ -1818,24 +2264,40 @@
     "confidence": "needs_review"
   },
   "Tebra": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "RS"
+    ],
+    "sources": [
+      "https://ra.co/dj/tebra"
+    ],
+    "confidence": "high"
   },
   "Tetrameth": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://www.discogs.com/artist/265935-Tetrameth"
+    ],
+    "confidence": "high"
   },
   "The Flying Mars": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CH"
+    ],
+    "sources": [
+      "https://www.facebook.com/theflyingmars/"
+    ],
+    "confidence": "high"
   },
   "Titusz": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2025.ozorafestival.eu/music-and-dance/pumpui/titusz/"
+    ],
+    "confidence": "high"
   },
   "Tom Bini": {
     "countries": [],
@@ -1848,24 +2310,40 @@
     "confidence": "needs_review"
   },
   "Tongue & Groove": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GB"
+    ],
+    "sources": [
+      "https://tongueandgroove-nano.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Tor.Ma in Dub": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MX"
+    ],
+    "sources": [
+      "https://tormaindub.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Tribone": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "IL"
+    ],
+    "sources": [
+      "https://liquidbloom.com/?allies=pere"
+    ],
+    "confidence": "high"
   },
   "Triforce": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://steemit.com/music/@triforce/we-are-triforce-a-dark-techno-dark-progressive-duo-from-sydney-australia-we-perform-at-beautiful-outdoor-festivals-all-around"
+    ],
+    "confidence": "high"
   },
   "Tristan": {
     "countries": [
@@ -1878,9 +2356,13 @@
     "notes": "Source identifies Tristan Cooke as a British DJ and producer."
   },
   "Tron": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "MX"
+    ],
+    "sources": [
+      "https://free-spiritrecords.com/artists/tron/"
+    ],
+    "confidence": "high"
   },
   "Trubble": {
     "countries": [],
@@ -1888,14 +2370,22 @@
     "confidence": "needs_review"
   },
   "Tsu": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/events/2337461"
+    ],
+    "confidence": "high"
   },
   "Tsubi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://2026.ozorafestival.eu/music-and-dance/ozora-stage/dj-tsubi/"
+    ],
+    "confidence": "high"
   },
   "Tsuyoshi Suzuki": {
     "countries": [
@@ -1913,9 +2403,15 @@
     "confidence": "needs_review"
   },
   "Undefined Behavior": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "CH",
+      "BR"
+    ],
+    "sources": [
+      "https://www.burninnoise.com/aboutub.html"
+    ],
+    "confidence": "high",
+    "notes": "Collaboration of Swiss artist Ajja and Brazilian artist Burn In Noise"
   },
   "Veronika Szabó - Kingdom": {
     "countries": [],
@@ -1934,9 +2430,13 @@
     "notes": "Origin listed as Uppsala, Sweden and Brussels, Belgium."
   },
   "Vlastur": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "GR"
+    ],
+    "sources": [
+      "https://parvati-records.com/vlastur/"
+    ],
+    "confidence": "high"
   },
   "Vox Fabri": {
     "countries": [],
@@ -1954,9 +2454,13 @@
     "confidence": "needs_review"
   },
   "Wild Marmalade": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "AU"
+    ],
+    "sources": [
+      "https://wanderlust.com/artist/wild-marmalade/"
+    ],
+    "confidence": "high"
   },
   "Wonky Swing Trio": {
     "countries": [],
@@ -1964,9 +2468,13 @@
     "confidence": "needs_review"
   },
   "X-Dream": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "DE"
+    ],
+    "sources": [
+      "https://musicbrainz.org/artist/635da8c0-f19a-41b9-8764-fd80306b4159"
+    ],
+    "confidence": "high"
   },
   "Younger Brother": {
     "countries": [
@@ -1994,19 +2502,31 @@
     "notes": "Source identifies Yuli Fershtat / Perfect Stranger as an Israeli musician with origin in Yad Natan, Israel."
   },
   "Zagi": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://ra.co/events/2337461"
+    ],
+    "confidence": "high"
   },
   "Zakhorov": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "HU"
+    ],
+    "sources": [
+      "https://zakhorov.bandcamp.com/"
+    ],
+    "confidence": "high"
   },
   "Zen Baboon": {
-    "countries": [],
-    "sources": [],
-    "confidence": "needs_review"
+    "countries": [
+      "PT"
+    ],
+    "sources": [
+      "https://feellifemusic.com/artists/?view=zen-baboon"
+    ],
+    "confidence": "high"
   },
   "Zsom": {
     "countries": [],

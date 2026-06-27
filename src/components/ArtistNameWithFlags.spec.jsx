@@ -29,9 +29,15 @@ describe('ArtistNameWithFlags', () => {
     expect(screen.getAllByLabelText(/Origin:/).map((flag) => flag.textContent)).toEqual(['🇮🇹', '🇬🇧', '🇯🇲']);
   });
 
-  it('renders only the artist name for missing or unreviewed data', () => {
+  it('renders only the artist name for unreviewed data', () => {
     render(<ArtistNameWithFlags artist="Unknown" origins={origins} />);
     expect(screen.getByText('Unknown')).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Origin:/)).toBeNull();
+  });
+
+  it('renders only the artist name for missing origin data', () => {
+    render(<ArtistNameWithFlags artist="Missing Artist" origins={origins} />);
+    expect(screen.getByText('Missing Artist')).toBeInTheDocument();
     expect(screen.queryByLabelText(/Origin:/)).toBeNull();
   });
 });

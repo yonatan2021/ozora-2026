@@ -1,6 +1,7 @@
 import { X, Play, ArrowRight } from 'lucide-react';
 import { parseSetDateTime, getSetStatus } from '../utils/time';
 import { translations } from '../utils/lang';
+import ArtistNameWithFlags from './ArtistNameWithFlags';
 
 const STAGES = [
   "OZORA STAGE",
@@ -122,7 +123,9 @@ export default function LiveStatusModal({ isOpen, onClose, lang, simTime, timeta
                         <Play size={12} fill="currentColor" />
                         <span>{t.nowPlaying}</span>
                       </div>
-                      <div className="live-artist-name">{activeSet.artist}</div>
+                      <div className="live-artist-name">
+                        <ArtistNameWithFlags artist={activeSet.artist} />
+                      </div>
                       <div className="live-time-range">
                         {activeSet.start} - {activeSet.end}
                       </div>
@@ -151,7 +154,7 @@ export default function LiveStatusModal({ isOpen, onClose, lang, simTime, timeta
                         <span>{t.nextUp}</span>
                       </div>
                       <div className="live-next-artist">
-                        {nextSet.artist} <span className="live-next-time">({nextSet.start})</span>
+                        <ArtistNameWithFlags artist={nextSet.artist} /> <span className="live-next-time">({nextSet.start})</span>
                       </div>
                     </div>
                   ) : (

@@ -100,7 +100,10 @@ export const translations = {
     themeSunrise: "Sunrise",
     themePinned: "Theme locked",
     themeUnpinned: "Theme follows time",
-    themeLabel: "Atmosphere"
+    themeLabel: "Atmosphere",
+    listenYouTube: "Listen on YouTube",
+    listenSoundCloud: "Listen on SoundCloud",
+    listenMusic: "Listen to music"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -203,6 +206,9 @@ export const translations = {
     themeSunrise: "זריחה",
     themePinned: "העיצוב נעול",
     themeUnpinned: "העיצוב עוקב אחרי הזמן",
-    themeLabel: "אווירה"
+    themeLabel: "אווירה",
+    listenYouTube: "האזן ביוטיוב",
+    listenSoundCloud: "האזן בסאונדקלאוד",
+    listenMusic: "האזן למוסיקה"
   }
 };
