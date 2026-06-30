@@ -2652,6 +2652,228 @@ body:has(.theme-sunrise)::before {
 }
 
 /* ==========================================
+   EQUIPMENT CHECKLIST
+   ========================================== */
+.equipment-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.equipment-section-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.equipment-section-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.equipment-section-tab.active {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--glow-primary);
+}
+
+.equipment-section-tab:hover {
+  background: var(--surface-hover);
+}
+
+.equipment-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.equipment-section-header h3 {
+  font-family: 'Orbitron', 'Heebo', sans-serif;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.equipment-progress-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--glow-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.equipment-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.equipment-topic {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.equipment-topic.open {
+  border-color: var(--border-strong);
+  background: var(--bg);
+}
+
+.equipment-topic-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  text-align: start;
+  transition: var(--transition-smooth);
+}
+
+.equipment-topic-header:hover {
+  background: var(--surface-hover);
+}
+
+.equipment-topic-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.equipment-topic-progress {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.equipment-topic-body {
+  padding: 0.25rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: accordionOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.equipment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.equipment-item:hover {
+  background: var(--surface-hover);
+}
+
+.equipment-item input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  margin-top: 0.1rem;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.equipment-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.equipment-item-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.equipment-item-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.equipment-export-wrap {
+  position: relative;
+  align-self: flex-start;
+}
+
+.equipment-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: var(--transition-smooth);
+}
+
+.equipment-export-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary);
+}
+
+.equipment-export-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  inset-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  z-index: 10;
+  min-width: 180px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.equipment-export-menu button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.7rem 1rem;
+  text-align: start;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-size: 0.85rem;
+  transition: var(--transition-smooth);
+}
+
+.equipment-export-menu button:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+/* ==========================================
    MY SCHEDULE VIEW
    ========================================== */
 .my-schedule-container {
