@@ -2,16 +2,24 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
+let mockNeedRefresh = false;
+const mockSetNeedRefresh = vi.fn();
+const mockUpdateServiceWorker = vi.fn();
+
 vi.mock('virtual:pwa-register/react', () => ({
   useRegisterSW: vi.fn(() => ({
-    needRefresh: [true, vi.fn()],
-    updateServiceWorker: vi.fn(),
+    needRefresh: [mockNeedRefresh, mockSetNeedRefresh],
+    updateServiceWorker: mockUpdateServiceWorker,
   })),
 }));
 
 describe('App End-to-End Flows', () => {
   beforeEach(() => {
+    mockNeedRefresh = false;
+    mockSetNeedRefresh.mockClear();
+    mockUpdateServiceWorker.mockClear();
     localStorage.clear();
+    sessionStorage.clear();
     Object.defineProperty(window.navigator, 'userAgent', {
       configurable: true,
       value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)',
@@ -62,7 +70,15 @@ describe('App End-to-End Flows', () => {
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
   });
 
+  it('does not show the PWA update prompt by default', () => {
+    render(<App />);
+
+    expect(screen.queryByText('גרסה חדשה זמינה')).not.toBeInTheDocument();
+  });
+
   it('shows the PWA update prompt when a new version is waiting', () => {
+    mockNeedRefresh = true;
+
     render(<App />);
 
     expect(screen.getByText('גרסה חדשה זמינה')).toBeInTheDocument();

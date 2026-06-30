@@ -3810,7 +3810,7 @@ body:has(.theme-sunrise)::before {
 
 .pwa-update-banner {
   position: fixed;
-  bottom: 70px;
+  bottom: 138px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -3894,7 +3894,7 @@ body:has(.theme-sunrise)::before {
 @media (max-width: 560px) {
   .pwa-update-banner {
     align-items: flex-start;
-    bottom: 84px;
+    bottom: 154px;
   }
 
   .pwa-update-actions {
