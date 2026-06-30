@@ -9,7 +9,7 @@ export default function EquipmentChecklist() {
   const [activeKey, setActiveKey] = useState('shared');
   const [openTopics, setOpenTopics] = useState({});
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
-  const { isChecked, toggle, getTopicProgress, getSectionProgress } = useEquipmentChecklist();
+  const { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap } = useEquipmentChecklist();
 
   const activeSection = equipmentData[activeKey];
   const sectionProgress = getSectionProgress(activeSection);
@@ -24,7 +24,7 @@ export default function EquipmentChecklist() {
     await exportEquipmentImageAsPng({
       shared: scope === 'personal' ? null : equipmentData.shared,
       personal: scope === 'shared' ? null : equipmentData.personal,
-      getTopicProgress
+      checkedMap
     });
   };
 

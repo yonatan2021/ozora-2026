@@ -37,5 +37,5 @@ export default function useEquipmentChecklist() {
     return { done, total };
   }, [checked]);
 
-  return { isChecked, toggle, getTopicProgress, getSectionProgress };
+  return { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap: checked };
 }
