@@ -3,11 +3,14 @@ import useGuides from '../hooks/useGuides';
 import { getGuideIcon } from '../utils/guideIcons';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { trackEvent } from '../utils/analytics';
+import EquipmentChecklist from './EquipmentChecklist';
+import { Backpack as EquipmentIcon } from 'lucide-react';
 
 export default function FestivalGuide() {
   const { guides } = useGuides();
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [openTopics, setOpenTopics] = useState({});
+  const [showEquipment, setShowEquipment] = useState(false);
 
   const toggleTopic = (index) => {
     const topic = selectedGuide?.topics?.[index];
@@ -26,6 +29,26 @@ export default function FestivalGuide() {
     setSelectedGuide(null);
     setOpenTopics({});
   };
+
+  const handleEquipmentBack = () => {
+    trackEvent('guide_back_click');
+    setShowEquipment(false);
+  };
+
+  if (showEquipment) {
+    return (
+      <div className="guide-container stagger-slide-up" style={{ '--card-index': 0 }}>
+        <header className="guide-header">
+          <button className="guide-back-btn" onClick={handleEquipmentBack}>
+            <ArrowRight size={18} />
+            <span>חזרה למדריכים</span>
+          </button>
+          <h2>ציוד לפסטיבל</h2>
+        </header>
+        <EquipmentChecklist />
+      </div>
+    );
+  }
 
   if (selectedGuide) {
     return (
@@ -82,6 +105,20 @@ export default function FestivalGuide() {
         <p className="guide-subtitle">טיפים, עצות והתמצאות בשטח פסטיבל אוזורה 2026</p>
       </header>
       <div className="guide-grid">
+        <div
+          className="guide-card"
+          style={{ '--card-index': 0 }}
+          onClick={() => {
+            setShowEquipment(true);
+            trackEvent('guide_card_click', { guide_title: 'ציוד לפסטיבל' });
+          }}
+        >
+          <div className="guide-card-icon">
+            <EquipmentIcon size={20} />
+          </div>
+          <h3>ציוד לפסטיבל</h3>
+          <p className="guide-card-topic-count">צ׳ק-ליסט אישי וקבוצתי</p>
+        </div>
         {guides.map((guide, index) => {
           const Icon = getGuideIcon(guide.icon);
           return (
