@@ -1,0 +1,140 @@
+{
+  "shared": {
+    "title": "ציוד שטח (קבוצתי)",
+    "topics": [
+      {
+        "id": "shelter",
+        "heading": "מחסה וצל",
+        "items": [
+          { "id": "shared-tents", "label": "אוהלים", "hint": "עמיד למים ורוח — סופות קיץ נפוצות באוזורה" },
+          { "id": "shared-shade", "label": "צל/קנופי (כ-3x3 מ׳ ומעלה)", "hint": "לפינת ישיבה משותפת מוצלת" },
+          { "id": "shared-poles-ropes-pegs", "label": "מוטות, חבלים ויתדות נוספים", "hint": "מעבר למה שמגיע עם האוהל/הצל" },
+          { "id": "shared-hammer", "label": "פטיש קמפינג", "hint": "לנעיצת יתדות" }
+        ]
+      },
+      {
+        "id": "seating",
+        "heading": "ישיבה ומנוחה",
+        "items": [
+          { "id": "shared-table", "label": "שולחן", "hint": "" },
+          { "id": "shared-chairs", "label": "כיסאות מתקפלים / ספות מתנפחות", "hint": "" },
+          { "id": "shared-lounge", "label": "לונגים", "hint": "" }
+        ]
+      },
+      {
+        "id": "sleep-shared",
+        "heading": "שינה משותפת",
+        "items": [
+          { "id": "shared-pump", "label": "משאבה", "hint": "לניפוח מזרנים" },
+          { "id": "shared-clothesline", "label": "חבל כביסה ואטבים", "hint": "" }
+        ]
+      },
+      {
+        "id": "cooling-storage",
+        "heading": "קירור ואחסון",
+        "items": [
+          { "id": "shared-coolers", "label": "צידניות", "hint": "" },
+          { "id": "shared-tent-lock", "label": "מנעול לאוהל", "hint": "לשמירה על הציוד המשותף" }
+        ]
+      },
+      {
+        "id": "lighting-power",
+        "heading": "תאורה וחשמל",
+        "items": [
+          { "id": "shared-garland", "label": "גרלנדה (סוללות)", "hint": "לתאורת אווירה בקאנטה" },
+          { "id": "shared-power-strip", "label": "מפצל חשמל", "hint": "" }
+        ]
+      },
+      {
+        "id": "decor",
+        "heading": "קישוט ואווירה",
+        "items": [
+          { "id": "shared-decor", "label": "קישוטים לקאנטה", "hint": "" }
+        ]
+      },
+      {
+        "id": "kitchen",
+        "heading": "מטבח שיתופי",
+        "items": [
+          { "id": "shared-coffee-kit", "label": "פק״ל קפה", "hint": "" }
+        ]
+      },
+      {
+        "id": "leisure-shared",
+        "heading": "פנאי",
+        "items": [
+          { "id": "shared-backgammon", "label": "שש בש / משחקי קופסה", "hint": "" }
+        ]
+      }
+    ]
+  },
+  "personal": {
+    "title": "ציוד אישי",
+    "topics": [
+      {
+        "id": "sleep",
+        "heading": "שינה",
+        "items": [
+          { "id": "personal-mattress", "label": "מזרן מתנפח אישי", "hint": "" },
+          { "id": "personal-blanket", "label": "שמיכה", "hint": "" },
+          { "id": "personal-pillowcase", "label": "ציפית לכרית", "hint": "" },
+          { "id": "personal-eye-mask", "label": "כיסוי עיניים", "hint": "לשינה ביום" },
+          { "id": "personal-earplugs", "label": "אטמי אוזניים", "hint": "" }
+        ]
+      },
+      {
+        "id": "clothing",
+        "heading": "ביגוד",
+        "items": [
+          { "id": "personal-layers", "label": "בגדים לחום ולקור", "hint": "קצר+ארוך, שכבת חימום ללילה" },
+          { "id": "personal-swimwear", "label": "בגד ים", "hint": "" },
+          { "id": "personal-footwear", "label": "נעליים", "hint": "זוג סגור לשטח + סנדלים/כפכפים למנוחה" },
+          { "id": "personal-hat-sunglasses", "label": "כובע ומשקפי שמש", "hint": "" }
+        ]
+      },
+      {
+        "id": "hygiene",
+        "heading": "היגיינה",
+        "items": [
+          { "id": "personal-toiletries", "label": "כלי רחצה אישיים", "hint": "" },
+          { "id": "personal-towel", "label": "מגבת זיעה / מגבת מהירת ייבוש", "hint": "" },
+          { "id": "personal-solar-shower", "label": "מקלחת סולארית", "hint": "אופציונלי — המקלחות בשטח לרוב קרות" },
+          { "id": "personal-laundry-bag", "label": "סל כביסה", "hint": "" }
+        ]
+      },
+      {
+        "id": "health",
+        "heading": "בריאות ועזרה ראשונה",
+        "items": [
+          { "id": "personal-first-aid", "label": "תיק עזרה ראשונה אישי", "hint": "פלסטרים, משככי כאבים, אנטיספטי" },
+          { "id": "personal-sunscreen", "label": "קרם הגנה SPF 50+", "hint": "" },
+          { "id": "personal-supplements", "label": "תוספי תזונה", "hint": "לפי צורך אישי" },
+          { "id": "personal-electrolytes", "label": "אלקטרוליטים", "hint": "למניעת התייבשות בחום" }
+        ]
+      },
+      {
+        "id": "electronics",
+        "heading": "אלקטרוניקה",
+        "items": [
+          { "id": "personal-power-bank", "label": "מטען נייד", "hint": "" },
+          { "id": "personal-flashlight", "label": "פנס ראש/יד", "hint": "חיוני להתמצאות בלילה" }
+        ]
+      },
+      {
+        "id": "security",
+        "heading": "אבטחה אישית",
+        "items": [
+          { "id": "personal-pouch", "label": "פק״ל ירך / פאוץ׳ / חגורת כסף", "hint": "לשמירת מסמכים וכסף על הגוף" },
+          { "id": "personal-lock", "label": "מנעול קטן", "hint": "לתיק/לוקר אישי" }
+        ]
+      },
+      {
+        "id": "hydration",
+        "heading": "שתייה",
+        "items": [
+          { "id": "personal-water-bottle", "label": "בקבוק מים / מסנן מים נייד", "hint": "" }
+        ]
+      }
+    ]
+  }
+}
