@@ -5,6 +5,12 @@ import App from './App';
 let mockNeedRefresh = false;
 const mockSetNeedRefresh = vi.fn();
 const mockUpdateServiceWorker = vi.fn();
+const storedCookieConsent = {
+  necessary: true,
+  analytics: false,
+  functional: false,
+  marketing: false,
+};
 
 vi.mock('virtual:pwa-register/react', () => ({
   useRegisterSW: vi.fn(() => ({
@@ -78,8 +84,29 @@ describe('App End-to-End Flows', () => {
 
   it('shows the PWA update prompt when a new version is waiting', () => {
     mockNeedRefresh = true;
+    localStorage.setItem('ozora_cookie_consent', JSON.stringify(storedCookieConsent));
 
     render(<App />);
+
+    expect(screen.getByText('גרסה חדשה זמינה')).toBeInTheDocument();
+  });
+
+  it('does not show the PWA update prompt over unresolved cookie consent', () => {
+    mockNeedRefresh = true;
+
+    render(<App />);
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText(/אנחנו משתמשים בקבצי עוגיות/i)).toBeInTheDocument();
+    expect(screen.queryByText('גרסה חדשה זמינה')).not.toBeInTheDocument();
+  });
+
+  it('shows the PWA update prompt after cookie consent is resolved', () => {
+    mockNeedRefresh = true;
+
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'דחיית עוגיות' }));
 
     expect(screen.getByText('גרסה חדשה זמינה')).toBeInTheDocument();
   });

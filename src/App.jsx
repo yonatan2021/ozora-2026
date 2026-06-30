@@ -20,7 +20,7 @@ import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
 import MandalaStageSelector from './components/MandalaStageSelector';
-import { initializeGA4 } from './utils/consent';
+import { getStoredConsent, initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
 
@@ -110,6 +110,7 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState('');
   const [notesVersion, setNotesVersion] = useState(0);
   const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));
+  const [hasCookieConsent, setHasCookieConsent] = useState(() => !!getStoredConsent());
 
   const handleCampChange = useCallback(() => {
     setHasCamp(!!localStorage.getItem('ozora_my_camp'));
@@ -633,8 +634,8 @@ export default function App() {
         </div>
       )}
 
-      <CookieConsent lang={lang} />
-      <PWAUpdatePrompt lang={lang} />
+      <CookieConsent lang={lang} onConsentResolved={() => setHasCookieConsent(true)} />
+      {hasCookieConsent && <PWAUpdatePrompt lang={lang} />}
       <InstallPrompt lang={lang} />
     </div>
   );

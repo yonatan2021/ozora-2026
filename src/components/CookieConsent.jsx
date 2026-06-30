@@ -3,7 +3,7 @@ import { getStoredConsent, setStoredConsent, updateGAConsent } from '../utils/co
 import { translations } from '../utils/lang';
 import { trackEvent } from '../utils/analytics';
 
-export default function CookieConsent({ lang }) {
+export default function CookieConsent({ lang, onConsentResolved }) {
   const [isOpen, setIsOpen] = useState(() => {
     const stored = getStoredConsent();
     return !stored;
@@ -34,6 +34,7 @@ export default function CookieConsent({ lang }) {
       marketing_allowed: true
     });
     setIsOpen(false);
+    onConsentResolved?.();
   };
 
   const handleDeclineAll = () => {
@@ -52,6 +53,7 @@ export default function CookieConsent({ lang }) {
       marketing_allowed: false
     });
     setIsOpen(false);
+    onConsentResolved?.();
   };
 
   const handleSavePreferences = () => {
@@ -64,6 +66,7 @@ export default function CookieConsent({ lang }) {
       marketing_allowed: preferences.marketing
     });
     setIsOpen(false);
+    onConsentResolved?.();
   };
 
   const handleToggle = (key) => {
