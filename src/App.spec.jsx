@@ -1,6 +1,13 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+
+vi.mock('virtual:pwa-register/react', () => ({
+  useRegisterSW: vi.fn(() => ({
+    needRefresh: [true, vi.fn()],
+    updateServiceWorker: vi.fn(),
+  })),
+}));
 
 describe('App End-to-End Flows', () => {
   beforeEach(() => {
@@ -53,6 +60,12 @@ describe('App End-to-End Flows', () => {
 
     expect(screen.getByText('Open once with internet before the festival to save it offline.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Install now/i })).toBeInTheDocument();
+  });
+
+  it('shows the PWA update prompt when a new version is waiting', () => {
+    render(<App />);
+
+    expect(screen.getByText('גרסה חדשה זמינה')).toBeInTheDocument();
   });
 
   it('should pin a specific theme and save state to localStorage', () => {

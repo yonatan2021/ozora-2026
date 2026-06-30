@@ -3808,6 +3808,106 @@ body:has(.theme-sunrise)::before {
   color: var(--text-primary);
 }
 
+.pwa-update-banner {
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(560px, calc(100vw - 32px));
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  z-index: 1100;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.3);
+  color: var(--text-primary);
+}
+
+.pwa-update-icon {
+  flex: 0 0 auto;
+  color: var(--primary);
+}
+
+.pwa-update-copy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.pwa-update-copy span {
+  color: var(--text-secondary);
+}
+
+.pwa-update-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.pwa-update-primary,
+.pwa-update-skip,
+.pwa-update-dismiss {
+  cursor: pointer;
+  font: inherit;
+}
+
+.pwa-update-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pwa-update-skip {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.pwa-update-dismiss {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 4px;
+}
+
+@media (max-width: 560px) {
+  .pwa-update-banner {
+    align-items: flex-start;
+    bottom: 84px;
+  }
+
+  .pwa-update-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pwa-update-primary,
+  .pwa-update-skip {
+    min-width: 96px;
+  }
+}
+
 .install-prompt-btn {
   background: var(--primary);
   color: white;
@@ -5455,4 +5555,3 @@ body:has(.theme-sunrise)::before {
   font-weight: 500;
   animation: fadeIn 0.3s ease;
 }
-

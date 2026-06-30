@@ -15,6 +15,7 @@ import PsychedelicBackground from './components/PsychedelicBackground';
 import SacredGeometry from './components/SacredGeometry';
 import { Calendar, User, BookOpen, Heart, Map as MapIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
+import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
@@ -633,6 +634,7 @@ export default function App() {
       )}
 
       <CookieConsent lang={lang} />
+      <PWAUpdatePrompt lang={lang} />
       <InstallPrompt lang={lang} />
     </div>
   );

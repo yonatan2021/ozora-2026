@@ -12,7 +12,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      injectRegister: null,
       includeAssets: ['favicon.png', 'icons.svg', 'ozora_banner.png'],
       manifest: {
         name: 'Ozora Festival 2026',
