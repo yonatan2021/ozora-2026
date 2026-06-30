@@ -34,6 +34,7 @@ describe('PWAUpdatePrompt', () => {
     expect(screen.getByText('אפשר לעדכן עכשיו כדי לקבל את השינויים האחרונים.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'עדכן עכשיו' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'דלג' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'סגור הודעת עדכון' })).toBeInTheDocument();
   });
 
   it('hides the banner for the current session when skipped', () => {
@@ -57,6 +58,7 @@ describe('PWAUpdatePrompt', () => {
 
   it('asks the waiting service worker to activate when update now is clicked', () => {
     needRefreshValue = [true, vi.fn()];
+    updateServiceWorker.mockResolvedValue();
 
     render(<PWAUpdatePrompt lang="en" />);
     fireEvent.click(screen.getByRole('button', { name: 'Update now' }));

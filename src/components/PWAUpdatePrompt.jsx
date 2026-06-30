@@ -44,6 +44,10 @@ export default function PWAUpdatePrompt({ lang }) {
     }
   };
 
+  const handleUpdate = () => {
+    void updateServiceWorker(true).catch(() => {});
+  };
+
   return (
     <div className="pwa-update-banner" role="status" aria-live="polite">
       <RefreshCw size={18} className="pwa-update-icon" aria-hidden="true" />
@@ -52,14 +56,14 @@ export default function PWAUpdatePrompt({ lang }) {
         <span>{t.pwaUpdateBody}</span>
       </div>
       <div className="pwa-update-actions">
-        <button className="pwa-update-primary" type="button" onClick={() => updateServiceWorker(true)}>
+        <button className="pwa-update-primary" type="button" onClick={handleUpdate}>
           {t.pwaUpdateNow}
         </button>
         <button className="pwa-update-skip" type="button" onClick={handleSkip}>
           {t.pwaUpdateSkip}
         </button>
       </div>
-      <button className="pwa-update-dismiss" type="button" onClick={handleSkip} aria-label={t.pwaUpdateTitle}>
+      <button className="pwa-update-dismiss" type="button" onClick={handleSkip} aria-label={t.pwaUpdateDismiss}>
         <X size={16} />
       </button>
     </div>
