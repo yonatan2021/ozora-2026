@@ -327,8 +327,8 @@ export default function App() {
   // Filter sets based on selected day
   const filteredSets = useMemo(() => SETS_BY_DAY[selectedDay] || [], [selectedDay]);
 
-  // Filter sets for mobile chronological view based on selected stage
-  const mobileFilteredSets = useMemo(() => (
+  // Filter sets by selected stage — shared by desktop grid and mobile feed
+  const stageFilteredSets = useMemo(() => (
     selectedStage === 'ALL'
       ? filteredSets
       : filteredSets.filter(set => set.stage === selectedStage)
@@ -456,7 +456,7 @@ export default function App() {
                 <div className="desktop-view-only">
                   <TimetableGrid
                     lang={lang}
-                    sets={filteredSets}
+                    sets={stageFilteredSets}
                     favorites={childFavorites}
                     toggleFavorite={toggleFavorite}
                     onSetClick={setSelectedSet}
@@ -471,13 +471,13 @@ export default function App() {
                 
                 {/* Mobile feed list */}
                 <div className="mobile-view-only">
-                  {mobileFilteredSets.length === 0 ? (
+                  {stageFilteredSets.length === 0 ? (
                     <div className="empty-state">
                       <p>{t.noSetsFound}</p>
                     </div>
                   ) : (
                     <ChronologicalFeed
-                      sets={mobileFilteredSets}
+                      sets={stageFilteredSets}
                       favorites={childFavorites}
                       toggleFavorite={toggleFavorite}
                       onSetClick={setSelectedSet}
