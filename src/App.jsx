@@ -27,16 +27,16 @@ import { trackEvent } from './utils/analytics';
 const VenueMap = lazy(() => import('./components/VenueMap'));
 
 const DAY_DATE_LABELS = {
-  'Warmup Sat': { he: 'חימום שבת · 25/7', en: 'Warmup Sat · 25/7' },
-  'Warmup Sun': { he: 'חימום ראשון · 26/7', en: 'Warmup Sun · 26/7' },
-  'DAY 1': { he: 'יום 1 · שני 27/7', en: 'Day 1 · Mon 27/7' },
-  'DAY 2': { he: 'יום 2 · שלישי 28/7', en: 'Day 2 · Tue 28/7' },
-  'DAY 3': { he: 'יום 3 · רביעי 29/7', en: 'Day 3 · Wed 29/7' },
-  'DAY 4': { he: 'יום 4 · חמישי 30/7', en: 'Day 4 · Thu 30/7' },
-  'DAY 5': { he: 'יום 5 · שישי 31/7', en: 'Day 5 · Fri 31/7' },
-  'DAY 6': { he: 'יום 6 · שבת 1/8', en: 'Day 6 · Sat 1/8' },
-  'DAY 7': { he: 'יום 7 · ראשון 2/8', en: 'Day 7 · Sun 2/8' },
-  'DAY 8': { he: 'יום 8 · שני 3/8', en: 'Day 8 · Mon 3/8' },
+  'Warmup Sat': { he: 'יום -2 · 25/7', en: 'Day -2 · 25/7' },
+  'Warmup Sun': { he: 'יום -1 · 26/7', en: 'Day -1 · 26/7' },
+  'DAY 1': { he: 'יום 1 · 27/7', en: 'Day 1 · 27/7' },
+  'DAY 2': { he: 'יום 2 · 28/7', en: 'Day 2 · 28/7' },
+  'DAY 3': { he: 'יום 3 · 29/7', en: 'Day 3 · 29/7' },
+  'DAY 4': { he: 'יום 4 · 30/7', en: 'Day 4 · 30/7' },
+  'DAY 5': { he: 'יום 5 · 31/7', en: 'Day 5 · 31/7' },
+  'DAY 6': { he: 'יום 6 · 1/8', en: 'Day 6 · 1/8' },
+  'DAY 7': { he: 'יום 7 · 2/8', en: 'Day 7 · 2/8' },
+  'DAY 8': { he: 'יום 8 · 3/8', en: 'Day 8 · 3/8' },
 };
 
 const DATE_TO_DAY_MAP = {
