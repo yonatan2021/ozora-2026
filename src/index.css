@@ -2414,8 +2414,6 @@ body:has(.theme-sunrise)::before {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  position: relative;
-  z-index: 20;
 }
 
 .guide-header {
@@ -2853,7 +2851,7 @@ body:has(.theme-sunrise)::before {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   overflow: hidden;
-  z-index: 50;
+  z-index: 10;
   min-width: 180px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
