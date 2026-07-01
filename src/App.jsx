@@ -558,6 +558,7 @@ export default function App() {
 
       <footer className="app-footer">
         <FooterInstallCTA lang={lang} />
+        <p className="footer-disclaimer">{t.dataDisclaimer}</p>
         <p className="footer-copyright">{t.copyright}</p>
         <p className="footer-credits">
           <span>{t.developedWithLove}</span>
