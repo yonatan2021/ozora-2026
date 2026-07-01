@@ -5358,43 +5358,30 @@ body:has(.theme-sunrise)::before {
   background: rgba(236, 201, 75, 0.1);
 }
 
-/* ===== SLICED STAGE SELECTOR (MANDALA ROW) ===== */
-.mandala-container {
+/* ===== STAGE LINEUP SELECTOR ===== */
+.stage-lineup-container {
   width: 100%;
   margin: 1rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
   z-index: 10;
 }
 
-.mandala-row {
+.stage-lineup-row {
   display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   padding: 0.4rem;
   width: 100%;
-  background: var(--surface);
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  scrollbar-width: none; /* Firefox */
-  -webkit-overflow-scrolling: touch;
-}
-.mandala-row::-webkit-scrollbar {
-  display: none; /* Safari/Chrome */
 }
 
-.mandala-btn {
+.stage-lineup-all {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.625rem 1.15rem;
   border-radius: var(--radius-md);
-  border: none;
-  background: transparent;
+  border: 1px solid var(--border);
+  background: var(--surface);
   color: var(--text-secondary);
   font-family: 'Exo 2', 'Heebo', sans-serif;
   font-weight: 600;
@@ -5402,55 +5389,127 @@ body:has(.theme-sunrise)::before {
   white-space: nowrap;
   cursor: pointer;
   transition: var(--transition-smooth);
+  align-self: flex-start;
+}
+.stage-lineup-all:hover { color: var(--primary); background: var(--surface-hover); }
+.stage-lineup-all.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 15px var(--glow-primary);
+  border-color: transparent;
 }
 
-/* Hover effects utilizing stage specific colors */
-.mandala-btn:hover {
-  color: var(--text-primary);
-  background: var(--surface-hover);
+.stage-lineup-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  min-width: 160px;
+  flex: 1 1 200px;
+  background: var(--surface);
+  transition: var(--transition-smooth);
 }
-
-.mandala-btn.stage-all:hover { color: var(--primary); }
-.mandala-btn.stage-ozora:hover { color: var(--stage-ozora); }
-.mandala-btn.stage-pumpui:hover { color: var(--stage-pumpui); }
-.mandala-btn.stage-dome:hover { color: var(--stage-dome); }
-.mandala-btn.stage-dragon:hover { color: var(--stage-dragon); }
-.mandala-btn.stage-visium:hover { color: var(--stage-visium); }
-.mandala-btn.stage-tekzero:hover { color: var(--stage-tekzero); }
-
-/* Active states carrying gorgeous psychedelic glow and backgrounds */
-.mandala-btn.active {
-  color: white !important;
+.stage-lineup-card.active {
   box-shadow: 0 4px 15px var(--stage-glow, var(--glow-primary));
 }
 
-.mandala-btn.stage-all.active {
-  background: var(--primary);
-  --stage-glow: var(--glow-primary);
+.stage-lineup-card-header {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.625rem 0.9rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+  text-align: start;
 }
-.mandala-btn.stage-ozora.active {
-  background: var(--stage-ozora);
-  --stage-glow: oklch(0.55 0.22 350 / 0.4);
+
+.stage-lineup-count {
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  opacity: 0.85;
+  font-weight: 500;
 }
-.mandala-btn.stage-pumpui.active {
-  background: var(--stage-pumpui);
-  --stage-glow: oklch(0.55 0.18 145 / 0.4);
+
+.stage-lineup-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border: none;
+  background: rgba(0, 0, 0, 0.15);
+  color: white;
+  cursor: pointer;
 }
-.mandala-btn.stage-dome.active {
-  background: var(--stage-dome);
-  --stage-glow: oklch(0.55 0.14 230 / 0.4);
+
+.stage-lineup-card {
+  flex-direction: row;
+  flex-wrap: wrap;
 }
-.mandala-btn.stage-dragon.active {
-  background: var(--stage-dragon);
-  --stage-glow: oklch(0.58 0.16 55 / 0.4);
+.stage-lineup-card-header,
+.stage-lineup-expand-btn {
+  position: relative;
 }
-.mandala-btn.stage-visium.active {
-  background: var(--stage-visium);
-  --stage-glow: oklch(0.60 0.16 85 / 0.4);
+.stage-lineup-artist-list {
+  flex-basis: 100%;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
 }
-.mandala-btn.stage-tekzero.active {
-  background: var(--stage-tekzero);
-  --stage-glow: oklch(0.52 0.20 300 / 0.4);
+
+.stage-lineup-card.stage-ozora .stage-lineup-card-header { background: var(--stage-ozora); }
+.stage-lineup-card.stage-pumpui .stage-lineup-card-header { background: var(--stage-pumpui); }
+.stage-lineup-card.stage-dome .stage-lineup-card-header { background: var(--stage-dome); }
+.stage-lineup-card.stage-dragon .stage-lineup-card-header { background: var(--stage-dragon); }
+.stage-lineup-card.stage-visium .stage-lineup-card-header { background: var(--stage-visium); }
+.stage-lineup-card.stage-tekzero .stage-lineup-card-header { background: var(--stage-tekzero); }
+
+.stage-lineup-card.stage-ozora.active { --stage-glow: oklch(0.55 0.22 350 / 0.4); }
+.stage-lineup-card.stage-pumpui.active { --stage-glow: oklch(0.55 0.18 145 / 0.4); }
+.stage-lineup-card.stage-dome.active { --stage-glow: oklch(0.55 0.14 230 / 0.4); }
+.stage-lineup-card.stage-dragon.active { --stage-glow: oklch(0.58 0.16 55 / 0.4); }
+.stage-lineup-card.stage-visium.active { --stage-glow: oklch(0.60 0.16 85 / 0.4); }
+.stage-lineup-card.stage-tekzero.active { --stage-glow: oklch(0.52 0.20 300 / 0.4); }
+
+.stage-lineup-artist-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.stage-lineup-artist-row:last-child { border-bottom: none; }
+.stage-lineup-artist-row:hover { background: var(--surface-hover); }
+
+.stage-lineup-artist-time {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  min-width: 42px;
+}
+
+.stage-lineup-artist-name {
+  flex: 1;
+}
+
+.stage-lineup-artist-fav {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .stage-lineup-row {
+    justify-content: center;
+  }
 }
 
 /* Tooltip & Rotations */
@@ -5487,12 +5546,6 @@ body:has(.theme-sunrise)::before {
   color: white;
   border-color: var(--primary);
   box-shadow: 0 0 10px var(--glow-primary);
-}
-
-@media (min-width: 768px) {
-  .mandala-row {
-    justify-content: center;
-  }
 }
 
 .map-warning-banner {
