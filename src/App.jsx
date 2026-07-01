@@ -19,7 +19,7 @@ import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
-import MandalaStageSelector from './components/MandalaStageSelector';
+import StageLineupSelector from './components/StageLineupSelector';
 import { getStoredConsent, initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
@@ -426,11 +426,22 @@ export default function App() {
             activeThemeClass={activeThemeClass}
           />
 
+          <StageLineupSelector
+            sets={filteredSets}
+            selectedStage={selectedStage}
+            onChange={handleStageChange}
+            lang={lang}
+            favorites={childFavorites}
+            toggleFavorite={toggleFavorite}
+            activeStatusMap={activeStatusMap}
+            onSetClick={setSelectedSet}
+          />
+
           {/* Days Selector */}
           <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
             {days.map(d => (
-              <button 
-                key={d} 
+              <button
+                key={d}
                 className={`day-btn ${selectedDay === d ? 'active' : ''}`}
                 onClick={() => handleDayChange(d)}
               >
@@ -438,12 +449,6 @@ export default function App() {
               </button>
             ))}
           </div>
-
-          <MandalaStageSelector
-            selectedStage={selectedStage}
-            onChange={handleStageChange}
-            lang={lang}
-          />
 
           <main className="main-content">
             {filteredSets.length === 0 ? (
