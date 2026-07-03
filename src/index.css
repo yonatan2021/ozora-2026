@@ -3305,12 +3305,64 @@ body:has(.theme-sunrise)::before {
   .equipment-item-hint::after {
     content: ")" !important;
   }
+
+  /* Hide unchecked equipment items when printing checked-only */
+  body.print-checked-only .equipment-print-only-container .equipment-item:not(:has(input[type="checkbox"]:checked)) {
+    display: none !important;
+  }
+
+  /* Hide empty topics when printing checked-only */
+  body.print-checked-only .equipment-print-only-container .equipment-topic:not(:has(.equipment-item:not([style*="display: none"]))) {
+    display: none !important;
+  }
 }
 
 
 /* ==========================================
    MY SCHEDULE VIEW
    ========================================== */
+
+@media print {
+  .my-schedule-container {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 1rem !important;
+    gap: 1rem !important;
+  }
+
+  .my-schedule-container .share-schedule-btn,
+  .my-schedule-container .share-menu-dropdown,
+  .live-now-indicator,
+  .conflict-badge,
+  .priority-selector,
+  .personal-note-input {
+    display: none !important;
+  }
+
+  .schedule-day-block {
+    page-break-inside: avoid;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .schedule-set-card {
+    background: #f9f9f9 !important;
+    color: #000 !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+
+  .schedule-set-artist {
+    color: #000 !important;
+  }
+
+  .schedule-set-stage,
+  .schedule-set-time {
+    color: #444 !important;
+  }
+}
+
 .my-schedule-container {
   display: flex;
   flex-direction: column;
