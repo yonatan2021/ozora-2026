@@ -24,7 +24,7 @@ describe('exportScheduleToCsv', () => {
     vi.unstubAllGlobals();
   });
 
-  it('generates correct CSV format for Hebrew language', () => {
+  it('generates correct CSV format for Hebrew language, conflicts, and notes', () => {
     const groupedByDay = {
       "DAY 1": [
         { id: '1', artist: 'Ace Ventura', stage: 'OZORA STAGE', start: '20:00', end: '22:00' }
@@ -33,14 +33,25 @@ describe('exportScheduleToCsv', () => {
     const priorities = {
       "1_20:00": 'must'
     };
+    const conflicts = [
+      {
+        setA: { id: '1', artist: 'Ace Ventura' },
+        setB: { id: '2', artist: 'Liquid Soul' }
+      }
+    ];
+    const notes = {
+      "1_20:00": 'My favorite set!'
+    };
     
-    exportScheduleToCsv({ groupedByDay, priorities, lang: 'he' });
+    exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes, lang: 'he' });
     
     expect(Blob).toHaveBeenCalled();
     const blobContent = vi.mocked(Blob).mock.calls[0][0][0];
     expect(blobContent).toContain('Ace Ventura');
     expect(blobContent).toContain('OZORA STAGE');
     expect(blobContent).toContain('חובה');
+    expect(blobContent).toContain('Liquid Soul');
+    expect(blobContent).toContain('My favorite set!');
   });
 
   it('generates correct CSV format for English language', () => {
@@ -53,7 +64,7 @@ describe('exportScheduleToCsv', () => {
       "2_14:00": 'want'
     };
 
-    exportScheduleToCsv({ groupedByDay, priorities, lang: 'en' });
+    exportScheduleToCsv({ groupedByDay, priorities, conflicts: [], notes: {}, lang: 'en' });
 
     expect(Blob).toHaveBeenCalled();
     const blobContent = vi.mocked(Blob).mock.calls[0][0][0];

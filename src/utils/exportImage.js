@@ -409,11 +409,11 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   }
 }
 
-export function exportScheduleToCsv({ groupedByDay, priorities, lang }) {
+export function exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes, lang }) {
   const isHe = lang === 'he';
   let csvContent = isHe
-    ? "יום,תאריך,שעה,אמן,במה,עדיפות\n"
-    : "Day,Date,Time,Artist,Stage,Priority\n";
+    ? "יום,תאריך,שעה,אמן,במה,עדיפות,קונפליקטים,הערות\n"
+    : "Day,Date,Time,Artist,Stage,Priority,Conflicts,Notes\n";
 
   const DAY_DATES = {
     "Warmup Sat": "25/7", "Warmup Sun": "26/7", "DAY 1": "27/7", "DAY 2": "28/7",
@@ -432,11 +432,21 @@ export function exportScheduleToCsv({ groupedByDay, priorities, lang }) {
       const priorityVal = priorities[key] || '';
       const priorityText = PRIORITY_LABELS[lang === 'he' ? 'he' : 'en'][priorityVal] || '';
 
+      const setConflicts = getConflictsForSet(set.id, conflicts || []);
+      const conflictPartnerNames = setConflicts.map(c => {
+        const partner = getConflictPartner(set.id, c);
+        return partner ? partner.artist : '';
+      }).filter(Boolean).join(', ');
+
+      const noteText = notes ? (notes[key] || '') : '';
+
       const artistEsc = set.artist.replace(/"/g, '""');
       const stageEsc = set.stage.replace(/"/g, '""');
       const timeStr = `${set.start}-${set.end}`;
+      const conflictsEsc = conflictPartnerNames.replace(/"/g, '""');
+      const notesEsc = noteText.replace(/"/g, '""');
 
-      csvContent += `"${day}","${dateStr}","${timeStr}","${artistEsc}","${stageEsc}","${priorityText}"\n`;
+      csvContent += `"${day}","${dateStr}","${timeStr}","${artistEsc}","${stageEsc}","${priorityText}","${conflictsEsc}","${notesEsc}"\n`;
     }
   }
 
