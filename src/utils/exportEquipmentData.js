@@ -1,4 +1,4 @@
-export function exportEquipmentToCsv(equipmentData, checkedMap, scope) {
+export function exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked = false) {
   const sections = [];
   if (scope === 'both' || scope === 'shared') {
     sections.push({ key: 'shared', data: equipmentData.shared });
@@ -16,6 +16,7 @@ export function exportEquipmentToCsv(equipmentData, checkedMap, scope) {
       const topicHeading = topic.heading;
       for (const item of topic.items) {
         const checked = !!checkedMap[item.id];
+        if (onlyChecked && !checked) continue;
         const status = checked ? "סומן" : "לא סומן";
         // Escape quotes by doubling them
         const label = item.label.replace(/"/g, '""');

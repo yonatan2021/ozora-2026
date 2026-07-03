@@ -124,11 +124,25 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night') {
   return y;
 }
 
-export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, theme = 'theme-night' }) {
+export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, onlyChecked = false, theme = 'theme-night' }) {
+  const filterSection = (section) => {
+    if (!section) return null;
+    const filteredTopics = section.topics.map(topic => {
+      const filteredItems = topic.items.filter(item => !onlyChecked || checkedMap[item.id]);
+      return { ...topic, items: filteredItems };
+    }).filter(topic => topic.items.length > 0);
+
+    if (filteredTopics.length === 0) return null;
+    return { ...section, topics: filteredTopics };
+  };
+
+  const filteredShared = filterSection(shared);
+  const filteredPersonal = filterSection(personal);
+  const sections = [filteredShared, filteredPersonal].filter(Boolean);
+
   if (document.fonts) {
     await document.fonts.ready;
   }
-  const sections = [shared, personal].filter(Boolean);
 
   const headerHeight = 90 + 40;
   let estimatedHeight = headerHeight + PADDING * 2;
