@@ -5,7 +5,7 @@ import { translations } from '../utils/lang';
 import { getPriorities, cyclePriority, prioritySortValue } from '../utils/priorities';
 import { getNotes } from '../utils/notes';
 import { detectConflicts, getConflictsForSet, getConflictPartner } from '../utils/conflicts';
-import { exportScheduleAsImage } from '../utils/exportImage';
+import { exportScheduleAsImage, exportScheduleToCsv } from '../utils/exportImage';
 import ConflictBanner from './ConflictBanner';
 import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
@@ -35,7 +35,8 @@ export default function MySchedule({
   simTime,
   isSimulated,
   onShowToast,
-  notesVersion
+  notesVersion,
+  activeThemeClass
 }) {
   const isHe = lang === 'he';
   const t = translations[lang];
@@ -143,14 +144,32 @@ export default function MySchedule({
       )
     : groupedByDay;
 
-  const handleExportImage = async () => {
+  const handleExportCsv = () => {
+    trackEvent('schedule_export_csv');
+    exportScheduleToCsv({
+      groupedByDay: displayGroupedByDay,
+      priorities,
+      conflicts,
+      notes,
+      lang
+    });
+  };
+
+  const handlePrint = () => {
+    trackEvent('schedule_print');
+    window.print();
+  };
+
+  const handleExportImageWithTheme = async (themeStyle) => {
     try {
       await exportScheduleAsImage({
         groupedByDay: displayGroupedByDay,
         priorities,
         conflicts,
         lang,
-        scheduleName
+        scheduleName,
+        theme: themeStyle,
+        shareUrl: buildShareUrl()
       });
       onShowToast(t.exportSuccess);
     } catch (err) {
@@ -300,7 +319,10 @@ export default function MySchedule({
             shareUrl={buildShareUrl()}
             lang={lang}
             onCopyLink={handleCopyLink}
-            onExportImage={handleExportImage}
+            onExportImage={handleExportImageWithTheme}
+            onExportCsv={handleExportCsv}
+            onPrint={handlePrint}
+            activeThemeClass={activeThemeClass}
           />
         </div>
         <div className="feed-view">

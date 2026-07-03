@@ -1,10 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
-import { Share2, Link, QrCode, Image } from 'lucide-react';
+import { Share2, Link, QrCode, Image, FileSpreadsheet, Printer } from 'lucide-react';
 import { translations } from '../utils/lang';
 import QRCodeModal from './QRCodeModal';
 import { trackEvent } from '../utils/analytics';
 
-export default function ShareMenu({ shareUrl, lang, onCopyLink, onExportImage }) {
+export default function ShareMenu({
+  shareUrl,
+  lang,
+  onCopyLink,
+  onExportImage,
+  onExportCsv,
+  onPrint,
+  activeThemeClass
+}) {
   const [open, setOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const menuRef = useRef(null);
@@ -30,6 +38,7 @@ export default function ShareMenu({ shareUrl, lang, onCopyLink, onExportImage })
 
       {open && (
         <div className="share-menu-dropdown">
+          <div className="menu-section-title">{t.shareQuickAccess}</div>
           <button onClick={() => { onCopyLink(); trackEvent('share_schedule', { method: 'copy_link' }); setOpen(false); }}>
             <Link size={14} />
             <span>{t.copyLink}</span>
@@ -38,9 +47,29 @@ export default function ShareMenu({ shareUrl, lang, onCopyLink, onExportImage })
             <QrCode size={14} />
             <span>{t.showQR}</span>
           </button>
-          <button onClick={() => { onExportImage(); trackEvent('share_schedule', { method: 'export_image' }); setOpen(false); }}>
+
+          <div className="menu-divider" />
+
+          <div className="menu-section-title">{t.exportMedia}</div>
+          <button onClick={() => { onExportImage('theme-night'); trackEvent('share_schedule', { method: 'export_image', theme: 'theme-night' }); setOpen(false); }}>
             <Image size={14} />
-            <span>{t.exportImage}</span>
+            <span>{t.exportImageCosmic}</span>
+          </button>
+          <button onClick={() => { onExportImage(activeThemeClass); trackEvent('share_schedule', { method: 'export_image', theme: activeThemeClass }); setOpen(false); }}>
+            <Image size={14} />
+            <span>{t.exportImageTheme}</span>
+          </button>
+
+          <div className="menu-divider" />
+
+          <div className="menu-section-title">{t.exportFilesPrint}</div>
+          <button onClick={() => { onExportCsv(); trackEvent('share_schedule', { method: 'export_csv' }); setOpen(false); }}>
+            <FileSpreadsheet size={14} />
+            <span>{t.exportCsv}</span>
+          </button>
+          <button onClick={() => { onPrint(); trackEvent('share_schedule', { method: 'print' }); setOpen(false); }}>
+            <Printer size={14} />
+            <span>{t.printSchedule}</span>
           </button>
         </div>
       )}

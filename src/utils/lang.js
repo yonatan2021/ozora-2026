@@ -114,7 +114,17 @@ export const translations = {
     themeLabel: "Atmosphere",
     listenYouTube: "Listen on YouTube",
     listenSoundCloud: "Listen on SoundCloud",
-    listenMusic: "Listen to music"
+    listenMusic: "Listen to music",
+    viewModeGrid: "Grid View",
+    viewModeStages: "Stage View",
+    artistsCount: "artists",
+    exportCsv: "Export to Excel (CSV)",
+    printSchedule: "Print Schedule",
+    exportImageCosmic: "Export Image (Cosmic Night)",
+    exportImageTheme: "Export Image (Active Theme)",
+    shareQuickAccess: "Share & Access",
+    exportMedia: "Media & Image Export",
+    exportFilesPrint: "Files & Printing"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -231,6 +241,16 @@ export const translations = {
     themeLabel: "אווירה",
     listenYouTube: "האזן ביוטיוב",
     listenSoundCloud: "האזן בסאונדקלאוד",
-    listenMusic: "האזן למוסיקה"
+    listenMusic: "האזן למוסיקה",
+    viewModeGrid: "תצוגת גריד",
+    viewModeStages: "תצוגת במות",
+    artistsCount: "אמנים",
+    exportCsv: "ייצוא לאקסל (CSV)",
+    printSchedule: "הדפסת הלוח",
+    exportImageCosmic: "ייצוא לתמונה (לילה קוסמי)",
+    exportImageTheme: "ייצוא לתמונה (ערכת הנושא הפעילה)",
+    shareQuickAccess: "שיתוף וגישה מהירה",
+    exportMedia: "מדיה וייצוא תמונה",
+    exportFilesPrint: "קבצים והדפסה"
   }
 };

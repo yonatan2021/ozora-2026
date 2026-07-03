@@ -4,6 +4,7 @@ import Header from './components/Header';
 import TimeSimulator from './components/TimeSimulator';
 import TimetableGrid from './components/TimetableGrid';
 import ChronologicalFeed from './components/ChronologicalFeed';
+import StageListView from './components/StageListView';
 import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
 import MySchedule from './components/MySchedule';
@@ -97,6 +98,13 @@ export default function App() {
   
   const [selectedDay, setSelectedDay] = useState('Warmup Sat');
   const [selectedStage, setSelectedStage] = useState('ALL');
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem('ozora_view_mode') || 'grid';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ozora_view_mode', viewMode);
+  }, [viewMode]);
   const [isSimulated, setIsSimulated] = useState(() => {
     return localStorage.getItem('ozora_simulated') === 'true';
   });
@@ -448,11 +456,45 @@ export default function App() {
             onSetClick={setSelectedSet}
           />
 
+          {/* View Mode Toggle */}
+          <div className="view-mode-selector-container stagger-slide-up" style={{ '--card-index': 0.5 }}>
+            <div className="view-mode-selector">
+              <button
+                className={`view-mode-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                onClick={() => {
+                  setViewMode('grid');
+                  trackEvent('select_view_mode', { mode: 'grid' });
+                }}
+              >
+                {t.viewModeGrid}
+              </button>
+              <button
+                className={`view-mode-btn ${viewMode === 'stages' ? 'active' : ''}`}
+                onClick={() => {
+                  setViewMode('stages');
+                  trackEvent('select_view_mode', { mode: 'stages' });
+                }}
+              >
+                {t.viewModeStages}
+              </button>
+            </div>
+          </div>
+
           <main className="main-content">
             {filteredSets.length === 0 ? (
               <div className="empty-state">
                 <p>{t.noSetsFound}</p>
               </div>
+            ) : viewMode === 'stages' ? (
+              <StageListView
+                lang={lang}
+                sets={stageFilteredSets}
+                favorites={childFavorites}
+                toggleFavorite={toggleFavorite}
+                onSetClick={setSelectedSet}
+                activeStatusMap={activeStatusMap}
+                selectedStage={selectedStage}
+              />
             ) : (
               <>
                  {/* Desktop and Tablet grid view */}
@@ -534,6 +576,7 @@ export default function App() {
           isSimulated={isSimulated}
           onShowToast={setToastMessage}
           notesVersion={notesVersion}
+          activeThemeClass={activeThemeClass}
         />
       )}
 
