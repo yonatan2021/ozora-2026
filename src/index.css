@@ -5918,6 +5918,26 @@ body:has(.theme-sunrise)::before {
   scrollbar-width: thin;
 }
 
+@keyframes stage-pulsing-glow {
+  0% {
+    box-shadow: 
+      inset 0 0 0 1px oklch(0.98 0.03 300 / 0.12),
+      0 6px 18px color-mix(in oklch, var(--glow-color) 16%, transparent);
+  }
+  50% {
+    box-shadow: 
+      inset 0 0 0 1px oklch(0.98 0.03 300 / 0.24),
+      0 12px 30px color-mix(in oklch, var(--glow-color) 40%, transparent),
+      0 0 16px color-mix(in oklch, var(--glow-color) 20%, transparent);
+    transform: translateY(-3px);
+  }
+  100% {
+    box-shadow: 
+      inset 0 0 0 1px oklch(0.98 0.03 300 / 0.12),
+      0 6px 18px color-mix(in oklch, var(--glow-color) 16%, transparent);
+  }
+}
+
 .stage-lineup-all {
   display: flex;
   align-items: center;
@@ -5925,10 +5945,10 @@ body:has(.theme-sunrise)::before {
   min-height: 44px;
   padding: 0.62rem 1.05rem;
   border-radius: calc(var(--radius-md) + 2px);
-  border: 1px solid color-mix(in oklch, var(--border) 70%, var(--primary));
-  background:
-    radial-gradient(circle at 82% 20%, oklch(0.75 0.2 320 / 0.18), transparent 36%),
-    linear-gradient(135deg, color-mix(in oklch, var(--surface) 84%, oklch(0.58 0.22 320)), var(--surface));
+  border: 1px solid color-mix(in oklch, var(--accent) 25%, var(--border));
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: var(--text-secondary);
   font-family: 'Exo 2', 'Heebo', sans-serif;
   font-weight: 600;
@@ -5939,51 +5959,63 @@ body:has(.theme-sunrise)::before {
   flex: 0 0 auto;
   box-shadow:
     inset 0 0 0 1px oklch(0.96 0.03 310 / 0.04),
-    0 6px 18px oklch(0.16 0.08 300 / 0.18);
+    0 4px 12px color-mix(in oklch, var(--accent) 6%, transparent);
 }
 .stage-lineup-all:hover {
-  color: oklch(0.9 0.12 320);
-  border-color: color-mix(in oklch, var(--primary) 58%, var(--border));
+  color: var(--text-primary);
+  border-color: color-mix(in oklch, var(--accent) 50%, var(--border-strong));
   transform: translateY(-1px);
-  box-shadow:
-    inset 0 0 0 1px oklch(0.96 0.03 310 / 0.08),
-    0 10px 28px var(--glow-primary);
 }
 .stage-lineup-all.active {
-  background:
-    radial-gradient(circle at 78% 22%, oklch(0.9 0.17 335 / 0.62), transparent 34%),
-    linear-gradient(135deg, var(--primary), oklch(0.64 0.24 320));
-  color: oklch(0.99 0.005 320);
-  box-shadow:
-    inset 0 0 0 1px oklch(0.98 0.04 320 / 0.24),
-    0 10px 30px var(--glow-primary),
-    0 0 44px oklch(0.66 0.28 320 / 0.16);
-  border-color: transparent;
+  --glow-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  animation: stage-pulsing-glow 3.5s infinite ease-in-out;
+  background: radial-gradient(circle at 18% 18%, oklch(0.68 0.20 330 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--accent) 18%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-all .stage-totem-svg {
+  color: var(--accent);
 }
 
 .stage-lineup-card {
   display: block;
   position: relative;
   border-radius: calc(var(--radius-md) + 2px);
-  border: 1px solid color-mix(in oklch, var(--stage-color, var(--primary)) 46%, var(--border));
+  border: 1px solid color-mix(in oklch, var(--stage-color, var(--primary)) 25%, var(--border));
   overflow: hidden;
   min-width: 148px;
   flex: 0 0 clamp(148px, 18vw, 220px);
-  background:
-    radial-gradient(circle at 78% 18%, color-mix(in oklch, var(--stage-color, var(--primary)) 38%, transparent), transparent 38%),
-    color-mix(in oklch, var(--surface) 88%, var(--stage-color, var(--primary)));
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: var(--transition-smooth);
   box-shadow:
     inset 0 0 0 1px oklch(0.98 0.03 300 / 0.04),
-    0 8px 22px color-mix(in oklch, var(--stage-color, var(--primary)) 18%, transparent);
+    0 4px 12px color-mix(in oklch, var(--stage-color, var(--primary)) 6%, transparent);
   isolation: isolate;
 }
 .stage-lineup-card.active {
-  border-color: color-mix(in oklch, var(--stage-color, var(--primary)) 78%, oklch(0.96 0.03 310));
-  box-shadow:
-    inset 0 0 0 1px oklch(0.98 0.03 300 / 0.18),
-    0 10px 30px var(--stage-glow, var(--glow-primary)),
-    0 0 52px color-mix(in oklch, var(--stage-color, var(--primary)) 28%, transparent);
+  --glow-color: var(--stage-color);
+  border-color: var(--stage-color);
+  animation: stage-pulsing-glow 3.5s infinite ease-in-out;
+}
+.stage-lineup-card.stage-ozora.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.55 0.22 350 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-card.stage-pumpui.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.55 0.18 145 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-card.stage-dome.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.55 0.14 230 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-card.stage-dragon.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.58 0.16 55 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-card.stage-visium.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.60 0.16 85 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
+}
+.stage-lineup-card.stage-tekzero.active {
+  background: radial-gradient(circle at 18% 18%, oklch(0.52 0.20 300 / 0.4), transparent 75%), linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 20%, var(--surface-card)), var(--surface-card));
 }
 
 .stage-lineup-card::before,
@@ -5997,8 +6029,8 @@ body:has(.theme-sunrise)::before {
 
 .stage-lineup-card::before {
   background:
-    linear-gradient(90deg, transparent, oklch(0.98 0.03 300 / 0.28), transparent),
-    radial-gradient(circle at 16% 80%, color-mix(in oklch, var(--stage-color, var(--primary)) 26%, transparent), transparent 38%);
+    linear-gradient(90deg, transparent, oklch(0.98 0.03 300 / 0.15), transparent),
+    radial-gradient(circle at 16% 80%, color-mix(in oklch, var(--stage-color, var(--primary)) 16%, transparent), transparent 38%);
   opacity: 0;
   transform: translateX(-28%);
   transition: opacity 220ms ease-out, transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -6006,7 +6038,7 @@ body:has(.theme-sunrise)::before {
 
 .stage-lineup-card::after {
   border-radius: inherit;
-  box-shadow: inset 0 -18px 32px color-mix(in oklch, var(--stage-color, var(--primary)) 24%, transparent);
+  box-shadow: inset 0 -10px 20px color-mix(in oklch, var(--stage-color, var(--primary)) 8%, transparent);
   opacity: 0.45;
 }
 
@@ -6036,11 +6068,26 @@ body:has(.theme-sunrise)::before {
   font-family: 'Exo 2', 'Heebo', sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
-  color: oklch(0.99 0.005 320);
+  color: var(--text-secondary);
   text-align: start;
-  background:
-    linear-gradient(135deg, color-mix(in oklch, var(--stage-color, var(--primary)) 94%, oklch(0.3 0.05 280)), var(--stage-color, var(--primary)));
-  box-shadow: inset 0 1px 0 oklch(0.98 0.03 300 / 0.16);
+  background: transparent;
+  box-shadow: none;
+  transition: var(--transition-smooth);
+}
+.stage-lineup-card.active .stage-lineup-card-header {
+  color: var(--stage-text, var(--text-primary));
+}
+
+.stage-lineup-card .stage-totem-svg,
+.stage-lineup-all .stage-totem-svg {
+  color: var(--stage-color, var(--accent));
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+.stage-lineup-card.active .stage-totem-svg,
+.stage-lineup-all.active .stage-totem-svg {
+  filter: drop-shadow(0 0 5px color-mix(in oklch, var(--stage-color, var(--accent)) 60%, transparent));
+  animation: spin-slow 16s linear infinite;
+  transform-origin: center;
 }
 
 .stage-lineup-name {
@@ -6052,27 +6099,25 @@ body:has(.theme-sunrise)::before {
 .stage-lineup-count {
   margin-inline-start: auto;
   font-size: 0.75rem;
-  opacity: 0.85;
-  font-weight: 500;
+  opacity: 0.8;
+  font-weight: 600;
+  background: color-mix(in oklch, var(--stage-color) 12%, var(--border));
+  color: var(--stage-text, var(--text-secondary));
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
 }
 
 .stage-lineup-active-icon {
   flex: 0 0 auto;
+  color: var(--stage-text, var(--primary));
 }
 
-.stage-lineup-card.stage-ozora { --stage-color: var(--stage-ozora); }
-.stage-lineup-card.stage-pumpui { --stage-color: var(--stage-pumpui); }
-.stage-lineup-card.stage-dome { --stage-color: var(--stage-dome); }
-.stage-lineup-card.stage-dragon { --stage-color: var(--stage-dragon); }
-.stage-lineup-card.stage-visium { --stage-color: var(--stage-visium); }
-.stage-lineup-card.stage-tekzero { --stage-color: var(--stage-tekzero); }
-
-.stage-lineup-card.stage-ozora.active { --stage-glow: oklch(0.55 0.22 350 / 0.46); }
-.stage-lineup-card.stage-pumpui.active { --stage-glow: oklch(0.55 0.18 145 / 0.46); }
-.stage-lineup-card.stage-dome.active { --stage-glow: oklch(0.55 0.14 230 / 0.46); }
-.stage-lineup-card.stage-dragon.active { --stage-glow: oklch(0.58 0.16 55 / 0.46); }
-.stage-lineup-card.stage-visium.active { --stage-glow: oklch(0.60 0.16 85 / 0.46); }
-.stage-lineup-card.stage-tekzero.active { --stage-glow: oklch(0.52 0.20 300 / 0.46); }
+.stage-lineup-card.stage-ozora { --stage-color: var(--stage-ozora); --stage-text: var(--stage-ozora-text); }
+.stage-lineup-card.stage-pumpui { --stage-color: var(--stage-pumpui); --stage-text: var(--stage-pumpui-text); }
+.stage-lineup-card.stage-dome { --stage-color: var(--stage-dome); --stage-text: var(--stage-dome-text); }
+.stage-lineup-card.stage-dragon { --stage-color: var(--stage-dragon); --stage-text: var(--stage-dragon-text); }
+.stage-lineup-card.stage-visium { --stage-color: var(--stage-visium); --stage-text: var(--stage-visium-text); }
+.stage-lineup-card.stage-tekzero { --stage-color: var(--stage-tekzero); --stage-text: var(--stage-tekzero-text); }
 
 @media (min-width: 768px) {
   .stage-lineup-row {
@@ -6423,3 +6468,348 @@ body:has(.theme-sunrise)::before {
   font-weight: 500;
   animation: fadeIn 0.3s ease;
 }
+
+/* ===== VIEW MODE SELECTOR ===== */
+.view-mode-selector-container {
+  display: flex;
+  justify-content: center;
+  margin: 0.2rem auto 1.15rem;
+  width: min(100%, 1180px);
+  padding: 0 0.55rem;
+}
+
+.view-mode-selector {
+  display: flex;
+  background: color-mix(in oklch, var(--surface) 80%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  position: relative;
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  box-shadow: 
+    inset 0 0 0 1px oklch(0.92 0.02 310 / 0.03),
+    0 4px 12px oklch(0.12 0.08 305 / 0.12);
+}
+
+.view-mode-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.55rem 1.4rem;
+  border-radius: calc(var(--radius-md) - 3px);
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  transition: var(--transition-smooth);
+}
+
+.view-mode-btn:hover {
+  color: var(--text-primary);
+}
+
+.view-mode-btn.active {
+  color: oklch(0.99 0.005 320);
+  background: var(--primary);
+  box-shadow: 
+    0 0 0 1px oklch(0.95 0.04 320 / 0.15),
+    0 6px 16px var(--glow-primary);
+}
+
+
+/* ===== STAGE ACCORDION LIST VIEW ===== */
+.stage-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(100%, 1180px);
+  margin: 0 auto 1.5rem;
+  padding: 0 0.55rem;
+}
+
+.stage-accordion {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--stage-color);
+  background: var(--surface-card);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 0 1px oklch(0.92 0.02 310 / 0.03),
+    0 4px 12px oklch(0.12 0.08 305 / 0.1),
+    0 0 12px color-mix(in oklch, var(--stage-color) 8%, transparent);
+  transition: var(--transition-smooth);
+}
+
+.stage-accordion:hover {
+  border-color: color-mix(in oklch, var(--stage-color) 45%, var(--border-strong));
+  box-shadow: 
+    inset 0 0 0 1px oklch(0.92 0.02 310 / 0.05),
+    0 8px 24px oklch(0.12 0.08 305 / 0.16),
+    0 0 18px color-mix(in oklch, var(--stage-color) 16%, transparent);
+}
+
+.stage-accordion.open {
+  border-color: color-mix(in oklch, var(--stage-color) 60%, var(--border-strong));
+  box-shadow: 
+    inset 0 0 0 1px oklch(0.92 0.02 310 / 0.08),
+    0 12px 32px oklch(0.12 0.08 305 / 0.20),
+    0 0 24px color-mix(in oklch, var(--stage-color) 25%, transparent);
+}
+
+.stage-accordion.stage-ozora { --stage-color: var(--stage-ozora); --stage-text: var(--stage-ozora-text); }
+.stage-accordion.stage-pumpui { --stage-color: var(--stage-pumpui); --stage-text: var(--stage-pumpui-text); }
+.stage-accordion.stage-dome { --stage-color: var(--stage-dome); --stage-text: var(--stage-dome-text); }
+.stage-accordion.stage-dragon { --stage-color: var(--stage-dragon); --stage-text: var(--stage-dragon-text); }
+.stage-accordion.stage-visium { --stage-color: var(--stage-visium); --stage-text: var(--stage-visium-text); }
+.stage-accordion.stage-tekzero { --stage-color: var(--stage-tekzero); --stage-text: var(--stage-tekzero-text); }
+
+.stage-accordion-header {
+  width: 100%;
+  background: linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 6%, var(--surface-card)), color-mix(in oklch, var(--stage-color) 1%, var(--surface-card)));
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+  border-bottom: 1px solid transparent;
+}
+
+.stage-accordion-header:hover {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 12%, var(--surface-card)), color-mix(in oklch, var(--stage-color) 3%, var(--surface-card)));
+}
+
+.stage-accordion.open .stage-accordion-header {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--stage-color) 14%, var(--surface-card)), color-mix(in oklch, var(--stage-color) 2%, var(--surface-card)));
+  border-bottom-color: color-mix(in oklch, var(--stage-color) 20%, var(--border));
+}
+
+.stage-accordion-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stage-accordion-totem {
+  color: var(--stage-color);
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 0 4px color-mix(in oklch, var(--stage-color) 30%, transparent));
+  transition: filter 0.3s ease;
+}
+
+.stage-accordion-totem svg {
+  transition: transform 0.3s ease;
+}
+
+.stage-accordion.open .stage-accordion-totem svg {
+  animation: spin-slow 20s linear infinite;
+  transform-origin: center;
+}
+
+.stage-accordion.open .stage-accordion-totem {
+  filter: drop-shadow(0 0 6px color-mix(in oklch, var(--stage-color) 70%, transparent));
+}
+
+.stage-accordion-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: var(--transition-smooth);
+}
+
+.stage-accordion.open .stage-accordion-title,
+.stage-accordion-header:hover .stage-accordion-title {
+  color: var(--stage-text);
+  text-shadow: 0 0 10px color-mix(in oklch, var(--stage-color) 35%, transparent);
+}
+
+.stage-accordion-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.stage-accordion-count {
+  background: color-mix(in oklch, var(--stage-color) 15%, transparent);
+  border: 1px solid color-mix(in oklch, var(--stage-color) 30%, transparent);
+  color: var(--stage-text);
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  box-shadow: 0 0 8px color-mix(in oklch, var(--stage-color) 10%, transparent);
+  transition: var(--transition-smooth);
+}
+
+.stage-accordion-header:hover .stage-accordion-count {
+  background: color-mix(in oklch, var(--stage-color) 22%, transparent);
+  box-shadow: 0 0 12px color-mix(in oklch, var(--stage-color) 25%, transparent);
+}
+
+.stage-accordion-hours {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'Orbitron', 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: color-mix(in oklch, var(--surface) 40%, transparent);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: var(--transition-smooth);
+}
+
+.stage-accordion-header:hover .stage-accordion-hours {
+  color: var(--text-secondary);
+  border-color: var(--border-strong);
+  background: color-mix(in oklch, var(--surface) 60%, transparent);
+}
+
+.stage-accordion-chevron {
+  color: var(--text-muted);
+  transition: transform 0.25s var(--ease-out-expo), color 0.2s ease;
+}
+
+.stage-accordion-header:hover .stage-accordion-chevron {
+  color: var(--text-primary);
+}
+
+.stage-accordion.open .stage-accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.stage-accordion-content {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-radius: var(--radius-md);
+}
+
+.stage-accordion-content .feed-set-card {
+  width: 100%;
+}
+
+/* Theme Dropdown & Header Controls */
+.theme-dropdown-container {
+  position: relative;
+}
+
+.theme-dropdown-toggle, .live-status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+}
+
+.theme-dropdown-toggle:hover, .live-status-toggle:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+/* Hide text on mobile for Header actions to prevent overflow */
+@media (max-width: 640px) {
+  .theme-dropdown-toggle span, .live-status-toggle span, .lang-toggle span {
+    display: none;
+  }
+  .theme-dropdown-toggle, .live-status-toggle, .lang-toggle {
+    padding: 0.625rem 0.625rem;
+  }
+}
+
+.theme-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1000;
+  min-width: 160px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  animation: fadeInThemeDropdown 0.2s ease-out;
+}
+
+/* For RTL */
+[dir="rtl"] .theme-dropdown-menu {
+  right: auto;
+  left: 0;
+}
+
+@keyframes fadeInThemeDropdown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.theme-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-family: 'Exo 2', 'Heebo', sans-serif;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+}
+
+[dir="rtl"] .theme-dropdown-item {
+  text-align: right;
+}
+
+.theme-dropdown-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.theme-dropdown-item.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px var(--glow-primary);
+}
+
+.theme-dropdown-item.current:not(.active) {
+  border-left: 2px solid var(--primary);
+}
+[dir="rtl"] .theme-dropdown-item.current:not(.active) {
+  border-left: none;
+  border-right: 2px solid var(--primary);
+}
+
+.live-radio-icon {
+  color: var(--primary);
+}
+
+

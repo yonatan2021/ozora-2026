@@ -1,7 +1,6 @@
 import { lazy, Suspense, useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
-import TimeSimulator from './components/TimeSimulator';
 import TimetableGrid from './components/TimetableGrid';
 import ChronologicalFeed from './components/ChronologicalFeed';
 import StageListView from './components/StageListView';
@@ -105,13 +104,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('ozora_view_mode', viewMode);
   }, [viewMode]);
-  const [isSimulated, setIsSimulated] = useState(() => {
-    return localStorage.getItem('ozora_simulated') === 'true';
-  });
-  const [simTime, setSimTime] = useState(() => {
-    const saved = localStorage.getItem('ozora_sim_time');
-    return saved ? parseInt(saved, 10) : new Date('2026-07-27T14:00:00').getTime();
-  });
+  const evalTime = useMemo(() => {
+    const d = new Date();
+    d.setFullYear(2026);
+    return d.getTime();
+  }, []);
   const [selectedSet, setSelectedSet] = useState(null);
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -136,7 +133,6 @@ export default function App() {
   const [pinnedTheme, setPinnedTheme] = useState(() => {
     return localStorage.getItem('ozora_pinned_theme') || null;
   });
-  const [themeSimTime, setThemeSimTime] = useState(simTime);
 
   useEffect(() => {
     if (pinnedTheme) {
@@ -145,14 +141,6 @@ export default function App() {
       localStorage.removeItem('ozora_pinned_theme');
     }
   }, [pinnedTheme]);
-
-  // Debounce updates to themeSimTime when simTime changes
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setThemeSimTime(simTime);
-    }, 150); // 150ms debounce
-    return () => clearTimeout(handler);
-  }, [simTime]);
 
   const lastThemeClassRef = useRef(localStorage.getItem('ozora_locked_theme_class') || 'theme-night');
   const [pendingImport, setPendingImport] = useState(() => {
@@ -197,20 +185,6 @@ export default function App() {
     localStorage.setItem('ozora_favs', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Sync simulator states to localStorage & track change
-  useEffect(() => {
-    localStorage.setItem('ozora_simulated', String(isSimulated));
-    if (isInitialSim.current) {
-      isInitialSim.current = false;
-    } else {
-      trackEvent('toggle_simulation', { enabled: isSimulated });
-    }
-  }, [isSimulated]);
-
-  useEffect(() => {
-    localStorage.setItem('ozora_sim_time', String(simTime));
-  }, [simTime]);
-
   // Auto-dismiss toast message
   useEffect(() => {
     if (toastMessage) {
@@ -221,23 +195,7 @@ export default function App() {
     }
   }, [toastMessage]);
 
-  // Synchronize simulated time date with selected day (Slider -> Calendar)
-  useEffect(() => {
-    if (isSimulated) {
-      const dateObj = new Date(simTime);
-      const yyyy = dateObj.getFullYear();
-      const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const dd = String(dateObj.getDate()).padStart(2, '0');
-      const dateStr = `${yyyy}-${mm}-${dd}`;
-      const dayName = DATE_TO_DAY_MAP[dateStr];
-      if (dayName && dayName !== selectedDay) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSelectedDay(dayName);
-      }
-    }
-  }, [simTime, isSimulated, selectedDay]);
-
-  // Synchronize selected day change with simulated time (Calendar -> Slider)
+  // Synchronize selected day change
   const handleDayChange = (dayName) => {
     setSelectedDay(dayName);
     trackEvent('select_day', { day_name: dayName });
@@ -245,38 +203,19 @@ export default function App() {
     if (selectedStage !== 'ALL' && !daySets.some(s => s.stage === selectedStage)) {
       setSelectedStage('ALL');
     }
-    if (isSimulated) {
-      const dateStr = Object.keys(DATE_TO_DAY_MAP).find(key => DATE_TO_DAY_MAP[key] === dayName);
-      if (dateStr) {
-        const currentDate = new Date(simTime);
-        const [year, month, day] = dateStr.split('-').map(Number);
-
-        const newSimDate = new Date(currentDate);
-        newSimDate.setFullYear(year);
-        newSimDate.setMonth(month - 1);
-        newSimDate.setDate(day);
-
-        setSimTime(newSimDate.getTime());
-      }
-    }
   };
 
   // Derive active set statuses directly in render
   const activeStatusMap = useMemo(() => {
     const statuses = {};
-    const evalTime = isSimulated ? new Date(simTime) : new Date();
-
-    // In real-time mode, override year to 2026 for simulation/convenience
-    if (!isSimulated) {
-      evalTime.setFullYear(2026);
-    }
+    const evalDate = new Date(evalTime);
 
     timetableData.forEach(set => {
-      statuses[set.id] = getSetStatus(set, evalTime);
+      statuses[set.id] = getSetStatus(set, evalDate);
     });
 
     return statuses;
-  }, [isSimulated, simTime]);
+  }, [evalTime]);
 
   const handleImportAll = () => {
     if (!pendingImport) return;
@@ -393,7 +332,7 @@ export default function App() {
     return theme;
   };
 
-  const activeThemeClass = getThemeClass(themeSimTime);
+  const activeThemeClass = getThemeClass(evalTime);
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
@@ -414,23 +353,15 @@ export default function App() {
           setActiveTab('map');
           setFlyToStageId('my-camp');
         }}
+        pinnedTheme={pinnedTheme}
+        setPinnedTheme={setPinnedTheme}
+        activeThemeClass={activeThemeClass}
+        onOpenLiveModal={() => setIsLiveModalOpen(true)}
       />
 
       {/* Render Tab Contents */}
       {activeTab === 'timetable' && (
         <>
-          <TimeSimulator
-            lang={lang}
-            simTime={simTime}
-            setSimTime={setSimTime}
-            isSimulated={isSimulated}
-            setIsSimulated={setIsSimulated}
-            onOpenLiveModal={() => setIsLiveModalOpen(true)}
-            selectedDay={selectedDay}
-            pinnedTheme={pinnedTheme}
-            setPinnedTheme={setPinnedTheme}
-            activeThemeClass={activeThemeClass}
-          />
 
           {/* Days Selector */}
           <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
@@ -506,7 +437,7 @@ export default function App() {
                     toggleFavorite={toggleFavorite}
                     onSetClick={setSelectedSet}
                     activeStatusMap={activeStatusMap}
-                    simTime={simTime}
+                    simTime={evalTime}
                     days={days}
                     selectedDay={selectedDay}
                     onDayChange={handleDayChange}
@@ -572,8 +503,8 @@ export default function App() {
           favorites={childFavorites}
           toggleFavorite={toggleFavorite}
           onSetClick={setSelectedSet}
-          simTime={simTime}
-          isSimulated={isSimulated}
+          simTime={evalTime}
+          isSimulated={false}
           onShowToast={setToastMessage}
           notesVersion={notesVersion}
           activeThemeClass={activeThemeClass}
@@ -585,8 +516,8 @@ export default function App() {
           <VenueMap
             lang={lang}
             timetableData={timetableData}
-            simTime={simTime}
-            isSimulated={isSimulated}
+            simTime={evalTime}
+            isSimulated={false}
             activeStatusMap={activeStatusMap}
             flyToStageId={flyToStageId}
             onFlyToComplete={() => setFlyToStageId(null)}
@@ -658,7 +589,7 @@ export default function App() {
         isOpen={isLiveModalOpen}
         onClose={() => setIsLiveModalOpen(false)}
         lang={lang}
-        simTime={simTime}
+        simTime={evalTime}
         timetableData={timetableData}
         onSelectSet={handleSelectSetFromSearch}
       />

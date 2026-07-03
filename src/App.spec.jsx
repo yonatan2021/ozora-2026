@@ -117,11 +117,11 @@ describe('App End-to-End Flows', () => {
     // Switch to English to simplify element matching
     fireEvent.click(screen.getByRole('button', { name: /English/i }));
 
-    // Click on simulate festival button to open simulator controls
-    const simBtn = screen.getByRole('button', { name: /Simulate Festival/i });
-    fireEvent.click(simBtn);
+    // Click on the Atmosphere dropdown button in the header
+    const themeDropdownBtn = screen.getByRole('button', { name: /Atmosphere/i });
+    fireEvent.click(themeDropdownBtn);
 
-    // Find the Sunset theme option button
+    // Find the Sunset theme option button in the dropdown
     const sunsetBtn = screen.getByRole('button', { name: /Sunset/i });
     expect(sunsetBtn).toBeTruthy();
     fireEvent.click(sunsetBtn);

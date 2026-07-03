@@ -85,3 +85,28 @@ HTMLCanvasElement.prototype.getContext = function (type) {
   }
   return null;
 };
+
+// Mock Image loading for JSDOM
+class MockImage {
+  constructor() {
+    this.width = 100;
+    this.height = 100;
+  }
+  set src(val) {
+    this._src = val;
+    if (val) {
+      setTimeout(() => {
+        if (this.onload) this.onload();
+      }, 0);
+    }
+  }
+  get src() {
+    return this._src;
+  }
+}
+Object.defineProperty(globalThis, 'Image', {
+  configurable: true,
+  writable: true,
+  value: MockImage,
+});
+

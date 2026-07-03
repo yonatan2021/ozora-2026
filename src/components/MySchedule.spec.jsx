@@ -17,7 +17,6 @@ describe('MySchedule Component', () => {
         toggleFavorite={vi.fn()}
         onSetClick={vi.fn()}
         simTime={new Date().getTime()}
-        isSimulated={false}
         onShowToast={vi.fn()}
         notesVersion={0}
       />
@@ -34,7 +33,6 @@ describe('MySchedule Component', () => {
         toggleFavorite={vi.fn()}
         onSetClick={vi.fn()}
         simTime={new Date().getTime()}
-        isSimulated={false}
         onShowToast={vi.fn()}
         notesVersion={0}
       />
