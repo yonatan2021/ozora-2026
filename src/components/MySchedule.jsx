@@ -33,7 +33,6 @@ export default function MySchedule({
   toggleFavorite,
   onSetClick,
   simTime,
-  isSimulated,
   onShowToast,
   notesVersion,
   activeThemeClass
@@ -96,10 +95,7 @@ export default function MySchedule({
     conflicts.flatMap(c => [c.setA.id, c.setB.id])
   );
 
-  const evalTime = isSimulated ? new Date(simTime) : new Date();
-  if (!isSimulated) {
-    evalTime.setFullYear(2026);
-  }
+  const evalTime = new Date(simTime);
 
   const activeFavorites = [];
   const upcomingFavorites = [];
@@ -145,7 +141,6 @@ export default function MySchedule({
     : groupedByDay;
 
   const handleExportCsv = () => {
-    trackEvent('schedule_export_csv');
     exportScheduleToCsv({
       groupedByDay: displayGroupedByDay,
       priorities,
@@ -156,7 +151,6 @@ export default function MySchedule({
   };
 
   const handlePrint = () => {
-    trackEvent('schedule_print');
     window.print();
   };
 

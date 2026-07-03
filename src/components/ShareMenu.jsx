@@ -31,7 +31,12 @@ export default function ShareMenu({
 
   return (
     <div className="share-menu-wrapper" ref={menuRef}>
-      <button className="share-schedule-btn" onClick={() => setOpen(!open)}>
+      <button 
+        className="share-schedule-btn" 
+        onClick={() => setOpen(!open)}
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
         <Share2 size={16} />
         <span>{t.shareSchedule}</span>
       </button>
