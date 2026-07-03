@@ -24,9 +24,9 @@ describe('StageLineupSelector', () => {
         onSetClick={noop}
       />
     );
-    expect(screen.getByTitle('THE DOME')).toBeTruthy();
-    expect(screen.getByTitle('PUMPUI')).toBeTruthy();
-    expect(screen.queryByTitle('OZORA STAGE')).toBeNull();
+    expect(screen.getByTitle(/Filter by The Dome/i)).toBeTruthy();
+    expect(screen.getByTitle(/Filter by Pumpui/i)).toBeTruthy();
+    expect(screen.queryByTitle(/Filter by Ozora/i)).toBeNull();
     expect(screen.getByTitle(/All Stages/i)).toBeTruthy();
   });
 
@@ -44,7 +44,7 @@ describe('StageLineupSelector', () => {
         onSetClick={noop}
       />
     );
-    fireEvent.click(screen.getByTitle('THE DOME'));
+    fireEvent.click(screen.getByTitle(/Filter by The Dome/i));
     expect(onChange).toHaveBeenLastCalledWith('THE DOME');
 
     rerender(
@@ -59,17 +59,16 @@ describe('StageLineupSelector', () => {
         onSetClick={noop}
       />
     );
-    fireEvent.click(screen.getByTitle('THE DOME'));
+    fireEvent.click(screen.getByTitle(/Filter by The Dome/i));
     expect(onChange).toHaveBeenLastCalledWith('ALL');
   });
 
-  it('expands to show artist list on chevron click without changing the filter', () => {
-    const onChange = vi.fn();
+  it('does not duplicate the timetable lineup inside the stage selector', () => {
     render(
       <StageLineupSelector
         sets={baseSets}
         selectedStage="ALL"
-        onChange={onChange}
+        onChange={noop}
         lang="en"
         favorites={[]}
         toggleFavorite={noop}
@@ -78,41 +77,25 @@ describe('StageLineupSelector', () => {
       />
     );
     expect(screen.queryByText('Oforia')).toBeNull();
-    const expandButtons = screen.getAllByLabelText(/Show artist list/i);
-    const domeExpandButton = expandButtons.find(btn => {
-      const card = btn.closest('.stage-lineup-card');
-      return card && card.querySelector('[title="THE DOME"]');
-    });
-    fireEvent.click(domeExpandButton);
-    expect(screen.getByText('Oforia')).toBeTruthy();
-    expect(onChange).not.toHaveBeenCalled();
+    expect(screen.queryByText('Koxbox & Saiko Pod')).toBeNull();
+    expect(screen.queryByLabelText(/Show artist list/i)).toBeNull();
   });
 
-  it('toggles favorite from the expanded artist row without triggering onSetClick', () => {
-    const toggleFavorite = vi.fn();
-    const onSetClick = vi.fn();
+  it('marks the selected stage as a pressed filter', () => {
     render(
       <StageLineupSelector
         sets={baseSets}
-        selectedStage="ALL"
+        selectedStage="THE DOME"
         onChange={noop}
         lang="en"
         favorites={[]}
-        toggleFavorite={toggleFavorite}
+        toggleFavorite={noop}
         activeStatusMap={{}}
-        onSetClick={onSetClick}
+        onSetClick={noop}
       />
     );
-    const expandButtons = screen.getAllByLabelText(/Show artist list/i);
-    const domeExpandButton = expandButtons.find(btn => {
-      const card = btn.closest('.stage-lineup-card');
-      return card && card.querySelector('[title="THE DOME"]');
-    });
-    fireEvent.click(domeExpandButton);
-    const favButtons = screen.getAllByRole('button').filter(b => b.className.includes('stage-lineup-artist-fav'));
-    fireEvent.click(favButtons[0]);
-    expect(toggleFavorite).toHaveBeenCalledWith(1);
-    expect(onSetClick).not.toHaveBeenCalled();
+    expect(screen.getByTitle(/Filter by The Dome/i).getAttribute('aria-pressed')).toBe('true');
+    expect(screen.getByTitle(/Filter by Pumpui/i).getAttribute('aria-pressed')).toBe('false');
   });
 
   it('renders Hebrew short names', () => {
