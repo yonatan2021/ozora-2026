@@ -2683,7 +2683,7 @@ body:has(.theme-sunrise)::before {
   align-items: center;
 }
 
-.equipment-search-icon-left {
+.equipment-search-icon {
   position: absolute;
   right: 0.875rem;
   color: var(--text-muted);
@@ -2692,7 +2692,7 @@ body:has(.theme-sunrise)::before {
 
 .equipment-search-input {
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 0.875rem;
+  padding: 0.75rem 2.5rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -2763,7 +2763,7 @@ body:has(.theme-sunrise)::before {
 
 /* Highlighted matching search text */
 .search-highlight {
-  background-color: rgba(147, 51, 234, 0.3);
+  background-color: var(--glow-primary);
   color: var(--primary);
   border-radius: 2px;
   padding: 0 2px;
@@ -2904,7 +2904,7 @@ body:has(.theme-sunrise)::before {
   gap: 0.5rem;
 }
 
-.equipment-topic-body.open {
+.equipment-topic-body.open, .equipment-topic.open .equipment-topic-body {
   display: flex;
   animation: accordionOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -3132,6 +3132,12 @@ body:has(.theme-sunrise)::before {
     margin: 0 !important;
     max-width: 100% !important;
     box-shadow: none !important;
+  }
+
+  body:has(.equipment-checklist), 
+  body:has(.equipment-checklist) .app, 
+  body:has(.equipment-checklist) #root, 
+  body:has(.equipment-checklist) .app-container {
     direction: rtl !important;
     text-align: right !important;
   }
@@ -3151,6 +3157,10 @@ body:has(.theme-sunrise)::before {
   }
   
   /* Ensure print containers display nicely and are RTL */
+  .equipment-print-only-container {
+    display: block !important;
+  }
+
   .equipment-checklist {
     padding: 0 !important;
     margin: 0 !important;
