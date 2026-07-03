@@ -408,3 +408,45 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
     URL.revokeObjectURL(url);
   }
 }
+
+export function exportScheduleToCsv({ groupedByDay, priorities, lang }) {
+  const isHe = lang === 'he';
+  let csvContent = isHe
+    ? "יום,תאריך,שעה,אמן,במה,עדיפות\n"
+    : "Day,Date,Time,Artist,Stage,Priority\n";
+
+  const DAY_DATES = {
+    "Warmup Sat": "25/7", "Warmup Sun": "26/7", "DAY 1": "27/7", "DAY 2": "28/7",
+    "DAY 3": "29/7", "DAY 4": "30/7", "DAY 5": "31/7", "DAY 6": "1/8", "DAY 7": "2/8"
+  };
+
+  const PRIORITY_LABELS = {
+    he: { must: 'חובה', want: 'רוצה', maybe: 'אולי' },
+    en: { must: 'Must', want: 'Want', maybe: 'Maybe' }
+  };
+
+  for (const [day, sets] of Object.entries(groupedByDay)) {
+    const dateStr = DAY_DATES[day] || '';
+    for (const set of sets) {
+      const key = `${set.id}_${set.start}`; // key is getSetUniqueKey(set) format
+      const priorityVal = priorities[key] || '';
+      const priorityText = PRIORITY_LABELS[lang === 'he' ? 'he' : 'en'][priorityVal] || '';
+
+      const artistEsc = set.artist.replace(/"/g, '""');
+      const stageEsc = set.stage.replace(/"/g, '""');
+      const timeStr = `${set.start}-${set.end}`;
+
+      csvContent += `"${day}","${dateStr}","${timeStr}","${artistEsc}","${stageEsc}","${priorityText}"\n`;
+    }
+  }
+
+  // Prepend UTF-8 BOM so Excel opens it correctly with Hebrew characters
+  const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ozora-2026-schedule.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
