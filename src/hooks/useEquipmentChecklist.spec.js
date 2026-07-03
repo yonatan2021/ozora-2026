@@ -75,4 +75,19 @@ describe('useEquipmentChecklist', () => {
 
     expect(result.current.getSectionProgress(section)).toEqual({ done: 2, total: 3 });
   });
+
+  it('imports a checked map and replaces current state', () => {
+    const { result } = renderHook(() => useEquipmentChecklist());
+    act(() => {
+      result.current.toggle('shared-tents');
+    });
+    expect(result.current.isChecked('shared-tents')).toBe(true);
+
+    act(() => {
+      result.current.importCheckedMap({ 'personal-mattress': true });
+    });
+
+    expect(result.current.isChecked('shared-tents')).toBe(false);
+    expect(result.current.isChecked('personal-mattress')).toBe(true);
+  });
 });

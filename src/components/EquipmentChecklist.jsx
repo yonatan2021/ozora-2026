@@ -1,10 +1,22 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronDown, ChevronUp, Image as ImageIcon, Users, User, Info, Share2, FileSpreadsheet, Printer, Download, Upload, Search, X } from 'lucide-react';
 import equipmentData from '../data/equipmentChecklist.json';
 import useEquipmentChecklist from '../hooks/useEquipmentChecklist';
 import { exportEquipmentImageAsPng } from '../utils/exportEquipmentImage';
 import { exportEquipmentToCsv, exportEquipmentToJson } from '../utils/exportEquipmentData';
 import { trackEvent } from '../utils/analytics';
+
+const highlightText = (text, highlight) => {
+  const trimmed = highlight.trim();
+  if (!trimmed) return text;
+  const regex = new RegExp(`(${trimmed.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+  return parts.map((part, index) => 
+    part.toLowerCase() === trimmed.toLowerCase() ? (
+      <mark key={index} className="search-highlight">{part}</mark>
+    ) : part
+  );
+};
 
 export default function EquipmentChecklist() {
   const [activeKey, setActiveKey] = useState('shared');
@@ -14,20 +26,16 @@ export default function EquipmentChecklist() {
   const menuRef = useRef(null);
   const { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap, importCheckedMap } = useEquipmentChecklist();
 
+  const [localSearch, setLocalSearch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const highlightText = (text, highlight) => {
-    const trimmed = highlight.trim();
-    if (!trimmed) return text;
-    const regex = new RegExp(`(${trimmed.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
-    const parts = text.split(regex);
-    return parts.map((part, index) => 
-      part.toLowerCase() === trimmed.toLowerCase() ? (
-        <mark key={index} className="search-highlight">{part}</mark>
-      ) : part
-    );
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(localSearch);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [localSearch]);
 
   useEffect(() => {
     if (!exportMenuOpen) return;
@@ -76,7 +84,7 @@ export default function EquipmentChecklist() {
         } else {
           alert('קובץ הגיבוי אינו תקין.');
         }
-      } catch (err) {
+      } catch {
         alert('שגיאה בקריאת קובץ הגיבוי.');
       }
     };
@@ -136,7 +144,7 @@ export default function EquipmentChecklist() {
     return (
       <div 
         key={key} 
-        className={`equipment-section-wrapper ${key}-section ${isActive ? 'active-tab' : ''} ${isPrint ? 'print-section' : ''}`}
+        className={`equipment-section-wrapper ${key}-section ${isActive && !isPrint ? 'active-tab' : ''} ${isPrint ? 'print-section' : ''}`}
         data-testid={isPrint ? undefined : `equipment-section-${key}`}
       >
         <div className="equipment-section-header">
@@ -188,8 +196,9 @@ export default function EquipmentChecklist() {
                           <input
                             type="checkbox"
                             checked={isChecked(item.id)}
-                            onChange={isPrint ? undefined : () => toggle(item.id)}
-                            disabled={isPrint}
+                            onChange={isPrint ? () => {} : () => toggle(item.id)}
+                            readOnly={isPrint}
+                            style={isPrint ? { pointerEvents: 'none' } : undefined}
                           />
                           <span className="equipment-item-text">
                             <span className="equipment-item-label">
@@ -213,6 +222,14 @@ export default function EquipmentChecklist() {
       </div>
     );
   };
+
+  const printContainer = useMemo(() => (
+    <div className="equipment-print-only-container">
+      {renderSection('shared', equipmentData.shared, true)}
+      {renderSection('personal', equipmentData.personal, true)}
+    </div>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [checkedMap]);
 
   return (
     <div className="equipment-checklist stagger-slide-up" style={{ '--card-index': 0 }}>
@@ -288,14 +305,17 @@ export default function EquipmentChecklist() {
             type="text"
             className="equipment-search-input"
             placeholder="חיפוש פריט או רמז עזר..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
           />
-          {searchTerm && (
+          {localSearch && (
             <button
               type="button"
               className="equipment-search-clear-btn"
-              onClick={() => setSearchTerm('')}
+              onClick={() => {
+                setLocalSearch('');
+                setSearchTerm('');
+              }}
               title="נקה חיפוש"
             >
               <X size={16} />
@@ -352,10 +372,7 @@ export default function EquipmentChecklist() {
         {renderSection(activeKey, equipmentData[activeKey], false)}
       </div>
 
-      <div className="equipment-print-only-container">
-        {renderSection('shared', equipmentData.shared, true)}
-        {renderSection('personal', equipmentData.personal, true)}
-      </div>
+      {printContainer}
     </div>
   );
 }

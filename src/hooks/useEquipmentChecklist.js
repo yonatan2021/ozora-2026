@@ -37,5 +37,9 @@ export default function useEquipmentChecklist() {
     return { done, total };
   }, [checked]);
 
-  return { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap: checked };
+  const importCheckedMap = useCallback((newMap) => {
+    setChecked(newMap);
+  }, []);
+
+  return { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap: checked, importCheckedMap };
 }

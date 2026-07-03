@@ -58,4 +58,57 @@ describe('EquipmentChecklist', () => {
     render(<EquipmentChecklist />);
     expect(screen.getByText(/לאחר סימון הציוד/i)).toBeTruthy();
   });
+
+  it('filters items based on search query matching item label or hint', async () => {
+    render(<EquipmentChecklist />);
+    
+    // Type a query that matches specific items but not topic headings
+    const searchInput = screen.getByPlaceholderText('חיפוש פריט או רמז עזר...');
+    fireEvent.change(searchInput, { target: { value: 'שלט זיהוי' } });
+
+    // The topic containing 'שלט זיהוי למחנה' should be displayed and auto-expanded
+    const highlight = await screen.findByText('שלט זיהוי');
+    expect(highlight.tagName).toBe('MARK');
+    expect(highlight.parentElement.textContent).toBe('שלט זיהוי למחנה');
+    
+    // Items that don't match should not be present
+    expect(screen.queryByText('רשימת אחראים על ציוד קבוצתי')).toBeNull();
+  });
+
+  it('displays all items of a topic if the topic heading matches the search query', async () => {
+    render(<EquipmentChecklist />);
+    
+    const searchInput = screen.getByPlaceholderText('חיפוש פריט או רמז עזר...');
+    fireEvent.change(searchInput, { target: { value: 'מחסה' } }); // Matches 'מחסה, צל והגנה מגשם'
+
+    // The items inside this topic should be shown since the heading matched
+    expect(await screen.findByText('אוהלים קבוצתיים או אוהל ציוד')).toBeTruthy();
+    expect(screen.getByText('קנופי או גזיבו קבוצתי')).toBeTruthy();
+  });
+
+  it('filters items based on status chips (checked/unchecked/all)', () => {
+    render(<EquipmentChecklist />);
+    
+    // Expand shelter topic
+    fireEvent.click(screen.getByText('מחסה, צל והגנה מגשם'));
+    
+    // Check 'אוהלים קבוצתיים או אוהל ציוד'
+    fireEvent.click(screen.getByTestId('equipment-item-shared-tents'));
+
+    // Filter by 'checked' (סומנו)
+    fireEvent.click(screen.getByText('סומנו'));
+    expect(screen.queryByText('אוהלים קבוצתיים או אוהל ציוד')).toBeTruthy();
+    expect(screen.queryByText('קנופי או גזיבו קבוצתי')).toBeNull();
+
+    // Filter by 'unchecked' (טרם סומנו)
+    fireEvent.click(screen.getByText('טרם סומנו'));
+    expect(screen.queryByText('אוהלים קבוצתיים או אוהל ציוד')).toBeNull();
+    expect(screen.queryByText('קנופי או גזיבו קבוצתי')).toBeTruthy();
+
+    // Filter by 'all' (הכל)
+    fireEvent.click(screen.getByText('הכל'));
+    expect(screen.queryByText('אוהלים קבוצתיים או אוהל ציוד')).toBeTruthy();
+    expect(screen.queryByText('קנופי או גזיבו קבוצתי')).toBeTruthy();
+  });
 });
+
