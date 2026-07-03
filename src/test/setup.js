@@ -80,6 +80,7 @@ HTMLCanvasElement.prototype.getContext = function (type) {
         addColorStop: () => {},
       }),
       fillStyle: null,
+      scale: () => {},
     };
   }
   return null;

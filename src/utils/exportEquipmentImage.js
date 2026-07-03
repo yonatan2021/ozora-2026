@@ -66,6 +66,9 @@ function drawSection(ctx, section, checkedMap, startY) {
 }
 
 export async function exportEquipmentImageAsPng({ shared, personal, checkedMap }) {
+  if (document.fonts) {
+    await document.fonts.ready;
+  }
   const sections = [shared, personal].filter(Boolean);
 
   const headerHeight = 90 + 40;
@@ -77,10 +80,12 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap }
     }
   }
 
+  const SCALE_FACTOR = 2.5;
   const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = estimatedHeight;
+  canvas.width = WIDTH * SCALE_FACTOR;
+  canvas.height = estimatedHeight * SCALE_FACTOR;
   const ctx = canvas.getContext('2d');
+  ctx.scale(SCALE_FACTOR, SCALE_FACTOR);
 
   drawCosmicBackground(ctx, WIDTH, estimatedHeight);
 

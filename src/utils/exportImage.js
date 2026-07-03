@@ -127,6 +127,9 @@ function drawGradientSeparator(ctx, y, inset) {
 }
 
 export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName }) {
+  if (document.fonts) {
+    await document.fonts.ready;
+  }
   const isHe = lang === 'he';
   const siteUrl = 'yonatan2021.github.io/ozora-2026';
 
@@ -143,10 +146,12 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   const footerHeight = 110;
   const estimatedHeight = headerHeight + titleHeight + dayEntries.length * (dayHeaderHeight + dayGap) + totalSets * setRowHeight + footerHeight + PADDING * 2 + 20;
 
+  const SCALE_FACTOR = 2.5;
   const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = estimatedHeight;
+  canvas.width = WIDTH * SCALE_FACTOR;
+  canvas.height = estimatedHeight * SCALE_FACTOR;
   const ctx = canvas.getContext('2d');
+  ctx.scale(SCALE_FACTOR, SCALE_FACTOR);
 
   drawCosmicBackground(ctx, WIDTH, estimatedHeight);
 
@@ -162,9 +167,10 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
     // Draw logo into offscreen canvas with radial alpha mask
     const logoCanvas = document.createElement('canvas');
-    logoCanvas.width = WIDTH;
-    logoCanvas.height = estimatedHeight;
+    logoCanvas.width = WIDTH * SCALE_FACTOR;
+    logoCanvas.height = estimatedHeight * SCALE_FACTOR;
     const lCtx = logoCanvas.getContext('2d');
+    lCtx.scale(SCALE_FACTOR, SCALE_FACTOR);
 
     lCtx.drawImage(logoImg, logoX, y, logoW, logoHeight);
 
@@ -189,7 +195,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
     ctx.restore();
 
     // Composite logo with mask onto main canvas
-    ctx.drawImage(logoCanvas, 0, 0);
+    ctx.drawImage(logoCanvas, 0, 0, WIDTH, estimatedHeight);
 
     y += logoHeight + 16;
   } catch {
@@ -387,10 +393,10 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   // Trim canvas to actual content
   const finalHeight = y + PADDING;
   const finalCanvas = document.createElement('canvas');
-  finalCanvas.width = WIDTH;
-  finalCanvas.height = finalHeight;
+  finalCanvas.width = WIDTH * SCALE_FACTOR;
+  finalCanvas.height = finalHeight * SCALE_FACTOR;
   const fCtx = finalCanvas.getContext('2d');
-  drawCosmicBackground(fCtx, WIDTH, finalHeight);
+  drawCosmicBackground(fCtx, WIDTH * SCALE_FACTOR, finalHeight * SCALE_FACTOR);
   fCtx.drawImage(canvas, 0, 0);
 
   const blob = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));

@@ -30,6 +30,7 @@ describe('exportEquipmentImageAsPng', () => {
       arc: vi.fn(),
       fill: vi.fn(),
       closePath: vi.fn(),
+      scale: vi.fn(),
     }));
     HTMLCanvasElement.prototype.toBlob = vi.fn((cb) => cb(new Blob(['fake'], { type: 'image/png' })));
     const originalCreateElement = document.createElement.bind(document);
