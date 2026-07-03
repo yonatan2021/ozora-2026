@@ -409,16 +409,11 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   }
 }
 
-export function exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes, lang }) {
+export function exportScheduleToCsv({ groupedByDay, priorities = {}, conflicts, notes = {}, lang }) {
   const isHe = lang === 'he';
   let csvContent = isHe
     ? "יום,תאריך,שעה,אמן,במה,עדיפות,קונפליקטים,הערות\n"
     : "Day,Date,Time,Artist,Stage,Priority,Conflicts,Notes\n";
-
-  const DAY_DATES = {
-    "Warmup Sat": "25/7", "Warmup Sun": "26/7", "DAY 1": "27/7", "DAY 2": "28/7",
-    "DAY 3": "29/7", "DAY 4": "30/7", "DAY 5": "31/7", "DAY 6": "1/8", "DAY 7": "2/8"
-  };
 
   const PRIORITY_LABELS = {
     he: { must: 'חובה', want: 'רוצה', maybe: 'אולי' },
@@ -428,7 +423,7 @@ export function exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes
   for (const [day, sets] of Object.entries(groupedByDay)) {
     const dateStr = DAY_DATES[day] || '';
     for (const set of sets) {
-      const key = `${set.id}_${set.start}`; // key is getSetUniqueKey(set) format
+      const key = getSetUniqueKey(set);
       const priorityVal = priorities[key] || '';
       const priorityText = PRIORITY_LABELS[lang === 'he' ? 'he' : 'en'][priorityVal] || '';
 
@@ -438,10 +433,10 @@ export function exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes
         return partner ? partner.artist : '';
       }).filter(Boolean).join(', ');
 
-      const noteText = notes ? (notes[key] || '') : '';
+      const noteText = notes[key] || '';
 
-      const artistEsc = set.artist.replace(/"/g, '""');
-      const stageEsc = set.stage.replace(/"/g, '""');
+      const artistEsc = (set.artist || '').replace(/"/g, '""');
+      const stageEsc = (set.stage || '').replace(/"/g, '""');
       const timeStr = `${set.start}-${set.end}`;
       const conflictsEsc = conflictPartnerNames.replace(/"/g, '""');
       const notesEsc = noteText.replace(/"/g, '""');
@@ -459,4 +454,5 @@ export function exportScheduleToCsv({ groupedByDay, priorities, conflicts, notes
   a.click();
   URL.revokeObjectURL(url);
 }
+
 
