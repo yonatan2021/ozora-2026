@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { exportScheduleToCsv } from './exportImage';
+import { exportScheduleToCsv, exportScheduleAsImage } from './exportImage';
+import QRCode from 'qrcode';
+
+vi.mock('qrcode', () => ({
+  default: {
+    toDataURL: vi.fn(() => Promise.resolve('data:image/png;base64,mockqr')),
+  }
+}));
 
 describe('exportScheduleToCsv', () => {
   let mockLink;
@@ -86,3 +93,177 @@ describe('exportScheduleToCsv', () => {
     expect(blobContent).toContain('Want');
   });
 });
+
+describe('exportScheduleAsImage', () => {
+  let mockLink;
+  let mockCanvas;
+  let mockContext;
+
+  beforeEach(() => {
+    mockLink = {
+      href: '',
+      download: '',
+      click: vi.fn(),
+    };
+
+    mockContext = {
+      fillRect: vi.fn(),
+      createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      fillText: vi.fn(),
+      measureText: vi.fn(() => ({ width: 50 })),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      drawImage: vi.fn(),
+      ellipse: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      closePath: vi.fn(),
+      scale: vi.fn(),
+      quadraticCurveTo: vi.fn(),
+    };
+
+    mockCanvas = {
+      width: 0,
+      height: 0,
+      getContext: vi.fn(() => mockContext),
+      toBlob: vi.fn((cb) => cb(new Blob(['fake'], { type: 'image/png' }))),
+    };
+
+    vi.stubGlobal('URL', {
+      createObjectURL: vi.fn(() => 'blob:mock-url'),
+      revokeObjectURL: vi.fn(),
+    });
+
+    vi.stubGlobal('Blob', vi.fn(function(content, options) {
+      this.content = content;
+      this.options = options;
+    }));
+
+    vi.stubGlobal('File', vi.fn(function(content, filename, options) {
+      this.content = content;
+      this.filename = filename;
+      this.options = options;
+    }));
+
+    vi.stubGlobal('document', {
+      fonts: {
+        ready: Promise.resolve()
+      },
+      createElement: vi.fn((tag) => {
+        if (tag === 'canvas') return mockCanvas;
+        if (tag === 'a') return mockLink;
+        return {};
+      }),
+    });
+
+    class MockImage {
+      constructor() {
+        this.onload = null;
+        this.onerror = null;
+        this.src = '';
+      }
+      set src(val) {
+        this._src = val;
+        setTimeout(() => {
+          if (this.onload) this.onload();
+        }, 0);
+      }
+      get src() {
+        return this._src;
+      }
+    }
+    vi.stubGlobal('Image', MockImage);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it('generates QR code and draws it when shareUrl is provided', async () => {
+    vi.stubGlobal('navigator', {
+      share: undefined,
+      canShare: undefined,
+    });
+
+    const groupedByDay = {
+      "DAY 1": [
+        { id: '1', artist: 'Ace Ventura', stage: 'OZORA STAGE', start: '20:00', end: '22:00', date: '2026-07-27' }
+      ]
+    };
+
+    await exportScheduleAsImage({
+      groupedByDay,
+      priorities: {},
+      conflicts: [],
+      lang: 'en',
+      scheduleName: 'Test',
+      theme: 'theme-night',
+      shareUrl: 'https://test.com/share'
+    });
+
+    expect(QRCode.toDataURL).toHaveBeenCalledWith('https://test.com/share', expect.any(Object));
+    expect(mockContext.drawImage).toHaveBeenCalled();
+    expect(mockLink.click).toHaveBeenCalled();
+  });
+
+  it('draws QR code correctly aligned in Hebrew', async () => {
+    vi.stubGlobal('navigator', {
+      share: undefined,
+      canShare: undefined,
+    });
+
+    const groupedByDay = {
+      "DAY 1": [
+        { id: '1', artist: 'Ace Ventura', stage: 'OZORA STAGE', start: '20:00', end: '22:00', date: '2026-07-27' }
+      ]
+    };
+
+    await exportScheduleAsImage({
+      groupedByDay,
+      priorities: {},
+      conflicts: [],
+      lang: 'he',
+      scheduleName: 'Test',
+      theme: 'theme-day',
+      shareUrl: 'https://test.com/share'
+    });
+
+    expect(mockContext.fillText).toHaveBeenCalledWith('סרוק לייבוא', expect.any(Number), expect.any(Number));
+  });
+
+  it('uses navigator.share when available and supported', async () => {
+    const shareSpy = vi.fn(() => Promise.resolve());
+    const canShareSpy = vi.fn(() => true);
+    vi.stubGlobal('navigator', {
+      share: shareSpy,
+      canShare: canShareSpy,
+    });
+
+    const groupedByDay = {
+      "DAY 1": [
+        { id: '1', artist: 'Ace Ventura', stage: 'OZORA STAGE', start: '20:00', end: '22:00', date: '2026-07-27' }
+      ]
+    };
+
+    await exportScheduleAsImage({
+      groupedByDay,
+      priorities: {},
+      conflicts: [],
+      lang: 'en',
+      scheduleName: 'Test',
+      theme: 'theme-night',
+      shareUrl: 'https://test.com/share'
+    });
+
+    expect(canShareSpy).toHaveBeenCalled();
+    expect(shareSpy).toHaveBeenCalled();
+    expect(mockLink.click).not.toHaveBeenCalled();
+  });
+});
+

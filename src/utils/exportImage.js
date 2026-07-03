@@ -1,6 +1,7 @@
 import { getSetUniqueKey } from './time';
 import { getConflictsForSet, getConflictPartner } from './conflicts';
 import logoSrc from '../assets/logo.png';
+import QRCode from 'qrcode';
 
 const STAGE_COLORS = {
   "OZORA STAGE": "#e64d7a",
@@ -202,7 +203,7 @@ function drawGradientSeparator(ctx, y, inset, theme = 'theme-night') {
   ctx.stroke();
 }
 
-export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName, theme = 'theme-night' }) {
+export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName, theme = 'theme-night', shareUrl }) {
   if (document.fonts) {
     await document.fonts.ready;
   }
@@ -221,7 +222,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   const setRowHeight = 44;
   const dayGap = 28;
   const footerHeight = 110;
-  const estimatedHeight = headerHeight + titleHeight + dayEntries.length * (dayHeaderHeight + dayGap) + totalSets * setRowHeight + footerHeight + PADDING * 2 + 20;
+  const estimatedHeight = headerHeight + titleHeight + dayEntries.length * (dayHeaderHeight + dayGap) + totalSets * setRowHeight + footerHeight + PADDING * 2 + 20 + (shareUrl ? 50 : 0);
 
   const SCALE_FACTOR = 2.5;
   const canvas = document.createElement('canvas');
@@ -440,10 +441,45 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
     y += dayGap;
   });
 
+  let qrImg = null;
+  if (shareUrl) {
+    try {
+      const isDay = theme === 'theme-day';
+      const qrDataUrl = await QRCode.toDataURL(shareUrl, {
+        margin: 1,
+        width: 180, // High-res width
+        color: {
+          dark: isDay ? '#332244' : '#eee0ff',
+          light: isDay ? '#faf8f5' : '#0a0518'
+        }
+      });
+      qrImg = await loadImage(qrDataUrl);
+    } catch (e) {
+      console.error('Failed to generate QR code', e);
+    }
+  }
+
   // Footer
   y += 8;
   drawGradientSeparator(ctx, y, 60, theme);
   y += 28;
+
+  const yBeforeFooterText = y;
+
+  if (qrImg) {
+    ctx.save();
+    const qrSize = 90;
+    const qrX = isHe ? PADDING : WIDTH - PADDING - qrSize;
+    const qrY = y - 10; // Align with the siteUrl
+    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+
+    // Draw a tiny label under the QR code
+    ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.45)' : 'rgba(212, 184, 255, 0.35)';
+    ctx.font = "600 9px 'Exo 2', 'Heebo', sans-serif";
+    ctx.textAlign = 'center';
+    ctx.fillText(isHe ? 'סרוק לייבוא' : 'Scan to import', qrX + qrSize / 2, qrY + qrSize + 12);
+    ctx.restore();
+  }
 
   // Site URL
   ctx.fillStyle = isDay ? '#332244' : '#d4b8ff';
@@ -467,6 +503,10 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.4)' : 'rgba(212, 184, 255, 0.2)';
   ctx.font = "400 10px 'Exo 2', 'Heebo', sans-serif";
   ctx.fillText('© 2026 Bersaglio', WIDTH / 2, y);
+
+  if (qrImg) {
+    y = Math.max(y, yBeforeFooterText - 10 + 90 + 12);
+  }
 
   // Trim canvas to actual content
   const finalHeight = y + PADDING;
