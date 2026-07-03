@@ -18,11 +18,12 @@ export default function EquipmentChecklist() {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const highlightText = (text, highlight) => {
-    if (!highlight.trim()) return text;
-    const regex = new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+    const trimmed = highlight.trim();
+    if (!trimmed) return text;
+    const regex = new RegExp(`(${trimmed.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
     const parts = text.split(regex);
     return parts.map((part, index) => 
-      regex.test(part) ? (
+      part.toLowerCase() === trimmed.toLowerCase() ? (
         <mark key={index} className="search-highlight">{part}</mark>
       ) : part
     );
@@ -102,34 +103,35 @@ export default function EquipmentChecklist() {
 
   const renderSection = (key, section, isPrint = false) => {
     const isActive = activeKey === key;
-    
-    // Filter topics and items based on search and status
-    const filteredTopics = section.topics.map(topic => {
-      const filteredItems = topic.items.filter(item => {
-        // Status filter
-        const matchesStatus = 
-          statusFilter === 'all' ||
-          (statusFilter === 'checked' && isChecked(item.id)) ||
-          (statusFilter === 'unchecked' && !isChecked(item.id));
-        
-        if (!matchesStatus) return false;
-
-        // Search filter
-        if (!searchTerm.trim()) return true;
-        const query = searchTerm.toLowerCase();
-        const matchesLabel = item.label.toLowerCase().includes(query);
-        const matchesHint = item.hint && item.hint.toLowerCase().includes(query);
-        return matchesLabel || matchesHint;
-      });
-
-      return {
-        ...topic,
-        items: filteredItems
-      };
-    }).filter(topic => topic.items.length > 0);
-
     const progress = getSectionProgress(section);
-    const displayTopics = isPrint ? section.topics : filteredTopics;
+    
+    let displayTopics = section.topics;
+    if (!isPrint) {
+      const query = searchTerm.toLowerCase().trim();
+      displayTopics = section.topics.map(topic => {
+        const matchesHeading = query === '' || topic.heading.toLowerCase().includes(query);
+        const filteredItems = topic.items.filter(item => {
+          // Status filter
+          const matchesStatus = 
+            statusFilter === 'all' ||
+            (statusFilter === 'checked' && isChecked(item.id)) ||
+            (statusFilter === 'unchecked' && !isChecked(item.id));
+          
+          if (!matchesStatus) return false;
+
+          // Search filter
+          if (matchesHeading) return true;
+          const matchesLabel = item.label.toLowerCase().includes(query);
+          const matchesHint = item.hint && item.hint.toLowerCase().includes(query);
+          return matchesLabel || matchesHint;
+        });
+
+        return {
+          ...topic,
+          items: filteredItems
+        };
+      }).filter(topic => topic.items.length > 0);
+    }
 
     return (
       <div 
