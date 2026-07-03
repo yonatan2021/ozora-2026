@@ -52,10 +52,10 @@ export default function EquipmentChecklist() {
     setOpenTopics(prev => ({ ...prev, [topicId]: !prev[topicId] }));
   };
 
-  const handleExportCsv = (scope) => {
+  const handleExportCsv = (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export_csv', { scope });
-    exportEquipmentToCsv(equipmentData, checkedMap, scope);
+    trackEvent('equipment_export_csv', { scope, onlyChecked });
+    exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked);
   };
 
   const handleExportJson = () => {
@@ -93,19 +93,32 @@ export default function EquipmentChecklist() {
     setExportMenuOpen(false);
   };
 
-  const handlePrint = () => {
+  const handlePrint = (onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_print');
+    trackEvent('equipment_print', { onlyChecked });
+    if (onlyChecked) {
+      document.body.classList.add('print-checked-only');
+    } else {
+      document.body.classList.remove('print-checked-only');
+    }
+
+    const cleanup = () => {
+      document.body.classList.remove('print-checked-only');
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
     window.print();
+    setTimeout(cleanup, 2000);
   };
 
-  const handleExportImage = async (scope) => {
+  const handleExportImage = async (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export_image', { scope });
+    trackEvent('equipment_export_image', { scope, onlyChecked });
     await exportEquipmentImageAsPng({
       shared: scope === 'personal' ? null : equipmentData.shared,
       personal: scope === 'shared' ? null : equipmentData.personal,
-      checkedMap
+      checkedMap,
+      onlyChecked
     });
   };
 
@@ -260,25 +273,33 @@ export default function EquipmentChecklist() {
           {exportMenuOpen && (
             <div className="equipment-export-menu">
               <div className="menu-section-title">ייצוא נתונים (Excel)</div>
-              <button type="button" onClick={() => handleExportCsv('both')}>
+              <button type="button" onClick={() => handleExportCsv('both', false)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
                 <span>ייצוא לאקסל (כל הציוד)</span>
               </button>
-              <button type="button" onClick={() => handleExportCsv(activeKey)}>
+              <button type="button" onClick={() => handleExportCsv('both', true)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
-                <span>ייצוא לאקסל ({activeKey === 'shared' ? 'ציוד קבוצתי' : 'ציוד אישי'})</span>
+                <span>ייצוא לאקסל (פריטים שסומנו בלבד)</span>
               </button>
-              
+
               <div className="menu-divider" />
-              
+
               <div className="menu-section-title">הדפסה ומדיה</div>
-              <button type="button" onClick={handlePrint}>
+              <button type="button" onClick={() => handlePrint(false)}>
                 <Printer size={14} className="menu-icon-print" />
-                <span>הדפסת הרשימה (PDF/נייר)</span>
+                <span>הדפסת הרשימה (כל הציוד)</span>
               </button>
-              <button type="button" onClick={() => handleExportImage('both')}>
+              <button type="button" onClick={() => handlePrint(true)}>
+                <Printer size={14} className="menu-icon-print" />
+                <span>הדפסת פריטים שסומנו בלבד</span>
+              </button>
+              <button type="button" onClick={() => handleExportImage('both', false)}>
                 <ImageIcon size={14} className="menu-icon-image" />
-                <span>ייצוא לתמונה (PNG)</span>
+                <span>ייצוא לתמונה (כל הציוד - PNG)</span>
+              </button>
+              <button type="button" onClick={() => handleExportImage('both', true)}>
+                <ImageIcon size={14} className="menu-icon-image" />
+                <span>ייצוא לתמונה (פריטים שסומנו בלבד - PNG)</span>
               </button>
 
               <div className="menu-divider" />
