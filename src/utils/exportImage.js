@@ -63,9 +63,16 @@ const CONTENT_WIDTH = WIDTH - PADDING * 2;
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
+    let settled = false;
+    const settle = (fn) => (...args) => {
+      if (settled) return;
+      settled = true;
+      fn(...args);
+    };
+    img.onload = settle(() => resolve(img));
+    img.onerror = settle(reject);
     img.src = src;
+    setTimeout(settle(() => reject(new Error('image load timed out'))), 2000);
   });
 }
 
@@ -83,40 +90,109 @@ function drawRoundedRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function drawCosmicBackground(ctx, w, h) {
+function drawSacredGeometry(ctx, w, h, theme) {
+  const isDay = theme === 'theme-day';
+  ctx.save();
+  ctx.strokeStyle = isDay ? 'rgba(160, 120, 200, 0.08)' : 'rgba(140, 80, 220, 0.12)';
+  ctx.lineWidth = 1;
+
+  // Draw interlocking circles (Flower of Life style) at top and bottom
+  const centers = [
+    { x: w / 2, y: h * 0.25 },
+    { x: w / 2, y: h * 0.75 }
+  ];
+
+  for (const c of centers) {
+    const radius = 180;
+    // Center circle
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Outer rings
+    for (let i = 0; i < 6; i++) {
+      const angle = (i * Math.PI) / 3;
+      const rx = c.x + radius * Math.cos(angle);
+      const ry = c.y + radius * Math.sin(angle);
+      ctx.beginPath();
+      ctx.arc(rx, ry, radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+function drawCosmicBackground(ctx, w, h, theme = 'theme-night') {
   const grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, '#0a0518');
-  grad.addColorStop(0.3, '#0e0824');
-  grad.addColorStop(0.7, '#12082e');
-  grad.addColorStop(1, '#0a0518');
+  if (theme === 'theme-day') {
+    grad.addColorStop(0, '#faf8f5');
+    grad.addColorStop(1, '#f2ede4');
+  } else if (theme === 'theme-sunset') {
+    grad.addColorStop(0, '#18040a');
+    grad.addColorStop(1, '#381008');
+  } else if (theme === 'theme-sunrise') {
+    grad.addColorStop(0, '#05091a');
+    grad.addColorStop(1, '#082c30');
+  } else {
+    grad.addColorStop(0, '#0a0518');
+    grad.addColorStop(0.3, '#0e0824');
+    grad.addColorStop(0.7, '#12082e');
+    grad.addColorStop(1, '#0a0518');
+  }
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, w, h);
 
+  drawSacredGeometry(ctx, w, h, theme);
+
+  let glowColor1 = 'rgba(120, 40, 180, 0.16)';
+  let glowColor2 = 'rgba(40, 180, 140, 0.10)';
+  let glowColor3 = 'rgba(180, 40, 100, 0.08)';
+
+  if (theme === 'theme-day') {
+    glowColor1 = 'rgba(230, 210, 180, 0.12)';
+    glowColor2 = 'rgba(230, 210, 180, 0.08)';
+    glowColor3 = 'rgba(230, 210, 180, 0.06)';
+  } else if (theme === 'theme-sunset') {
+    glowColor1 = 'rgba(230, 96, 64, 0.15)';
+    glowColor2 = 'rgba(230, 96, 64, 0.10)';
+    glowColor3 = 'rgba(230, 96, 64, 0.08)';
+  } else if (theme === 'theme-sunrise') {
+    glowColor1 = 'rgba(40, 180, 180, 0.12)';
+    glowColor2 = 'rgba(40, 180, 180, 0.08)';
+    glowColor3 = 'rgba(40, 180, 180, 0.06)';
+  }
+
   const glow1 = ctx.createRadialGradient(w * 0.15, h * 0.12, 0, w * 0.15, h * 0.12, w * 0.6);
-  glow1.addColorStop(0, 'rgba(120, 40, 180, 0.16)');
+  glow1.addColorStop(0, glowColor1);
   glow1.addColorStop(1, 'transparent');
   ctx.fillStyle = glow1;
   ctx.fillRect(0, 0, w, h);
 
   const glow2 = ctx.createRadialGradient(w * 0.85, h * 0.6, 0, w * 0.85, h * 0.6, w * 0.5);
-  glow2.addColorStop(0, 'rgba(40, 180, 140, 0.10)');
+  glow2.addColorStop(0, glowColor2);
   glow2.addColorStop(1, 'transparent');
   ctx.fillStyle = glow2;
   ctx.fillRect(0, 0, w, h);
 
   const glow3 = ctx.createRadialGradient(w * 0.5, h * 0.9, 0, w * 0.5, h * 0.9, w * 0.35);
-  glow3.addColorStop(0, 'rgba(180, 40, 100, 0.08)');
+  glow3.addColorStop(0, glowColor3);
   glow3.addColorStop(1, 'transparent');
   ctx.fillStyle = glow3;
   ctx.fillRect(0, 0, w, h);
 }
 
-function drawGradientSeparator(ctx, y, inset) {
+function drawGradientSeparator(ctx, y, inset, theme = 'theme-night') {
   const sep = ctx.createLinearGradient(PADDING + inset, 0, WIDTH - PADDING - inset, 0);
   sep.addColorStop(0, 'transparent');
-  sep.addColorStop(0.3, 'rgba(140, 80, 220, 0.35)');
-  sep.addColorStop(0.5, 'rgba(140, 80, 220, 0.55)');
-  sep.addColorStop(0.7, 'rgba(140, 80, 220, 0.35)');
+  if (theme === 'theme-day') {
+    sep.addColorStop(0.3, 'rgba(160, 120, 200, 0.25)');
+    sep.addColorStop(0.5, 'rgba(160, 120, 200, 0.4)');
+    sep.addColorStop(0.7, 'rgba(160, 120, 200, 0.25)');
+  } else {
+    sep.addColorStop(0.3, 'rgba(140, 80, 220, 0.35)');
+    sep.addColorStop(0.5, 'rgba(140, 80, 220, 0.55)');
+    sep.addColorStop(0.7, 'rgba(140, 80, 220, 0.35)');
+  }
   sep.addColorStop(1, 'transparent');
   ctx.strokeStyle = sep;
   ctx.lineWidth = 1;
@@ -126,12 +202,13 @@ function drawGradientSeparator(ctx, y, inset) {
   ctx.stroke();
 }
 
-export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName }) {
+export async function exportScheduleAsImage({ groupedByDay, priorities, conflicts, lang, scheduleName, theme = 'theme-night' }) {
   if (document.fonts) {
     await document.fonts.ready;
   }
   const isHe = lang === 'he';
   const siteUrl = 'yonatan2021.github.io/ozora-2026';
+  const isDay = theme === 'theme-day';
 
   const dayEntries = Object.entries(groupedByDay);
   let totalSets = 0;
@@ -153,7 +230,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   const ctx = canvas.getContext('2d');
   ctx.scale(SCALE_FACTOR, SCALE_FACTOR);
 
-  drawCosmicBackground(ctx, WIDTH, estimatedHeight);
+  drawCosmicBackground(ctx, WIDTH, estimatedHeight, theme);
 
   let y = PADDING;
 
@@ -186,9 +263,9 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
     // Glow behind logo
     ctx.save();
-    ctx.shadowColor = 'rgba(140, 60, 200, 0.3)';
+    ctx.shadowColor = isDay ? 'rgba(160, 120, 200, 0.2)' : 'rgba(140, 60, 200, 0.3)';
     ctx.shadowBlur = 50;
-    ctx.fillStyle = 'rgba(140, 60, 200, 0.06)';
+    ctx.fillStyle = isDay ? 'rgba(160, 120, 200, 0.05)' : 'rgba(140, 60, 200, 0.06)';
     ctx.beginPath();
     ctx.ellipse(logoCX, logoCY, logoW * 0.45, logoHeight * 0.45, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -206,32 +283,32 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   ctx.textAlign = 'center';
   if (scheduleName) {
     // Two-line: name prominently, then subtitle
-    ctx.fillStyle = '#eee0ff';
+    ctx.fillStyle = isDay ? '#332244' : '#eee0ff';
     ctx.font = "800 28px 'Orbitron', 'Heebo', sans-serif";
     ctx.save();
-    ctx.shadowColor = 'rgba(140, 60, 200, 0.4)';
+    ctx.shadowColor = isDay ? 'rgba(160, 120, 200, 0.2)' : 'rgba(140, 60, 200, 0.4)';
     ctx.shadowBlur = 20;
     const nameTitle = isHe ? `הלוח של ${scheduleName}` : `${scheduleName}'s Schedule`;
     ctx.fillText(nameTitle, WIDTH / 2, y + 28);
     ctx.restore();
 
-    ctx.fillStyle = 'rgba(212, 184, 255, 0.6)';
+    ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.75)' : 'rgba(212, 184, 255, 0.6)';
     ctx.font = "600 16px 'Exo 2', 'Heebo', sans-serif";
     ctx.fillText('Ozora Festival 2026', WIDTH / 2, y + 54);
     y += titleHeight;
   } else {
     const title = isHe ? 'הלוח שלי — אוזורה 2026' : 'My Ozora 2026 Schedule';
-    ctx.fillStyle = '#eee0ff';
+    ctx.fillStyle = isDay ? '#332244' : '#eee0ff';
     ctx.font = "800 28px 'Orbitron', 'Heebo', sans-serif";
     ctx.save();
-    ctx.shadowColor = 'rgba(140, 60, 200, 0.4)';
+    ctx.shadowColor = isDay ? 'rgba(160, 120, 200, 0.2)' : 'rgba(140, 60, 200, 0.4)';
     ctx.shadowBlur = 20;
     ctx.fillText(title, WIDTH / 2, y + 30);
     ctx.restore();
     y += titleHeight;
   }
 
-  drawGradientSeparator(ctx, y, 80);
+  drawGradientSeparator(ctx, y, 80, theme);
   y += 20;
 
   ctx.textAlign = isHe ? 'right' : 'left';
@@ -250,15 +327,16 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
     // Day header background
     const dayBgGrad = ctx.createLinearGradient(PADDING, 0, WIDTH - PADDING, 0);
-    dayBgGrad.addColorStop(0, isHe ? 'transparent' : 'rgba(140, 80, 220, 0.10)');
-    dayBgGrad.addColorStop(1, isHe ? 'rgba(140, 80, 220, 0.10)' : 'transparent');
+    const dayHeaderBgColor = isDay ? 'rgba(160, 120, 200, 0.15)' : 'rgba(140, 80, 220, 0.10)';
+    dayBgGrad.addColorStop(0, isHe ? 'transparent' : dayHeaderBgColor);
+    dayBgGrad.addColorStop(1, isHe ? dayHeaderBgColor : 'transparent');
     ctx.fillStyle = dayBgGrad;
     drawRoundedRect(ctx, PADDING, y, CONTENT_WIDTH, dayHeaderHeight - 8, 10);
     ctx.fill();
 
     // Day name
     const textX = isHe ? WIDTH - PADDING - 16 : PADDING + 16;
-    ctx.fillStyle = '#d4b8ff';
+    ctx.fillStyle = isDay ? '#332244' : '#d4b8ff';
     ctx.font = "700 20px 'Orbitron', 'Heebo', sans-serif";
     ctx.textAlign = isHe ? 'right' : 'left';
     ctx.fillText(dayLabel, textX, y + 30);
@@ -266,7 +344,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
     // Date + weekday on opposite side
     if (dateStr) {
       const dateDisplay = isHe ? `יום ${weekday} · ${dateStr}` : `${weekday} · ${dateStr}`;
-      ctx.fillStyle = 'rgba(212, 184, 255, 0.5)';
+      ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.75)' : 'rgba(212, 184, 255, 0.5)';
       ctx.font = "500 14px 'Exo 2', 'Heebo', sans-serif";
       const dateX = isHe ? PADDING + 16 : WIDTH - PADDING - 16;
       ctx.textAlign = isHe ? 'left' : 'right';
@@ -285,11 +363,11 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
       const alpha = priority === 'maybe' ? 0.45 : 1.0;
 
       if (priority === 'must') {
-        ctx.fillStyle = 'rgba(230, 96, 64, 0.12)';
+        ctx.fillStyle = isDay ? 'rgba(230, 96, 64, 0.15)' : 'rgba(230, 96, 64, 0.12)';
         drawRoundedRect(ctx, PADDING + 4, y + 2, CONTENT_WIDTH - 8, setRowHeight - 4, 6);
         ctx.fill();
       } else {
-        ctx.fillStyle = stageGlow;
+        ctx.fillStyle = isDay ? 'rgba(160, 120, 200, 0.08)' : stageGlow;
         drawRoundedRect(ctx, PADDING + 4, y + 2, CONTENT_WIDTH - 8, setRowHeight - 4, 6);
         ctx.fill();
       }
@@ -308,7 +386,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
       ctx.restore();
 
       // Artist name
-      ctx.fillStyle = '#eee0ff';
+      ctx.fillStyle = isDay ? '#332244' : '#eee0ff';
       ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
       const artistX = isHe ? WIDTH - PADDING - 30 : PADDING + 30;
       ctx.textAlign = isHe ? 'right' : 'left';
@@ -318,14 +396,14 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
       const stageName = set.stage
         .replace(' / COOKING GROOVE', '')
         .replace(' (2000s Trance)', '');
-      ctx.fillStyle = 'rgba(212, 184, 255, 0.5)';
+      ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.75)' : 'rgba(212, 184, 255, 0.5)';
       ctx.font = "400 12px 'Exo 2', 'Heebo', sans-serif";
       const stageX = isHe ? PADDING + 140 : WIDTH - PADDING - 140;
       ctx.textAlign = isHe ? 'left' : 'right';
       ctx.fillText(stageName, stageX, y + 26);
 
       // Time
-      ctx.fillStyle = 'rgba(212, 184, 255, 0.7)';
+      ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.75)' : 'rgba(212, 184, 255, 0.7)';
       ctx.font = "500 13px 'Exo 2', 'Heebo', sans-serif";
       const timeStr = `${set.start}–${set.end}`;
       const timeX = isHe ? PADDING + 16 : WIDTH - PADDING - 16;
@@ -364,15 +442,15 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
   // Footer
   y += 8;
-  drawGradientSeparator(ctx, y, 60);
+  drawGradientSeparator(ctx, y, 60, theme);
   y += 28;
 
   // Site URL
-  ctx.fillStyle = '#d4b8ff';
+  ctx.fillStyle = isDay ? '#332244' : '#d4b8ff';
   ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
   ctx.textAlign = 'center';
   ctx.save();
-  ctx.shadowColor = 'rgba(140, 60, 200, 0.3)';
+  ctx.shadowColor = isDay ? 'rgba(160, 120, 200, 0.2)' : 'rgba(140, 60, 200, 0.3)';
   ctx.shadowBlur = 12;
   ctx.fillText(siteUrl, WIDTH / 2, y);
   ctx.restore();
@@ -380,13 +458,13 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
 
   // Tagline
   const tagline = isHe ? 'בנה את הלוח שלך עכשיו' : 'Build your schedule now';
-  ctx.fillStyle = 'rgba(212, 184, 255, 0.45)';
+  ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.75)' : 'rgba(212, 184, 255, 0.45)';
   ctx.font = "400 12px 'Exo 2', 'Heebo', sans-serif";
   ctx.fillText(tagline, WIDTH / 2, y);
   y += 22;
 
   // Copyright
-  ctx.fillStyle = 'rgba(212, 184, 255, 0.2)';
+  ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.4)' : 'rgba(212, 184, 255, 0.2)';
   ctx.font = "400 10px 'Exo 2', 'Heebo', sans-serif";
   ctx.fillText('© 2026 Bersaglio', WIDTH / 2, y);
 
@@ -396,7 +474,7 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   finalCanvas.width = WIDTH * SCALE_FACTOR;
   finalCanvas.height = finalHeight * SCALE_FACTOR;
   const fCtx = finalCanvas.getContext('2d');
-  drawCosmicBackground(fCtx, WIDTH * SCALE_FACTOR, finalHeight * SCALE_FACTOR);
+  drawCosmicBackground(fCtx, WIDTH * SCALE_FACTOR, finalHeight * SCALE_FACTOR, theme);
   fCtx.drawImage(canvas, 0, 0);
 
   const blob = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
