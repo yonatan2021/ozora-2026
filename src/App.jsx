@@ -10,7 +10,6 @@ import MySchedule from './components/MySchedule';
 import FestivalGuide from './components/FestivalGuide';
 import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
 import { translations } from './utils/lang';
-import CountdownBanner from './components/CountdownBanner';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import SacredGeometry from './components/SacredGeometry';
 import { Calendar, User, BookOpen, Heart, Map as MapIcon, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -392,7 +391,6 @@ export default function App() {
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
       <PsychedelicBackground themeClass={activeThemeClass} selectedStage={selectedStage} />
       <SacredGeometry themeClass={activeThemeClass} selectedStage={selectedStage} />
-      <CountdownBanner lang={lang} />
 
       <Header
         lang={lang}
@@ -426,17 +424,6 @@ export default function App() {
             activeThemeClass={activeThemeClass}
           />
 
-          <StageLineupSelector
-            sets={filteredSets}
-            selectedStage={selectedStage}
-            onChange={handleStageChange}
-            lang={lang}
-            favorites={childFavorites}
-            toggleFavorite={toggleFavorite}
-            activeStatusMap={activeStatusMap}
-            onSetClick={setSelectedSet}
-          />
-
           {/* Days Selector */}
           <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
             {days.map(d => (
@@ -449,6 +436,17 @@ export default function App() {
               </button>
             ))}
           </div>
+
+          <StageLineupSelector
+            sets={filteredSets}
+            selectedStage={selectedStage}
+            onChange={handleStageChange}
+            lang={lang}
+            favorites={childFavorites}
+            toggleFavorite={toggleFavorite}
+            activeStatusMap={activeStatusMap}
+            onSetClick={setSelectedSet}
+          />
 
           <main className="main-content">
             {filteredSets.length === 0 ? (

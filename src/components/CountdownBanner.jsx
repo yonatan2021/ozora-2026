@@ -23,18 +23,35 @@ export default function CountdownBanner({ lang }) {
 
   return (
     <div className="countdown-banner">
-      <div className="countdown-label">
-        <span className="countdown-title">{label}</span>
-        <span className="countdown-date">{dateLabel}</span>
-      </div>
-      <div className="countdown-units">
-        <CountdownUnit value={days} label={lang === 'he' ? 'ימים' : 'days'} />
-        <span className="countdown-sep">:</span>
-        <CountdownUnit value={hours} label={lang === 'he' ? 'שעות' : 'hrs'} />
-        <span className="countdown-sep">:</span>
-        <CountdownUnit value={minutes} label={lang === 'he' ? 'דקות' : 'min'} />
-        <span className="countdown-sep">:</span>
-        <CountdownUnit value={seconds} label={lang === 'he' ? 'שניות' : 'sec'} />
+      <div className="countdown-glow-effect"></div>
+      <div className="countdown-content">
+        <div className="countdown-header-info">
+          <div className="countdown-geo-container">
+            <svg className="countdown-geo-svg" viewBox="0 0 100 100" width="28" height="28" aria-hidden="true">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" opacity="0.4" />
+              <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
+              <polygon points="50,15 80,70 20,70" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+              <polygon points="50,85 80,30 20,30" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+              <circle cx="50" cy="50" r="4" fill="currentColor" className="geo-center-pulse" />
+            </svg>
+          </div>
+          <div className="countdown-text">
+            <span className="countdown-title">{label}</span>
+            <span className="countdown-date">{dateLabel}</span>
+          </div>
+        </div>
+
+        <div className="countdown-divider"></div>
+
+        <div className="countdown-units">
+          <CountdownUnit value={days} label={lang === 'he' ? 'ימים' : 'days'} />
+          <span className="countdown-sep">:</span>
+          <CountdownUnit value={hours} label={lang === 'he' ? 'שעות' : 'hrs'} />
+          <span className="countdown-sep">:</span>
+          <CountdownUnit value={minutes} label={lang === 'he' ? 'דקות' : 'min'} />
+          <span className="countdown-sep">:</span>
+          <CountdownUnit value={seconds} label={lang === 'he' ? 'שניות' : 'sec'} />
+        </div>
       </div>
     </div>
   );
