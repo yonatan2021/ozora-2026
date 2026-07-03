@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Image as ImageIcon, Users, User } from 'lucide-react';
+import { ChevronDown, ChevronUp, Image as ImageIcon, Users, User, Info } from 'lucide-react';
 import equipmentData from '../data/equipmentChecklist.json';
 import useEquipmentChecklist from '../hooks/useEquipmentChecklist';
 import { exportEquipmentImageAsPng } from '../utils/exportEquipmentImage';
@@ -30,6 +30,31 @@ export default function EquipmentChecklist() {
 
   return (
     <div className="equipment-checklist stagger-slide-up" style={{ '--card-index': 0 }}>
+      <div className="equipment-header-actions">
+        <div className="equipment-info-note">
+          <Info size={16} />
+          <span>לאחר סימון הציוד ברשימה, תוכלו לייצא אותו לתמונה נוחה לשימוש.</span>
+        </div>
+        <div className="equipment-export-wrap">
+          <button
+            type="button"
+            className="equipment-export-btn"
+            data-testid="equipment-export-btn"
+            onClick={() => setExportMenuOpen(prev => !prev)}
+          >
+            <ImageIcon size={16} />
+            <span>ייצוא לתמונה</span>
+          </button>
+          {exportMenuOpen && (
+            <div className="equipment-export-menu">
+              <button type="button" onClick={() => handleExport('shared')}>ציוד שטח בלבד</button>
+              <button type="button" onClick={() => handleExport('personal')}>ציוד אישי בלבד</button>
+              <button type="button" onClick={() => handleExport('both')}>שניהם</button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="equipment-section-tabs">
         <button
           type="button"
@@ -100,25 +125,6 @@ export default function EquipmentChecklist() {
             </div>
           );
         })}
-      </div>
-
-      <div className="equipment-export-wrap">
-        <button
-          type="button"
-          className="equipment-export-btn"
-          data-testid="equipment-export-btn"
-          onClick={() => setExportMenuOpen(prev => !prev)}
-        >
-          <ImageIcon size={16} />
-          <span>ייצוא לתמונה</span>
-        </button>
-        {exportMenuOpen && (
-          <div className="equipment-export-menu">
-            <button type="button" onClick={() => handleExport('shared')}>ציוד שטח בלבד</button>
-            <button type="button" onClick={() => handleExport('personal')}>ציוד אישי בלבד</button>
-            <button type="button" onClick={() => handleExport('both')}>שניהם</button>
-          </div>
-        )}
       </div>
     </div>
   );

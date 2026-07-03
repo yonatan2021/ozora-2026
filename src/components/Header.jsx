@@ -2,6 +2,7 @@ import { Languages, Calendar, BookOpen, User, Map as MapIcon, Tent } from 'lucid
 import { translations } from '../utils/lang';
 import SearchBar from './SearchBar';
 import logo from '../assets/logo.png';
+import CountdownBanner from './CountdownBanner';
 
 export default function Header({ 
   lang, 
@@ -87,6 +88,8 @@ export default function Header({
           </button>
         </div>
       </div>
+
+      <CountdownBanner lang={lang} />
 
       <SearchBar 
         lang={lang}

@@ -15,7 +15,7 @@ describe('FestivalGuide — equipment checklist entry', () => {
   it('opens the equipment checklist when the card is clicked', () => {
     render(<FestivalGuide />);
     fireEvent.click(screen.getByText('ציוד לפסטיבל'));
-    expect(screen.getByText('ציוד שטח (קבוצתי)')).toBeTruthy();
+    expect(screen.getByText('ציוד שטח קבוצתי')).toBeTruthy();
   });
 
   it('returns to the guide grid from the equipment checklist via back button', () => {
