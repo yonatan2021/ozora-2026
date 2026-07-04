@@ -124,7 +124,11 @@ export const translations = {
     exportImageTheme: "Export Image (Active Theme)",
     shareQuickAccess: "Share & Access",
     exportMedia: "Media & Image Export",
-    exportFilesPrint: "Files & Printing"
+    exportFilesPrint: "Files & Printing",
+    friendScheduleUpdated: "Updated {name}'s schedule and coordination notes!",
+    coordinationNote: "Coordination Note",
+    coordinationNotePlaceholder: "Meet at... (max 100 chars)",
+    shareBackWith: "Share Back with {name}"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -251,6 +255,10 @@ export const translations = {
     exportImageTheme: "ייצוא לתמונה (ערכת הנושא הפעילה)",
     shareQuickAccess: "שיתוף וגישה מהירה",
     exportMedia: "מדיה וייצוא תמונה",
-    exportFilesPrint: "קבצים והדפסה"
+    exportFilesPrint: "קבצים והדפסה",
+    friendScheduleUpdated: "הלוח והתיאומים של {name} עודכנו בהצלחה!",
+    coordinationNote: "הערת תיאום",
+    coordinationNotePlaceholder: "ניפגש ב... (עד 100 תווים)",
+    shareBackWith: "שתף בחזרה עם {name}"
   }
 };
