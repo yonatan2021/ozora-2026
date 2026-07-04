@@ -1094,6 +1094,10 @@ export default function OfflineChatbot({
     }
   }, [isHe, t]);
 
+  if (location.pathname.startsWith('/map')) {
+    return null;
+  }
+
   return (
     <div className="chatbot-wrapper">
       {/* Floating Toggle Button */}

@@ -3097,7 +3097,7 @@ body:has(.theme-sunrise)::before {
   color: var(--primary);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .equipment-header-actions {
     flex-direction: column-reverse;
     align-items: stretch;
@@ -7245,6 +7245,91 @@ body:has(.theme-sunrise)::before {
 .text-warning {
   color: #eab308;
 }
+
+/* ==========================================
+   MOBILE UI/UX RESPONSIVENESS OVERRIDES
+   ========================================== */
+
+/* 1. Global Container Padding Adjustment */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1.25rem 0.75rem !important;
+    gap: 1.25rem !important;
+  }
+}
+
+/* 2. Header Actions - Circular Icon Buttons */
+@media (max-width: 600px) {
+  .header-actions span {
+    display: none !important;
+  }
+  .header-actions button,
+  .header-actions .theme-dropdown-toggle {
+    padding: 0.625rem !important;
+    border-radius: 50% !important;
+    width: 38px !important;
+    height: 38px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    display: inline-flex !important;
+  }
+  .header-actions {
+    gap: 0.5rem !important;
+  }
+  .header-top {
+    gap: 0.75rem !important;
+  }
+}
+
+/* 3. General Modals Usable Space Enhancement */
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 0.75rem !important;
+  }
+  .modal-content {
+    padding: 1.75rem 1.25rem 1.25rem 1.25rem !important;
+    border-radius: var(--radius-lg) !important;
+  }
+  .modal-artist {
+    font-size: 1.4rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+/* 4. Live Status Modal Layout Adjustments */
+@media (max-width: 600px) {
+  .live-modal-header {
+    padding: 1rem !important;
+  }
+  .live-modal-title-area h2 {
+    font-size: 1.2rem !important;
+  }
+  .live-stage-grid {
+    padding: 1rem !important;
+    gap: 1rem !important;
+    grid-template-columns: 1fr !important; /* Single column layout on mobile */
+  }
+  .live-stage-card {
+    padding: 1rem !important;
+  }
+}
+
+/* 5. Compare View Header Layout */
+@media (max-width: 600px) {
+  .compare-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  .compare-header h3 {
+    text-align: center !important;
+  }
+  .compare-header-actions {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+}
+
 
 
 
