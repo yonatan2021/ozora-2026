@@ -133,7 +133,19 @@ export const translations = {
     friendScheduleUpdated: "Updated {name}'s schedule and coordination notes!",
     coordinationNote: "Coordination Note",
     coordinationNotePlaceholder: "Meet at... (max 100 chars)",
-    shareBackWith: "Share Back with {name}"
+    shareBackWith: "Share Back with {name}",
+    recentSearches: "Recent Searches",
+    quickFilters: "Quick Filters",
+    nowPlayingTag: "Now Playing",
+    nextUpTag: "Next Up",
+    myScheduleTag: "My Schedule",
+    matchRelated: "Related to {name}",
+    matchFriend: "On {name}'s schedule",
+    matchNote: "Matches note: {snippet}",
+    matchCoordinationNote: "{name}'s meet note: {snippet}",
+    matchPriority: "Priority: {level}",
+    clearHistory: "Clear",
+    emptyHistory: "No recent searches"
   },
   he: {
     title: "לוח הופעות אוזורה 2026",
@@ -269,6 +281,18 @@ export const translations = {
     friendScheduleUpdated: "הלוח והתיאומים של {name} עודכנו בהצלחה!",
     coordinationNote: "הערת תיאום",
     coordinationNotePlaceholder: "ניפגש ב... (עד 100 תווים)",
-    shareBackWith: "שתף בחזרה עם {name}"
+    shareBackWith: "שתף בחזרה עם {name}",
+    recentSearches: "חיפושים אחרונים",
+    quickFilters: "סינון מהיר",
+    nowPlayingTag: "מנגנים עכשיו",
+    nextUpTag: "הבאים בתור",
+    myScheduleTag: "הלוח שלי",
+    matchRelated: "קשור ל-{name}",
+    matchFriend: "בלוח של {name}",
+    matchNote: "תואם להערה: {snippet}",
+    matchCoordinationNote: "הערת מפגש של {name}: {snippet}",
+    matchPriority: "עדיפות: {level}",
+    clearHistory: "נקה",
+    emptyHistory: "אין חיפושים אחרונים"
   }
 };
