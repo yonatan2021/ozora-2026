@@ -1,4 +1,4 @@
-import { createHashRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from './App';
 import TimetablePage from './pages/TimetablePage';
 import FavoritesPage from './pages/FavoritesPage';
@@ -34,4 +34,4 @@ export const routes = [
   },
 ];
 
-export const router = createHashRouter(routes);
+export const router = createBrowserRouter(routes);
