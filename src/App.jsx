@@ -87,9 +87,20 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let pageTitle = 'Timetable';
+    if (location.pathname.startsWith('/favorites')) {
+      pageTitle = 'My Schedule';
+    } else if (location.pathname.startsWith('/map')) {
+      pageTitle = 'Map';
+    } else if (location.pathname.startsWith('/guide')) {
+      pageTitle = 'Guide';
+    }
+
+    document.title = `Ozora 2026 - ${pageTitle}`;
+
     trackEvent('page_view', {
       page_path: location.pathname,
-      page_title: document.title || location.pathname
+      page_title: pageTitle
     });
   }, [location]);
 

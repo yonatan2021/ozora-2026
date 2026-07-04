@@ -29,7 +29,7 @@ describe('Analytics Integration', () => {
 
     expect(window.gtag).toHaveBeenCalledWith('event', 'page_view', {
       page_path: '/timetable',
-      page_title: '/timetable',
+      page_title: 'Timetable',
     });
   });
 

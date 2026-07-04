@@ -52,6 +52,7 @@ export default function MySchedule({
     if (favorites.length === 0) {
       trackEvent('schedule_empty_state');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   void notesVersion;
