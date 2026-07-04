@@ -23,7 +23,7 @@ export default function ImportModal({ sharedSets, lang, onImportAll, onSaveAsFri
         <Users size={32} className="import-modal-icon" />
         <h3 className="import-modal-title">{t.importTitle}</h3>
         <p className="import-modal-count">
-          {sharedSets.length} {t.importSetsCount}
+          {sharedSets.sets.length} {t.importSetsCount}
         </p>
 
         <div className="import-modal-actions">

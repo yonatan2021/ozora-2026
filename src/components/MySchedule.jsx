@@ -11,6 +11,8 @@ import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
 import { trackEvent } from '../utils/analytics';
 import ArtistNameWithFlags from './ArtistNameWithFlags';
+import { getMyScheduleId } from '../utils/friends';
+import { compressPayload } from '../utils/shareSerialization';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -78,11 +80,31 @@ export default function MySchedule({
   };
 
   const buildShareUrl = () => {
-    const indices = favorites.map(id => {
-      return timetableData.findIndex(set => set.id === id);
-    }).filter(idx => idx !== -1);
-    if (indices.length === 0) return '';
-    return `${window.location.origin}${window.location.pathname}?share=${indices.join(',')}`;
+    const myId = getMyScheduleId();
+    const myName = scheduleName || '';
+
+    const encodedSets = favorites.map(key => {
+      // favorites are composite keys; find their timetable index
+      const setIdx = timetableData.findIndex(set => getSetUniqueKey(set) === key);
+      if (setIdx === -1) return null;
+
+      const priority = priorities[key];
+      let pVal = 0;
+      if (priority === 'must') pVal = 1;
+      else if (priority === 'want') pVal = 2;
+      else if (priority === 'maybe') pVal = 3;
+
+      const note = notes[key];
+      if (note) return [setIdx, pVal, note];
+      if (pVal) return [setIdx, pVal];
+      return [setIdx];
+    }).filter(Boolean);
+
+    if (encodedSets.length === 0) return '';
+
+    const payload = { id: myId, name: myName, sets: encodedSets };
+    const compressed = compressPayload(payload);
+    return `${window.location.origin}${window.location.pathname}?share=${compressed}`;
   };
 
   const handleCopyLink = () => {
