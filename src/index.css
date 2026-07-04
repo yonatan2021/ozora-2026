@@ -5961,13 +5961,17 @@ body:has(.theme-sunrise)::before {
   display: flex;
   flex-wrap: nowrap;
   gap: 0.65rem;
-  padding: 0.5rem 0.55rem 0.7rem;
+  padding: 1.25rem 0.55rem 1.5rem;
+  margin: -0.75rem auto -0.8rem;
   width: min(100%, 1180px);
-  margin: 0 auto;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+.stage-lineup-row::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes stage-pulsing-glow {

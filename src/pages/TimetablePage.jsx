@@ -29,6 +29,43 @@ const SETS_BY_DAY = timetableData.reduce((acc, set) => {
   return acc;
 }, {});
 
+function DayBottomNavigation({ days, selectedDay, onDayChange, lang, dayLabels }) {
+  if (days.length <= 1) return null;
+
+  const currentIndex = days.indexOf(selectedDay);
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < days.length - 1;
+
+  const navigateToDay = (day) => {
+    onDayChange(day);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const PrevIcon = lang === 'he' ? ChevronRight : ChevronLeft;
+  const NextIcon = lang === 'he' ? ChevronLeft : ChevronRight;
+
+  return (
+    <div className="mobile-day-nav">
+      <button
+        className="mobile-day-nav-btn"
+        disabled={!hasPrev}
+        onClick={() => { if (hasPrev) navigateToDay(days[currentIndex - 1]); }}
+      >
+        <PrevIcon size={18} />
+        {hasPrev && <span>{dayLabels[days[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex - 1]}</span>}
+      </button>
+      <button
+        className="mobile-day-nav-btn"
+        disabled={!hasNext}
+        onClick={() => { if (hasNext) navigateToDay(days[currentIndex + 1]); }}
+      >
+        {hasNext && <span>{dayLabels[days[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex + 1]}</span>}
+        <NextIcon size={18} />
+      </button>
+    </div>
+  );
+}
+
 export default function TimetablePage() {
   const {
     lang,
@@ -131,15 +168,24 @@ export default function TimetablePage() {
             <p>{t.noSetsFound}</p>
           </div>
         ) : viewMode === 'stages' ? (
-          <StageListView
-            lang={lang}
-            sets={stageFilteredSets}
-            favorites={childFavorites}
-            toggleFavorite={toggleFavorite}
-            onSetClick={setSelectedSet}
-            activeStatusMap={activeStatusMap}
-            selectedStage={selectedStage}
-          />
+          <>
+            <StageListView
+              lang={lang}
+              sets={stageFilteredSets}
+              favorites={childFavorites}
+              toggleFavorite={toggleFavorite}
+              onSetClick={setSelectedSet}
+              activeStatusMap={activeStatusMap}
+              selectedStage={selectedStage}
+            />
+            <DayBottomNavigation
+              days={DAYS}
+              selectedDay={selectedDay}
+              onDayChange={handleDayChange}
+              lang={lang}
+              dayLabels={DAY_DATE_LABELS}
+            />
+          </>
         ) : (
           <>
             {/* Desktop and Tablet grid view */}
@@ -174,36 +220,15 @@ export default function TimetablePage() {
                   activeStatusMap={activeStatusMap}
                 />
               )}
-              {DAYS.length > 1 && (() => {
-                const currentIndex = DAYS.indexOf(selectedDay);
-                const hasPrev = currentIndex > 0;
-                const hasNext = currentIndex < DAYS.length - 1;
-                const navigateToDay = (day) => {
-                  handleDayChange(day);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-                return (
-                  <div className="mobile-day-nav">
-                    <button
-                      className="mobile-day-nav-btn"
-                      disabled={!hasPrev}
-                      onClick={() => { if (hasPrev) navigateToDay(DAYS[currentIndex - 1]); }}
-                    >
-                      <ChevronRight size={18} />
-                      {hasPrev && <span>{DAY_DATE_LABELS[DAYS[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || DAYS[currentIndex - 1]}</span>}
-                    </button>
-                    <button
-                      className="mobile-day-nav-btn"
-                      disabled={!hasNext}
-                      onClick={() => { if (hasNext) navigateToDay(DAYS[currentIndex + 1]); }}
-                    >
-                      {hasNext && <span>{DAY_DATE_LABELS[DAYS[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || DAYS[currentIndex + 1]}</span>}
-                      <ChevronLeft size={18} />
-                    </button>
-                  </div>
-                );
-              })()}
             </div>
+
+            <DayBottomNavigation
+              days={DAYS}
+              selectedDay={selectedDay}
+              onDayChange={handleDayChange}
+              lang={lang}
+              dayLabels={DAY_DATE_LABELS}
+            />
           </>
         )}
       </main>
