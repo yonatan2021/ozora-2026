@@ -8,6 +8,22 @@ vi.mock('../utils/analytics', () => ({
   trackEvent: vi.fn(),
 }));
 
+// Mock friends utilities — no real localStorage side effects
+vi.mock('../utils/friends', () => ({
+  getMyScheduleId: vi.fn(() => 'test-id-123'),
+  getFriends: vi.fn(() => ({})),
+  saveFriend: vi.fn(() => true),
+}));
+
+// Helper: produce a real Base64url-encoded payload (same algorithm as compressPayload)
+function encodePayload(payload) {
+  const jsonStr = JSON.stringify(payload);
+  const bytes = new TextEncoder().encode(jsonStr);
+  const binaryStr = Array.from(bytes).map(b => String.fromCharCode(b)).join('');
+  const base64 = btoa(binaryStr);
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
 describe('useAppState hook', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -68,18 +84,38 @@ describe('useAppState hook', () => {
   });
 
   it('should initialize pendingImport from URL query param share if present', () => {
+    // Build a proper Base64url payload: two sets (indices 0 and 1), unknown friend
+    const payload = {
+      id: 'unknown-friend-abc',
+      name: 'Test Friend',
+      sets: [
+        [0, 1, ''],   // index 0 → set-1, priority "must"
+        [1, 2, ''],   // index 1 → set-2, priority "want"
+      ],
+    };
+    const shareParam = encodePayload(payload);
+
     const originalLocation = window.location;
     delete window.location;
     window.location = {
-      search: '?share=0,1',
+      search: `?share=${shareParam}`,
       pathname: '/',
       hash: '',
     };
 
     const { result } = renderHook(() => useAppState());
-    expect(result.current.pendingImport).toHaveLength(2);
-    expect(result.current.pendingImport[0].id).toBe('set-1');
-    expect(result.current.pendingImport[1].id).toBe('set-2');
+
+    // pendingImport should now be an object with the parsed data
+    expect(result.current.pendingImport).not.toBeNull();
+    expect(result.current.pendingImport.id).toBe('unknown-friend-abc');
+    expect(result.current.pendingImport.name).toBe('Test Friend');
+    expect(result.current.pendingImport.sets).toHaveLength(2);
+    // Composite key for index 0 (set-1)
+    expect(result.current.pendingImport.sets[0]).toBe('Switch Nollie & Tsu::PUMPUI::2026-07-25::16:00');
+    // Composite key for index 1 (set-2)
+    expect(result.current.pendingImport.sets[1]).toBe('Siblicity::PUMPUI::2026-07-25::19:00');
+    expect(result.current.pendingImport.priorities['Switch Nollie & Tsu::PUMPUI::2026-07-25::16:00']).toBe('must');
+    expect(result.current.pendingImport.priorities['Siblicity::PUMPUI::2026-07-25::19:00']).toBe('want');
     expect(trackEvent).toHaveBeenCalledWith('shared_link_opened');
 
     window.location = originalLocation;

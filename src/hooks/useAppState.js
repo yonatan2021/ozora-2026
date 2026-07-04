@@ -3,6 +3,9 @@ import timetableData from '../data/timetable.json';
 import { getSetUniqueKey, migrateFavorites } from '../utils/time';
 import { getStoredConsent } from '../utils/consent';
 import { trackEvent } from '../utils/analytics';
+import { translations } from '../utils/lang';
+import { getMyScheduleId, getFriends, saveFriend } from '../utils/friends';
+import { decompressPayload } from '../utils/shareSerialization';
 
 const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
 const TIMETABLE_SETS_BY_KEY = new Map(timetableData.map(set => [getSetUniqueKey(set), set]));
@@ -82,24 +85,68 @@ export default function useAppState() {
   // 6. Pending import state
   const [pendingImport, setPendingImport] = useState(null);
 
+  // 7. My unique schedule ID
+  const myScheduleId = useMemo(() => getMyScheduleId(), []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
     if (shareParam) {
       trackEvent('shared_link_opened');
-      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const sharedSets = indices
-        .map(idx => timetableData[idx])
-        .filter(Boolean);
+      // Clean the URL immediately
       const newUrl = window.location.pathname + window.location.hash;
       window.history.replaceState({}, document.title, newUrl);
-      if (sharedSets.length > 0) {
-        setPendingImport(sharedSets);
+
+      const payload = decompressPayload(shareParam);
+      if (payload && payload.id && Array.isArray(payload.sets)) {
+        // Map set indices to composite keys, priorities, and notes
+        const parsedSets = [];
+        const parsedPriorities = {};
+        const parsedNotes = {};
+
+        payload.sets.forEach(([idx, priorityVal, noteText]) => {
+          const set = timetableData[idx];
+          if (set) {
+            const setKey = getSetUniqueKey(set);
+            parsedSets.push(setKey);
+            if (priorityVal === 1) parsedPriorities[setKey] = 'must';
+            else if (priorityVal === 2) parsedPriorities[setKey] = 'want';
+            else if (priorityVal === 3) parsedPriorities[setKey] = 'maybe';
+            if (noteText) parsedNotes[setKey] = noteText;
+          }
+        });
+
+        const friends = getFriends();
+        if (friends[payload.id]) {
+          // Known friend — auto-update silently
+          saveFriend(payload.id, {
+            name: friends[payload.id].name, // preserve local name
+            sets: parsedSets,
+            priorities: parsedPriorities,
+            notes: parsedNotes,
+            coordinationNotes: payload.coord || {}
+          });
+          const friendName = friends[payload.id].name;
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setToastMessage(
+            translations[lang].friendScheduleUpdated.replace('{name}', friendName)
+          );
+        } else if (parsedSets.length > 0) {
+          // Unknown friend — trigger import modal
+          setPendingImport({
+            id: payload.id,
+            name: payload.name || '',
+            sets: parsedSets,
+            priorities: parsedPriorities,
+            notes: parsedNotes,
+            coordinationNotes: payload.coord || {}
+          });
+        }
       }
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 7. Has camp state
+  // 8. Has camp state
   const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));
 
   const handleCampChange = useCallback(() => {
@@ -116,7 +163,7 @@ export default function useAppState() {
     };
   }, []);
 
-  // 8. Cookie consent state
+  // 9. Cookie consent state
   const [hasCookieConsent, setHasCookieConsent] = useState(() => !!getStoredConsent());
 
   return {
@@ -135,6 +182,7 @@ export default function useAppState() {
     setIsLiveModalOpen,
     pendingImport,
     setPendingImport,
+    myScheduleId,
     hasCamp,
     setHasCamp,
     handleCampChange,

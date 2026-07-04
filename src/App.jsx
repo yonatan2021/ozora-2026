@@ -4,7 +4,7 @@ import timetableData from './data/timetable.json';
 import Header from './components/Header';
 import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
-import { getSetStatus, getSetUniqueKey } from './utils/time';
+import { getSetStatus } from './utils/time';
 import { translations } from './utils/lang';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import SacredGeometry from './components/SacredGeometry';
@@ -51,6 +51,7 @@ export default function App() {
     setIsLiveModalOpen,
     pendingImport,
     setPendingImport,
+    myScheduleId,
     hasCamp,
     handleCampChange,
     hasCookieConsent,
@@ -118,10 +119,9 @@ export default function App() {
 
   const handleImportAll = () => {
     if (!pendingImport) return;
-    trackEvent('import_schedule', { sets_count: pendingImport.length });
-    const importedKeys = pendingImport.map(set => getSetUniqueKey(set));
+    trackEvent('import_schedule', { sets_count: pendingImport.sets.length });
     setFavorites(prev => {
-      const merged = new Set([...prev, ...importedKeys]);
+      const merged = new Set([...prev, ...pendingImport.sets]);
       return Array.from(merged);
     });
     setToastMessage(translations[lang].sharedScheduleImported);
@@ -130,10 +130,15 @@ export default function App() {
 
   const handleSaveAsFriend = (friendName) => {
     if (!pendingImport) return;
-    const keys = pendingImport.map(set => getSetUniqueKey(set));
-    const saved = saveFriend(friendName, keys);
+    const saved = saveFriend(pendingImport.id, {
+      name: friendName,
+      sets: pendingImport.sets,
+      priorities: pendingImport.priorities,
+      notes: pendingImport.notes,
+      coordinationNotes: pendingImport.coordinationNotes
+    });
     if (saved) {
-      trackEvent('save_friend', { sets_count: keys.length });
+      trackEvent('save_friend', { sets_count: pendingImport.sets.length });
       setToastMessage(translations[lang].friendSaved);
     } else {
       setToastMessage(translations[lang].maxFriendsReached);
@@ -185,6 +190,7 @@ export default function App() {
     setIsLiveModalOpen,
     pendingImport,
     setPendingImport,
+    myScheduleId,
     hasCamp,
     handleCampChange,
     hasCookieConsent,
@@ -212,6 +218,7 @@ export default function App() {
     notesVersion,
     isLiveModalOpen,
     pendingImport,
+    myScheduleId,
     hasCamp,
     handleCampChange,
     hasCookieConsent,
