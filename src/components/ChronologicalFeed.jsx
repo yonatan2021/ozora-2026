@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Star, Music } from 'lucide-react';
 import { trackEvent } from '../utils/analytics';
 import ArtistNameWithFlags from './ArtistNameWithFlags';
+import RelatedArtistsBadge from './RelatedArtistsBadge';
 
 const STAGE_CLASSES = {
   "OZORA STAGE": "stage-ozora",
@@ -54,7 +55,7 @@ function MusicDropdown({ artist }) {
   );
 }
 
-export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap }) {
+export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onSetClick, activeStatusMap, lang }) {
   // Sort sets chronologically by start time, and then by stage name
   const sortedSets = [...sets].sort((a, b) => {
 
@@ -109,6 +110,7 @@ export default function ChronologicalFeed({ sets, favorites, toggleFavorite, onS
                     <div className="feed-time-duration">
                       {set.start} - {set.end} {set.endsNextDay ? '(+1d)' : ''}
                     </div>
+                    <RelatedArtistsBadge artistName={set.artist} lang={lang} />
                   </div>
                   <MusicDropdown artist={set.artist} />
                   <button

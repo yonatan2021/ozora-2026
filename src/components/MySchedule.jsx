@@ -11,6 +11,7 @@ import ShareMenu from './ShareMenu';
 import FriendSchedules from './FriendSchedules';
 import { trackEvent } from '../utils/analytics';
 import ArtistNameWithFlags from './ArtistNameWithFlags';
+import RelatedArtistsBadge from './RelatedArtistsBadge';
 import { getMyScheduleId } from '../utils/friends';
 import { compressPayload } from '../utils/shareSerialization';
 
@@ -291,6 +292,7 @@ export default function MySchedule({
                     <span>{set.stage}</span>
                   </div>
                   <div className="feed-time-duration">{set.start} - {set.end}</div>
+                  <RelatedArtistsBadge artistName={set.artist} lang={lang} />
                 </div>
               </div>
             ))}
@@ -314,6 +316,7 @@ export default function MySchedule({
                     <span>{set.stage}</span>
                   </div>
                   <div className="feed-time-duration">{set.day} • {set.start}</div>
+                  <RelatedArtistsBadge artistName={set.artist} lang={lang} />
                 </div>
               </div>
             ))}
@@ -375,6 +378,7 @@ export default function MySchedule({
                           <span>{set.stage} {set.type ? `• ${set.type}` : ''}</span>
                         </div>
                         <div className="feed-time-duration">{set.start} - {set.end}</div>
+                        <RelatedArtistsBadge artistName={set.artist} lang={lang} />
                         {notes[setKey] && (
                           <div className="feed-note-text">
                             <MessageSquare size={11} />

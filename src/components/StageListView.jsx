@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { ChevronDown, Star, Music } from 'lucide-react';
 import StageTotem from './StageTotem';
 import ArtistNameWithFlags from './ArtistNameWithFlags';
+import RelatedArtistsBadge from './RelatedArtistsBadge';
 import { trackEvent } from '../utils/analytics';
 
 const STAGES = [
@@ -204,6 +205,7 @@ export default function StageListView({ lang, sets, favorites, toggleFavorite, o
                         <div className="feed-time-duration">
                           {set.start} - {set.end} {set.endsNextDay ? '(+1d)' : ''} {set.type ? `• ${set.type}` : ''}
                         </div>
+                        <RelatedArtistsBadge artistName={set.artist} lang={lang} />
                       </div>
 
                       <div className="feed-set-actions" onClick={(e) => e.stopPropagation()}>

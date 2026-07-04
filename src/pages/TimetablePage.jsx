@@ -219,6 +219,7 @@ export default function TimetablePage() {
                   toggleFavorite={toggleFavorite}
                   onSetClick={setSelectedSet}
                   activeStatusMap={activeStatusMap}
+                  lang={lang}
                 />
               )}
               <DayBottomNavigation
