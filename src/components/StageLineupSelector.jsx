@@ -28,7 +28,7 @@ const STAGE_CLASSES = {
   "TEK ZERO (2000s Trance)": "stage-tekzero"
 };
 
-export default function StageLineupSelector({ sets, selectedStage, onChange, lang }) {
+export default function StageLineupSelector({ sets, selectedStage, onChange, lang, showCount = true }) {
   const isHe = lang === 'he';
 
   const activeStages = STAGES.filter(stage => sets.some(s => s.stage === stage));
@@ -66,7 +66,7 @@ export default function StageLineupSelector({ sets, selectedStage, onChange, lan
               >
                 <StageTotem stage={stage} size={18} />
                 <span className="stage-lineup-name">{shortName}</span>
-                <span className="stage-lineup-count">{stageSets.length}</span>
+                {showCount && <span className="stage-lineup-count">{stageSets.length}</span>}
                 {isActive && <Check className="stage-lineup-active-icon" size={16} aria-hidden="true" />}
               </button>
             </div>

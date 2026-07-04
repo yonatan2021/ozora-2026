@@ -114,4 +114,21 @@ describe('StageLineupSelector', () => {
     expect(screen.getAllByText('הדום').length).toBeGreaterThan(0);
     expect(screen.getAllByText('פומפוי').length).toBeGreaterThan(0);
   });
+
+  it('hides artist count when showCount is false', () => {
+    const { container } = render(
+      <StageLineupSelector
+        sets={baseSets}
+        selectedStage="ALL"
+        onChange={noop}
+        lang="en"
+        favorites={[]}
+        toggleFavorite={noop}
+        activeStatusMap={{}}
+        onSetClick={noop}
+        showCount={false}
+      />
+    );
+    expect(container.querySelector('.stage-lineup-count')).toBeNull();
+  });
 });

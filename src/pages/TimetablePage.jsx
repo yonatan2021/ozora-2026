@@ -136,6 +136,7 @@ export default function TimetablePage() {
         toggleFavorite={toggleFavorite}
         activeStatusMap={activeStatusMap}
         onSetClick={setSelectedSet}
+        showCount={viewMode !== 'stages'}
       />
 
       {/* View Mode Toggle */}
