@@ -14,6 +14,7 @@ import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
+import OfflineChatbot from './components/OfflineChatbot';
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
@@ -88,22 +89,66 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    let pageTitle = 'Timetable';
+    let pageTitleEnglish = 'Timetable';
+    let metaDescText = 'Complete Ozora Festival 2026 timetable. Search artists, filter by stages and days, and plan your schedules.';
+    
+    const isHe = lang === 'he';
+
     if (location.pathname.startsWith('/favorites')) {
-      pageTitle = 'My Schedule';
+      pageTitleEnglish = 'My Schedule';
+      metaDescText = isHe 
+        ? 'לוח ההופעות האישי שלי לפסטיבל אוזורה 2026. סמן אמנים בכוכב כדי לתכנן את הלוז שלך.' 
+        : 'My custom schedule for Ozora Festival 2026. Star your favorite artists to stay coordinated.';
     } else if (location.pathname.startsWith('/map')) {
-      pageTitle = 'Map';
+      pageTitleEnglish = 'Map';
+      metaDescText = isHe 
+        ? 'מפה אינטראקטיבית אופליין של פסטיבל אוזורה 2026 עם אפשרות לסימון מיקום האוהל וניווט לבמות.' 
+        : 'Interactive offline map of Ozora Festival 2026. View stages, navigate, and pin your campsite.';
     } else if (location.pathname.startsWith('/guide')) {
-      pageTitle = 'Guide';
+      pageTitleEnglish = 'Guide';
+      metaDescText = isHe 
+        ? 'המדריך המלא למבקר בפסטיבל אוזורה 2026 - המלצות, טיפים, צ\'ק ליסט ציוד וכל מה שצריך לדעת.' 
+        : 'The ultimate survival guide for Ozora Festival 2026 with packing checklist, tips, and guidelines.';
+    } else {
+      pageTitleEnglish = 'Timetable';
+      metaDescText = isHe 
+        ? 'לוח הופעות מלא ומפורט של פסטיבל אוזורה 2026 עם חיפוש אמנים וסינון לפי ימים ובמות.' 
+        : 'Complete Ozora Festival 2026 timetable. Search artists, filter by stages and days, and plan your schedules.';
+    }
+
+    let pageTitle = pageTitleEnglish;
+    if (isHe) {
+      if (pageTitleEnglish === 'Timetable') pageTitle = 'לוח הופעות';
+      else if (pageTitleEnglish === 'My Schedule') pageTitle = 'הלוח שלי';
+      else if (pageTitleEnglish === 'Map') pageTitle = 'מפה';
+      else if (pageTitleEnglish === 'Guide') pageTitle = 'מדריך';
     }
 
     document.title = `Ozora 2026 - ${pageTitle}`;
 
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', metaDescText);
+
+    // Update Open Graph description
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (!ogDesc) {
+      ogDesc = document.createElement('meta');
+      ogDesc.setAttribute('property', 'og:description');
+      document.head.appendChild(ogDesc);
+    }
+    ogDesc.setAttribute('content', metaDescText);
+
     trackEvent('page_view', {
       page_path: location.pathname,
-      page_title: pageTitle
+      page_title: pageTitleEnglish
     });
-  }, [location]);
+  }, [location, lang]);
 
   // Derive active set statuses directly in render
   const activeStatusMap = useMemo(() => {
@@ -347,6 +392,15 @@ export default function App() {
       <CookieConsent lang={lang} onConsentResolved={() => setHasCookieConsent(true)} />
       {hasCookieConsent && <PWAUpdatePrompt lang={lang} />}
       <InstallPrompt lang={lang} />
+
+      <OfflineChatbot
+        lang={lang}
+        favorites={childFavorites}
+        toggleFavorite={toggleFavorite}
+        onSelectSet={handleSelectSetFromSearch}
+        onShowOnMap={handleShowOnMap}
+        evalTime={evalTime}
+      />
     </div>
   );
 }

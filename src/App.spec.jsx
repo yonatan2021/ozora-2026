@@ -137,4 +137,23 @@ describe('App End-to-End Flows', () => {
     // Verify localStorage updated
     expect(localStorage.getItem('ozora_pinned_theme')).toBe('theme-sunset');
   });
+
+  it('should dynamically update the meta description when switching tabs', () => {
+    renderApp();
+    
+    // Select english
+    fireEvent.click(screen.getByRole('button', { name: /English/i }));
+    
+    // Default /timetable
+    let metaDesc = document.querySelector('meta[name="description"]');
+    expect(metaDesc).toBeTruthy();
+    expect(metaDesc.getAttribute('content')).toContain('Complete Ozora Festival 2026 timetable');
+
+    // Go to guide
+    const guideNavBtn = screen.getAllByRole('button', { name: /Guide/i })[0];
+    fireEvent.click(guideNavBtn);
+    
+    metaDesc = document.querySelector('meta[name="description"]');
+    expect(metaDesc.getAttribute('content')).toContain('The ultimate survival guide');
+  });
 });
