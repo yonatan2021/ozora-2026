@@ -5,7 +5,6 @@ describe('exportEquipmentData', () => {
   let clickSpy;
   let createdElement;
   let blobContent;
-  let blobOptions;
   const originalBlob = globalThis.Blob;
 
   beforeEach(() => {
@@ -25,11 +24,9 @@ describe('exportEquipmentData', () => {
 
     // Mock Blob to intercept content
     blobContent = null;
-    blobOptions = null;
     globalThis.Blob = class FakeBlob {
-      constructor(content, options) {
+      constructor(content) {
         blobContent = content;
-        blobOptions = options;
       }
     };
 

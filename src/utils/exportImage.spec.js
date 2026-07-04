@@ -237,7 +237,7 @@ describe('exportScheduleAsImage', () => {
     expect(mockContext.fillText).toHaveBeenCalledWith('סרוק לייבוא', expect.any(Number), expect.any(Number));
   });
 
-  it('uses navigator.share when available and supported', async () => {
+  it('always downloads the image directly even when navigator.share is available', async () => {
     const shareSpy = vi.fn(() => Promise.resolve());
     const canShareSpy = vi.fn(() => true);
     vi.stubGlobal('navigator', {
@@ -261,9 +261,9 @@ describe('exportScheduleAsImage', () => {
       shareUrl: 'https://test.com/share'
     });
 
-    expect(canShareSpy).toHaveBeenCalled();
-    expect(shareSpy).toHaveBeenCalled();
-    expect(mockLink.click).not.toHaveBeenCalled();
+    expect(canShareSpy).not.toHaveBeenCalled();
+    expect(shareSpy).not.toHaveBeenCalled();
+    expect(mockLink.click).toHaveBeenCalled();
   });
 });
 

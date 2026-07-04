@@ -15,7 +15,7 @@ export function normalizeCoord(p) {
 }
 
 export function calculateBearing(lat1, lon1, lat2, lon2) {
-  let p1Lat = lat1, p1Lng = lon1, p2Lat = lat2, p2Lng = lon2;
+  let p1Lat, p1Lng, p2Lat, p2Lng;
   
   if (typeof lat1 === 'object' && lat1 !== null) {
     const p1 = normalizeCoord(lat1);

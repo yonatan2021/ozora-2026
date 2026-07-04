@@ -518,19 +518,12 @@ export async function exportScheduleAsImage({ groupedByDay, priorities, conflict
   fCtx.drawImage(canvas, 0, 0);
 
   const blob = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
-
-  if (navigator.share && navigator.canShare?.({ files: [new File([blob], 'schedule.png', { type: 'image/png' })] })) {
-    await navigator.share({
-      files: [new File([blob], 'ozora-2026-schedule.png', { type: 'image/png' })],
-    });
-  } else {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'ozora-2026-schedule.png';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ozora-2026-schedule.png';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export function exportScheduleToCsv({ groupedByDay, priorities = {}, conflicts, notes = {}, lang }) {
