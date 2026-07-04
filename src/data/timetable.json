@@ -498,7 +498,7 @@
     "day": "DAY 1",
     "stage": "PUMPUI",
     "start": "14:00",
-    "end": "15:30",
+    "end": "16:00",
     "endsNextDay": false,
     "artist": "Captain Hook",
     "type": "DJ / Live"
@@ -1508,7 +1508,7 @@
     "start": "11:00",
     "end": "13:00",
     "endsNextDay": false,
-    "artist": "Gerö",
+    "artist": "Gerő",
     "type": "DJ / Live"
   },
   {
@@ -2840,7 +2840,7 @@
     "start": "18:30",
     "end": "20:00",
     "endsNextDay": false,
-    "artist": "Enrico Sanguliano",
+    "artist": "Enrico Sangiuliano",
     "type": "DJ / Live"
   },
   {
@@ -3150,7 +3150,7 @@
     "day": "DAY 6",
     "stage": "PUMPUI",
     "start": "04:00",
-    "end": "05:30",
+    "end": "06:00",
     "endsNextDay": false,
     "artist": "Slym & Szoliver",
     "type": "DJ / Live"
@@ -4242,7 +4242,7 @@
     "day": "DAY 8",
     "stage": "PUMPUI",
     "start": "04:00",
-    "end": "05:30",
+    "end": "06:00",
     "endsNextDay": false,
     "artist": "Eltawave & Yury",
     "type": "DJ / Live"
