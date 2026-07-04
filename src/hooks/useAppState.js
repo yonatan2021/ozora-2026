@@ -80,7 +80,9 @@ export default function useAppState() {
   const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
 
   // 6. Pending import state
-  const [pendingImport, setPendingImport] = useState(() => {
+  const [pendingImport, setPendingImport] = useState(null);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
     if (shareParam) {
@@ -90,10 +92,11 @@ export default function useAppState() {
         .filter(Boolean);
       const newUrl = window.location.pathname + window.location.hash;
       window.history.replaceState({}, document.title, newUrl);
-      if (sharedSets.length > 0) return sharedSets;
+      if (sharedSets.length > 0) {
+        setPendingImport(sharedSets);
+      }
     }
-    return null;
-  });
+  }, []);
 
   // 7. Has camp state
   const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));

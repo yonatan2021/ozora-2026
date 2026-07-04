@@ -2,6 +2,8 @@ import { useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import timetableData from '../data/timetable.json';
 
+const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
+
 const DAY_MAP_INTERNAL_TO_URL = {
   'Warmup Sat': 'warmup-sat',
   'Warmup Sun': 'warmup-sun',
@@ -69,7 +71,7 @@ export default function useUrlSync() {
   const urlSetId = searchParams.get('set');
   const selectedSet = useMemo(() => {
     if (!urlSetId) return null;
-    return timetableData.find((s) => s.id === urlSetId) || null;
+    return TIMETABLE_SETS_BY_ID.get(urlSetId) || null;
   }, [urlSetId]);
 
   const setSelectedSet = useCallback((set) => {

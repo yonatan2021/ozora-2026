@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function useTheme(evalTime) {
   const [pinnedTheme, setPinnedTheme] = useState(() => {
@@ -12,8 +12,6 @@ export default function useTheme(evalTime) {
       localStorage.removeItem('ozora_pinned_theme');
     }
   }, [pinnedTheme]);
-
-  const lastThemeClassRef = useRef(localStorage.getItem('ozora_locked_theme_class') || 'theme-night');
 
   const activeThemeClass = useMemo(() => {
     if (pinnedTheme) {
@@ -35,8 +33,6 @@ export default function useTheme(evalTime) {
     } else {
       theme = 'theme-sunset';
     }
-    lastThemeClassRef.current = theme;
-    localStorage.setItem('ozora_locked_theme_class', theme);
     return theme;
   }, [pinnedTheme, evalTime]);
 
