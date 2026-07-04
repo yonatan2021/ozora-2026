@@ -4293,11 +4293,38 @@ body:has(.theme-sunrise)::before {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  gap: 8px;
 }
 
 .compare-header h3 {
   font-size: 1rem;
   color: var(--text-primary);
+  flex: 1;
+}
+
+.compare-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compare-share-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--glow-primary);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.compare-share-back-btn:hover {
+  background: var(--primary);
+  color: #fff;
 }
 
 .compare-close-btn {
@@ -4307,6 +4334,62 @@ body:has(.theme-sunrise)::before {
   cursor: pointer;
   padding: 4px;
 }
+
+/* Coordination notes */
+.coord-note-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  background: oklch(1 0 0 / 0.04);
+  transition: background 0.15s;
+}
+.coord-note-row:hover {
+  background: var(--glow-primary);
+}
+.coord-note-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.coord-note-text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.coord-note-edit {
+  display: flex;
+  gap: 6px;
+  margin-top: 5px;
+}
+.coord-note-input {
+  flex: 1;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  outline: none;
+}
+.coord-note-input:focus {
+  border-color: var(--primary);
+}
+.coord-note-save-btn {
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 
 .compare-legend {
   display: flex;

@@ -8,35 +8,45 @@ import { trackEvent } from '../utils/analytics';
 export default function FriendSchedules({ lang, timetableData, myFavorites, onSetClick, toggleFavorite, onShowToast }) {
   const [friends, setFriends] = useState(() => getFriends());
   const [expanded, setExpanded] = useState(false);
-  const [comparingFriend, setComparingFriend] = useState(null);
+  const [comparingFriendId, setComparingFriendId] = useState(null);
   const t = translations[lang];
 
   const friendEntries = Object.entries(friends);
   if (friendEntries.length === 0) return null;
 
-  const handleRemove = (name) => {
-    removeFriend(name);
+  const handleRemove = (friendId) => {
+    removeFriend(friendId);
     setFriends(getFriends());
     trackEvent('remove_friend');
     onShowToast(t.friendRemoved);
   };
 
-  const handleCompare = (name) => {
-    setComparingFriend(name);
+  const handleCompare = (friendId) => {
+    setComparingFriendId(friendId);
     trackEvent('compare_friend');
   };
 
-  if (comparingFriend) {
+  const handleCoordinationUpdate = () => {
+    setFriends(getFriends());
+  };
+
+  if (comparingFriendId) {
+    const friendData = friends[comparingFriendId];
     return (
       <CompareView
-        friendName={comparingFriend}
-        friendSetKeys={friends[comparingFriend].sets}
+        friendId={comparingFriendId}
+        friendName={friendData.name}
+        friendSetKeys={friendData.sets}
+        friendPriorities={friendData.priorities || {}}
+        coordinationNotes={friendData.coordinationNotes || {}}
         myFavorites={myFavorites}
         timetableData={timetableData}
         lang={lang}
         onSetClick={onSetClick}
-        onClose={() => setComparingFriend(null)}
+        onClose={() => setComparingFriendId(null)}
         onAddToFavorites={(id) => toggleFavorite(id, 'compare')}
+        onCoordinationUpdate={handleCoordinationUpdate}
+        onShowToast={onShowToast}
       />
     );
   }
@@ -51,18 +61,18 @@ export default function FriendSchedules({ lang, timetableData, myFavorites, onSe
 
       {expanded && (
         <div className="friend-list">
-          {friendEntries.map(([name, data]) => (
-            <div key={name} className="friend-card">
+          {friendEntries.map(([friendId, data]) => (
+            <div key={friendId} className="friend-card">
               <div className="friend-info">
-                <span className="friend-name">{name}</span>
+                <span className="friend-name">{data.name}</span>
                 <span className="friend-count">{data.sets.length} {t.friendSets}</span>
               </div>
               <div className="friend-actions">
-                <button onClick={() => handleCompare(name)} className="friend-action-btn">
+                <button onClick={() => handleCompare(friendId)} className="friend-action-btn">
                   <GitCompare size={14} />
                   <span>{t.compare}</span>
                 </button>
-                <button onClick={() => handleRemove(name)} className="friend-action-btn danger">
+                <button onClick={() => handleRemove(friendId)} className="friend-action-btn danger">
                   <Trash2 size={14} />
                   <span>{t.remove}</span>
                 </button>
