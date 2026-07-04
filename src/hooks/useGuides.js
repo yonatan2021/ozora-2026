@@ -40,6 +40,7 @@ function parseTopics(markdownBody) {
 
     topics.push({
       heading,
+      markdown: body,
       html: marked.parse(body)
     });
   }

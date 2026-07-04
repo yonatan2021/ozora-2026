@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import useGuides from '../hooks/useGuides';
 import { getGuideIcon } from '../utils/guideIcons';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
@@ -11,6 +12,33 @@ export default function FestivalGuide() {
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [openTopics, setOpenTopics] = useState({});
   const [showEquipment, setShowEquipment] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    const guideSlug = searchParams.get('guide');
+    const topicIndex = searchParams.get('topic');
+
+    if (tab === 'checklist' || tab === 'equipment') {
+      setShowEquipment(true);
+      setSelectedGuide(null);
+    } else if (guideSlug) {
+      const matched = guides.find(g => g.slug === guideSlug);
+      if (matched) {
+        setSelectedGuide(matched);
+        setShowEquipment(false);
+        if (topicIndex !== null) {
+          setOpenTopics({ [parseInt(topicIndex, 10)]: true });
+        } else {
+          setOpenTopics({});
+        }
+      }
+    } else {
+      setSelectedGuide(null);
+      setShowEquipment(false);
+      setOpenTopics({});
+    }
+  }, [searchParams, guides]);
 
   const toggleTopic = (index) => {
     const topic = selectedGuide?.topics?.[index];
@@ -25,11 +53,13 @@ export default function FestivalGuide() {
   };
 
   const handleBack = () => {
+    setSearchParams({});
     setSelectedGuide(null);
     setOpenTopics({});
   };
 
   const handleEquipmentBack = () => {
+    setSearchParams({});
     setShowEquipment(false);
   };
 

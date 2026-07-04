@@ -1,4 +1,4 @@
-import { getArtistConnections } from './connections';
+import { getArtistConnections } from './connections.js';
 
 // Custom translations for artists, days, and stages between Hebrew and English
 export const customTranslationMap = {
