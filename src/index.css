@@ -7024,5 +7024,228 @@ body:has(.theme-sunrise)::before {
   color: var(--accent);
 }
 
+/* --- Smart Search Upgrades Styles --- */
+.search-dropdown-menu-sections {
+  padding: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-menu-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.search-menu-clear-all {
+  background: none;
+  border: none;
+  color: var(--stage-visium);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  transition: var(--transition-smooth);
+}
+
+.search-menu-clear-all:hover {
+  background: rgba(255, 255, 255, 0.05);
+  text-shadow: 0 0 8px var(--stage-visium);
+}
+
+.search-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-history-item {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+  gap: 0.75rem;
+}
+
+.search-history-item:hover {
+  background: var(--surface-hover);
+}
+
+.history-icon {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.history-term {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.history-delete-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+/* Quick action horizontal scroll */
+.quick-filters-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem 1.25rem 0.5rem 1.25rem;
+  scrollbar-width: none; /* Firefox */
+}
+
+.quick-filters-scroll::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.quick-filter-chip {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  white-space: nowrap;
+}
+
+.quick-filter-chip:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary);
+  color: var(--text-primary);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Live pulsing status badge */
+.search-item-artist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.live-status-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ef4444;
+  letter-spacing: 0.05em;
+}
+
+.live-pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: live-pulse-anim 1.5s infinite;
+}
+
+@keyframes live-pulse-anim {
+  0% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Match Reason badges styling */
+.search-match-reason {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.35rem;
+  padding: 0.35rem 0.625rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--border-strong);
+  width: fit-content;
+}
+
+.app-container[style*="direction: rtl"] .search-match-reason {
+  border-left: none;
+  border-right: 2px solid var(--border-strong);
+}
+
+.reason-icon {
+  flex-shrink: 0;
+}
+
+.reason-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+/* Colors for reasons */
+.text-accent {
+  color: var(--stage-visium);
+}
+.text-info {
+  color: #3b82f6;
+}
+.text-success {
+  color: #22c55e;
+}
+.text-warning {
+  color: #eab308;
+}
+
+
 
 
