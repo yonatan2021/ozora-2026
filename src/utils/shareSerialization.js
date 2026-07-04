@@ -3,7 +3,7 @@
  * Supports UTF-8 / Hebrew characters.
  */
 export function compressPayload(payload) {
-  if (!payload) return '';
+  if (payload == null) return '';
   try {
     const jsonStr = JSON.stringify(payload);
     // Use TextEncoder to safely handle Unicode/Hebrew characters
