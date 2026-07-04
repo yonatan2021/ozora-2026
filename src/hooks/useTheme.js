@@ -23,17 +23,15 @@ export default function useTheme(evalTime) {
       return d.getTime();
     })();
     const hour = new Date(ts).getHours();
-    let theme = 'theme-night';
     if (hour >= 20 || hour < 5) {
-      theme = 'theme-night';
+      return 'theme-night';
     } else if (hour >= 5 && hour < 7) {
-      theme = 'theme-sunrise';
+      return 'theme-sunrise';
     } else if (hour >= 7 && hour < 18) {
-      theme = 'theme-day';
+      return 'theme-day';
     } else {
-      theme = 'theme-sunset';
+      return 'theme-sunset';
     }
-    return theme;
   }, [pinnedTheme, evalTime]);
 
   return {
