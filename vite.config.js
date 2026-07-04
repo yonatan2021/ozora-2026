@@ -21,8 +21,8 @@ export default defineConfig({
         theme_color: '#0b0713',
         background_color: '#0b0713',
         display: 'standalone',
-        scope: '/ozora-2026/',
-        start_url: '/ozora-2026/',
+        scope: '/',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -96,7 +96,7 @@ export default defineConfig({
       }
     })
   ],
-  base: '/ozora-2026/',
+  base: '/',
   resolve: {
     alias: {
       '@content': path.resolve(__dirname, 'content')
