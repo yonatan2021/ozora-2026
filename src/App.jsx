@@ -87,7 +87,6 @@ export default function App() {
   useEffect(() => {
     initializeGA4();
   }, []);
-
   useEffect(() => {
     let pageTitleEnglish = 'Timetable';
     let metaDescText = 'Complete Ozora Festival 2026 timetable. Search artists, filter by stages and days, and plan your schedules.';
@@ -116,15 +115,30 @@ export default function App() {
         : 'Complete Ozora Festival 2026 timetable. Search artists, filter by stages and days, and plan your schedules.';
     }
 
-    let pageTitle = pageTitleEnglish;
+    let pageTitle = '';
     if (isHe) {
-      if (pageTitleEnglish === 'Timetable') pageTitle = 'לוח הופעות';
-      else if (pageTitleEnglish === 'My Schedule') pageTitle = 'הלוח שלי';
-      else if (pageTitleEnglish === 'Map') pageTitle = 'מפה';
-      else if (pageTitleEnglish === 'Guide') pageTitle = 'מדריך';
+      if (pageTitleEnglish === 'Timetable') {
+        pageTitle = 'לוח הופעות וליינאפ אוזורה 2026 | Timetable';
+      } else if (pageTitleEnglish === 'My Schedule') {
+        pageTitle = 'הלוח שלי - הלוז המותאם אישית באוזורה | Favorites';
+      } else if (pageTitleEnglish === 'Map') {
+        pageTitle = 'מפה אופליין וניווט במות באוזורה | Festival Map';
+      } else if (pageTitleEnglish === 'Guide') {
+        pageTitle = 'מדריך פסטיבל אוזורה 2026 וצ\'ק ליסט ציוד | Guide';
+      }
+    } else {
+      if (pageTitleEnglish === 'Timetable') {
+        pageTitle = 'Ozora 2026 Timetable & Lineup';
+      } else if (pageTitleEnglish === 'My Schedule') {
+        pageTitle = 'My Custom Schedule - Ozora 2026';
+      } else if (pageTitleEnglish === 'Map') {
+        pageTitle = 'Ozora 2026 Festival Map (Offline)';
+      } else if (pageTitleEnglish === 'Guide') {
+        pageTitle = 'Ozora 2026 Survival Guide & Checklist';
+      }
     }
 
-    document.title = `Ozora 2026 - ${pageTitle}`;
+    document.title = pageTitle;
 
     // Update meta description
     let metaDesc = document.querySelector('meta[name="description"]');
@@ -144,12 +158,21 @@ export default function App() {
     }
     ogDesc.setAttribute('content', metaDescText);
 
+    // Update Dynamic Canonical Tag
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    const cleanPath = location.pathname === '/' ? '/timetable' : location.pathname;
+    canonicalLink.setAttribute('href', `https://ozora-2026-taupe.vercel.app${cleanPath}`);
+
     trackEvent('page_view', {
       page_path: location.pathname,
       page_title: pageTitleEnglish
     });
   }, [location, lang]);
-
   // Derive active set statuses directly in render
   const activeStatusMap = useMemo(() => {
     const statuses = {};
