@@ -156,4 +156,23 @@ describe('App End-to-End Flows', () => {
     metaDesc = document.querySelector('meta[name="description"]');
     expect(metaDesc.getAttribute('content')).toContain('The ultimate survival guide');
   });
+
+  it('should dynamically update the canonical link tag when switching tabs', () => {
+    renderApp();
+    
+    // Select english
+    fireEvent.click(screen.getByRole('button', { name: /English/i }));
+    
+    // Default /timetable
+    let canonical = document.querySelector('link[rel="canonical"]');
+    expect(canonical).toBeTruthy();
+    expect(canonical.getAttribute('href')).toBe('https://ozora-2026-taupe.vercel.app/timetable');
+
+    // Go to guide
+    const guideNavBtn = screen.getAllByRole('button', { name: /Guide/i })[0];
+    fireEvent.click(guideNavBtn);
+    
+    canonical = document.querySelector('link[rel="canonical"]');
+    expect(canonical.getAttribute('href')).toBe('https://ozora-2026-taupe.vercel.app/guide');
+  });
 });
