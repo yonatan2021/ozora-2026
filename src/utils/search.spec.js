@@ -34,4 +34,53 @@ describe('search utils', () => {
     const results = searchSchedule('astrix ozora', sampleSets);
     expect(results).toHaveLength(1);
   });
+
+  it('should match sets by related artists and members', () => {
+    // Shpongle has Simon Posford as member in artistConnections.json
+    const shpongleSets = [
+      { id: "s1", artist: "Shpongle", stage: "OZORA STAGE", day: "DAY 3", type: "Chill", start: "20:00" }
+    ];
+    // Search for 'Simon Posford' should match Shpongle
+    const results = searchSchedule('Simon Posford', shpongleSets, {
+      notes: {},
+      friends: {},
+      favorites: [],
+      priorities: {},
+      lang: 'en'
+    });
+    expect(results).toHaveLength(1);
+    expect(results[0].artist).toBe('Shpongle');
+    expect(results[0].matchReason.type).toBe('related');
+    expect(results[0].matchReason.detail).toBe('Simon Posford');
+  });
+
+  it('should match sets by personal notes', () => {
+    const results = searchSchedule('magic moment', sampleSets, {
+      notes: { "1": "This is a magic moment set!" },
+      friends: {},
+      favorites: [],
+      priorities: {},
+      lang: 'en'
+    });
+    expect(results).toHaveLength(1);
+    expect(results[0].artist).toBe('Astrix');
+    expect(results[0].matchReason.type).toBe('note');
+    expect(results[0].matchReason.detail).toContain('magic moment');
+  });
+
+  it('should match sets by friend name', () => {
+    const results = searchSchedule('Maya', sampleSets, {
+      notes: {},
+      friends: {
+        "friend-1": { name: "Maya", sets: ["2"], priorities: {}, notes: {}, coordinationNotes: {} }
+      },
+      favorites: [],
+      priorities: {},
+      lang: 'en'
+    });
+    expect(results).toHaveLength(1);
+    expect(results[0].artist).toBe('Siblicity');
+    expect(results[0].matchReason.type).toBe('friend');
+    expect(results[0].matchReason.detail).toBe('Maya');
+  });
 });

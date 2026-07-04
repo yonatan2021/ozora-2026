@@ -1,3 +1,5 @@
+import { getArtistConnections } from './connections';
+
 // Custom translations for artists, days, and stages between Hebrew and English
 export const customTranslationMap = {
   // Artists
@@ -237,13 +239,19 @@ function getSearchIndex(sets) {
 }
 
 // Smart bilingual multi-term search
-export function searchSchedule(query, sets) {
+export function searchSchedule(query, sets, context = {}) {
   const rawQuery = query.trim();
   if (!rawQuery) return [];
   
   const cleanedQuery = preprocessQuery(rawQuery);
   const queryTerms = cleanedQuery.split(/\s+/).filter(Boolean);
   if (queryTerms.length === 0) return [];
+
+  const notes = context.notes || {};
+  const friends = context.friends || {};
+  const favorites = context.favorites || [];
+  const priorities = context.priorities || {};
+  const lang = context.lang || 'en';
   
   const results = [];
   
@@ -259,6 +267,7 @@ export function searchSchedule(query, sets) {
 
     let allTermsMatch = true;
     let totalScore = 0;
+    let matchReason = null;
     
     for (let term of queryTerms) {
       let termMatches = false;
@@ -297,8 +306,69 @@ export function searchSchedule(query, sets) {
         termMatches = true;
         termScore = Math.max(termScore, 50 - (typeLower.length - term.length));
       }
+
+      // 3. Related artists & members (from artistConnections)
+      const connections = getArtistConnections(set.artist);
+      if (connections) {
+        for (let member of connections.members) {
+          const memberLower = member.name.toLowerCase();
+          if (memberLower.includes(term)) {
+            termMatches = true;
+            termScore = Math.max(termScore, 120);
+            matchReason = { type: 'related', detail: member.name };
+          }
+          for (let proj of member.otherProjects) {
+            const projLower = proj.toLowerCase();
+            if (projLower.includes(term)) {
+              termMatches = true;
+              termScore = Math.max(termScore, 110);
+              matchReason = { type: 'related', detail: proj };
+            }
+          }
+        }
+      }
+
+      // 4. Personal Notes match
+      const personalNote = notes[set.id] || '';
+      if (personalNote.toLowerCase().includes(term)) {
+        termMatches = true;
+        termScore = Math.max(termScore, 100);
+        matchReason = { type: 'note', detail: personalNote };
+      }
+
+      // 5. Friend Name / Friends' schedule match
+      for (let [friendId, friendData] of Object.entries(friends)) {
+        const friendNameLower = friendData.name.toLowerCase();
+        if (friendNameLower.includes(term) && friendData.sets.includes(set.id)) {
+          termMatches = true;
+          termScore = Math.max(termScore, 110);
+          matchReason = { type: 'friend', detail: friendData.name };
+        }
+        const coordNote = friendData.coordinationNotes?.[set.id] || '';
+        if (coordNote.toLowerCase().includes(term)) {
+          termMatches = true;
+          termScore = Math.max(termScore, 105);
+          matchReason = { type: 'coordination_note', detail: `${friendData.name}: ${coordNote}` };
+        }
+      }
+
+      // 6. Priority Match
+      const priorityVal = priorities[set.id];
+      if (priorityVal) {
+        const priorityLabels = {
+          must: lang === 'he' ? 'חובה' : 'must see',
+          want: lang === 'he' ? 'רוצה לראות' : 'want to see',
+          maybe: lang === 'he' ? 'אולי' : 'maybe'
+        };
+        const label = priorityLabels[priorityVal];
+        if (label && label.toLowerCase().includes(term)) {
+          termMatches = true;
+          termScore = Math.max(termScore, 90);
+          matchReason = { type: 'priority', detail: label };
+        }
+      }
       
-      // 3. Phonetic fuzzy match (word-by-word)
+      // 7. Phonetic fuzzy match (word-by-word)
       const normTerm = normalizePhonetics(term);
       
       if (normTerm) {
@@ -307,8 +377,6 @@ export function searchSchedule(query, sets) {
           const isPhoneticSub = normTerm.length >= 2 && normArtistWord.includes(normTerm);
           const distance = getEditDistance(normTerm, normArtistWord);
           
-          // If query has multiple terms, enforce exact matching (distance 0) for phonetic checks
-          // to prevent loose phonetic matches from polluting specific filters.
           let maxAllowedDistance = 0;
           if (queryTerms.length === 1) {
             if (normTerm.length >= 5) {
@@ -348,7 +416,7 @@ export function searchSchedule(query, sets) {
     
     if (allTermsMatch) {
       results.push({
-        set,
+        set: { ...set, matchReason },
         score: totalScore
       });
     }
