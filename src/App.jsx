@@ -1,164 +1,85 @@
-import { lazy, Suspense, useCallback, useMemo, useState, useEffect, useRef } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
-import TimetableGrid from './components/TimetableGrid';
-import ChronologicalFeed from './components/ChronologicalFeed';
-import StageListView from './components/StageListView';
 import SetModal from './components/SetModal';
 import LiveStatusModal from './components/LiveStatusModal';
-import MySchedule from './components/MySchedule';
-import FestivalGuide from './components/FestivalGuide';
-import { getSetStatus, getSetUniqueKey, migrateFavorites } from './utils/time';
+import { getSetStatus, getSetUniqueKey } from './utils/time';
 import { translations } from './utils/lang';
 import PsychedelicBackground from './components/PsychedelicBackground';
 import SacredGeometry from './components/SacredGeometry';
-import { Calendar, User, BookOpen, Heart, Map as MapIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, User, BookOpen, Heart, Map as MapIcon } from 'lucide-react';
 import CookieConsent from './components/CookieConsent';
 import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
-import StageLineupSelector from './components/StageLineupSelector';
-import { getStoredConsent, initializeGA4 } from './utils/consent';
+import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
-
-const VenueMap = lazy(() => import('./components/VenueMap'));
-
-const DAY_DATE_LABELS = {
-  'Warmup Sat': { he: 'יום -2 · 25/7', en: 'Day -2 · 25/7' },
-  'Warmup Sun': { he: 'יום -1 · 26/7', en: 'Day -1 · 26/7' },
-  'DAY 1': { he: 'יום 1 · 27/7', en: 'Day 1 · 27/7' },
-  'DAY 2': { he: 'יום 2 · 28/7', en: 'Day 2 · 28/7' },
-  'DAY 3': { he: 'יום 3 · 29/7', en: 'Day 3 · 29/7' },
-  'DAY 4': { he: 'יום 4 · 30/7', en: 'Day 4 · 30/7' },
-  'DAY 5': { he: 'יום 5 · 31/7', en: 'Day 5 · 31/7' },
-  'DAY 6': { he: 'יום 6 · 1/8', en: 'Day 6 · 1/8' },
-  'DAY 7': { he: 'יום 7 · 2/8', en: 'Day 7 · 2/8' },
-  'DAY 8': { he: 'יום 8 · 3/8', en: 'Day 8 · 3/8' },
-};
-
-const DATE_TO_DAY_MAP = {
-  '2026-07-25': 'Warmup Sat',
-  '2026-07-26': 'Warmup Sun',
-  '2026-07-27': 'DAY 1',
-  '2026-07-28': 'DAY 2',
-  '2026-07-29': 'DAY 3',
-  '2026-07-30': 'DAY 4',
-  '2026-07-31': 'DAY 5',
-  '2026-08-01': 'DAY 6',
-  '2026-08-02': 'DAY 7',
-  '2026-08-03': 'DAY 8'
-};
-
-const STAGES = [
-  "OZORA STAGE",
-  "PUMPUI",
-  "THE DOME",
-  "DRAGON NEST / COOKING GROOVE",
-  "VISIUM GARDEN",
-  "TEK ZERO (2000s Trance)"
-];
-
-const STAGE_CLASSES = {
-  "OZORA STAGE": "stage-ozora",
-  "PUMPUI": "stage-pumpui",
-  "THE DOME": "stage-dome",
-  "DRAGON NEST / COOKING GROOVE": "stage-dragon",
-  "VISIUM GARDEN": "stage-visium",
-  "TEK ZERO (2000s Trance)": "stage-tekzero"
-};
-
-const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
-const TIMETABLE_SETS_BY_KEY = new Map(timetableData.map(set => [getSetUniqueKey(set), set]));
-const DAYS = Array.from(new Set(timetableData.map(set => set.day)));
-const SETS_BY_DAY = timetableData.reduce((acc, set) => {
-  if (!acc[set.day]) acc[set.day] = [];
-  acc[set.day].push(set);
-  return acc;
-}, {});
+import useAppState from './hooks/useAppState';
+import useTheme from './hooks/useTheme';
+import useUrlSync, { DAY_MAP_INTERNAL_TO_URL } from './hooks/useUrlSync';
 
 export default function App() {
-  const isInitialLang = useRef(true);
-  const isInitialSim = useRef(true);
-  
-  const [lang, setLang] = useState(() => {
-    const saved = localStorage.getItem('ozora_lang');
-    return saved === 'en' ? 'en' : 'he';
-  });
-  const [activeTab, setActiveTab] = useState('timetable'); // 'timetable' | 'favorites' | 'map' | 'guide'
-  const [flyToStageId, setFlyToStageId] = useState(null);
-  const mapViewStateRef = useRef(null);
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('ozora_favs');
-    const parsed = saved ? JSON.parse(saved) : [];
-    return migrateFavorites(parsed, timetableData);
-  });
-  
-  const [selectedDay, setSelectedDay] = useState('Warmup Sat');
-  const [selectedStage, setSelectedStage] = useState('ALL');
-  const [viewMode, setViewMode] = useState(() => {
-    return localStorage.getItem('ozora_view_mode') || 'grid';
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    localStorage.setItem('ozora_view_mode', viewMode);
-  }, [viewMode]);
+  // Derive activeTab dynamically from path
+  const activeTab = useMemo(() => {
+    const path = location.pathname;
+    if (path.startsWith('/favorites')) return 'favorites';
+    if (path.startsWith('/map')) return 'map';
+    if (path.startsWith('/guide')) return 'guide';
+    return 'timetable'; // Default / fallback
+  }, [location.pathname]);
+
+  const appState = useAppState();
+
+  const {
+    lang,
+    setLang,
+    favorites,
+    setFavorites,
+    toggleFavorite,
+    childFavorites,
+    toastMessage,
+    setToastMessage,
+    notesVersion,
+    setNotesVersion,
+    isLiveModalOpen,
+    setIsLiveModalOpen,
+    pendingImport,
+    setPendingImport,
+    hasCamp,
+    handleCampChange,
+    hasCookieConsent,
+    setHasCookieConsent,
+  } = appState;
+
   const evalTime = useMemo(() => {
     const d = new Date();
     d.setFullYear(2026);
     return d.getTime();
   }, []);
-  const [selectedSet, setSelectedSet] = useState(null);
-  const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [notesVersion, setNotesVersion] = useState(0);
-  const [hasCamp, setHasCamp] = useState(() => !!localStorage.getItem('ozora_my_camp'));
-  const [hasCookieConsent, setHasCookieConsent] = useState(() => !!getStoredConsent());
 
-  const handleCampChange = useCallback(() => {
-    setHasCamp(!!localStorage.getItem('ozora_my_camp'));
-  }, []);
+  const {
+    pinnedTheme,
+    setPinnedTheme,
+    activeThemeClass,
+  } = useTheme(evalTime);
 
-  useEffect(() => {
-    const handleStorage = () => {
-      setHasCamp(!!localStorage.getItem('ozora_my_camp'));
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => {
-      window.removeEventListener('storage', handleStorage);
-    };
-  }, []);
+  const {
+    selectedDay,
+    setSelectedDay,
+    selectedStage,
+    setSelectedStage,
+    selectedSet,
+    setSelectedSet,
+  } = useUrlSync();
 
-  const [pinnedTheme, setPinnedTheme] = useState(() => {
-    return localStorage.getItem('ozora_pinned_theme') || null;
-  });
-
-  useEffect(() => {
-    if (pinnedTheme) {
-      localStorage.setItem('ozora_pinned_theme', pinnedTheme);
-    } else {
-      localStorage.removeItem('ozora_pinned_theme');
-    }
-  }, [pinnedTheme]);
-
-  const lastThemeClassRef = useRef(localStorage.getItem('ozora_locked_theme_class') || 'theme-night');
-  const [pendingImport, setPendingImport] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    const shareParam = params.get('share');
-    if (shareParam) {
-      const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
-      const sharedSets = indices
-        .map(idx => timetableData[idx])
-        .filter(Boolean);
-      const newUrl = window.location.pathname + window.location.hash;
-      window.history.replaceState({}, document.title, newUrl);
-      if (sharedSets.length > 0) return sharedSets;
-    }
-    return null;
-  });
-
-  const favoritesSet = useMemo(() => new Set(favorites), [favorites]);
+  const [flyToStageId, setFlyToStageId] = useState(null);
+  const mapViewStateRef = useRef(null);
 
   // Initialize Google Analytics (Consent Mode defaults to denied if not yet accepted)
   useEffect(() => {
@@ -169,41 +90,6 @@ export default function App() {
   useEffect(() => {
     trackEvent('tab_view', { tab_name: activeTab });
   }, [activeTab]);
-
-  // Sync lang to localStorage & track change
-  useEffect(() => {
-    localStorage.setItem('ozora_lang', lang);
-    if (isInitialLang.current) {
-      isInitialLang.current = false;
-    } else {
-      trackEvent('change_language', { target_language: lang });
-    }
-  }, [lang]);
-
-  // Save favorites to localStorage
-  useEffect(() => {
-    localStorage.setItem('ozora_favs', JSON.stringify(favorites));
-  }, [favorites]);
-
-  // Auto-dismiss toast message
-  useEffect(() => {
-    if (toastMessage) {
-      const timer = setTimeout(() => {
-        setToastMessage('');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toastMessage]);
-
-  // Synchronize selected day change
-  const handleDayChange = (dayName) => {
-    setSelectedDay(dayName);
-    trackEvent('select_day', { day_name: dayName });
-    const daySets = SETS_BY_DAY[dayName] || [];
-    if (selectedStage !== 'ALL' && !daySets.some(s => s.stage === selectedStage)) {
-      setSelectedStage('ALL');
-    }
-  };
 
   // Derive active set statuses directly in render
   const activeStatusMap = useMemo(() => {
@@ -242,59 +128,19 @@ export default function App() {
     setPendingImport(null);
   };
 
-  const handleStageChange = (stageName) => {
-    setSelectedStage(stageName);
-    trackEvent('select_stage', { stage_name: stageName });
-  };
-
-  const toggleFavorite = useCallback((id, origin = 'timetable') => {
-    const matchedSet = TIMETABLE_SETS_BY_ID.get(id);
-    if (!matchedSet) return;
-    const key = getSetUniqueKey(matchedSet);
-    const isFav = favoritesSet.has(key);
-    trackEvent('toggle_favorite', {
-      artist_name: matchedSet.artist,
-      stage_name: matchedSet.stage,
-      day_name: matchedSet.day,
-      action: isFav ? 'remove' : 'add',
-      origin
-    });
-    setFavorites(prev => 
-      prev.includes(key) ? prev.filter(f => f !== key) : [...prev, key]
-    );
-  }, [favoritesSet]);
-
-  const childFavorites = useMemo(() => (
-    favorites
-      .map(key => TIMETABLE_SETS_BY_KEY.get(key)?.id)
-      .filter(Boolean)
-  ), [favorites]);
-
-  // Filter sets based on selected day
-  const filteredSets = useMemo(() => SETS_BY_DAY[selectedDay] || [], [selectedDay]);
-
-  // Filter sets by selected stage — shared by desktop grid and mobile feed
-  const stageFilteredSets = useMemo(() => (
-    selectedStage === 'ALL'
-      ? filteredSets
-      : filteredSets.filter(set => set.stage === selectedStage)
-  ), [filteredSets, selectedStage]);
-
-  // Unique days list sorted by date
-  const days = DAYS;
-  const t = translations[lang];
-
   const handleShowOnMap = useCallback((stageName) => {
     setFlyToStageId(stageName);
-    setActiveTab('map');
+    navigate('/map');
     trackEvent('map_show_on_map', { stage_name: stageName });
-  }, []);
+  }, [navigate]);
 
-  const handleSelectSetFromSearch = (set) => {
-    setActiveTab('timetable');
-    handleDayChange(set.day);
-    setSelectedStage(set.stage);
-    setSelectedSet(set);
+  const handleSelectSetFromSearch = useCallback((set) => {
+    const urlVal = DAY_MAP_INTERNAL_TO_URL[set.day];
+    const params = new URLSearchParams();
+    if (urlVal) params.set('day', urlVal);
+    if (set.stage && set.stage !== 'ALL') params.set('stage', set.stage);
+    params.set('set', set.id);
+    navigate({ pathname: '/timetable', search: params.toString() });
     
     // Smooth scroll and flash highlight effect
     setTimeout(() => {
@@ -309,30 +155,9 @@ export default function App() {
         }, 2500);
       }
     }, 200);
-  };
+  }, [navigate]);
 
-  // Dynamic theme classifier based on simulated or current time
-  const getThemeClass = (ts) => {
-    if (pinnedTheme) {
-      return pinnedTheme;
-    }
-    const hour = new Date(ts).getHours();
-    let theme = 'theme-night';
-    if (hour >= 20 || hour < 5) {
-      theme = 'theme-night';
-    } else if (hour >= 5 && hour < 7) {
-      theme = 'theme-sunrise';
-    } else if (hour >= 7 && hour < 18) {
-      theme = 'theme-day';
-    } else {
-      theme = 'theme-sunset';
-    }
-    lastThemeClassRef.current = theme;
-    localStorage.setItem('ozora_locked_theme_class', theme);
-    return theme;
-  };
-
-  const activeThemeClass = getThemeClass(evalTime);
+  const t = translations[lang];
 
   return (
     <div className={`app-container ${activeThemeClass}`} style={{ direction: lang === 'he' ? 'rtl' : 'ltr' }}>
@@ -347,10 +172,10 @@ export default function App() {
         toggleFavorite={toggleFavorite}
         onSelectSet={handleSelectSetFromSearch}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => navigate(`/${tab}`)}
         hasCamp={hasCamp}
         onCampClick={() => {
-          setActiveTab('map');
+          navigate('/map');
           setFlyToStageId('my-camp');
         }}
         pinnedTheme={pinnedTheme}
@@ -359,179 +184,41 @@ export default function App() {
         onOpenLiveModal={() => setIsLiveModalOpen(true)}
       />
 
-      {/* Render Tab Contents */}
-      {activeTab === 'timetable' && (
-        <>
-
-          {/* Days Selector */}
-          <div className="days-selector stagger-slide-up" style={{ '--card-index': 0 }}>
-            {days.map(d => (
-              <button
-                key={d}
-                className={`day-btn ${selectedDay === d ? 'active' : ''}`}
-                onClick={() => handleDayChange(d)}
-              >
-                {DAY_DATE_LABELS[d]?.[lang === 'he' ? 'he' : 'en'] || d}
-              </button>
-            ))}
-          </div>
-
-          <StageLineupSelector
-            sets={filteredSets}
-            selectedStage={selectedStage}
-            onChange={handleStageChange}
-            lang={lang}
-            favorites={childFavorites}
-            toggleFavorite={toggleFavorite}
-            activeStatusMap={activeStatusMap}
-            onSetClick={setSelectedSet}
-          />
-
-          {/* View Mode Toggle */}
-          <div className="view-mode-selector-container stagger-slide-up" style={{ '--card-index': 0.5 }}>
-            <div className="view-mode-selector">
-              <button
-                className={`view-mode-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                onClick={() => {
-                  setViewMode('grid');
-                  trackEvent('select_view_mode', { mode: 'grid' });
-                }}
-              >
-                {t.viewModeGrid}
-              </button>
-              <button
-                className={`view-mode-btn ${viewMode === 'stages' ? 'active' : ''}`}
-                onClick={() => {
-                  setViewMode('stages');
-                  trackEvent('select_view_mode', { mode: 'stages' });
-                }}
-              >
-                {t.viewModeStages}
-              </button>
-            </div>
-          </div>
-
-          <main className="main-content">
-            {filteredSets.length === 0 ? (
-              <div className="empty-state">
-                <p>{t.noSetsFound}</p>
-              </div>
-            ) : viewMode === 'stages' ? (
-              <StageListView
-                lang={lang}
-                sets={stageFilteredSets}
-                favorites={childFavorites}
-                toggleFavorite={toggleFavorite}
-                onSetClick={setSelectedSet}
-                activeStatusMap={activeStatusMap}
-                selectedStage={selectedStage}
-              />
-            ) : (
-              <>
-                 {/* Desktop and Tablet grid view */}
-                <div className="desktop-view-only">
-                  <TimetableGrid
-                    lang={lang}
-                    sets={stageFilteredSets}
-                    favorites={childFavorites}
-                    toggleFavorite={toggleFavorite}
-                    onSetClick={setSelectedSet}
-                    activeStatusMap={activeStatusMap}
-                    simTime={evalTime}
-                    days={days}
-                    selectedDay={selectedDay}
-                    onDayChange={handleDayChange}
-                    dayLabels={DAY_DATE_LABELS}
-                  />
-                </div>
-                
-                {/* Mobile feed list */}
-                <div className="mobile-view-only">
-                  {stageFilteredSets.length === 0 ? (
-                    <div className="empty-state">
-                      <p>{t.noSetsFound}</p>
-                    </div>
-                  ) : (
-                    <ChronologicalFeed
-                      sets={stageFilteredSets}
-                      favorites={childFavorites}
-                      toggleFavorite={toggleFavorite}
-                      onSetClick={setSelectedSet}
-                      activeStatusMap={activeStatusMap}
-                    />
-                  )}
-                  {days.length > 1 && (() => {
-                    const currentIndex = days.indexOf(selectedDay);
-                    const hasPrev = currentIndex > 0;
-                    const hasNext = currentIndex < days.length - 1;
-                    const navigateToDay = (day) => {
-                      handleDayChange(day);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    };
-                    return (
-                      <div className="mobile-day-nav">
-                        <button
-                          className="mobile-day-nav-btn"
-                          disabled={!hasPrev}
-                          onClick={() => { if (hasPrev) navigateToDay(days[currentIndex - 1]); }}
-                        >
-                          <ChevronRight size={18} />
-                          {hasPrev && <span>{DAY_DATE_LABELS[days[currentIndex - 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex - 1]}</span>}
-                        </button>
-                        <button
-                          className="mobile-day-nav-btn"
-                          disabled={!hasNext}
-                          onClick={() => { if (hasNext) navigateToDay(days[currentIndex + 1]); }}
-                        >
-                          {hasNext && <span>{DAY_DATE_LABELS[days[currentIndex + 1]]?.[lang === 'he' ? 'he' : 'en'] || days[currentIndex + 1]}</span>}
-                          <ChevronLeft size={18} />
-                        </button>
-                      </div>
-                    );
-                  })()}
-                </div>
-              </>
-            )}
-          </main>
-        </>
-      )}
-
-      {activeTab === 'favorites' && (
-        <MySchedule
-          lang={lang}
-          timetableData={timetableData}
-          favorites={childFavorites}
-          toggleFavorite={toggleFavorite}
-          onSetClick={setSelectedSet}
-          simTime={evalTime}
-          isSimulated={false}
-          onShowToast={setToastMessage}
-          notesVersion={notesVersion}
-          activeThemeClass={activeThemeClass}
-        />
-      )}
-
-      {activeTab === 'map' && (
-        <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading map...</div>}>
-          <VenueMap
-            lang={lang}
-            timetableData={timetableData}
-            simTime={evalTime}
-            isSimulated={false}
-            activeStatusMap={activeStatusMap}
-            flyToStageId={flyToStageId}
-            onFlyToComplete={() => setFlyToStageId(null)}
-            onViewInTimetable={(set) => handleSelectSetFromSearch(set)}
-            savedViewState={mapViewStateRef.current}
-            onViewStateChange={(state) => { mapViewStateRef.current = state; }}
-            onCampChange={handleCampChange}
-          />
-        </Suspense>
-      )}
-
-      {activeTab === 'guide' && (
-        <FestivalGuide />
-      )}
+      <Outlet context={{
+        lang,
+        setLang,
+        favorites,
+        setFavorites,
+        toggleFavorite,
+        childFavorites,
+        toastMessage,
+        setToastMessage,
+        notesVersion,
+        setNotesVersion,
+        isLiveModalOpen,
+        setIsLiveModalOpen,
+        pendingImport,
+        setPendingImport,
+        hasCamp,
+        handleCampChange,
+        hasCookieConsent,
+        setHasCookieConsent,
+        pinnedTheme,
+        setPinnedTheme,
+        activeThemeClass,
+        selectedDay,
+        setSelectedDay,
+        selectedStage,
+        setSelectedStage,
+        selectedSet,
+        setSelectedSet,
+        activeStatusMap,
+        flyToStageId,
+        setFlyToStageId,
+        mapViewStateRef,
+        handleSelectSetFromSearch,
+        evalTime,
+      }} />
 
       <footer className="app-footer">
         <FooterInstallCTA lang={lang} />
@@ -547,28 +234,28 @@ export default function App() {
       <nav className="bottom-nav">
         <button 
           className={`bottom-nav-btn ${activeTab === 'timetable' ? 'active' : ''}`}
-          onClick={() => setActiveTab('timetable')}
+          onClick={() => navigate('/timetable')}
         >
           <Calendar size={20} />
           <span>{lang === 'he' ? 'לוח הופעות' : 'Timetable'}</span>
         </button>
         <button
           className={`bottom-nav-btn ${activeTab === 'favorites' ? 'active' : ''}`}
-          onClick={() => setActiveTab('favorites')}
+          onClick={() => navigate('/favorites')}
         >
           <User size={20} />
           <span>{lang === 'he' ? 'הלוח שלי' : 'My Schedule'}</span>
         </button>
         <button
           className={`bottom-nav-btn ${activeTab === 'map' ? 'active' : ''}`}
-          onClick={() => setActiveTab('map')}
+          onClick={() => navigate('/map')}
         >
           <MapIcon size={20} />
           <span>{lang === 'he' ? 'מפה' : 'Map'}</span>
         </button>
         <button
           className={`bottom-nav-btn ${activeTab === 'guide' ? 'active' : ''}`}
-          onClick={() => setActiveTab('guide')}
+          onClick={() => navigate('/guide')}
         >
           <BookOpen size={20} />
           <span>{lang === 'he' ? 'מדריך' : 'Guide'}</span>

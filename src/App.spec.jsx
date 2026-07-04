@@ -1,6 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import App from './App';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { routes } from './router';
+
+function renderApp(initialPath = '/timetable') {
+  const router = createMemoryRouter(routes, {
+    initialEntries: [initialPath],
+  });
+  return render(<RouterProvider router={router} />);
+}
 
 let mockNeedRefresh = false;
 const mockSetNeedRefresh = vi.fn();
@@ -37,7 +45,7 @@ describe('App End-to-End Flows', () => {
   });
 
   it('should support switching languages between Hebrew and English', () => {
-    render(<App />);
+    renderApp();
 
     // Trigger language switch to English
     const enBtn = screen.getByRole('button', { name: /English/i });
@@ -51,7 +59,7 @@ describe('App End-to-End Flows', () => {
   });
 
   it('should switch navigation tabs (Timetable, My Schedule, Guide)', () => {
-    render(<App />);
+    renderApp();
     
     // Switch to English to simplify element matching
     fireEvent.click(screen.getByRole('button', { name: /English/i }));
@@ -68,7 +76,7 @@ describe('App End-to-End Flows', () => {
   });
 
   it('should render the footer offline install CTA', () => {
-    render(<App />);
+    renderApp();
 
     fireEvent.click(screen.getByRole('button', { name: /English/i }));
 
@@ -77,7 +85,7 @@ describe('App End-to-End Flows', () => {
   });
 
   it('does not show the PWA update prompt by default', () => {
-    render(<App />);
+    renderApp();
 
     expect(screen.queryByText('גרסה חדשה זמינה')).not.toBeInTheDocument();
   });
@@ -86,7 +94,7 @@ describe('App End-to-End Flows', () => {
     mockNeedRefresh = true;
     localStorage.setItem('ozora_cookie_consent', JSON.stringify(storedCookieConsent));
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByText('גרסה חדשה זמינה')).toBeInTheDocument();
   });
@@ -94,7 +102,7 @@ describe('App End-to-End Flows', () => {
   it('does not show the PWA update prompt over unresolved cookie consent', () => {
     mockNeedRefresh = true;
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByText(/אנחנו משתמשים בקבצי עוגיות/i)).toBeInTheDocument();
@@ -104,7 +112,7 @@ describe('App End-to-End Flows', () => {
   it('shows the PWA update prompt after cookie consent is resolved', () => {
     mockNeedRefresh = true;
 
-    render(<App />);
+    renderApp();
 
     fireEvent.click(screen.getByRole('button', { name: 'דחיית עוגיות' }));
 
@@ -112,7 +120,7 @@ describe('App End-to-End Flows', () => {
   });
 
   it('should pin a specific theme and save state to localStorage', () => {
-    const { container } = render(<App />);
+    const { container } = renderApp();
 
     // Switch to English to simplify element matching
     fireEvent.click(screen.getByRole('button', { name: /English/i }));

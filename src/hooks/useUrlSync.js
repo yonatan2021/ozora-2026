@@ -4,7 +4,7 @@ import timetableData from '../data/timetable.json';
 
 const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
 
-const DAY_MAP_INTERNAL_TO_URL = {
+export const DAY_MAP_INTERNAL_TO_URL = {
   'Warmup Sat': 'warmup-sat',
   'Warmup Sun': 'warmup-sun',
   'DAY 1': 'day-1',
