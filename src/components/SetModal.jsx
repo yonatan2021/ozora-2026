@@ -6,9 +6,11 @@ import { getNote, setNote as saveNote, NOTE_MAX_LENGTH } from '../utils/notes';
 import { getSetUniqueKey } from '../utils/time';
 import { trackEvent } from '../utils/analytics';
 import ArtistNameWithFlags from './ArtistNameWithFlags';
+import { getArtistConnections, getSetsForArtist } from '../utils/connections';
 
-export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged, onShowOnMap }) {
+export default function SetModal({ set, lang, favorites, toggleFavorite, onClose, onNoteChanged, onShowOnMap, onSelectSet }) {
   const setKey = useMemo(() => set ? getSetUniqueKey(set) : null, [set]);
+  const connections = useMemo(() => set ? getArtistConnections(set.artist) : null, [set]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [noteText, setNoteText] = useState(() => setKey ? getNote(setKey) : '');
   const [prevSetKey, setPrevSetKey] = useState(setKey);
@@ -110,6 +112,17 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
     setDropdownOpen(false);
   };
 
+  const handleRelatedArtistClick = (artistName) => {
+    const sets = getSetsForArtist(artistName);
+    if (sets.length > 0 && onSelectSet) {
+      onSelectSet(sets[0]);
+      trackEvent('artist_related_click', {
+        from_artist: set.artist,
+        to_artist: artistName
+      });
+    }
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -143,6 +156,60 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
             </div>
           </div>
         </div>
+
+        {connections && (
+          <div className="modal-connections">
+            <h3 className="modal-connections-title">
+              {connections.isEnsemble ? t.projectMembersTitle : t.otherProjectsTitle}
+            </h3>
+            <div className="modal-connections-content">
+              {connections.isEnsemble ? (
+                <ul className="modal-connections-list">
+                  {connections.members.map(member => (
+                    <li key={member.name}>
+                      <strong>{member.name}</strong>
+                      {member.otherProjects.length > 0 && (
+                        <span>
+                          {' - '}
+                          {member.otherProjects.map((proj, idx) => (
+                            <span key={proj}>
+                              {idx > 0 && ', '}
+                              <button
+                                className="modal-connections-link-btn"
+                                onClick={() => handleRelatedArtistClick(proj)}
+                              >
+                                {proj}
+                              </button>
+                            </span>
+                          ))}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                connections.members.map(member => (
+                  <div key={member.name}>
+                    {t.alsoPerformsUnder
+                      .replace('{name}', member.name)
+                      .replace('{projects}', '')}
+                    {member.otherProjects.map((proj, idx) => (
+                      <span key={proj}>
+                        {idx > 0 && (idx === member.otherProjects.length - 1 ? (lang === 'he' ? ' ו-' : ' and ') : ', ')}
+                        <button
+                          className="modal-connections-link-btn"
+                          onClick={() => handleRelatedArtistClick(proj)}
+                        >
+                          {proj}
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="modal-note-section">
           <div className="modal-note-label">

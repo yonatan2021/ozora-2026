@@ -313,6 +313,7 @@ export default function App() {
         onClose={() => setSelectedSet(null)}
         onNoteChanged={() => setNotesVersion(v => v + 1)}
         onShowOnMap={handleShowOnMap}
+        onSelectSet={setSelectedSet}
       />
 
       <LiveStatusModal 
