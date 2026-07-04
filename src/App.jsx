@@ -157,6 +157,63 @@ export default function App() {
     }, 200);
   }, [navigate]);
 
+  const contextValue = useMemo(() => ({
+    lang,
+    setLang,
+    favorites,
+    setFavorites,
+    toggleFavorite,
+    childFavorites,
+    toastMessage,
+    setToastMessage,
+    notesVersion,
+    setNotesVersion,
+    isLiveModalOpen,
+    setIsLiveModalOpen,
+    pendingImport,
+    setPendingImport,
+    hasCamp,
+    handleCampChange,
+    hasCookieConsent,
+    setHasCookieConsent,
+    pinnedTheme,
+    setPinnedTheme,
+    activeThemeClass,
+    selectedDay,
+    setSelectedDay,
+    selectedStage,
+    setSelectedStage,
+    selectedSet,
+    setSelectedSet,
+    activeStatusMap,
+    flyToStageId,
+    setFlyToStageId,
+    mapViewStateRef,
+    handleSelectSetFromSearch,
+    evalTime,
+  }), [
+    lang,
+    favorites,
+    childFavorites,
+    toastMessage,
+    notesVersion,
+    isLiveModalOpen,
+    pendingImport,
+    hasCamp,
+    handleCampChange,
+    hasCookieConsent,
+    pinnedTheme,
+    activeThemeClass,
+    selectedDay,
+    selectedStage,
+    selectedSet,
+    activeStatusMap,
+    flyToStageId,
+    mapViewStateRef,
+    handleSelectSetFromSearch,
+    evalTime,
+  ]);
+
   const t = translations[lang];
 
   return (
@@ -184,41 +241,7 @@ export default function App() {
         onOpenLiveModal={() => setIsLiveModalOpen(true)}
       />
 
-      <Outlet context={{
-        lang,
-        setLang,
-        favorites,
-        setFavorites,
-        toggleFavorite,
-        childFavorites,
-        toastMessage,
-        setToastMessage,
-        notesVersion,
-        setNotesVersion,
-        isLiveModalOpen,
-        setIsLiveModalOpen,
-        pendingImport,
-        setPendingImport,
-        hasCamp,
-        handleCampChange,
-        hasCookieConsent,
-        setHasCookieConsent,
-        pinnedTheme,
-        setPinnedTheme,
-        activeThemeClass,
-        selectedDay,
-        setSelectedDay,
-        selectedStage,
-        setSelectedStage,
-        selectedSet,
-        setSelectedSet,
-        activeStatusMap,
-        flyToStageId,
-        setFlyToStageId,
-        mapViewStateRef,
-        handleSelectSetFromSearch,
-        evalTime,
-      }} />
+      <Outlet context={contextValue} />
 
       <footer className="app-footer">
         <FooterInstallCTA lang={lang} />
