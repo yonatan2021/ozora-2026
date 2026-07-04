@@ -31,14 +31,16 @@ const HEBREW_STOP_WORDS = new Set([
   'באילו', 'באיזה', 'באיזו', 'יום', 'שעה', 'הופעה', 'הופעות', 'במה', 'במות', 
   'פסטיבל', 'אחי', 'אפשר', 'רוצה', 'לראות', 'למצוא', 'לדעת', 'ללכת', 'שם', 
   'קשור', 'על', 'אל', 'אני', 'אנחנו', 'אתה', 'הוא', 'היא', 'הם', 'הן', 'יש', 'אין', 'כן', 'לא',
-  'לי', 'לו', 'לה', 'לנו', 'להם', 'ליד', 'תראה', 'תראו', 'תציג', 'תפתח', 'פתח'
+  'לי', 'לו', 'לה', 'לנו', 'להם', 'ליד', 'תראה', 'תראו', 'תציג', 'תפתח', 'פתח',
+  'שלי', 'לוח', 'הלוח', 'ליינאפ', 'הליינאפ', 'זמנים', 'מנגן', 'מנגנת', 'מנגנים'
 ]);
 
 const ENGLISH_STOP_WORDS = new Set([
   'when', 'where', 'how', 'who', 'what', 'of', 'the', 'with', 'in', 'on', 'at', 
   'to', 'for', 'a', 'an', 'is', 'are', 'was', 'were', 'show', 'shows', 'stage', 
   'stages', 'artist', 'artists', 'festival', 'want', 'see', 'find', 'know', 'go', 
-  'about', 'can', 'please', 'i', 'we', 'you', 'he', 'she', 'they', 'yes', 'no'
+  'about', 'can', 'please', 'i', 'we', 'you', 'he', 'she', 'they', 'yes', 'no',
+  'my', 'play', 'plays', 'playing', 'schedule', 'lineup'
 ]);
 
 const HEBREW_COUNTRY_NAMES = {
@@ -548,46 +550,78 @@ export default function OfflineChatbot({
       normalizedQuery.includes('information') ||
       normalizedQuery.includes('מדריכים');
 
-    // 2. SCORING ARTISTS USING SEARCHSCHEDULE
+    // 2. SCORING ARTISTS USING SEARCHSCHEDULE OR DIRECT MATCHING
     let bestArtistScore = 0;
     let matchedArtists = [];
 
-    const searchResults = searchSchedule(rawQuery, timetableData, { lang, favorites });
-    if (searchResults && searchResults.length > 0) {
-      const topArtist = searchResults[0].artist;
-      const topArtistLower = topArtist.toLowerCase();
+    // First try direct matching on unique artists (useful for natural language queries with extra terms)
+    const queryLower = normalizedQuery.toLowerCase();
+    const directMatched = uniqueArtistsWithMetadata.filter(a => {
+      const artistLower = a.lower;
       
-      const hasDirectNameMatch = normalizedQuery.includes(topArtistLower) || 
-        cleanTokens.some(t => {
-          const trans = customTranslationMap[t] || '';
-          return trans && topArtistLower.includes(trans);
-        }) ||
-        cleanTokens.some(t => {
-          const phon = normalizePhonetics(t);
-          const artPhons = uniqueArtistsWithMetadata.find(a => a.artist === topArtist)?.phoneticWords || [];
-          return phon && artPhons.includes(phon);
-        });
+      // 1. Direct English name match with word boundaries
+      const escapedArtist = artistLower.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`\\b${escapedArtist}\\b`, 'i');
+      if (regex.test(queryLower)) return true;
 
-      if (hasDirectNameMatch) {
-        bestArtistScore = 100;
-        matchedArtists = Array.from(new Set(searchResults.filter(s => {
-          const sLower = s.artist.toLowerCase();
-          return normalizedQuery.includes(sLower) || cleanTokens.some(t => {
+      // 2. Translated tokens match (translated from Hebrew)
+      if (translatedTokens.some(t => t.toLowerCase() === artistLower)) return true;
+      const combinedTranslated = translatedTokens.join(' ').toLowerCase();
+      const combinedRegex = new RegExp(`\\b${escapedArtist}\\b`, 'i');
+      if (combinedRegex.test(combinedTranslated)) return true;
+
+      // 3. Phonetic match (fuzzy Hebrew/English pronunciation)
+      const hasPhoneticMatch = cleanTokens.some(t => {
+        const phon = normalizePhonetics(t);
+        return phon && phon.length >= 3 && a.phoneticWords.includes(phon);
+      });
+      if (hasPhoneticMatch) return true;
+
+      return false;
+    }).map(a => a.artist);
+
+    if (directMatched.length > 0) {
+      bestArtistScore = 100;
+      matchedArtists = Array.from(new Set(directMatched));
+    } else {
+      // Fallback to searchSchedule for multi-term searches (like stage + day etc.)
+      const searchResults = searchSchedule(rawQuery, timetableData, { lang, favorites });
+      if (searchResults && searchResults.length > 0) {
+        const topArtist = searchResults[0].artist;
+        const topArtistLower = topArtist.toLowerCase();
+        
+        const hasDirectNameMatch = normalizedQuery.includes(topArtistLower) || 
+          cleanTokens.some(t => {
             const trans = customTranslationMap[t] || '';
-            return trans && sLower.includes(trans);
-          }) || cleanTokens.some(t => {
+            return trans && topArtistLower.includes(trans);
+          }) ||
+          cleanTokens.some(t => {
             const phon = normalizePhonetics(t);
-            const artPhons = uniqueArtistsWithMetadata.find(a => a.artist === s.artist)?.phoneticWords || [];
+            const artPhons = uniqueArtistsWithMetadata.find(a => a.artist === topArtist)?.phoneticWords || [];
             return phon && artPhons.includes(phon);
           });
-        }).map(s => s.artist)));
 
-        if (matchedArtists.length === 0) {
-          matchedArtists = [topArtist];
+        if (hasDirectNameMatch) {
+          bestArtistScore = 100;
+          matchedArtists = Array.from(new Set(searchResults.filter(s => {
+            const sLower = s.artist.toLowerCase();
+            return normalizedQuery.includes(sLower) || cleanTokens.some(t => {
+              const trans = customTranslationMap[t] || '';
+              return trans && sLower.includes(trans);
+            }) || cleanTokens.some(t => {
+              const phon = normalizePhonetics(t);
+              const artPhons = uniqueArtistsWithMetadata.find(a => a.artist === s.artist)?.phoneticWords || [];
+              return phon && artPhons.includes(phon);
+            });
+          }).map(s => s.artist)));
+
+          if (matchedArtists.length === 0) {
+            matchedArtists = [topArtist];
+          }
+        } else {
+          bestArtistScore = 75;
+          matchedArtists = Array.from(new Set(searchResults.map(s => s.artist))).slice(0, 3);
         }
-      } else {
-        bestArtistScore = 75;
-        matchedArtists = Array.from(new Set(searchResults.map(s => s.artist))).slice(0, 3);
       }
     }
 

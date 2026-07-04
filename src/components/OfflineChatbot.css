@@ -356,7 +356,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 10px 14px;
-  font-size: 0.85rem;
+  font-size: 16px; /* Prevents auto-zoom on iOS devices */
   color: #ffffff;
   outline: none;
   transition: all 0.2s ease;

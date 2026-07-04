@@ -123,4 +123,32 @@ describe('OfflineChatbot Navigation Intents and Keywords', () => {
     submitQuery('טיפ על שכנים');
     expect(screen.getByText(/קהילה ושכנים/i)).toBeInTheDocument();
   });
+
+  it('should respond with Astrix schedule when querying "מתי אסטריקס מנגן"', () => {
+    openChat();
+    submitQuery('מתי אסטריקס מנגן');
+    expect(screen.getByText(/מצאתי את/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Astrix/i).length).toBeGreaterThan(0);
+  });
+
+  it('should respond with Astrix schedule when querying "when does Astrix play?" in English mode', () => {
+    render(
+      <MemoryRouter>
+        <OfflineChatbot {...defaultProps} lang="en" />
+      </MemoryRouter>
+    );
+    const toggleBtn = screen.getByRole('button', { name: /Toggle offline chatbot/i });
+    fireEvent.click(toggleBtn);
+
+    const input = screen.getByPlaceholderText(/Ask anything freely/i);
+    fireEvent.change(input, { target: { value: 'when does Astrix play?' } });
+    fireEvent.submit(input.closest('form'));
+    
+    act(() => {
+      vi.advanceTimersByTime(600);
+    });
+
+    expect(screen.getByText(/I found/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Astrix/i).length).toBeGreaterThan(0);
+  });
 });
