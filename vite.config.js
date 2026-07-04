@@ -21,8 +21,8 @@ export default defineConfig({
         theme_color: '#0b0713',
         background_color: '#0b0713',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: process.env.GITHUB_ACTIONS === 'true' ? '/ozora-2026/' : '/',
+        start_url: process.env.GITHUB_ACTIONS === 'true' ? '/ozora-2026/' : '/',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -96,7 +96,7 @@ export default defineConfig({
       }
     })
   ],
-  base: '/',
+  base: process.env.GITHUB_ACTIONS === 'true' ? '/ozora-2026/' : '/',
   resolve: {
     alias: {
       '@content': path.resolve(__dirname, 'content')
