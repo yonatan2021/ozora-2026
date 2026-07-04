@@ -66,14 +66,15 @@ describe('FooterInstallCTA', () => {
     render(<FooterInstallCTA lang="en" />);
     fireEvent.click(screen.getByRole('button', { name: /Install now/i }));
 
-    expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_cta_view', {
+    expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_cta', {
+      action: 'view',
       source: 'footer',
       platform: 'ios',
     });
-    expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_cta_click', {
+    expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_cta', {
+      action: 'click',
       source: 'footer',
       platform: 'ios',
-      prompt_available: false,
     });
   });
 
@@ -100,7 +101,8 @@ describe('FooterInstallCTA', () => {
     expect(promptEvent.preventDefault).toHaveBeenCalled();
     expect(promptEvent.prompt).toHaveBeenCalled();
     await waitFor(() => {
-      expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_result', {
+      expect(window.gtag).toHaveBeenCalledWith('event', 'pwa_install_cta', {
+        action: 'result',
         source: 'footer',
         platform: 'android',
         outcome: 'dismissed',

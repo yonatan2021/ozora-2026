@@ -53,7 +53,7 @@ export default function TimetablePage() {
 
   const handleDayChange = (dayName) => {
     setSelectedDay(dayName);
-    trackEvent('select_day', { day_name: dayName });
+    trackEvent('timetable_filter_day', { day_name: dayName });
     const daySets = SETS_BY_DAY[dayName] || [];
     if (selectedStage !== 'ALL' && !daySets.some(s => s.stage === selectedStage)) {
       setSelectedStage('ALL');
@@ -62,7 +62,7 @@ export default function TimetablePage() {
 
   const handleStageChange = (stageName) => {
     setSelectedStage(stageName);
-    trackEvent('select_stage', { stage_name: stageName });
+    trackEvent('timetable_filter_stage', { stage_name: stageName });
   };
 
   const filteredSets = useMemo(() => SETS_BY_DAY[selectedDay] || [], [selectedDay]);
@@ -108,7 +108,7 @@ export default function TimetablePage() {
             className={`view-mode-btn ${viewMode === 'grid' ? 'active' : ''}`}
             onClick={() => {
               setViewMode('grid');
-              trackEvent('select_view_mode', { mode: 'grid' });
+              trackEvent('timetable_view_mode_change', { mode: 'grid' });
             }}
           >
             {t.viewModeGrid}
@@ -117,7 +117,7 @@ export default function TimetablePage() {
             className={`view-mode-btn ${viewMode === 'stages' ? 'active' : ''}`}
             onClick={() => {
               setViewMode('stages');
-              trackEvent('select_view_mode', { mode: 'stages' });
+              trackEvent('timetable_view_mode_change', { mode: 'stages' });
             }}
           >
             {t.viewModeStages}

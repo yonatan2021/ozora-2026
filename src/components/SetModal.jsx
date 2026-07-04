@@ -19,9 +19,40 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
     setNoteText(setKey ? getNote(setKey) : '');
   }
 
+  const openTimeRef = useRef(null);
+  const activeSetRef = useRef(null);
+
+  useEffect(() => {
+    if (activeSetRef.current && openTimeRef.current) {
+      const durationMs = Date.now() - openTimeRef.current;
+      trackEvent('artist_modal_close', {
+        artist_name: activeSetRef.current.artist,
+        duration_seconds: Math.round(durationMs / 1000)
+      });
+      openTimeRef.current = null;
+    }
+
+    activeSetRef.current = set;
+
+    if (set) {
+      openTimeRef.current = Date.now();
+    }
+
+    return () => {
+      if (activeSetRef.current && openTimeRef.current) {
+        const durationMs = Date.now() - openTimeRef.current;
+        trackEvent('artist_modal_close', {
+          artist_name: activeSetRef.current.artist,
+          duration_seconds: Math.round(durationMs / 1000)
+        });
+        openTimeRef.current = null;
+      }
+    };
+  }, [set]);
+
   useEffect(() => {
     if (set) {
-      trackEvent('view_set_details', {
+      trackEvent('artist_modal_open', {
         artist_name: set.artist,
         stage_name: set.stage,
         day_name: set.day
@@ -47,7 +78,7 @@ export default function SetModal({ set, lang, favorites, toggleFavorite, onClose
 
   const handleNoteBlur = () => {
     saveNote(setKey, noteText);
-    trackEvent('save_note', {
+    trackEvent('artist_note_save', {
       artist_name: set.artist,
       note_length: noteText.length
     });

@@ -121,7 +121,7 @@ export default function StageListView({ lang, sets, favorites, toggleFavorite, o
   const toggleStageExpand = (stageName) => {
     setExpandedStages(prev => {
       const nextVal = !prev[stageName];
-      trackEvent('toggle_stage_accordion', { stage_name: stageName, expanded: nextVal });
+      trackEvent('stage_lineup_expand', { stage_name: stageName, expanded: nextVal });
       return {
         ...prev,
         [stageName]: nextVal

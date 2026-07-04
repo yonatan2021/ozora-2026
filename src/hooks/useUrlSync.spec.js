@@ -1,6 +1,11 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import useUrlSync from './useUrlSync';
+import { trackEvent } from '../utils/analytics';
+
+vi.mock('../utils/analytics', () => ({
+  trackEvent: vi.fn(),
+}));
 
 let mockSearchString = '';
 const mockSetSearchParams = vi.fn((updater) => {
@@ -21,6 +26,7 @@ describe('useUrlSync hook', () => {
   beforeEach(() => {
     mockSearchString = '';
     mockSetSearchParams.mockClear();
+    vi.clearAllMocks();
   });
 
   it('should parse URL search parameters and expose states', () => {
@@ -32,6 +38,7 @@ describe('useUrlSync hook', () => {
     expect(result.current.selectedStage).toBe('PUMPUI');
     expect(result.current.selectedSet).not.toBeNull();
     expect(result.current.selectedSet.id).toBe('set-2');
+    expect(trackEvent).toHaveBeenCalledWith('deep_link_resolved');
   });
 
   it('should fallback to default values when search parameters are missing or invalid', () => {

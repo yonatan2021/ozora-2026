@@ -2,6 +2,8 @@ import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import useAppState from './useAppState';
 
+import { trackEvent } from '../utils/analytics';
+
 vi.mock('../utils/analytics', () => ({
   trackEvent: vi.fn(),
 }));
@@ -22,6 +24,7 @@ describe('useAppState hook', () => {
 
     expect(result.current.lang).toBe('en');
     expect(localStorage.getItem('ozora_lang')).toBe('en');
+    expect(trackEvent).toHaveBeenCalledWith('language_change', { target_language: 'en' });
   });
 
   it('should handle favorites, toggle favorites and map them to IDs', () => {
@@ -77,6 +80,7 @@ describe('useAppState hook', () => {
     expect(result.current.pendingImport).toHaveLength(2);
     expect(result.current.pendingImport[0].id).toBe('set-1');
     expect(result.current.pendingImport[1].id).toBe('set-2');
+    expect(trackEvent).toHaveBeenCalledWith('shared_link_opened');
 
     window.location = originalLocation;
   });

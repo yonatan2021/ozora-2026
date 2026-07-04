@@ -86,10 +86,12 @@ export default function App() {
     initializeGA4();
   }, []);
 
-  // Track tab views
   useEffect(() => {
-    trackEvent('tab_view', { tab_name: activeTab });
-  }, [activeTab]);
+    trackEvent('page_view', {
+      page_path: location.pathname,
+      page_title: document.title || location.pathname
+    });
+  }, [location]);
 
   // Derive active set statuses directly in render
   const activeStatusMap = useMemo(() => {
@@ -131,7 +133,7 @@ export default function App() {
   const handleShowOnMap = useCallback((stageName) => {
     setFlyToStageId(stageName);
     navigate('/map');
-    trackEvent('map_show_on_map', { stage_name: stageName });
+    trackEvent('map_stage_focus', { stage_name: stageName });
   }, [navigate]);
 
   const handleSelectSetFromSearch = useCallback((set) => {

@@ -1,6 +1,7 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import timetableData from '../data/timetable.json';
+import { trackEvent } from '../utils/analytics';
 
 const TIMETABLE_SETS_BY_ID = new Map(timetableData.map(set => [set.id, set]));
 
@@ -32,6 +33,13 @@ const DAY_MAP_URL_TO_INTERNAL = {
 
 export default function useUrlSync() {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.has('day') || searchParams.has('stage') || searchParams.has('set')) {
+      trackEvent('deep_link_resolved');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 1. Day sync
   const urlDay = searchParams.get('day');

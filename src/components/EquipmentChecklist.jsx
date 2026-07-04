@@ -54,13 +54,13 @@ export default function EquipmentChecklist() {
 
   const handleExportCsv = (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export_csv', { scope, onlyChecked });
+    trackEvent('equipment_export', { method: 'csv', scope, onlyChecked });
     exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked);
   };
 
   const handleExportJson = () => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export_json');
+    trackEvent('equipment_export', { method: 'json' });
     exportEquipmentToJson(checkedMap);
   };
 
@@ -95,7 +95,7 @@ export default function EquipmentChecklist() {
 
   const handlePrint = (onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_print', { onlyChecked });
+    trackEvent('equipment_export', { method: 'print', onlyChecked });
     if (onlyChecked) {
       document.body.classList.add('print-checked-only');
     } else {
@@ -113,7 +113,7 @@ export default function EquipmentChecklist() {
 
   const handleExportImage = async (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export_image', { scope, onlyChecked });
+    trackEvent('equipment_export', { method: 'image', scope, onlyChecked });
     await exportEquipmentImageAsPng({
       shared: scope === 'personal' ? null : equipmentData.shared,
       personal: scope === 'shared' ? null : equipmentData.personal,

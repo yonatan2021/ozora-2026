@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Star, Radio, Filter, MessageSquare, AlertTriangle, Pencil } from 'lucide-react';
 import { getSetStatus, getSetUniqueKey } from '../utils/time';
 import { translations } from '../utils/lang';
@@ -48,6 +48,12 @@ export default function MySchedule({
   const [editingName, setEditingName] = useState(false);
   const nameInputRef = useRef(null);
 
+  useEffect(() => {
+    if (favorites.length === 0) {
+      trackEvent('schedule_empty_state');
+    }
+  }, []);
+
   void notesVersion;
   const notes = getNotes();
 
@@ -56,7 +62,7 @@ export default function MySchedule({
     const nextPriority = cyclePriority(setKey);
     const set = timetableData.find(s => getSetUniqueKey(s) === setKey);
     if (set) {
-      trackEvent('set_priority', {
+      trackEvent('artist_priority_set', {
         artist_name: set.artist,
         priority: nextPriority || 'none'
       });
@@ -303,7 +309,7 @@ export default function MySchedule({
             onClick={() => {
               const next = !filterMust;
               setFilterMust(next);
-              trackEvent('toggle_filter_must', { filter_active: next });
+              trackEvent('schedule_filter_must', { filter_active: next });
             }}
           >
             <Filter size={14} />

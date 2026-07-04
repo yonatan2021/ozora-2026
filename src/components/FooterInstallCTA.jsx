@@ -36,7 +36,8 @@ export default function FooterInstallCTA({ lang }) {
     if (platform === 'desktop') return;
 
     trackOncePerSession('ozora_footer_install_cta_view_tracked', () => {
-      trackEvent('pwa_install_cta_view', {
+      trackEvent('pwa_install_cta', {
+        action: 'view',
         source: 'footer',
         platform,
       });
@@ -48,10 +49,10 @@ export default function FooterInstallCTA({ lang }) {
   const handleInstallClick = async () => {
     const promptAvailable = Boolean(deferredPrompt);
 
-    trackEvent('pwa_install_cta_click', {
+    trackEvent('pwa_install_cta', {
+      action: 'click',
       source: 'footer',
       platform,
-      prompt_available: promptAvailable,
     });
 
     if (!deferredPrompt) {
@@ -62,7 +63,8 @@ export default function FooterInstallCTA({ lang }) {
     try {
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
-      trackEvent('pwa_install_result', {
+      trackEvent('pwa_install_cta', {
+        action: 'result',
         source: 'footer',
         platform,
         outcome: choice?.outcome || 'unknown',

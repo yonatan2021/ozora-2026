@@ -17,7 +17,7 @@ export default function FestivalGuide() {
     const nextOpen = !openTopics[index];
     setOpenTopics(prev => ({ ...prev, [index]: !prev[index] }));
     if (topic) {
-      trackEvent('guide_topic_toggle', {
+      trackEvent('guide_section_expand', {
         topic_heading: topic.heading,
         action: nextOpen ? 'open' : 'close'
       });
@@ -25,13 +25,11 @@ export default function FestivalGuide() {
   };
 
   const handleBack = () => {
-    trackEvent('guide_back_click');
     setSelectedGuide(null);
     setOpenTopics({});
   };
 
   const handleEquipmentBack = () => {
-    trackEvent('guide_back_click');
     setShowEquipment(false);
   };
 
@@ -110,7 +108,7 @@ export default function FestivalGuide() {
           style={{ '--card-index': 0 }}
           onClick={() => {
             setShowEquipment(true);
-            trackEvent('guide_card_click', { guide_title: 'ציוד לפסטיבל' });
+            trackEvent('guide_section_open', { guide_title: 'ציוד לפסטיבל' });
           }}
         >
           <div className="guide-card-icon">
@@ -128,7 +126,7 @@ export default function FestivalGuide() {
               style={{ '--card-index': index + 1 }}
               onClick={() => {
                 setSelectedGuide(guide);
-                trackEvent('guide_card_click', { guide_title: guide.title });
+                trackEvent('guide_section_open', { guide_title: guide.title });
               }}
             >
               <div className="guide-card-icon">

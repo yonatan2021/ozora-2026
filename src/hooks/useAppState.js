@@ -21,7 +21,7 @@ export default function useAppState() {
     if (isInitialLang.current) {
       isInitialLang.current = false;
     } else {
-      trackEvent('change_language', { target_language: lang });
+      trackEvent('language_change', { target_language: lang });
     }
   }, [lang]);
 
@@ -86,6 +86,7 @@ export default function useAppState() {
     const params = new URLSearchParams(window.location.search);
     const shareParam = params.get('share');
     if (shareParam) {
+      trackEvent('shared_link_opened');
       const indices = shareParam.split(',').map(Number).filter(n => !isNaN(n));
       const sharedSets = indices
         .map(idx => timetableData[idx])
