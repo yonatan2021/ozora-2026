@@ -80,8 +80,9 @@ function countSectionItems(section) {
   return section.topics.reduce((sum, t) => sum + t.items.length, 0);
 }
 
-function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night') {
+function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', lang = 'he') {
   const isDay = theme === 'theme-day';
+  const isHe = lang === 'he';
   let y = startY;
 
   ctx.textAlign = 'center';
@@ -90,31 +91,48 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night') {
   ctx.fillText(section.title, WIDTH / 2, y);
   y += 44;
 
-  ctx.textAlign = 'start';
+  const headingX = isHe ? WIDTH - PADDING : PADDING;
+  const itemX = isHe ? WIDTH - PADDING - 18 : PADDING + 18;
+
   for (const topic of section.topics) {
+    ctx.textAlign = isHe ? 'right' : 'start';
     ctx.fillStyle = isDay ? '#5a30a3' : '#c9a8ff';
     ctx.font = "700 19px 'Exo 2', 'Heebo', sans-serif";
-    ctx.fillText(topic.heading, PADDING, y);
+    ctx.fillText(topic.heading, headingX, y);
     y += 30;
 
     for (const item of topic.items) {
       const checked = !!checkedMap[item.id];
       ctx.font = "400 16px 'Exo 2', 'Heebo', sans-serif";
+      ctx.textAlign = isHe ? 'right' : 'start';
+
       if (isDay) {
         if (checked) {
           ctx.fillStyle = '#1e7e34';
-          ctx.fillText(`✓  ${item.label}`, PADDING + 18, y);
+          if (isHe) {
+            ctx.fillText(`${item.label}  ✓`, itemX, y);
+          } else {
+            ctx.fillText(`✓  ${item.label}`, itemX, y);
+          }
         } else {
           ctx.fillStyle = 'rgba(51, 34, 68, 0.35)';
-          ctx.fillText('○', PADDING + 18, y);
+          ctx.fillText('○', itemX, y);
           ctx.fillStyle = 'rgba(51, 34, 68, 0.45)';
           const spacing = ctx.measureText('○  ').width;
-          ctx.fillText(item.label, PADDING + 18 + spacing, y);
+          if (isHe) {
+            ctx.fillText(item.label, itemX - spacing, y);
+          } else {
+            ctx.fillText(item.label, itemX + spacing, y);
+          }
         }
       } else {
         ctx.fillStyle = checked ? '#7be88a' : 'rgba(255,255,255,0.35)';
         const mark = checked ? '✓' : '○';
-        ctx.fillText(`${mark}  ${item.label}`, PADDING + 18, y);
+        if (isHe) {
+          ctx.fillText(`${item.label}  ${mark}`, itemX, y);
+        } else {
+          ctx.fillText(`${mark}  ${item.label}`, itemX, y);
+        }
       }
       y += 26;
     }
@@ -124,7 +142,7 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night') {
   return y;
 }
 
-export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, onlyChecked = false, theme = 'theme-night' }) {
+export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, onlyChecked = false, theme = 'theme-night', lang = 'he' }) {
   const filterSection = (section) => {
     if (!section) return null;
     const filteredTopics = section.topics.map(topic => {
@@ -175,7 +193,7 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
   }
 
   for (const section of sections) {
-    y = drawSection(ctx, section, checkedMap, y, theme);
+    y = drawSection(ctx, section, checkedMap, y, theme, lang);
   }
 
   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));

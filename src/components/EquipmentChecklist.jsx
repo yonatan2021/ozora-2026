@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Image as ImageIcon, Users, User, Info, Share2, FileSpreadsheet, Printer, Download, Upload, Search, X } from 'lucide-react';
 import equipmentData from '../data/equipmentChecklist.json';
 import useEquipmentChecklist from '../hooks/useEquipmentChecklist';
@@ -19,6 +20,7 @@ const highlightText = (text, highlight) => {
 };
 
 export default function EquipmentChecklist() {
+  const { lang = 'he' } = useOutletContext() || {};
   const [activeKey, setActiveKey] = useState('shared');
   const [openTopics, setOpenTopics] = useState({});
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
@@ -118,7 +120,8 @@ export default function EquipmentChecklist() {
       shared: scope === 'personal' ? null : equipmentData.shared,
       personal: scope === 'shared' ? null : equipmentData.personal,
       checkedMap,
-      onlyChecked
+      onlyChecked,
+      lang
     });
   };
 

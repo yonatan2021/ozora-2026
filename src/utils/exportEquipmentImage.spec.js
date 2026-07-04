@@ -100,13 +100,60 @@ describe('exportEquipmentImageAsPng', () => {
       shared: multiSection,
       personal: null,
       checkedMap: { 'shared-tents': true },
-      onlyChecked: true
+      onlyChecked: true,
+      lang: 'en'
     });
 
     const calls = fillTextSpy.mock.calls.map(call => call[0]);
     expect(calls).toContain('✓  אוהלים');
     expect(calls).not.toContain('○  צילייה');
     expect(calls).not.toContain('✓  צילייה');
+  });
+
+  it('exports in RTL format when lang is he', async () => {
+    const fillTextSpy = vi.fn();
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+      fillRect: vi.fn(),
+      createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      fillText: fillTextSpy,
+      measureText: vi.fn(() => ({ width: 50 })),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      drawImage: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      closePath: vi.fn(),
+      scale: vi.fn(),
+    }));
+
+    const multiSection = {
+      title: 'ציוד שטח (קבוצתי)',
+      topics: [
+        {
+          id: 'shelter',
+          heading: 'מחסה וצל',
+          items: [
+            { id: 'shared-tents', label: 'אוהלים' }
+          ]
+        }
+      ]
+    };
+
+    await exportEquipmentImageAsPng({
+      shared: multiSection,
+      personal: null,
+      checkedMap: { 'shared-tents': true },
+      onlyChecked: true,
+      lang: 'he'
+    });
+
+    const calls = fillTextSpy.mock.calls.map(call => call[0]);
+    expect(calls).toContain('אוהלים  ✓');
   });
 
   it('excludes empty topics and empty sections when onlyChecked is true', async () => {
@@ -162,7 +209,8 @@ describe('exportEquipmentImageAsPng', () => {
       shared: sharedSection,
       personal: personalSection,
       checkedMap: { 'shared-item1': true },
-      onlyChecked: true
+      onlyChecked: true,
+      lang: 'en'
     });
 
     const calls = fillTextSpy.mock.calls.map(call => call[0]);
