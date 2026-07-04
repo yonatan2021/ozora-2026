@@ -221,15 +221,14 @@ export default function TimetablePage() {
                   activeStatusMap={activeStatusMap}
                 />
               )}
+              <DayBottomNavigation
+                days={DAYS}
+                selectedDay={selectedDay}
+                onDayChange={handleDayChange}
+                lang={lang}
+                dayLabels={DAY_DATE_LABELS}
+              />
             </div>
-
-            <DayBottomNavigation
-              days={DAYS}
-              selectedDay={selectedDay}
-              onDayChange={handleDayChange}
-              lang={lang}
-              dayLabels={DAY_DATE_LABELS}
-            />
           </>
         )}
       </main>
