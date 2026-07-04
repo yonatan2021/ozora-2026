@@ -1,106 +1,261 @@
 [
   {
     "name": "Simon Posford",
-    "projects": ["Hallucinogen", "Shpongle", "Younger Brother"]
+    "projects": [
+      "Hallucinogen",
+      "Shpongle",
+      "Younger Brother"
+    ]
   },
   {
     "name": "Benji Vaughan",
-    "projects": ["Benji Vaughan", "Prometheus", "Younger Brother"]
+    "projects": [
+      "Benji Vaughan",
+      "Prometheus",
+      "Younger Brother"
+    ]
   },
   {
     "name": "Raja Ram",
-    "projects": ["Shpongle", "Raja Ram & Lucas"]
+    "projects": [
+      "Shpongle",
+      "Raja Ram & Lucas"
+    ]
   },
   {
     "name": "Lucas O'Brien",
-    "projects": ["Raja Ram & Lucas", "Lucas in Dub"]
+    "projects": [
+      "Raja Ram & Lucas",
+      "Lucas in Dub"
+    ]
   },
   {
     "name": "Ajja",
-    "projects": ["Ajja", "Undefined Behavior", "Novelty Engine", "Ajja & Tanina"]
+    "projects": [
+      "Ajja",
+      "Undefined Behavior",
+      "Novelty Engine",
+      "Ajja & Tanina"
+    ]
   },
   {
     "name": "Gaudi",
-    "projects": ["Gaudi", "Gaudi + Don Letts + Earl 16", "Novelty Engine"]
+    "projects": [
+      "Gaudi",
+      "Gaudi + Don Letts + Earl 16",
+      "Novelty Engine"
+    ]
   },
   {
     "name": "Eitan Reiter",
-    "projects": ["Out of Orbit", "Abstrakt"]
+    "projects": [
+      "Out of Orbit",
+      "Abstrakt"
+    ]
   },
   {
     "name": "Nimrod Gorovich",
-    "projects": ["Gorovich", "Abstrakt"]
+    "projects": [
+      "Gorovich",
+      "Abstrakt"
+    ]
   },
   {
     "name": "Merv Pepler",
-    "projects": ["Eat Static", "Strontium Dogs"]
+    "projects": [
+      "Eat Static",
+      "Strontium Dogs"
+    ]
   },
   {
     "name": "Nektarios Meidanis",
-    "projects": ["Martian Arts", "Strontium Dogs"]
+    "projects": [
+      "Martian Arts",
+      "Strontium Dogs",
+      "Atia",
+      "Atia in Peace"
+    ]
   },
   {
     "name": "Avi Shmailov",
-    "projects": ["Astrix", "Moonclipse"]
+    "projects": [
+      "Astrix",
+      "Moonclipse"
+    ]
   },
   {
     "name": "Yuli Fershtat",
-    "projects": ["Yuli Fershtat", "Perfect Sphere"]
+    "projects": [
+      "Yuli Fershtat",
+      "Perfect Sphere"
+    ]
   },
   {
     "name": "Greg Hunter",
-    "projects": ["Greg Hunter", "Dubsahara Meets Vlastur"]
+    "projects": [
+      "Greg Hunter",
+      "Dubsahara Meets Vlastur"
+    ]
   },
   {
     "name": "Vlastur",
-    "projects": ["Vlastur", "Dubsahara Meets Vlastur"]
+    "projects": [
+      "Vlastur",
+      "Dubsahara Meets Vlastur"
+    ]
   },
   {
     "name": "Yaegon Lamagaia",
-    "projects": ["Merkaba", "Kalya Scintilla"]
+    "projects": [
+      "Merkaba",
+      "Kalya Scintilla"
+    ]
   },
   {
     "name": "Breger",
-    "projects": ["Breger", "Broken Breger"]
+    "projects": [
+      "Breger",
+      "Broken Breger"
+    ]
   },
   {
     "name": "Switch Nollie",
-    "projects": ["Switch Nollie", "Switch Nollie & Tsu"]
+    "projects": [
+      "Switch Nollie",
+      "Switch Nollie & Tsu"
+    ]
   },
   {
     "name": "Tsu",
-    "projects": ["Tsu", "Switch Nollie & Tsu"]
+    "projects": [
+      "Tsu",
+      "Switch Nollie & Tsu"
+    ]
   },
   {
     "name": "Meo Culpa",
-    "projects": ["Meo Culpa", "Meo Culpa & Zakhorov"]
+    "projects": [
+      "Meo Culpa",
+      "Meo Culpa & Zakhorov"
+    ]
   },
   {
     "name": "Zakhorov",
-    "projects": ["Zakhorov", "Meo Culpa & Zakhorov"]
+    "projects": [
+      "Zakhorov",
+      "Meo Culpa & Zakhorov"
+    ]
   },
   {
     "name": "Marysia Osu",
-    "projects": ["Marysia Osu", "Marysia Osu & Kibir La Amlak"]
+    "projects": [
+      "Marysia Osu",
+      "Marysia Osu & Kibir La Amlak"
+    ]
   },
   {
     "name": "Sundi",
-    "projects": ["Sundi", "Sundi Jr & Paradiddle"]
+    "projects": [
+      "Sundi",
+      "Sundi Jr & Paradiddle"
+    ]
   },
   {
     "name": "Atia",
-    "projects": ["Atia", "Atia in Peace"]
+    "projects": [
+      "Atia",
+      "Atia in Peace"
+    ]
   },
   {
     "name": "Giuseppe",
-    "projects": ["Giuseppe", "Giuseppe in Dub"]
+    "projects": [
+      "Giuseppe",
+      "Giuseppe in Dub"
+    ]
   },
   {
     "name": "Grouch",
-    "projects": ["Grouch", "Grouch in Dub"]
+    "projects": [
+      "Grouch",
+      "Grouch in Dub"
+    ]
   },
   {
     "name": "Koxbox",
-    "projects": ["Koxbox", "Koxbox / Saiko Pod"]
+    "projects": [
+      "Koxbox",
+      "Koxbox / Saiko Pod"
+    ]
+  },
+  {
+    "name": "Tristan",
+    "projects": [
+      "Tristan",
+      "8ternal Beings"
+    ]
+  },
+  {
+    "name": "Regan",
+    "projects": [
+      "Regan",
+      "8ternal Beings"
+    ]
+  },
+  {
+    "name": "Jokasti Alimonos",
+    "projects": [
+      "Jokasti Alimonos",
+      "Atia",
+      "Atia in Peace"
+    ]
+  },
+  {
+    "name": "Jens Zygar",
+    "projects": [
+      "Jens Zygar",
+      "Gong Zen",
+      "Star Sounds Orchestra"
+    ]
+  },
+  {
+    "name": "Ralph Freund",
+    "projects": [
+      "Ralph Freund",
+      "Braincell",
+      "Rastaliens"
+    ]
+  },
+  {
+    "name": "Ozzy Cetin",
+    "projects": [
+      "Ozzy Cetin",
+      "Mysticism",
+      "Ramizes"
+    ]
+  },
+  {
+    "name": "Twisted Sibling (Tetrameth & Shadow FX)",
+    "projects": [
+      "Twisted Sibling (Tetrameth & Shadow FX)",
+      "Tetrameth",
+      "Shadow FX"
+    ]
+  },
+  {
+    "name": "Alpha Portal (Ace Ventura & Astrix)",
+    "projects": [
+      "Alpha Portal (Ace Ventura & Astrix)",
+      "Ace Ventura",
+      "Astrix"
+    ]
+  },
+  {
+    "name": "Killerwatts (Avalon & Tristan)",
+    "projects": [
+      "Killerwatts (Avalon & Tristan)",
+      "Avalon",
+      "Tristan"
+    ]
   }
 ]
