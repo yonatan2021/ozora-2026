@@ -5,7 +5,11 @@ const MAX_FRIENDS = 10;
 export function getMyScheduleId() {
   let myId = localStorage.getItem(MY_ID_KEY);
   if (!myId) {
-    myId = Math.random().toString(36).substring(2, 10);
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      myId = crypto.randomUUID().replace(/-/g, '').substring(0, 8);
+    } else {
+      myId = Math.random().toString(36).substring(2, 10).padEnd(8, 'x');
+    }
     localStorage.setItem(MY_ID_KEY, myId);
   }
   return myId;
@@ -24,6 +28,9 @@ function saveFriendsData(friends) {
 }
 
 export function saveFriend(id, data) {
+  if (!id || !data) {
+    return false;
+  }
   const friends = getFriends();
   if (Object.keys(friends).length >= MAX_FRIENDS && !friends[id]) {
     return false;
@@ -53,7 +60,7 @@ export function saveCoordinationNote(friendId, setKey, noteText) {
     friends[friendId].coordinationNotes = {};
   }
   if (noteText) {
-    friends[friendId].coordinationNotes[setKey] = noteText.slice(0, 100);
+    friends[friendId].coordinationNotes[setKey] = String(noteText).slice(0, 100);
   } else {
     delete friends[friendId].coordinationNotes[setKey];
   }
