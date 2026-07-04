@@ -259,6 +259,7 @@ export default function App() {
         setPinnedTheme={setPinnedTheme}
         activeThemeClass={activeThemeClass}
         onOpenLiveModal={() => setIsLiveModalOpen(true)}
+        evalTime={evalTime}
       />
 
       <Outlet context={contextValue} />

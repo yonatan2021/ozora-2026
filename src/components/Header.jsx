@@ -26,7 +26,8 @@ export default function Header({
   pinnedTheme,
   setPinnedTheme,
   activeThemeClass,
-  onOpenLiveModal
+  onOpenLiveModal,
+  evalTime
 }) {
   const t = translations[lang];
   const isHe = lang === 'he';
@@ -172,6 +173,7 @@ export default function Header({
         favorites={favorites}
         toggleFavorite={toggleFavorite}
         onSelectSet={onSelectSet}
+        evalTime={evalTime}
       />
     </header>
   );

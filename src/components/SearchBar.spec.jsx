@@ -27,6 +27,25 @@ describe('SearchBar Component', () => {
     
     const suggestionBtn = screen.getByText('Astrix');
     fireEvent.click(suggestionBtn);
-    expect(mockSelect).toHaveBeenCalledWith(mockData[0]);
+    expect(mockSelect).toHaveBeenCalledWith(expect.objectContaining({ id: '1', artist: 'Astrix' }));
+  });
+
+  it('should display quick tags when empty and focused', () => {
+    render(
+      <SearchBar 
+        lang="en" 
+        timetableData={mockData} 
+        favorites={[]} 
+        toggleFavorite={vi.fn()} 
+        onSelectSet={mockSelect} 
+      />
+    );
+    
+    const input = screen.getByPlaceholderText(/Search artist, stage/i);
+    fireEvent.focus(input);
+    
+    expect(screen.getByText(/⚡ Live/i)).toBeInTheDocument();
+    expect(screen.getByText(/🕒 Next Up/i)).toBeInTheDocument();
+    expect(screen.getByText(/⭐ My Schedule/i)).toBeInTheDocument();
   });
 });
