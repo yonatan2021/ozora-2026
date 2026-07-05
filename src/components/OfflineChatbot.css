@@ -10,7 +10,7 @@
 
 @media (max-width: 900px) {
   .chatbot-wrapper {
-    bottom: 80px; /* Above the bottom navigation bar */
+    bottom: 96px; /* Above the bottom navigation bar */
     inset-inline-end: 16px;
   }
 }
