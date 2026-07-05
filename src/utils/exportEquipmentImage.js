@@ -1,7 +1,9 @@
 import logoSrc from '../assets/logo.png';
+import { getEquipmentItemFields } from './equipmentItemFields';
 
 const WIDTH = 1080;
 const PADDING = 56;
+const PAGE_HEIGHT = 1700;
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -80,6 +82,47 @@ function countSectionItems(section) {
   return section.topics.reduce((sum, t) => sum + t.items.length, 0);
 }
 
+function normalizeItemState(value) {
+  if (value === true || value === false) {
+    return { checked: value, quantity: '', note: '' };
+  }
+
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return {
+      checked: !!value.checked,
+      quantity: value.quantity == null ? '' : String(value.quantity),
+      note: typeof value.note === 'string' ? value.note : ''
+    };
+  }
+
+  return { checked: false, quantity: '', note: '' };
+}
+
+function downloadCanvas(canvas, filename) {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      resolve();
+    }, 'image/png');
+  });
+}
+
+function drawPageMarker(ctx, page, total, h, theme) {
+  if (total <= 1) return;
+  const isDay = theme === 'theme-day';
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.62)' : 'rgba(232, 216, 255, 0.76)';
+  ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
+  ctx.fillText(`OZORA 2026 · עמוד ${page}/${total} · ozora2026.app`, WIDTH / 2, h - 24);
+  ctx.restore();
+}
+
 function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', lang = 'he') {
   const isDay = theme === 'theme-day';
   const isHe = lang === 'he';
@@ -102,7 +145,12 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', la
     y += 30;
 
     for (const item of topic.items) {
-      const checked = !!checkedMap[item.id];
+      const details = normalizeItemState(checkedMap[item.id]);
+      const checked = details.checked;
+      const fields = getEquipmentItemFields(item, topic, section.key);
+      const metaParts = [];
+      if (fields.quantity && details.quantity) metaParts.push(`כמות: ${details.quantity}`);
+      if (fields.note && details.note) metaParts.push(`הערה: ${details.note}`);
       ctx.font = "400 16px 'Exo 2', 'Heebo', sans-serif";
       ctx.textAlign = isHe ? 'right' : 'start';
 
@@ -134,7 +182,14 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', la
           ctx.fillText(`${mark}  ${item.label}`, itemX, y);
         }
       }
-      y += 26;
+      y += 24;
+
+      if (metaParts.length > 0) {
+        ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.58)' : 'rgba(255,255,255,0.55)';
+        ctx.font = "500 13px 'Exo 2', 'Heebo', sans-serif";
+        ctx.fillText(metaParts.join(' · '), itemX, y);
+        y += 20;
+      }
     }
     y += 14;
   }
@@ -146,7 +201,7 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
   const filterSection = (section) => {
     if (!section) return null;
     const filteredTopics = section.topics.map(topic => {
-      const filteredItems = topic.items.filter(item => !onlyChecked || checkedMap[item.id]);
+      const filteredItems = topic.items.filter(item => !onlyChecked || normalizeItemState(checkedMap[item.id]).checked);
       return { ...topic, items: filteredItems };
     }).filter(topic => topic.items.length > 0);
 
@@ -156,7 +211,10 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
 
   const filteredShared = filterSection(shared);
   const filteredPersonal = filterSection(personal);
-  const sections = [filteredShared, filteredPersonal].filter(Boolean);
+  const sections = [
+    filteredShared ? { key: 'shared', ...filteredShared } : null,
+    filteredPersonal ? { key: 'personal', ...filteredPersonal } : null
+  ].filter(Boolean);
 
   if (document.fonts) {
     await document.fonts.ready;
@@ -167,7 +225,12 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
   for (const section of sections) {
     estimatedHeight += 70; // section title
     for (const topic of section.topics) {
-      estimatedHeight += 30 + topic.items.length * 26 + 14;
+      estimatedHeight += 30 + 14;
+      for (const item of topic.items) {
+        const fields = getEquipmentItemFields(item, topic, section.key);
+        const details = normalizeItemState(checkedMap[item.id]);
+        estimatedHeight += 24 + ((fields.quantity && details.quantity) || (fields.note && details.note) ? 20 : 0);
+      }
     }
   }
 
@@ -196,13 +259,32 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
     y = drawSection(ctx, section, checkedMap, y, theme, lang);
   }
 
-  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'ozora-2026-equipment-checklist.png';
-  a.click();
-  URL.revokeObjectURL(url);
+  const pageCount = Math.max(1, Math.ceil(estimatedHeight / PAGE_HEIGHT));
+
+  for (let page = 0; page < pageCount; page += 1) {
+    const sourceY = page * PAGE_HEIGHT;
+    const pageHeight = Math.min(PAGE_HEIGHT, estimatedHeight - sourceY);
+    const pageCanvas = document.createElement('canvas');
+    pageCanvas.width = WIDTH * SCALE_FACTOR;
+    pageCanvas.height = pageHeight * SCALE_FACTOR;
+    const pageCtx = pageCanvas.getContext('2d');
+    pageCtx.drawImage(
+      canvas,
+      0,
+      sourceY * SCALE_FACTOR,
+      WIDTH * SCALE_FACTOR,
+      pageHeight * SCALE_FACTOR,
+      0,
+      0,
+      WIDTH * SCALE_FACTOR,
+      pageHeight * SCALE_FACTOR
+    );
+    pageCtx.scale(SCALE_FACTOR, SCALE_FACTOR);
+    drawPageMarker(pageCtx, page + 1, pageCount, pageHeight, theme);
+
+    const suffix = pageCount > 1 ? `-${page + 1}-of-${pageCount}` : '';
+    await downloadCanvas(pageCanvas, `ozora-2026-equipment-checklist${suffix}.png`);
+  }
 }
 
 // avoid unused-var lint on countSectionItems while keeping it available for future progress overlays

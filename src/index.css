@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+/* Google Fonts preconnected in index.html for improved performance */
 
 :root {
   --bg: oklch(0.97 0.015 85);
@@ -63,21 +63,22 @@ body {
   transition: background-color 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body:has(.theme-night) {
+html.theme-night body, body.theme-night, body:has(.theme-night) {
   background: oklch(0.08 0.04 280);
 }
 
-body:has(.theme-sunset) {
+html.theme-sunset body, body.theme-sunset, body:has(.theme-sunset) {
   background: oklch(0.12 0.06 35);
 }
 
-body:has(.theme-sunrise) {
+html.theme-sunrise body, body.theme-sunrise, body:has(.theme-sunrise) {
   background: oklch(0.10 0.05 310);
 }
 
-body:has(.theme-day) {
+html.theme-day body, body.theme-day, body:has(.theme-day) {
   background: oklch(0.97 0.015 85);
 }
+
 
 /* Subtle noise texture for depth */
 .grain-overlay {
@@ -2966,6 +2967,11 @@ body:has(.theme-sunrise)::before {
   background: var(--surface-hover);
 }
 
+.equipment-check-control {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .equipment-item input[type="checkbox"] {
   width: 22px;
   height: 22px;
@@ -2979,6 +2985,8 @@ body:has(.theme-sunrise)::before {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .equipment-item-label {
@@ -2990,6 +2998,57 @@ body:has(.theme-sunrise)::before {
 .equipment-item-hint {
   font-size: 0.8rem;
   color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.equipment-item-fields {
+  display: grid;
+  grid-template-columns: minmax(5.25rem, 7rem) minmax(12rem, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+  max-width: 34rem;
+}
+
+.equipment-quantity-field,
+.equipment-note-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.equipment-quantity-field input,
+.equipment-note-field textarea {
+  width: 100%;
+  min-height: 2.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font: 600 0.82rem 'Exo 2', 'Heebo', sans-serif;
+  padding: 0.4rem 0.55rem;
+  transition: var(--transition-smooth);
+}
+
+.equipment-note-field textarea {
+  resize: vertical;
+  line-height: 1.25;
+}
+
+.equipment-quantity-field input:focus,
+.equipment-note-field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--glow-primary);
+}
+
+.equipment-print-meta {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
   line-height: 1.4;
 }
 
@@ -3156,6 +3215,16 @@ body:has(.theme-sunrise)::before {
   .equipment-export-menu {
     width: 100%;
     inset-inline-start: 0;
+  }
+  .equipment-item-fields {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+  .equipment-quantity-field,
+  .equipment-note-field {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 }
 
@@ -7383,8 +7452,6 @@ body:has(.theme-sunrise)::before {
     bottom: 160px !important;
   }
 }
-
-
 
 
 

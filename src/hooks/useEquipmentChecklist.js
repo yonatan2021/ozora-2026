@@ -2,10 +2,34 @@ import { useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY = 'ozora_equipment_checklist';
 
+function normalizeItemState(value) {
+  if (value === true || value === false) {
+    return { checked: value, quantity: '', note: '' };
+  }
+
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return {
+      checked: !!value.checked,
+      quantity: value.quantity == null ? '' : String(value.quantity),
+      note: typeof value.note === 'string' ? value.note : ''
+    };
+  }
+
+  return { checked: false, quantity: '', note: '' };
+}
+
+function normalizeChecklistState(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+
+  return Object.fromEntries(
+    Object.entries(value).map(([itemId, itemState]) => [itemId, normalizeItemState(itemState)])
+  );
+}
+
 function loadInitialState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : {};
+    return saved ? normalizeChecklistState(JSON.parse(saved)) : {};
   } catch {
     return {};
   }
@@ -18,10 +42,29 @@ export default function useEquipmentChecklist() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
   }, [checked]);
 
-  const isChecked = useCallback((itemId) => !!checked[itemId], [checked]);
+  const getItemDetails = useCallback((itemId) => normalizeItemState(checked[itemId]), [checked]);
+
+  const isChecked = useCallback((itemId) => getItemDetails(itemId).checked, [getItemDetails]);
 
   const toggle = useCallback((itemId) => {
-    setChecked(prev => ({ ...prev, [itemId]: !prev[itemId] }));
+    setChecked(prev => {
+      const current = normalizeItemState(prev[itemId]);
+      return { ...prev, [itemId]: { ...current, checked: !current.checked } };
+    });
+  }, []);
+
+  const setQuantity = useCallback((itemId, quantity) => {
+    setChecked(prev => {
+      const current = normalizeItemState(prev[itemId]);
+      return { ...prev, [itemId]: { ...current, quantity } };
+    });
+  }, []);
+
+  const setNote = useCallback((itemId, note) => {
+    setChecked(prev => {
+      const current = normalizeItemState(prev[itemId]);
+      return { ...prev, [itemId]: { ...current, note } };
+    });
   }, []);
 
   const getTopicProgress = useCallback((topic) => {
@@ -38,8 +81,18 @@ export default function useEquipmentChecklist() {
   }, [checked]);
 
   const importCheckedMap = useCallback((newMap) => {
-    setChecked(newMap);
+    setChecked(normalizeChecklistState(newMap));
   }, []);
 
-  return { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap: checked, importCheckedMap };
+  return {
+    isChecked,
+    getItemDetails,
+    toggle,
+    setQuantity,
+    setNote,
+    getTopicProgress,
+    getSectionProgress,
+    checkedMap: checked,
+    importCheckedMap
+  };
 }

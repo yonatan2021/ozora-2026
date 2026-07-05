@@ -1,0 +1,1709 @@
+{
+  "festival": "O.Z.O.R.A. Festival 2026",
+  "sourceTimetable": "timetable(1).json",
+  "scopeRule": "Every from/to artist in this file is present in the supplied Ozora 2026 timetable. External project names may appear only in the 'via' field as evidence connecting two lineup artists.",
+  "statistics": {
+    "timetableSets": 354,
+    "uniqueTimetableBillings": 334,
+    "relationGroups": 24,
+    "relationEdges": 38,
+    "autoPublishEdges": 34,
+    "reviewEdges": 4
+  },
+  "groups": [
+    {
+      "id": "8ternal-beings",
+      "title": "8ternal Beings, Tristan and Regan",
+      "artists": [
+        "8ternal Beings",
+        "Tristan",
+        "Regan"
+      ],
+      "appearances": {
+        "8ternal Beings": [
+          {
+            "setId": "set-173",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "04:00",
+            "end": "05:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Tristan": [
+          {
+            "setId": "set-169",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "02:30",
+            "end": "04:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Regan": [
+          {
+            "setId": "set-56",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "PUMPUI",
+            "start": "01:30",
+            "end": "03:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "8ternal Beings",
+          "to": "Tristan",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Tristan is one of the two artists behind 8ternal Beings.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "NANO Records - 8ternal Beings",
+              "url": "https://nanomusic.net/playlist/maxwells-dem0n/",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "8ternal Beings",
+          "to": "Regan",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Regan is one of the two artists behind 8ternal Beings.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "NANO Records - 8ternal Beings",
+              "url": "https://nanomusic.net/playlist/maxwells-dem0n/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "simon-posford-network",
+      "title": "Simon Posford projects and connected Ozora appearances",
+      "artists": [
+        "Hallucinogen",
+        "Shpongle",
+        "Younger Brother",
+        "Benji Vaughan",
+        "Prometheus",
+        "Raja Ram & Lucas"
+      ],
+      "appearances": {
+        "Hallucinogen": [
+          {
+            "setId": "set-107",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "PUMPUI",
+            "start": "00:00",
+            "end": "01:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Shpongle": [
+          {
+            "setId": "set-242",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "OZORA STAGE",
+            "start": "20:30",
+            "end": "22:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Younger Brother": [
+          {
+            "setId": "set-158",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "22:00",
+            "end": "00:30",
+            "endsNextDay": true,
+            "type": "Fire Show"
+          }
+        ],
+        "Benji Vaughan": [
+          {
+            "setId": "set-168",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "THE DOME",
+            "start": "01:30",
+            "end": "03:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Prometheus": [
+          {
+            "setId": "set-103",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "PUMPUI",
+            "start": "22:30",
+            "end": "00:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Raja Ram & Lucas": [
+          {
+            "setId": "set-294",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "19:30",
+            "end": "21:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Hallucinogen",
+          "to": "Shpongle",
+          "relation": "same_person_and_group_member",
+          "via": null,
+          "explanation": "Hallucinogen is Simon Posford's solo project; Simon Posford is a core member of Shpongle.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Shpongle official profile",
+              "url": "https://www.facebook.com/shpongle/",
+              "type": "official_social"
+            }
+          ]
+        },
+        {
+          "from": "Hallucinogen",
+          "to": "Younger Brother",
+          "relation": "same_person_and_group_member",
+          "via": null,
+          "explanation": "Simon Posford performs as Hallucinogen and co-founded Younger Brother.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Sound On Sound - Younger Brother",
+              "url": "https://www.soundonsound.com/people/younger-brother",
+              "type": "authoritative"
+            },
+            {
+              "title": "Shpongle official profile",
+              "url": "https://www.facebook.com/shpongle/",
+              "type": "official_social"
+            }
+          ]
+        },
+        {
+          "from": "Shpongle",
+          "to": "Younger Brother",
+          "relation": "shared_member",
+          "via": null,
+          "explanation": "Both projects include Simon Posford.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Sound On Sound - Younger Brother",
+              "url": "https://www.soundonsound.com/people/younger-brother",
+              "type": "authoritative"
+            },
+            {
+              "title": "Shpongle official profile",
+              "url": "https://www.facebook.com/shpongle/",
+              "type": "official_social"
+            }
+          ]
+        },
+        {
+          "from": "Younger Brother",
+          "to": "Benji Vaughan",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Benji Vaughan co-founded Younger Brother with Simon Posford.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Sound On Sound - Younger Brother",
+              "url": "https://www.soundonsound.com/people/younger-brother",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Younger Brother",
+          "to": "Prometheus",
+          "relation": "project_member_alias",
+          "via": null,
+          "explanation": "Prometheus is Benji Vaughan's artist project, and Benji co-founded Younger Brother.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Sound On Sound - Younger Brother",
+              "url": "https://www.soundonsound.com/people/younger-brother",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Benji Vaughan",
+          "to": "Prometheus",
+          "relation": "same_person_alias",
+          "via": null,
+          "explanation": "Benji Vaughan performs and releases as Prometheus.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Sound On Sound - Younger Brother",
+              "url": "https://www.soundonsound.com/people/younger-brother",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Shpongle",
+          "to": "Raja Ram & Lucas",
+          "relation": "shared_member",
+          "via": null,
+          "explanation": "Raja Ram is a core member of Shpongle and is also billed at Ozora with Lucas.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Shpongle official profile",
+              "url": "https://www.facebook.com/shpongle/",
+              "type": "official_social"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "strontium-dogs",
+      "title": "Strontium Dogs, Eat Static and Martian Arts",
+      "artists": [
+        "Strontium Dogs",
+        "Eat Static",
+        "Martian Arts"
+      ],
+      "appearances": {
+        "Strontium Dogs": [
+          {
+            "setId": "set-97",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "OZORA STAGE",
+            "start": "20:30",
+            "end": "22:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Eat Static": [
+          {
+            "setId": "set-75",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "THE DOME",
+            "start": "12:00",
+            "end": "14:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          },
+          {
+            "setId": "set-251",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "OZORA STAGE",
+            "start": "23:30",
+            "end": "01:00",
+            "endsNextDay": true,
+            "type": "DJ / Live"
+          }
+        ],
+        "Martian Arts": [
+          {
+            "setId": "set-268",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "08:30",
+            "end": "10:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Strontium Dogs",
+          "to": "Eat Static",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Strontium Dogs includes Merv Pepler of Eat Static.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "NANO Records - Eat Static",
+              "url": "https://nanomusic.net/artist/eat-static/",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Strontium Dogs",
+          "to": "Martian Arts",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Strontium Dogs includes Nektarios Meintanis of Martian Arts.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "NANO Records - Eat Static",
+              "url": "https://nanomusic.net/artist/eat-static/",
+              "type": "authoritative"
+            },
+            {
+              "title": "Stereo Society - ATIA",
+              "url": "https://www.stereo-society.com/atia",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "atia-network",
+      "title": "ATIA, ATIA in Peace and Martian Arts",
+      "artists": [
+        "Atia",
+        "Atia in Peace",
+        "Martian Arts"
+      ],
+      "appearances": {
+        "Atia": [
+          {
+            "setId": "set-346",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "PUMPUI",
+            "start": "20:00",
+            "end": "22:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Atia in Peace": [
+          {
+            "setId": "set-144",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "VISIUM GARDEN",
+            "start": "17:00",
+            "end": "18:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Martian Arts": [
+          {
+            "setId": "set-268",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "08:30",
+            "end": "10:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Atia",
+          "to": "Martian Arts",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "ATIA is the project of Jokasti Alimonos and Nektarios Meintanis, also known as Martian Arts.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Stereo Society - ATIA",
+              "url": "https://www.stereo-society.com/atia",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Atia in Peace",
+          "to": "Atia",
+          "relation": "alternate_set_format",
+          "via": null,
+          "explanation": "ATIA in Peace is a separate ambient/drone-style billing of the ATIA project.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Stereo Society - ATIA",
+              "url": "https://www.stereo-society.com/atia",
+              "type": "authoritative"
+            }
+          ]
+        },
+        {
+          "from": "Atia in Peace",
+          "to": "Martian Arts",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "The ATIA in Peace performance is connected to Martian Arts through Nektarios Meintanis.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Stereo Society - ATIA",
+              "url": "https://www.stereo-society.com/atia",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "moonclipse",
+      "title": "Moonclipse and Astrix",
+      "artists": [
+        "Moonclipse",
+        "Astrix"
+      ],
+      "appearances": {
+        "Moonclipse": [
+          {
+            "setId": "set-234",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "PUMPUI",
+            "start": "17:00",
+            "end": "18:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Astrix": [
+          {
+            "setId": "set-282",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "14:30",
+            "end": "16:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Moonclipse",
+          "to": "Astrix",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Moonclipse is a project by Avi Shmailov, who performs separately as Astrix, and Omri Sasi.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "O.Z.O.R.A. 2026 - Moonclipse",
+              "url": "https://2026.ozorafestival.eu/music-and-dance/pumpui/moonclipse/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "undefined-behavior",
+      "title": "Undefined Behavior and Ajja",
+      "artists": [
+        "Undefined Behavior",
+        "Ajja"
+      ],
+      "appearances": {
+        "Undefined Behavior": [
+          {
+            "setId": "set-176",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "05:30",
+            "end": "07:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Ajja": [
+          {
+            "setId": "set-55",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "OZORA STAGE",
+            "start": "01:00",
+            "end": "02:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Undefined Behavior",
+          "to": "Ajja",
+          "relation": "project_member",
+          "via": null,
+          "explanation": "Undefined Behavior is the collaboration of Ajja and Burn in Noise.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Undefined Behavior - Burn in Noise & Ajja",
+              "url": "https://burninnoisenano.bandcamp.com/track/howling-at-the-moon",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "novelty-engine",
+      "title": "Novelty Engine and Ajja",
+      "artists": [
+        "Novelty Engine",
+        "Ajja",
+        "Ajja & Tanina"
+      ],
+      "appearances": {
+        "Novelty Engine": [
+          {
+            "setId": "set-152",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "OZORA STAGE",
+            "start": "20:30",
+            "end": "22:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Ajja": [
+          {
+            "setId": "set-55",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "OZORA STAGE",
+            "start": "01:00",
+            "end": "02:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Ajja & Tanina": [
+          {
+            "setId": "set-332",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "THE DOME",
+            "start": "13:30",
+            "end": "15:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Novelty Engine",
+          "to": "Ajja",
+          "relation": "creator_and_project_member",
+          "via": null,
+          "explanation": "Novelty Engine was created and curated by Ajja.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "O.Z.O.R.A. 2026 - Novelty Engine",
+              "url": "https://2026.ozorafestival.eu/music-and-dance/ozora-stage/novelty-engine/",
+              "type": "authoritative"
+            },
+            {
+              "title": "Novelty Engine official announcement",
+              "url": "https://www.facebook.com/noveltyengineofficial/posts/created-by-musician-and-psytrance-producer-ajja-novelty-engine-is-a-collective-w/396561523876433/",
+              "type": "official_social"
+            }
+          ]
+        },
+        {
+          "from": "Novelty Engine",
+          "to": "Ajja & Tanina",
+          "relation": "shared_core_artists",
+          "via": null,
+          "explanation": "Novelty Engine is associated with Ajja and Tanina; both are also billed together elsewhere in the timetable.",
+          "confidence": "medium",
+          "autoPublish": false,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "O.Z.O.R.A. 2026 - Novelty Engine",
+              "url": "https://2026.ozorafestival.eu/music-and-dance/ozora-stage/novelty-engine/",
+              "type": "authoritative"
+            },
+            {
+              "title": "Novelty Engine official announcement",
+              "url": "https://www.facebook.com/noveltyengineofficial/posts/created-by-musician-and-psytrance-producer-ajja-novelty-engine-is-a-collective-w/396561523876433/",
+              "type": "official_social"
+            }
+          ]
+        },
+        {
+          "from": "Ajja & Tanina",
+          "to": "Ajja",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The festival billing explicitly contains Ajja, who also has a solo set.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": "The 2026 Novelty Engine page describes a modular cast. Do not automatically attach historical guest members unless the current performance cast is confirmed."
+    },
+    {
+      "id": "perfect-sphere",
+      "title": "Perfect Sphere and Yuli Fershtat",
+      "artists": [
+        "Perfect Sphere",
+        "Yuli Fershtat"
+      ],
+      "appearances": {
+        "Perfect Sphere": [
+          {
+            "setId": "set-132",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "OZORA STAGE",
+            "start": "13:00",
+            "end": "14:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Yuli Fershtat": [
+          {
+            "setId": "set-199",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "PUMPUI",
+            "start": "00:00",
+            "end": "01:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Perfect Sphere",
+          "to": "Yuli Fershtat",
+          "relation": "project_member_via_alias",
+          "via": null,
+          "explanation": "Perfect Sphere is a collaboration of Perfect Stranger and Sphera; Perfect Stranger is Yuli Fershtat.",
+          "confidence": "medium",
+          "autoPublish": false,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "A Perfect Sphere announcement",
+              "url": "https://www.instagram.com/p/DYucQBsltRw/",
+              "type": "festival_announcement"
+            },
+            {
+              "title": "Perfect Stranger official biography",
+              "url": "https://www.perfectlystrange.com/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "medium",
+      "note": "Keep in review until the exact Ozora 2026 project credits are published by the festival or artists."
+    },
+    {
+      "id": "gong-zen",
+      "title": "Gong Zen and Star Sounds Orchestra",
+      "artists": [
+        "Gong Zen",
+        "Star Sounds Orchestra"
+      ],
+      "appearances": {
+        "Gong Zen": [
+          {
+            "setId": "set-183",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "16:30",
+            "end": "18:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Star Sounds Orchestra": [
+          {
+            "setId": "set-187",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "19:30",
+            "end": "21:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Gong Zen",
+          "to": "Star Sounds Orchestra",
+          "relation": "shared_member",
+          "via": null,
+          "explanation": "The Gong Zen performance is credited to Jens Zygar of Star Sounds Orchestra and the Ozorian Gong Orchestra.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "O.Z.O.R.A. Festival - Gong Zen performance credit",
+              "url": "https://www.facebook.com/Ozora.Festival.Official/photos/1600-1730-gong-zen-performed-by-jens-zygar-star-sounds-orchestra-the-ozorian-gon/1569099538119742/",
+              "type": "official_social"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "braincell-rastaliens",
+      "title": "Braincell and Rastaliens",
+      "artists": [
+        "Braincell",
+        "Rastaliens"
+      ],
+      "appearances": {
+        "Braincell": [
+          {
+            "setId": "set-122",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "OZORA STAGE",
+            "start": "07:00",
+            "end": "08:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Rastaliens": [
+          {
+            "setId": "set-13",
+            "date": "2026-07-26",
+            "day": "Warmup Sun",
+            "stage": "TEK ZERO (2000s Trance)",
+            "start": "03:30",
+            "end": "05:00",
+            "endsNextDay": false,
+            "type": "Tek Zero"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Braincell",
+          "to": "Rastaliens",
+          "relation": "member_project",
+          "via": null,
+          "explanation": "Ralph Freund performs as Braincell and is a founder/member of Rastaliens. Rastaliens should not be treated as a simple alias because it originated as a group.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Brainalien - Ralph Freund projects",
+              "url": "https://brainalien.info/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "mysticism-ramizes",
+      "title": "Mysticism and Ramizes",
+      "artists": [
+        "Mysticism",
+        "Ramizes"
+      ],
+      "appearances": {
+        "Mysticism": [
+          {
+            "setId": "set-66",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "THE DOME",
+            "start": "06:00",
+            "end": "07:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Ramizes": [
+          {
+            "setId": "set-35",
+            "date": "2026-07-27",
+            "day": "DAY 1",
+            "stage": "PUMPUI",
+            "start": "07:30",
+            "end": "09:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Mysticism",
+          "to": "Ramizes",
+          "relation": "same_person_alias",
+          "via": null,
+          "explanation": "Both names are projects of Ozzy Cetin.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Resident Advisor - Mysticism",
+              "url": "https://ra.co/dj/mysticism",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "twisted-sibling",
+      "title": "Tetrameth and Shadow FX",
+      "artists": [
+        "Tetrameth",
+        "Shadow FX"
+      ],
+      "appearances": {
+        "Tetrameth": [
+          {
+            "setId": "set-26",
+            "date": "2026-07-26",
+            "day": "Warmup Sun",
+            "stage": "PUMPUI",
+            "start": "17:30",
+            "end": "19:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Shadow FX": [
+          {
+            "setId": "set-27",
+            "date": "2026-07-26",
+            "day": "Warmup Sun",
+            "stage": "PUMPUI",
+            "start": "19:00",
+            "end": "20:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Tetrameth",
+          "to": "Shadow FX",
+          "relation": "shared_project",
+          "via": "Twisted Sibling",
+          "explanation": "Tetrameth and Shadow FX perform together as Twisted Sibling.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Twisted Sibling Bandcamp profile",
+              "url": "https://bandcamp.com/twistedsibling",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "alpha-portal",
+      "title": "Ace Ventura and Astrix",
+      "artists": [
+        "Ace Ventura",
+        "Astrix"
+      ],
+      "appearances": {
+        "Ace Ventura": [
+          {
+            "setId": "set-86",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "OZORA STAGE",
+            "start": "16:00",
+            "end": "17:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Astrix": [
+          {
+            "setId": "set-282",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "14:30",
+            "end": "16:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Ace Ventura",
+          "to": "Astrix",
+          "relation": "shared_external_project",
+          "via": "Alpha Portal",
+          "explanation": "The two Ozora artists also perform together as Alpha Portal.",
+          "confidence": "high",
+          "autoPublish": false,
+          "scope": "related_lineup_artists",
+          "sources": [
+            {
+              "title": "Amsterdam Dance Event - Ace Ventura biography",
+              "url": "https://www.amsterdam-dance-event.nl/en/artists-speakers/ace-ventura/25412/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": "Alpha Portal is not a separate billing in the supplied timetable; use this only as a related-artists link."
+    },
+    {
+      "id": "killerwatts",
+      "title": "Avalon and Tristan",
+      "artists": [
+        "Avalon",
+        "Tristan"
+      ],
+      "appearances": {
+        "Avalon": [
+          {
+            "setId": "set-161",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "OZORA STAGE",
+            "start": "23:30",
+            "end": "01:00",
+            "endsNextDay": true,
+            "type": "DJ / Live"
+          }
+        ],
+        "Tristan": [
+          {
+            "setId": "set-169",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "OZORA STAGE",
+            "start": "02:30",
+            "end": "04:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Avalon",
+          "to": "Tristan",
+          "relation": "shared_external_project",
+          "via": "Killerwatts",
+          "explanation": "The two Ozora artists also perform together as Killerwatts.",
+          "confidence": "high",
+          "autoPublish": false,
+          "scope": "related_lineup_artists",
+          "sources": [
+            {
+              "title": "Killerwatts official Bandcamp profile",
+              "url": "https://killerwatts.bandcamp.com/",
+              "type": "authoritative"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": "Killerwatts is not a separate billing in the supplied timetable; use this only as a related-artists link."
+    },
+    {
+      "id": "switch-nollie-tsu",
+      "title": "Switch Nollie & Tsu plus their solo sets",
+      "artists": [
+        "Switch Nollie & Tsu",
+        "Switch Nollie",
+        "Tsu"
+      ],
+      "appearances": {
+        "Switch Nollie & Tsu": [
+          {
+            "setId": "set-1",
+            "date": "2026-07-25",
+            "day": "Warmup Sat",
+            "stage": "PUMPUI",
+            "start": "16:00",
+            "end": "19:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Switch Nollie": [
+          {
+            "setId": "set-124",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "VISIUM GARDEN",
+            "start": "09:00",
+            "end": "11:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Tsu": [
+          {
+            "setId": "set-69",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "VISIUM GARDEN",
+            "start": "09:00",
+            "end": "11:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Switch Nollie & Tsu",
+          "to": "Switch Nollie",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Switch Nollie & Tsu' and a separate set by 'Switch Nollie'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        },
+        {
+          "from": "Switch Nollie & Tsu",
+          "to": "Tsu",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Switch Nollie & Tsu' and a separate set by 'Tsu'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "meo-culpa-zakhorov",
+      "title": "Meo Culpa & Zakhorov plus their solo sets",
+      "artists": [
+        "Meo Culpa & Zakhorov",
+        "Meo Culpa",
+        "Zakhorov"
+      ],
+      "appearances": {
+        "Meo Culpa & Zakhorov": [
+          {
+            "setId": "set-276",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "12:30",
+            "end": "14:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Meo Culpa": [
+          {
+            "setId": "set-239",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "THE DOME",
+            "start": "19:00",
+            "end": "21:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Zakhorov": [
+          {
+            "setId": "set-100",
+            "date": "2026-07-28",
+            "day": "DAY 2",
+            "stage": "THE DOME",
+            "start": "21:00",
+            "end": "22:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Meo Culpa & Zakhorov",
+          "to": "Meo Culpa",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Meo Culpa & Zakhorov' and a separate set by 'Meo Culpa'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        },
+        {
+          "from": "Meo Culpa & Zakhorov",
+          "to": "Zakhorov",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Meo Culpa & Zakhorov' and a separate set by 'Zakhorov'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "koxbox-saiko-pod",
+      "title": "Koxbox / Saiko Pod and Koxbox",
+      "artists": [
+        "Koxbox / Saiko Pod",
+        "Koxbox"
+      ],
+      "appearances": {
+        "Koxbox / Saiko Pod": [
+          {
+            "setId": "set-9",
+            "date": "2026-07-26",
+            "day": "Warmup Sun",
+            "stage": "TEK ZERO (2000s Trance)",
+            "start": "00:30",
+            "end": "02:00",
+            "endsNextDay": false,
+            "type": "Tek Zero"
+          }
+        ],
+        "Koxbox": [
+          {
+            "setId": "set-51",
+            "date": "2026-07-27",
+            "day": "DAY 1",
+            "stage": "OZORA STAGE",
+            "start": "23:30",
+            "end": "01:00",
+            "endsNextDay": true,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Koxbox / Saiko Pod",
+          "to": "Koxbox",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Koxbox / Saiko Pod' and a separate set by 'Koxbox'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "dubsahara-vlastur",
+      "title": "Dubsahara Meets Vlastur and Vlastur",
+      "artists": [
+        "Dubsahara Meets Vlastur",
+        "Vlastur"
+      ],
+      "appearances": {
+        "Dubsahara Meets Vlastur": [
+          {
+            "setId": "set-253",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "00:30",
+            "end": "02:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Vlastur": [
+          {
+            "setId": "set-130",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "THE DOME",
+            "start": "12:00",
+            "end": "14:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Dubsahara Meets Vlastur",
+          "to": "Vlastur",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Dubsahara Meets Vlastur' and a separate set by 'Vlastur'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "marysia-osu",
+      "title": "Marysia Osu collaboration and solo set",
+      "artists": [
+        "Marysia Osu & Kibir La Amlak",
+        "Marysia Osu"
+      ],
+      "appearances": {
+        "Marysia Osu & Kibir La Amlak": [
+          {
+            "setId": "set-147",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "17:30",
+            "end": "19:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Marysia Osu": [
+          {
+            "setId": "set-181",
+            "date": "2026-07-30",
+            "day": "DAY 4",
+            "stage": "VISIUM GARDEN",
+            "start": "14:30",
+            "end": "16:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Marysia Osu & Kibir La Amlak",
+          "to": "Marysia Osu",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Marysia Osu & Kibir La Amlak' and a separate set by 'Marysia Osu'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "gaudi-special",
+      "title": "Gaudi special collaboration and solo set",
+      "artists": [
+        "Gaudi + Don Letts + Earl 16",
+        "Gaudi"
+      ],
+      "appearances": {
+        "Gaudi + Don Letts + Earl 16": [
+          {
+            "setId": "set-247",
+            "date": "2026-07-31",
+            "day": "DAY 5",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "22:00",
+            "end": "00:30",
+            "endsNextDay": true,
+            "type": "Fire Show"
+          }
+        ],
+        "Gaudi": [
+          {
+            "setId": "set-49",
+            "date": "2026-07-27",
+            "day": "DAY 1",
+            "stage": "PUMPUI",
+            "start": "22:00",
+            "end": "00:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Gaudi + Don Letts + Earl 16",
+          "to": "Gaudi",
+          "relation": "combined_billing_contains_artist",
+          "via": null,
+          "explanation": "The Ozora timetable contains both 'Gaudi + Don Letts + Earl 16' and a separate set by 'Gaudi'.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "lucas-billings",
+      "title": "Lucas in Dub and Raja Ram & Lucas",
+      "artists": [
+        "Lucas in Dub",
+        "Raja Ram & Lucas"
+      ],
+      "appearances": {
+        "Lucas in Dub": [
+          {
+            "setId": "set-344",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "THE DOME",
+            "start": "18:30",
+            "end": "20:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Raja Ram & Lucas": [
+          {
+            "setId": "set-294",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "19:30",
+            "end": "21:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Raja Ram & Lucas",
+          "to": "Lucas in Dub",
+          "relation": "combined_billing_contains_artist_alias",
+          "via": null,
+          "explanation": "Lucas O'Brien appears with Raja Ram and also performs a separate Lucas in Dub set.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Lucas O'Brien official - Lucas in Dub",
+              "url": "https://www.instagram.com/lucasobrienofficial/",
+              "type": "official_social"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "breger-variants",
+      "title": "Breger and Broken Breger",
+      "artists": [
+        "Breger",
+        "Broken Breger"
+      ],
+      "appearances": {
+        "Breger": [
+          {
+            "setId": "set-291",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "PUMPUI",
+            "start": "18:00",
+            "end": "20:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Broken Breger": [
+          {
+            "setId": "set-314",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "DRAGON NEST / COOKING GROOVE",
+            "start": "02:30",
+            "end": "04:00",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Broken Breger",
+          "to": "Breger",
+          "relation": "same_artist_alternate_format",
+          "via": null,
+          "explanation": "Broken Breger is an alternate bass and broken-beat set by Breger.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": [
+            {
+              "title": "Breger official - Broken Breger set",
+              "url": "https://www.facebook.com/bregermusic/photos/on-my-way-to-ozorafestivalofficial-i-recorded-a-fresh-broken-breger-set-airing-t/1373268388152977/",
+              "type": "official_social"
+            }
+          ]
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "giuseppe-variants",
+      "title": "Giuseppe and Giuseppe in Dub",
+      "artists": [
+        "Giuseppe",
+        "Giuseppe in Dub"
+      ],
+      "appearances": {
+        "Giuseppe": [
+          {
+            "setId": "set-255",
+            "date": "2026-08-01",
+            "day": "DAY 6",
+            "stage": "OZORA STAGE",
+            "start": "01:00",
+            "end": "02:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Giuseppe in Dub": [
+          {
+            "setId": "set-157",
+            "date": "2026-07-29",
+            "day": "DAY 3",
+            "stage": "THE DOME",
+            "start": "22:00",
+            "end": "23:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Giuseppe in Dub",
+          "to": "Giuseppe",
+          "relation": "same_artist_alternate_format",
+          "via": null,
+          "explanation": "Giuseppe in Dub is a dub-format billing of Giuseppe.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "id": "grouch-variants",
+      "title": "Grouch and Grouch in Dub",
+      "artists": [
+        "Grouch",
+        "Grouch in Dub"
+      ],
+      "appearances": {
+        "Grouch": [
+          {
+            "setId": "set-339",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "OZORA STAGE",
+            "start": "17:00",
+            "end": "18:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ],
+        "Grouch in Dub": [
+          {
+            "setId": "set-328",
+            "date": "2026-08-02",
+            "day": "DAY 7",
+            "stage": "THE DOME",
+            "start": "12:00",
+            "end": "13:30",
+            "endsNextDay": false,
+            "type": "DJ / Live"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "from": "Grouch in Dub",
+          "to": "Grouch",
+          "relation": "same_artist_alternate_format",
+          "via": null,
+          "explanation": "Grouch in Dub is a dub-format billing of Grouch.",
+          "confidence": "high",
+          "autoPublish": true,
+          "scope": "ozora_lineup",
+          "sources": []
+        }
+      ],
+      "confidence": "high",
+      "note": null
+    }
+  ],
+  "implementation": {
+    "recommendedEntityTypes": [
+      "person",
+      "solo_project",
+      "group",
+      "festival_billing"
+    ],
+    "recommendedRelationTypes": [
+      "alternate_set_format",
+      "combined_billing_contains_artist",
+      "combined_billing_contains_artist_alias",
+      "creator_and_project_member",
+      "member_project",
+      "project_member",
+      "project_member_alias",
+      "project_member_via_alias",
+      "same_artist_alternate_format",
+      "same_person_alias",
+      "same_person_and_group_member",
+      "shared_core_artists",
+      "shared_external_project",
+      "shared_member",
+      "shared_project"
+    ],
+    "rules": [
+      "Never create a navigation target that does not exist in the Ozora 2026 timetable.",
+      "A name in the 'via' field explains the relationship but is not a festival navigation target.",
+      "Do not merge group identities into a solo artist. Link them through membership edges.",
+      "Show every appearance listed under the related festival artist.",
+      "Publish autoPublish=false records only after manual review."
+    ]
+  }
+}

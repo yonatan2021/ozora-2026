@@ -87,77 +87,259 @@
             "text": "פשוט נכנסים ללוח ההופעות באתר, לוחצים על כוכב ליד האמנים שאתם רוצים לראות, והם יתווספו אוטומטית לעמוד 'הלוח שלי' (Favorites) המאפשר לכם לראות את הלו\"ז המותאם שלכם."
           }
         }
-      ]
-    }
+    <!-- Preconnect & stylesheet link for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Theme detector script to run synchronously in the head (prevents bright white flash) -->
+    <script>
+      (function() {
+        var theme = localStorage.getItem('ozora_pinned_theme');
+        if (!theme) {
+          var hour = new Date().getHours();
+          if (hour >= 20 || hour < 5) {
+            theme = 'theme-night';
+          } else if (hour >= 5 && hour < 7) {
+            theme = 'theme-sunrise';
+          } else if (hour >= 7 && hour < 18) {
+            theme = 'theme-day';
+          } else {
+            theme = 'theme-sunset';
+          }
+        }
+        document.documentElement.className = theme;
+      })();
     </script>
+
+    <style>
+      /* Pre-hydration variables & styles to avoid flash of white screen */
+      html.theme-night, body.theme-night {
+        background-color: oklch(0.08 0.04 280) !important;
+        color: oklch(0.97 0.015 85) !important;
+      }
+      html.theme-sunset, body.theme-sunset {
+        background-color: oklch(0.12 0.06 35) !important;
+        color: oklch(0.97 0.015 85) !important;
+      }
+      html.theme-sunrise, body.theme-sunrise {
+        background-color: oklch(0.10 0.05 310) !important;
+        color: oklch(0.97 0.015 85) !important;
+      }
+      html.theme-day, body.theme-day {
+        background-color: oklch(0.97 0.015 85) !important;
+        color: oklch(0.18 0.04 300) !important;
+      }
+
+      body {
+        font-family: 'Exo 2', 'Heebo', sans-serif;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.5s ease;
+      }
+
+      /* Premium Loading Splash Screen */
+      .loader-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .loader-logo-container {
+        position: relative;
+        margin-bottom: 2rem;
+      }
+
+      /* Animated sacred geometry-like pulsing loader shape */
+      .loader-geometric {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .loader-circle {
+        position: absolute;
+        border: 2px solid;
+        border-radius: 50%;
+        animation: pulseGeo 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        opacity: 0.15;
+      }
+
+      .loader-circle:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        animation-delay: 0s;
+      }
+
+      .loader-circle:nth-child(2) {
+        width: 80px;
+        height: 80px;
+        animation-delay: 0.5s;
+      }
+
+      .loader-circle:nth-child(3) {
+        width: 60px;
+        height: 60px;
+        animation-delay: 1s;
+      }
+
+      .loader-spinner-inner {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+
+      html.theme-night .loader-circle, html.theme-night .loader-spinner-inner {
+        border-color: oklch(0.55 0.24 330);
+        border-top-color: transparent;
+      }
+      html.theme-sunset .loader-circle, html.theme-sunset .loader-spinner-inner {
+        border-color: oklch(0.62 0.22 160);
+        border-top-color: transparent;
+      }
+      html.theme-sunrise .loader-circle, html.theme-sunrise .loader-spinner-inner {
+        border-color: oklch(0.52 0.20 300);
+        border-top-color: transparent;
+      }
+      html.theme-day .loader-circle, html.theme-day .loader-spinner-inner {
+        border-color: oklch(0.55 0.24 330);
+        border-top-color: transparent;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes pulseGeo {
+        0%, 100% { transform: scale(1); opacity: 0.15; }
+        50% { transform: scale(1.15); opacity: 0.4; }
+      }
+
+      .loader-text {
+        font-family: 'Exo 2', 'Heebo', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.05em;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .loader-subtext {
+        font-family: 'Heebo', sans-serif;
+        font-size: 1rem;
+        opacity: 0.75;
+        letter-spacing: 0.02em;
+        max-width: 320px;
+        line-height: 1.4;
+      }
+
+      /* Visually hide heavy SEO content while keeping it 100% indexable */
+      .sr-only-seo {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+    </style>
   </head>
   <body>
     <div class="grain-overlay" aria-hidden="true"></div>
     <div id="root">
-      <!-- SEO Fallback Content (will be hydrated by React) -->
-      <div style="padding: 20px; font-family: sans-serif; max-width: 800px; margin: 0 auto; color: #111; line-height: 1.6;">
+      <!-- Beautiful visual loader screen -->
+      <div class="loader-container">
+        <div class="loader-logo-container">
+          <div class="loader-geometric">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-spinner-inner"></div>
+          </div>
+        </div>
+        <div class="loader-text">Ozora 2026</div>
+        <div class="loader-subtext">מתחברים לתדר הקוסמי... טוען לוח הופעות ומפה אופליין</div>
+      </div>
+
+      <!-- SEO Fallback Content (will be hydrated by React) - Kept 100% for search engines but hidden visually -->
+      <div class="sr-only-seo">
         <header>
           <h1>Ozora 2026 Lineup, Timetable & Map | לוח הופעות וליינאפ אוזורה 2026</h1>
           <p>המדריך הקוסמי והלו"ז האינטראקטיבי המלא לפסטיבל אוזורה 2026 (Dádpuszta, הונגריה, 25 ביולי - 3 באוגוסט 2026). מפה אופליין מלאה לניווט, חיפוש אמנים וניהול הופעות מועדפות.</p>
         </header>
         
-        <nav style="margin: 20px 0;">
-          <a href="/timetable" style="margin-right: 15px;">לוח הופעות (Timetable)</a>
-          <a href="/map" style="margin-right: 15px;">מפה אופליין (Map)</a>
-          <a href="/guide" style="margin-right: 15px;">מדריך פסטיבל (Guide)</a>
+        <nav>
+          <a href="/timetable">לוח הופעות (Timetable)</a>
+          <a href="/map">מפה אופליין (Map)</a>
+          <a href="/guide">מדריך פסטיבל (Guide)</a>
           <a href="/favorites">הלוח שלי (Favorites)</a>
         </nav>
 
-        <section style="margin-top: 30px;">
+        <section>
           <h2>Ozora Festival 2026 Stages & Lineup | במות ואמנים מרכזיים באוזורה</h2>
           <p>לוח ההופעות המלא מחולק לפי במות הפסטיבל. מצאו מתי מופיעים האמנים האהובים עליכם:</p>
           
-          <article style="margin-bottom: 20px;">
+          <article>
             <h3>Main Stage (הבמה המרכזית)</h3>
             <p><strong>אמנים בולטים:</strong> Vibrasphere, X-Dream, Domestic, Ace Ventura, Astrix, Tristan, Alpha Portal, Liquid Soul, Carbon Based Lifeforms, Solar Fields, Entheogenic.</p>
           </article>
           
-          <article style="margin-bottom: 20px;">
+          <article>
             <h3>Pumpui Stage (פומפוי)</h3>
             <p><strong>אמנים בולטים:</strong> Switch Nollie & Tsu, Siblicity, Zagi, DJ Reload, Mankind, Gorovich, Captain Hook.</p>
           </article>
 
-          <article style="margin-bottom: 20px;">
+          <article>
             <h3>The Dome (הדום)</h3>
             <p><strong>אמנים בולטים:</strong> Carbon Based Lifeforms, Solar Fields, Henty, Sync24, Circular, Aes Dana, Vibrasphere.</p>
           </article>
 
-          <article style="margin-bottom: 20px;">
+          <article>
             <h3>Dragon Nest (קן הדרקון)</h3>
             <p>הופעות חיות, מוזיקה אתנית, פולק ופרויקטים אקוסטיים מכל העולם.</p>
           </article>
         </section>
 
-        <section style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;">
+        <section>
           <h2>שאלות נפוצות - FAQ אוזורה 2026</h2>
           
-          <div style="margin-bottom: 15px;">
+          <div>
             <h3>מתי מתקיים פסטיבל אוזורה 2026?</h3>
             <p>פסטיבל אוזורה 2026 יתקיים בין התאריכים 25 ביולי ל-3 באוגוסט 2026 בדאדפוסטה (Dádpuszta), הונגריה.</p>
           </div>
           
-          <div style="margin-bottom: 15px;">
+          <div>
             <h3>איפה אפשר למצוא את הליינאפ ולוח ההופעות המלא של אוזורה?</h3>
             <p>לוח ההופעות המלא והמעודכן ביותר של אוזורה 2026 זמין ישירות בדף הבית של האתר שלנו עם אפשרות חיפוש מתקדמת וסינון לפי ימים ובמות.</p>
           </div>
           
-          <div style="margin-bottom: 15px;">
+          <div>
             <h3>האם מפת פסטיבל אוזורה והלו"ז עובדים ללא אינטרנט (אופליין)?</h3>
             <p>כן! האתר שלנו נבנה כאפליקציית PWA מתקדמת המאפשרת להוריד את כל המפות ולוח ההופעות ישירות לנייד, והם עובדים 100% במצב אופליין בשטח הפסטיבל שבו אין קליטה.</p>
           </div>
 
-          <div style="margin-bottom: 15px;">
+          <div>
             <h3>איך יוצרים לוח הופעות אישי לפסטיבל?</h3>
             <p>פשוט נכנסים ללוח ההופעות באתר, לוחצים על כוכב ליד האמנים שאתם רוצים לראות, והם יתווספו אוטומטית לעמוד "הלוח שלי" (Favorites) המאפשר לכם לראות את הלו"ז המותאם שלכם.</p>
           </div>
         </section>
         
-        <footer style="margin-top: 40px; font-size: 0.9em; color: #666;">
+        <footer>
           <p>© 2026 Ozora Cosmic Companion. כל הזכויות שמורות. קידום פסטיבל אוזורה בישראל ובעולם.</p>
         </footer>
       </div>

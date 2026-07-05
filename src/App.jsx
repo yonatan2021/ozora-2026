@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef, Suspense, lazy } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import timetableData from './data/timetable.json';
 import Header from './components/Header';
@@ -14,7 +14,8 @@ import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import InstallPrompt from './components/InstallPrompt';
 import FooterInstallCTA from './components/FooterInstallCTA';
 import ImportModal from './components/ImportModal';
-import OfflineChatbot from './components/OfflineChatbot';
+
+const OfflineChatbot = lazy(() => import('./components/OfflineChatbot'));
 import { initializeGA4 } from './utils/consent';
 import { saveFriend } from './utils/friends';
 import { trackEvent } from './utils/analytics';
@@ -329,8 +330,13 @@ export default function App() {
         onOpenLiveModal={() => setIsLiveModalOpen(true)}
         evalTime={evalTime}
       />
-
-      <Outlet context={contextValue} />
+      <Suspense fallback={
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', color: 'var(--text-secondary)' }}>
+          <div style={{ position: 'relative', width: '32px', height: '32px', border: '2px solid rgba(255,255,255,0.05)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin-fast 1s linear infinite' }}></div>
+        </div>
+      }>
+        <Outlet context={contextValue} />
+      </Suspense>
 
       <footer className="app-footer">
         <FooterInstallCTA lang={lang} />
@@ -416,14 +422,16 @@ export default function App() {
       {hasCookieConsent && <PWAUpdatePrompt lang={lang} />}
       <InstallPrompt lang={lang} />
 
-      <OfflineChatbot
-        lang={lang}
-        favorites={childFavorites}
-        toggleFavorite={toggleFavorite}
-        onSelectSet={handleSelectSetFromSearch}
-        onShowOnMap={handleShowOnMap}
-        evalTime={evalTime}
-      />
+      <Suspense fallback={null}>
+        <OfflineChatbot
+          lang={lang}
+          favorites={childFavorites}
+          toggleFavorite={toggleFavorite}
+          onSelectSet={handleSelectSetFromSearch}
+          onShowOnMap={handleShowOnMap}
+          evalTime={evalTime}
+        />
+      </Suspense>
     </div>
   );
 }

@@ -58,7 +58,7 @@ describe('App End-to-End Flows', () => {
     expect(screen.getByAltText('לוח הופעות אוזורה 2026')).toBeInTheDocument();
   });
 
-  it('should switch navigation tabs (Timetable, My Schedule, Guide)', () => {
+  it('should switch navigation tabs (Timetable, My Schedule, Guide)', async () => {
     renderApp();
     
     // Switch to English to simplify element matching
@@ -67,12 +67,12 @@ describe('App End-to-End Flows', () => {
     // Switch to My Schedule tab
     const myScheduleNavBtn = screen.getAllByRole('button', { name: /My Schedule/i })[0];
     fireEvent.click(myScheduleNavBtn);
-    expect(screen.getByText(/Your schedule is empty/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Your schedule is empty/i)).toBeInTheDocument();
 
     // Switch to Guide tab
     const guideNavBtn = screen.getAllByRole('button', { name: /Guide/i })[0];
     fireEvent.click(guideNavBtn);
-    expect(screen.getByText(/מדריך הפסטיבל/i)).toBeInTheDocument();
+    expect(await screen.findByText(/מדריך הפסטיבל/i)).toBeInTheDocument();
   });
 
   it('should render the footer offline install CTA', () => {

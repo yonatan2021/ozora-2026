@@ -1,9 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from './App';
-import TimetablePage from './pages/TimetablePage';
-import FavoritesPage from './pages/FavoritesPage';
-import MapPage from './pages/MapPage';
-import GuidePage from './pages/GuidePage';
+import { lazy } from 'react';
+
+const TimetablePage = lazy(() => import('./pages/TimetablePage'));
+const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
+const MapPage = lazy(() => import('./pages/MapPage'));
+const GuidePage = lazy(() => import('./pages/GuidePage'));
 
 export const routes = [
   {

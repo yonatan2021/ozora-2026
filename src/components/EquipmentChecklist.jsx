@@ -4,7 +4,8 @@ import { ChevronDown, ChevronUp, Image as ImageIcon, Users, User, Info, Share2, 
 import equipmentData from '../data/equipmentChecklist.json';
 import useEquipmentChecklist from '../hooks/useEquipmentChecklist';
 import { exportEquipmentImageAsPng } from '../utils/exportEquipmentImage';
-import { exportEquipmentToCsv, exportEquipmentToJson } from '../utils/exportEquipmentData';
+import { exportEquipmentToExcel, exportEquipmentToJson } from '../utils/exportEquipmentData';
+import { getEquipmentItemFields } from '../utils/equipmentItemFields';
 import { trackEvent } from '../utils/analytics';
 
 const highlightText = (text, highlight) => {
@@ -26,7 +27,17 @@ export default function EquipmentChecklist() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const menuRef = useRef(null);
-  const { isChecked, toggle, getTopicProgress, getSectionProgress, checkedMap, importCheckedMap } = useEquipmentChecklist();
+  const {
+    isChecked,
+    getItemDetails,
+    toggle,
+    setQuantity,
+    setNote,
+    getTopicProgress,
+    getSectionProgress,
+    checkedMap,
+    importCheckedMap
+  } = useEquipmentChecklist();
 
   const [localSearch, setLocalSearch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -56,8 +67,8 @@ export default function EquipmentChecklist() {
 
   const handleExportCsv = (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
-    trackEvent('equipment_export', { method: 'csv', scope, onlyChecked });
-    exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked);
+    trackEvent('equipment_export', { method: 'excel', scope, onlyChecked });
+    exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChecked);
   };
 
   const handleExportJson = () => {
@@ -79,6 +90,12 @@ export default function EquipmentChecklist() {
           for (const [key, value] of Object.entries(importedData)) {
             if (typeof key === 'string' && typeof value === 'boolean') {
               validated[key] = value;
+            } else if (typeof key === 'string' && value && typeof value === 'object' && !Array.isArray(value)) {
+              validated[key] = {
+                checked: !!value.checked,
+                quantity: value.quantity == null ? '' : String(value.quantity),
+                note: typeof value.note === 'string' ? value.note : ''
+              };
             }
           }
           importCheckedMap(validated);
@@ -204,18 +221,24 @@ export default function EquipmentChecklist() {
                   {(isPrint || isOpen) && (
                     <div className="equipment-topic-body" data-testid={isPrint ? undefined : `equipment-topic-body-${topic.id}`}>
                       {topic.items.map((item) => (
-                        <label
+                        <div
                           key={item.id}
                           className="equipment-item"
                           data-testid={isPrint ? undefined : `equipment-item-${item.id}`}
+                          onClick={isPrint ? undefined : (event) => {
+                            if (event.target.closest('input, textarea, button')) return;
+                            toggle(item.id);
+                          }}
                         >
-                          <input
-                            type="checkbox"
-                            checked={isChecked(item.id)}
-                            onChange={isPrint ? () => {} : () => toggle(item.id)}
-                            readOnly={isPrint}
-                            style={isPrint ? { pointerEvents: 'none' } : undefined}
-                          />
+                          <label className="equipment-check-control">
+                            <input
+                              type="checkbox"
+                              checked={isChecked(item.id)}
+                              onChange={isPrint ? () => {} : () => toggle(item.id)}
+                              readOnly={isPrint}
+                              style={isPrint ? { pointerEvents: 'none' } : undefined}
+                            />
+                          </label>
                           <span className="equipment-item-text">
                             <span className="equipment-item-label">
                               {isPrint ? `• ${item.label}` : highlightText(item.label, searchTerm)}
@@ -225,8 +248,59 @@ export default function EquipmentChecklist() {
                                 {isPrint ? item.hint : highlightText(item.hint, searchTerm)}
                               </span>
                             )}
+                            {(() => {
+                              const fields = getEquipmentItemFields(item, topic, key);
+                              const details = getItemDetails(item.id);
+                              const hasQuantity = fields.quantity && details.quantity;
+                              const hasNote = fields.note && details.note;
+
+                              if (isPrint) {
+                                if (!hasQuantity && !hasNote) return null;
+                                return (
+                                  <span className="equipment-print-meta">
+                                    {hasQuantity ? `כמות: ${details.quantity}` : ''}
+                                    {hasQuantity && hasNote ? ' | ' : ''}
+                                    {hasNote ? `הערה: ${details.note}` : ''}
+                                  </span>
+                                );
+                              }
+
+                              if (!fields.quantity && !fields.note) return null;
+
+                              return (
+                                <span className="equipment-item-fields" onClick={(event) => event.stopPropagation()}>
+                                  {fields.quantity && (
+                                    <label className="equipment-quantity-field">
+                                      <span>כמות</span>
+                                      <input
+                                        type="number"
+                                        inputMode="numeric"
+                                        min="0"
+                                        step="1"
+                                        value={details.quantity}
+                                        onChange={(event) => setQuantity(item.id, event.target.value)}
+                                        placeholder="1"
+                                        aria-label={`כמות עבור ${item.label}`}
+                                      />
+                                    </label>
+                                  )}
+                                  {fields.note && (
+                                    <label className="equipment-note-field">
+                                      <span>הערה</span>
+                                      <textarea
+                                        rows="1"
+                                        value={details.note}
+                                        onChange={(event) => setNote(item.id, event.target.value)}
+                                        placeholder="מי מביא, סוג, מידה או תזכורת"
+                                        aria-label={`הערה עבור ${item.label}`}
+                                      />
+                                    </label>
+                                  )}
+                                </span>
+                              );
+                            })()}
                           </span>
-                        </label>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -278,11 +352,11 @@ export default function EquipmentChecklist() {
               <div className="menu-section-title">ייצוא נתונים (Excel)</div>
               <button type="button" onClick={() => handleExportCsv('both', false)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
-                <span>ייצוא לאקסל (כל הציוד)</span>
+                <span>ייצוא אקסל ממותג (כל הציוד)</span>
               </button>
               <button type="button" onClick={() => handleExportCsv('both', true)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
-                <span>ייצוא לאקסל (פריטים שסומנו בלבד)</span>
+                <span>ייצוא אקסל ממותג (פריטים שסומנו בלבד)</span>
               </button>
 
               <div className="menu-divider" />
@@ -298,11 +372,11 @@ export default function EquipmentChecklist() {
               </button>
               <button type="button" onClick={() => handleExportImage('both', false)}>
                 <ImageIcon size={14} className="menu-icon-image" />
-                <span>ייצוא לתמונה (כל הציוד - PNG)</span>
+                <span>ייצוא לתמונות קריאות (כל הציוד)</span>
               </button>
               <button type="button" onClick={() => handleExportImage('both', true)}>
                 <ImageIcon size={14} className="menu-icon-image" />
-                <span>ייצוא לתמונה (פריטים שסומנו בלבד - PNG)</span>
+                <span>ייצוא לתמונות קריאות (פריטים שסומנו בלבד)</span>
               </button>
 
               <div className="menu-divider" />

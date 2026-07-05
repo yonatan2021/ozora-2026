@@ -21,7 +21,7 @@ describe('useEquipmentChecklist', () => {
 
     expect(result.current.isChecked('shared-tents')).toBe(true);
     expect(JSON.parse(localStorage.getItem('ozora_equipment_checklist'))).toEqual({
-      'shared-tents': true
+      'shared-tents': { checked: true, quantity: '', note: '' }
     });
   });
 
@@ -36,6 +36,21 @@ describe('useEquipmentChecklist', () => {
     });
 
     expect(result.current.isChecked('shared-tents')).toBe(false);
+  });
+
+  it('stores item quantity and notes', () => {
+    const { result } = renderHook(() => useEquipmentChecklist());
+
+    act(() => {
+      result.current.setQuantity('shared-tents', '3');
+      result.current.setNote('shared-tents', 'דנה מביאה אחד');
+    });
+
+    expect(result.current.getItemDetails('shared-tents')).toEqual({
+      checked: false,
+      quantity: '3',
+      note: 'דנה מביאה אחד'
+    });
   });
 
   it('loads previously saved state from localStorage', () => {

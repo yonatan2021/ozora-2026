@@ -59,6 +59,14 @@ describe('EquipmentChecklist', () => {
     expect(screen.getByText(/לאחר סימון הציוד/i)).toBeTruthy();
   });
 
+  it('shows quantity and note fields for equipment that needs planning detail', () => {
+    render(<EquipmentChecklist />);
+    fireEvent.click(screen.getByText('מחסה, צל והגנה מגשם'));
+
+    expect(screen.getByLabelText('כמות עבור אוהלים קבוצתיים או אוהל ציוד')).toBeTruthy();
+    expect(screen.getByLabelText('הערה עבור אוהלים קבוצתיים או אוהל ציוד')).toBeTruthy();
+  });
+
   it('filters items based on search query matching item label or hint', async () => {
     render(<EquipmentChecklist />);
     
@@ -111,4 +119,3 @@ describe('EquipmentChecklist', () => {
     expect(screen.queryByText('קנופי או גזיבו קבוצתי')).toBeTruthy();
   });
 });
-

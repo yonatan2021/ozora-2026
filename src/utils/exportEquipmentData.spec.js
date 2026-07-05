@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { exportEquipmentToCsv, exportEquipmentToJson } from './exportEquipmentData';
+import { exportEquipmentToCsv, exportEquipmentToExcel, exportEquipmentToJson } from './exportEquipmentData';
 
 describe('exportEquipmentData', () => {
   let clickSpy;
@@ -79,11 +79,10 @@ describe('exportEquipmentData', () => {
       expect(createdElement.download).toBe('ozora-2026-equipment-all.csv');
       
       const csvStr = blobContent[0];
-      // Hebrew header: "סוג,קטגוריה,פריט,הערה,סטטוס\n"
-      expect(csvStr).toContain('\uFEFFסוג,קטגוריה,פריט,הערה,סטטוס\n');
-      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 1","Hint 1","סומן"');
-      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 2","","לא סומן"');
-      expect(csvStr).toContain('"Personal Title","Topic Heading 2","Personal Item 1","","לא סומן"');
+      expect(csvStr).toContain('\uFEFFסוג,קטגוריה,פריט,כמות,הערת משתמש,הערת Ozora,סטטוס\n');
+      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 1","","","Hint 1","סומן"');
+      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 2","","","","לא סומן"');
+      expect(csvStr).toContain('"Personal Title","Topic Heading 2","Personal Item 1","","","","לא סומן"');
     });
 
     it('exports only checked items when onlyChecked is true', () => {
@@ -95,9 +94,18 @@ describe('exportEquipmentData', () => {
 
       expect(clickSpy).toHaveBeenCalledTimes(1);
       const csvStr = blobContent[0];
-      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 1","Hint 1","סומן"');
+      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 1","","","Hint 1","סומן"');
       expect(csvStr).not.toContain('Shared Item 2');
       expect(csvStr).not.toContain('Personal Item 1');
+    });
+
+    it('includes quantity and user notes for the new item state format', () => {
+      exportEquipmentToCsv(mockEquipmentData, {
+        'shared-item1': { checked: true, quantity: '4', note: 'Yoni brings two' }
+      }, 'both', true);
+
+      const csvStr = blobContent[0];
+      expect(csvStr).toContain('"Shared Title","Topic Heading 1","Shared Item 1","4","Yoni brings two","Hint 1","סומן"');
     });
 
     it('filters by scope: shared only', () => {
@@ -114,6 +122,23 @@ describe('exportEquipmentData', () => {
       const csvStr = blobContent[0];
       expect(csvStr).not.toContain('Shared Item 1');
       expect(csvStr).toContain('Personal Item 1');
+    });
+  });
+
+  describe('exportEquipmentToExcel', () => {
+    it('exports a branded Excel workbook', () => {
+      exportEquipmentToExcel(mockEquipmentData, {
+        'shared-item1': { checked: true, quantity: '2', note: 'bring early' }
+      }, 'both', false);
+
+      expect(clickSpy).toHaveBeenCalledTimes(1);
+      expect(createdElement.download).toBe('ozora-2026-equipment-all.xls');
+      const workbook = blobContent[0];
+      expect(workbook).toContain('OZORA 2026');
+      expect(workbook).toContain('רשימת ציוד לפסטיבל');
+      expect(workbook).toContain('הערת Ozora');
+      expect(workbook).toContain('bring early');
+      expect(workbook).toContain('ציוד שסומן');
     });
   });
 

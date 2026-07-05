@@ -1,0 +1,1486 @@
+{
+  "festival": "O.Z.O.R.A. Festival 2026",
+  "generated_at": "2026-07-04",
+  "source_file": "unmapped_artists.md",
+  "source_artist_count": 286,
+  "scope": "Verified first batch focused on aliases, members, shared projects and high-value navigation links.",
+  "relation_type_guidance": {
+    "same_person_alias": "Two billed names belong to the same person. Show both sets under one identity hub.",
+    "alias_of": "The festival project name belongs to a named person.",
+    "project_member": "The related artist is a member of the billed collaboration.",
+    "shared_project": "Two separately billed artists also perform together under another project.",
+    "shared_member": "Two projects overlap through at least one member, but are not the same project.",
+    "member_of": "The artist also belongs or belonged to another group.",
+    "current_member": "A current member of a duo or group.",
+    "former_member": "Historical member only. Do not present as current.",
+    "sibling_project": "A parallel project by the same core artists.",
+    "normalized_project_name": "Festival-specific or alternate spelling that should resolve to a canonical project."
+  },
+  "relations": [
+    {
+      "source_artist": "8ternal Beings",
+      "related_artist": "Tristan",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "8ternal Beings",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "8ternal Beings is a collaboration featuring Tristan and Regan. Tristan also performs separately at the festival.",
+      "sources": [
+        {
+          "title": "NANO Records - 8ternal Beings collaboration profile",
+          "url": "https://nanomusic.net/playlist/maxwells-dem0n/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "8ternal Beings",
+      "related_artist": "Regan",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "8ternal Beings",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "8ternal Beings is a collaboration featuring Tristan and Regan. Regan also performs separately at the festival.",
+      "sources": [
+        {
+          "title": "NANO Records - 8ternal Beings collaboration profile",
+          "url": "https://nanomusic.net/playlist/maxwells-dem0n/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Avalon",
+      "related_artist": "Tristan",
+      "relation_type": "shared_project",
+      "canonical_person": null,
+      "via_project": "Killerwatts",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Avalon and Tristan are the two artists behind Killerwatts, while both also have separate Ozora 2026 sets.",
+      "sources": [
+        {
+          "title": "Killerwatts official Bandcamp profile",
+          "url": "https://killerwatts.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Ace Ventura",
+      "related_artist": "Astrix",
+      "relation_type": "shared_project",
+      "canonical_person": null,
+      "via_project": "Alpha Portal",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Ace Ventura and Astrix perform together as Alpha Portal and also appear separately in the Ozora 2026 timetable.",
+      "sources": [
+        {
+          "title": "Amsterdam Dance Event - Ace Ventura biography",
+          "url": "https://www.amsterdam-dance-event.nl/en/artists-speakers/ace-ventura/25412/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Braincell",
+      "related_artist": "Rastaliens",
+      "relation_type": "same_person_alias",
+      "canonical_person": "Ralph K. Freund",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Braincell and Rastaliens are projects operated by Ralph K. Freund. These should be linked as aliases of the same person, not as band members.",
+      "sources": [
+        {
+          "title": "Bitwig profile - Ralph K. Freund",
+          "url": "https://www.bitwig.com/certified/ralph-k-freund-15/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Tetrameth",
+      "related_artist": "Shadow FX",
+      "relation_type": "shared_project",
+      "canonical_person": null,
+      "via_project": "Twisted Sibling",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Tetrameth and Shadow FX are the two brothers behind Twisted Sibling and both perform separately at Ozora 2026.",
+      "sources": [
+        {
+          "title": "Twisted Sibling Bandcamp profile",
+          "url": "https://bandcamp.com/twistedsibling",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Mysticism",
+      "related_artist": "Ramizes",
+      "relation_type": "same_person_alias",
+      "canonical_person": "Ozzy Cetin",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Mysticism and Ramizes are two aliases used by Ozzy Cetin. Both aliases have separate festival billing.",
+      "sources": [
+        {
+          "title": "Ozzy Cetin official DJ biography",
+          "url": "https://www.ozzychetin.com/dj/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Gong Zen",
+      "related_artist": "Star Sounds Orchestra",
+      "relation_type": "shared_member",
+      "canonical_person": "Jens Zygar",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": true,
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "The Gong Zen performance is credited to Jens Zygar of Star Sounds Orchestra together with the Ozorian Gong Orchestra.",
+      "sources": [
+        {
+          "title": "O.Z.O.R.A. Festival - Gong Zen performance credit",
+          "url": "https://www.facebook.com/Ozora.Festival.Official/photos/1600-1730-gong-zen-performed-by-jens-zygar-star-sounds-orchestra-the-ozorian-gon/1569099538119742/",
+          "kind": "official_social"
+        }
+      ]
+    },
+    {
+      "source_artist": "Aardvarkk",
+      "related_artist": "Nigel Shiva Valley",
+      "relation_type": "alias_of",
+      "canonical_person": "Nigel Shiva Valley",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Aardvarkk is the solo psytrance project of Nigel Shiva Valley.",
+      "sources": [
+        {
+          "title": "Bom Shanka Music - Aardvarkk",
+          "url": "https://bomshanka.com/artist/aardvarkk/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Altruism",
+      "related_artist": "DJ Thatha",
+      "relation_type": "alias_of",
+      "canonical_person": "Thatha",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Altruism is the psytrance production project of Brazilian DJ Thatha.",
+      "sources": [
+        {
+          "title": "NANO Records - Altruism",
+          "url": "https://nanomusic.net/artist/altruism/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Astral Projection",
+      "related_artist": "Avi Nissim",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Avi Nissim is a current member of Astral Projection.",
+      "sources": [
+        {
+          "title": "TIP Records - Astral Projection",
+          "url": "https://www.tiprecords.com/artists/astral-projection/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Astral Projection",
+      "related_artist": "Lior Perlmutter",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Lior Perlmutter is a current member of Astral Projection.",
+      "sources": [
+        {
+          "title": "TIP Records - Astral Projection",
+          "url": "https://www.tiprecords.com/artists/astral-projection/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Astral Projection",
+      "related_artist": "SFX",
+      "relation_type": "renamed_project",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "historical",
+      "user_value": "identity_and_navigation",
+      "note": "Astral Projection was originally formed under the name SFX.",
+      "sources": [
+        {
+          "title": "TIP Records - Astral Projection",
+          "url": "https://www.tiprecords.com/artists/astral-projection/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Captain Hook",
+      "related_artist": "Reshef Harari",
+      "relation_type": "alias_of",
+      "canonical_person": "Reshef Harari",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Captain Hook is the artist project of Reshef Harari.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Captain Hook biography",
+          "url": "https://ra.co/dj/captainhook/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Captain Hook",
+      "related_artist": "Quantize",
+      "relation_type": "former_member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "historical",
+      "user_value": "identity_and_navigation",
+      "note": "Before Captain Hook, Reshef Harari was part of the collaborative project Quantize.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Captain Hook biography",
+          "url": "https://ra.co/dj/captainhook/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Captain Hook",
+      "related_artist": "Sheff",
+      "relation_type": "same_person_alias",
+      "canonical_person": "Reshef Harari",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "historical",
+      "user_value": "identity_and_navigation",
+      "note": "Sheff is another project name previously used by Reshef Harari.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Captain Hook biography",
+          "url": "https://ra.co/dj/captainhook/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Oforia",
+      "related_artist": "Ofer Dikovsky",
+      "relation_type": "alias_of",
+      "canonical_person": "Ofer Dikovsky",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Oforia is the solo project of Ofer Dikovsky.",
+      "sources": [
+        {
+          "title": "FM Booking - Oforia biography",
+          "url": "https://fm-booking.com/artists/oforia",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Oforia",
+      "related_artist": "Indoor",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Ofer Dikovsky was a member of Indoor and later revived the project.",
+      "sources": [
+        {
+          "title": "FM Booking - Oforia biography",
+          "url": "https://fm-booking.com/artists/oforia",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Oforia",
+      "related_artist": "Tandu",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "historical",
+      "user_value": "identity_and_navigation",
+      "note": "After Indoor, Ofer Dikovsky formed Tandu with Marco Goren.",
+      "sources": [
+        {
+          "title": "FM Booking - Oforia biography",
+          "url": "https://fm-booking.com/artists/oforia",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Deedrah",
+      "related_artist": "Frédéric Holyszewski",
+      "relation_type": "alias_of",
+      "canonical_person": "Frédéric Holyszewski",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Deedrah is a solo project of Frédéric 'Dado' Holyszewski.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Deedrah biography",
+          "url": "https://ra.co/dj/deedrah/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Deedrah",
+      "related_artist": "Transwave",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Dado formed Transwave with Christof Drouillet.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Deedrah biography",
+          "url": "https://ra.co/dj/deedrah/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Deedrah",
+      "related_artist": "Krome Angels",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Krome Angels is another group involving Dado.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Deedrah biography",
+          "url": "https://ra.co/dj/deedrah/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Etnica",
+      "related_artist": "Max Lanfranconi",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Max Lanfranconi is part of the current Etnica core.",
+      "sources": [
+        {
+          "title": "Orb Mag - Etnica history and current members",
+          "url": "https://www.orbmag.com/features/etnica-stimulating-the-goa-trance-scene-for-two-decades/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Etnica",
+      "related_artist": "Maurizio Begotti",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Maurizio Begotti is part of the current Etnica core.",
+      "sources": [
+        {
+          "title": "Orb Mag - Etnica history and current members",
+          "url": "https://www.orbmag.com/features/etnica-stimulating-the-goa-trance-scene-for-two-decades/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Roy Sason",
+      "related_artist": "Shidapu",
+      "relation_type": "same_person_alias",
+      "canonical_person": "Roy Sason",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Roy Sason performs the historical Shidapu material under the Shidapu name.",
+      "sources": [
+        {
+          "title": "Matsuri Digital - Roy Sason profile",
+          "url": "https://matsuri-digital.com/en/artist/roy-sason/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Roy Sason",
+      "related_artist": "MUTe",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Roy Sason is also part of the Israeli progressive act MUTe.",
+      "sources": [
+        {
+          "title": "Matsuri Digital - Roy Sason profile",
+          "url": "https://matsuri-digital.com/en/artist/roy-sason/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Tsuyoshi Suzuki",
+      "related_artist": "Prana",
+      "relation_type": "founder_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Tsuyoshi Suzuki formed Taiyo with Nick Taylor, which later became Prana.",
+      "sources": [
+        {
+          "title": "Matsuri Digital - Tsuyoshi Suzuki profile",
+          "url": "https://matsuri-digital.com/en/artist/tsuyoshi-suzuki/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Solar Fields",
+      "related_artist": "Magnus Birgersson",
+      "relation_type": "alias_of",
+      "canonical_person": "Magnus Birgersson",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Solar Fields is the musical alias of Magnus Birgersson.",
+      "sources": [
+        {
+          "title": "Solar Fields official biography",
+          "url": "https://solarfields.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Gabriel Le Mar",
+      "related_artist": "Saafi Brothers",
+      "relation_type": "member_or_contributor",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Gabriel Le Mar lists Saafi Brothers among his established artistic constellations.",
+      "sources": [
+        {
+          "title": "Gabriel Le Mar official Bandcamp profile",
+          "url": "https://gabriellemar.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Gabriel Le Mar",
+      "related_artist": "Aural Float",
+      "relation_type": "member_or_contributor",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Gabriel Le Mar lists Aural Float among his established artistic constellations.",
+      "sources": [
+        {
+          "title": "Gabriel Le Mar official Bandcamp profile",
+          "url": "https://gabriellemar.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Gabriel Le Mar",
+      "related_artist": "Dublocation",
+      "relation_type": "member_or_contributor",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Gabriel Le Mar lists Dublocation among his established artistic constellations.",
+      "sources": [
+        {
+          "title": "Gabriel Le Mar official Bandcamp profile",
+          "url": "https://gabriellemar.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Mirror System",
+      "related_artist": "System 7",
+      "relation_type": "sibling_project",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Mirror System is the downtempo and chillout project of System 7's Steve Hillage and Miquette Giraudy.",
+      "sources": [
+        {
+          "title": "Mirror System official Bandcamp profile",
+          "url": "https://mirrorsystem.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Mirror System",
+      "related_artist": "Steve Hillage",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Steve Hillage is one of the two artists behind Mirror System.",
+      "sources": [
+        {
+          "title": "Mirror System official Bandcamp profile",
+          "url": "https://mirrorsystem.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Mirror System",
+      "related_artist": "Miquette Giraudy",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Miquette Giraudy is one of the two artists behind Mirror System.",
+      "sources": [
+        {
+          "title": "Mirror System official Bandcamp profile",
+          "url": "https://mirrorsystem.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Misled Convoy",
+      "related_artist": "Mike Hodgson",
+      "relation_type": "alias_of",
+      "canonical_person": "Mike Hodgson",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Misled Convoy is Mike Hodgson's project.",
+      "sources": [
+        {
+          "title": "Misled Convoy official Bandcamp profile",
+          "url": "https://misledconvoy.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Misled Convoy",
+      "related_artist": "Pitch Black",
+      "relation_type": "member_of",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Mike Hodgson is a member of Pitch Black.",
+      "sources": [
+        {
+          "title": "Misled Convoy official Bandcamp profile",
+          "url": "https://misledconvoy.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Humanoids",
+      "related_artist": "Sandman",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "Humanoids",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Humanoids is a collaboration between Sandman and Illumination.",
+      "sources": [
+        {
+          "title": "NANO Records - Humanoids",
+          "url": "https://nanomusic.net/artist/humanoids/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Humanoids",
+      "related_artist": "Illumination",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "Humanoids",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Humanoids is a collaboration between Sandman and Illumination.",
+      "sources": [
+        {
+          "title": "NANO Records - Humanoids",
+          "url": "https://nanomusic.net/artist/humanoids/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Trubble",
+      "related_artist": "Celli / Earthling",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "Trubble",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Trubble is a project by Celli, also known through Earthling, and K.i.M.",
+      "sources": [
+        {
+          "title": "Trubble project announcement",
+          "url": "https://www.instagram.com/p/DYj_O08MzEf/",
+          "kind": "official_social"
+        }
+      ]
+    },
+    {
+      "source_artist": "Trubble",
+      "related_artist": "K.i.M.",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "Trubble",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Trubble is a project by Celli and K.i.M.",
+      "sources": [
+        {
+          "title": "Trubble project announcement",
+          "url": "https://www.instagram.com/p/DYj_O08MzEf/",
+          "kind": "official_social"
+        }
+      ]
+    },
+    {
+      "source_artist": "S&A in Dub",
+      "related_artist": "Synthbiont",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "S&A in Dub",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "S&A in Dub is the joint project of Synthbiont and Anassimandrus.",
+      "sources": [
+        {
+          "title": "Synthbiont & Anassimandrus artist record",
+          "url": "https://www.discogs.com/artist/8930458-Synthbiont-Anassimandrus",
+          "kind": "music_database"
+        }
+      ]
+    },
+    {
+      "source_artist": "S&A in Dub",
+      "related_artist": "Anassimandrus",
+      "relation_type": "project_member",
+      "canonical_person": null,
+      "via_project": "S&A in Dub",
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "S&A in Dub is the joint project of Synthbiont and Anassimandrus.",
+      "sources": [
+        {
+          "title": "Synthbiont & Anassimandrus artist record",
+          "url": "https://www.discogs.com/artist/8930458-Synthbiont-Anassimandrus",
+          "kind": "music_database"
+        }
+      ]
+    },
+    {
+      "source_artist": "Aux25",
+      "related_artist": "Andrew Ross Collins",
+      "relation_type": "alias_of",
+      "canonical_person": "Andrew Ross Collins",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "AUX25 is an alias of Interchill co-founder Andrew Ross Collins.",
+      "sources": [
+        {
+          "title": "O.Z.O.R.A. Festival - AUX25 profile",
+          "url": "https://2026.ozorafestival.eu/music-and-dance/the-dome/aux25/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Phil Hartnoll (Orbital)",
+      "related_artist": "Orbital",
+      "relation_type": "member_of",
+      "canonical_person": "Phil Hartnoll",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Phil Hartnoll is one half of Orbital, together with Paul Hartnoll.",
+      "sources": [
+        {
+          "title": "PRS for Music - Phil Hartnoll, Orbital",
+          "url": "https://www2.prsformusic.com/m-magazine/features/interview-phil-hartnoll-orbital",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Kukan Dub Ambient",
+      "related_artist": "Itay Berger",
+      "relation_type": "alias_of",
+      "canonical_person": "Itay Berger",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Kukan Dub Lagan is the chillout project of Itay Berger; the festival billing 'Kukan Dub Ambient' should link to that identity.",
+      "sources": [
+        {
+          "title": "Trancentral - Kukan Dub Lagan interview",
+          "url": "https://trancentral.tv/2016/02/sunshine-music-for-smiling-people-the-music-of-kukan-dub-lagan/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Kukan Dub Ambient",
+      "related_artist": "Kukan Dub Lagan",
+      "relation_type": "normalized_project_name",
+      "canonical_person": "Itay Berger",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Use Kukan Dub Lagan as the canonical project identity and retain Kukan Dub Ambient as the festival-specific billing.",
+      "sources": [
+        {
+          "title": "Trancentral - Kukan Dub Lagan interview",
+          "url": "https://trancentral.tv/2016/02/sunshine-music-for-smiling-people-the-music-of-kukan-dub-lagan/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Tor.Ma in Dub",
+      "related_artist": "Rafael Hernandez",
+      "relation_type": "alias_of",
+      "canonical_person": "Rafael Hernandez",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Tor.Ma in Dub is the project of Rafael Hernandez.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Tor.Ma in Dub",
+          "url": "https://ra.co/dj/tor.maindub",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Anatolian Weapons",
+      "related_artist": "Dream Weapons",
+      "relation_type": "same_person_project",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "The artist behind Anatolian Weapons also makes music as Dream Weapons.",
+      "sources": [
+        {
+          "title": "Anatolian Weapons official Bandcamp",
+          "url": "https://anatolianweapons.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Anatolian Weapons",
+      "related_artist": "Fantastikoi Hxoi",
+      "relation_type": "same_person_project",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "The artist behind Anatolian Weapons also makes music as Fantastikoi Hxoi.",
+      "sources": [
+        {
+          "title": "Anatolian Weapons official Bandcamp",
+          "url": "https://anatolianweapons.bandcamp.com/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Zen Baboon",
+      "related_artist": "Daniel Rosado",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Daniel Rosado is one of the two members of Zen Baboon.",
+      "sources": [
+        {
+          "title": "Feel Life Music - Zen Baboon",
+          "url": "https://feellifemusic.com/artists/?view=zen-baboon",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Zen Baboon",
+      "related_artist": "Henrique Palhavã",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Henrique Palhavã is one of the two members of Zen Baboon.",
+      "sources": [
+        {
+          "title": "Feel Life Music - Zen Baboon",
+          "url": "https://feellifemusic.com/artists/?view=zen-baboon",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "X-Dream",
+      "related_artist": "Marcus Maichel",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Marcus Maichel co-created X-Dream.",
+      "sources": [
+        {
+          "title": "FM Booking - X-Dream biography",
+          "url": "https://fm-booking.com/artists/x-dream",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "X-Dream",
+      "related_artist": "Jan Müller",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Jan Müller co-created X-Dream.",
+      "sources": [
+        {
+          "title": "FM Booking - X-Dream biography",
+          "url": "https://fm-booking.com/artists/x-dream",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Entheogenic",
+      "related_artist": "Piers Oak-Rhind",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "The official biography lists Piers Oak-Rhind as the current band member.",
+      "sources": [
+        {
+          "title": "Entheogenic official biography",
+          "url": "https://www.entheogenic.net/bio--media--contact.html",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Entheogenic",
+      "related_artist": "Helmut Glavar",
+      "relation_type": "former_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "historical",
+      "user_value": "identity_and_navigation",
+      "note": "Helmut Glavar is a former member and should not be displayed as part of the current live project.",
+      "sources": [
+        {
+          "title": "Entheogenic official biography",
+          "url": "https://www.entheogenic.net/bio--media--contact.html",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Digital Talk (25th Anniv.)",
+      "related_artist": "Julien Fougea",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Digital Talk is credited to Julien Fougea and Luc Achintre.",
+      "sources": [
+        {
+          "title": "PsyDB - Digital Talk",
+          "url": "https://www.psydb.net/artist/digital-talk/1584",
+          "kind": "music_database"
+        }
+      ]
+    },
+    {
+      "source_artist": "Digital Talk (25th Anniv.)",
+      "related_artist": "Luc Achintre",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Digital Talk is credited to Julien Fougea and Luc Achintre.",
+      "sources": [
+        {
+          "title": "PsyDB - Digital Talk",
+          "url": "https://www.psydb.net/artist/digital-talk/1584",
+          "kind": "music_database"
+        }
+      ]
+    },
+    {
+      "source_artist": "Miles From Mars",
+      "related_artist": "Max Kibble",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Miles From Mars is the duo of Max Kibble and Shane Renew.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Miles From Mars biography",
+          "url": "https://ra.co/dj/milesfrommars/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Miles From Mars",
+      "related_artist": "Shane Renew",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Miles From Mars is the duo of Max Kibble and Shane Renew.",
+      "sources": [
+        {
+          "title": "Resident Advisor - Miles From Mars biography",
+          "url": "https://ra.co/dj/milesfrommars/biography",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Triforce",
+      "related_artist": "Charlotte Lohmann",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Triforce is the musical project of Charlotte Lohmann and Ryan Smith.",
+      "sources": [
+        {
+          "title": "Zenon Records - Triforce",
+          "url": "https://www.zenonrecords.com/artist/triforce",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Triforce",
+      "related_artist": "Ryan Smith",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Triforce is the musical project of Charlotte Lohmann and Ryan Smith.",
+      "sources": [
+        {
+          "title": "Zenon Records - Triforce",
+          "url": "https://www.zenonrecords.com/artist/triforce",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Tongue & Groove",
+      "related_artist": "Jake Ainley",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Release credits identify Jake Ainley and Ric Featherstone as the producers behind Tongue & Groove.",
+      "sources": [
+        {
+          "title": "Atto Music - Tongue & Groove release credits",
+          "url": "https://attomusic.bandcamp.com/track/tongue-groove-the-phoenix",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Tongue & Groove",
+      "related_artist": "Ric Featherstone",
+      "relation_type": "current_member",
+      "canonical_person": null,
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Release credits identify Jake Ainley and Ric Featherstone as the producers behind Tongue & Groove.",
+      "sources": [
+        {
+          "title": "Atto Music - Tongue & Groove release credits",
+          "url": "https://attomusic.bandcamp.com/track/tongue-groove-the-phoenix",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    },
+    {
+      "source_artist": "Professor Chill",
+      "related_artist": "Rupert Till",
+      "relation_type": "alias_of",
+      "canonical_person": "Rupert Till",
+      "via_project": null,
+      "source_artist_in_uploaded_unmapped_list": true,
+      "related_artist_in_ozora_2026": "not_confirmed",
+      "confidence": "verified",
+      "temporal_status": "current",
+      "user_value": "identity_and_navigation",
+      "note": "Rupert Till releases electronic music as Professor Chill.",
+      "sources": [
+        {
+          "title": "University of Huddersfield - Rupert Till biography",
+          "url": "https://pure.hud.ac.uk/en/persons/rupert-till/",
+          "kind": "official_or_authoritative"
+        }
+      ]
+    }
+  ],
+  "billing_decompositions": [
+    {
+      "billing": "Alagi & Papa",
+      "components": [
+        "Alagi",
+        "Papa"
+      ]
+    },
+    {
+      "billing": "Bellegance & Fraser",
+      "components": [
+        "Bellegance",
+        "Fraser"
+      ]
+    },
+    {
+      "billing": "Benho & Psymon",
+      "components": [
+        "Benho",
+        "Psymon"
+      ]
+    },
+    {
+      "billing": "Blue Sun pres. Hanussen & Kozmo D",
+      "components": [
+        "Hanussen",
+        "Kozmo D"
+      ],
+      "presented_as": "Blue Sun"
+    },
+    {
+      "billing": "Coloboma & Filip Varial",
+      "components": [
+        "Coloboma",
+        "Filip Varial"
+      ]
+    },
+    {
+      "billing": "Eltawave & Yury",
+      "components": [
+        "Eltawave",
+        "Yury"
+      ]
+    },
+    {
+      "billing": "Fluidum x Peao x Fanni Zahár",
+      "components": [
+        "Fluidum",
+        "PEAQ",
+        "Fanni Zahár"
+      ],
+      "normalization_note": "The lineup spelling 'Peao' appears to refer to PEAQ and should remain reviewable."
+    },
+    {
+      "billing": "Garpo & Ferenc Szanati",
+      "components": [
+        "Garpo",
+        "Ferenc Szanati"
+      ]
+    },
+    {
+      "billing": "GMS & Dickster",
+      "components": [
+        "GMS",
+        "Dickster"
+      ]
+    },
+    {
+      "billing": "Herrhausen & Treindl",
+      "components": [
+        "Herrhausen",
+        "Treindl"
+      ]
+    },
+    {
+      "billing": "Hèt Hat Club feat. Freak Fusion",
+      "components": [
+        "Hét Hat Club",
+        "Freak Fusion"
+      ],
+      "normalization_note": "Normalize Hèt to Hét."
+    },
+    {
+      "billing": "Ikoza & Alphakey",
+      "components": [
+        "Ikoza",
+        "AlphaKey"
+      ]
+    },
+    {
+      "billing": "Kebab Symphonie /Danaël",
+      "components": [
+        "Kebab Symphonie",
+        "Danaël"
+      ]
+    },
+    {
+      "billing": "Mavvi & Antonia",
+      "components": [
+        "Mavvi",
+        "Antonia"
+      ]
+    },
+    {
+      "billing": "Mode & Valens",
+      "components": [
+        "Mode",
+        "Valens"
+      ]
+    },
+    {
+      "billing": "Originz & Rajax",
+      "components": [
+        "Originz",
+        "Rajax"
+      ]
+    },
+    {
+      "billing": "Panache & Grabuge",
+      "components": [
+        "Panache",
+        "Grabuge"
+      ]
+    },
+    {
+      "billing": "Patajana & Karlo Kurbel",
+      "components": [
+        "Patajana",
+        "Karlo Kurbel"
+      ]
+    },
+    {
+      "billing": "Savaborsa & Richietyerra",
+      "components": [
+        "Savaborsa",
+        "Richietyerra"
+      ]
+    },
+    {
+      "billing": "Slym & Szoliver",
+      "components": [
+        "Slym",
+        "Szoliver"
+      ]
+    }
+  ],
+  "false_positive_warnings": [
+    {
+      "incorrect_mapping": "Tongue & Groove = Dickster / James Monro",
+      "reason": "Verified release credits identify Jake Ainley and Ric Featherstone."
+    },
+    {
+      "incorrect_mapping": "GBU = GMS",
+      "reason": "GBU is a separate project involving Dado/Deedrah, Serge Souque and Dimitri Nakov. Do not infer GMS from the initials."
+    },
+    {
+      "incorrect_mapping": "S&A in Dub = Solar Fields & AES Dana",
+      "reason": "The billing refers to Synthbiont & Anassimandrus."
+    },
+    {
+      "incorrect_mapping": "Entheogenic is currently a duo with Helmut Glavar",
+      "reason": "The official biography lists Piers Oak-Rhind as the current member and Helmut Glavar as former."
+    }
+  ],
+  "implementation_recommendation": {
+    "do_not_merge_groups_into_people": true,
+    "identity_hub_relation_types": [
+      "same_person_alias",
+      "alias_of",
+      "same_person_project",
+      "normalized_project_name"
+    ],
+    "related_project_relation_types": [
+      "shared_project",
+      "shared_member",
+      "member_of",
+      "project_member",
+      "sibling_project"
+    ],
+    "show_history_badge_when": [
+      "former_member",
+      "renamed_project"
+    ],
+    "minimum_auto_publish_confidence": "verified"
+  }
+}

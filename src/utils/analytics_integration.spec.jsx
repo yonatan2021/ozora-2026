@@ -61,13 +61,15 @@ describe('Analytics Integration', () => {
     window.location = originalLocation;
   });
 
-  it('tracks schedule_empty_state on mount when favorites is empty', () => {
+  it('tracks schedule_empty_state on mount when favorites is empty', async () => {
     const router = createMemoryRouter(routes, {
       initialEntries: ['/favorites'],
     });
     render(<RouterProvider router={router} />);
 
-    expect(window.gtag).toHaveBeenCalledWith('event', 'schedule_empty_state', {});
+    await vi.waitFor(() => {
+      expect(window.gtag).toHaveBeenCalledWith('event', 'schedule_empty_state', {});
+    });
   });
 });
 
