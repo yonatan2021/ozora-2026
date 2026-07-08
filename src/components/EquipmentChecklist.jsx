@@ -271,7 +271,7 @@ export default function EquipmentChecklist() {
                                 <span className="equipment-item-fields" onClick={(event) => event.stopPropagation()}>
                                   {fields.quantity && (
                                     <label className="equipment-quantity-field">
-                                      <span>כמות</span>
+                                      <span className="equipment-field-label">כמות</span>
                                       <input
                                         type="number"
                                         inputMode="numeric"
@@ -286,12 +286,12 @@ export default function EquipmentChecklist() {
                                   )}
                                   {fields.note && (
                                     <label className="equipment-note-field">
-                                      <span>הערה</span>
+                                      <span className="equipment-field-label">הערה</span>
                                       <textarea
                                         rows="1"
                                         value={details.note}
                                         onChange={(event) => setNote(item.id, event.target.value)}
-                                        placeholder="מי מביא, סוג, מידה או תזכורת"
+                                        placeholder="מי מביא, סוג, מידה..."
                                         aria-label={`הערה עבור ${item.label}`}
                                       />
                                     </label>

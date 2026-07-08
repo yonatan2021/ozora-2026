@@ -2957,7 +2957,7 @@ body:has(.theme-sunrise)::before {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  padding: 0.6rem 0.5rem;
+  padding: 0.65rem 0.55rem;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -3002,47 +3002,94 @@ body:has(.theme-sunrise)::before {
 }
 
 .equipment-item-fields {
-  display: grid;
-  grid-template-columns: minmax(5.25rem, 7rem) minmax(12rem, 1fr);
-  gap: 0.5rem;
-  margin-top: 0.45rem;
-  max-width: 34rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  max-width: min(100%, 31rem);
 }
 
 .equipment-quantity-field,
 .equipment-note-field {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   min-width: 0;
-  color: var(--text-muted);
-  font-size: 0.72rem;
-  font-weight: 700;
+  min-height: 1.85rem;
+  color: var(--text-secondary);
+  background: color-mix(in oklch, var(--surface-card) 74%, transparent);
+  border: 1px solid color-mix(in oklch, var(--border-strong) 70%, transparent);
+  border-radius: 999px;
+  padding: 0.18rem 0.35rem 0.18rem 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.equipment-quantity-field:focus-within,
+.equipment-note-field:focus-within {
+  border-color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 8%, var(--surface-card));
+  box-shadow: 0 0 0 2px var(--glow-primary);
+}
+
+.equipment-quantity-field {
+  flex: 0 0 auto;
+}
+
+.equipment-note-field {
+  flex: 1 1 14rem;
+}
+
+.equipment-field-label {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 1.35rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--accent) 14%, transparent);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .equipment-quantity-field input,
 .equipment-note-field textarea {
-  width: 100%;
-  min-height: 2.15rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface-card);
+  min-height: 1.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
   color: var(--text-primary);
-  font: 600 0.82rem 'Exo 2', 'Heebo', sans-serif;
-  padding: 0.4rem 0.55rem;
+  font: 700 0.78rem 'Exo 2', 'Heebo', sans-serif;
+  padding: 0.05rem 0.2rem;
   transition: var(--transition-smooth);
 }
 
+.equipment-quantity-field input {
+  width: 3.35rem;
+  text-align: center;
+}
+
 .equipment-note-field textarea {
-  resize: vertical;
+  width: 100%;
+  min-width: 9rem;
+}
+
+.equipment-note-field textarea {
+  resize: none;
   line-height: 1.25;
+  overflow: hidden;
+}
+
+.equipment-quantity-field input::placeholder,
+.equipment-note-field textarea::placeholder {
+  color: var(--text-muted);
 }
 
 .equipment-quantity-field input:focus,
 .equipment-note-field textarea:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px var(--glow-primary);
 }
 
 .equipment-print-meta {
@@ -3217,14 +3264,18 @@ body:has(.theme-sunrise)::before {
     inset-inline-start: 0;
   }
   .equipment-item-fields {
-    grid-template-columns: 1fr;
     max-width: none;
   }
   .equipment-quantity-field,
   .equipment-note-field {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
+    flex-direction: row;
+  }
+  .equipment-note-field {
+    flex-basis: 100%;
+  }
+  .equipment-note-field textarea {
+    min-width: 0;
   }
 }
 
@@ -7452,6 +7503,3 @@ body:has(.theme-sunrise)::before {
     bottom: 160px !important;
   }
 }
-
-
-
