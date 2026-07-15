@@ -121,7 +121,7 @@ describe('OfflineChatbot Navigation Intents and Keywords', () => {
   it('should respond with camping community topic when matching expanded keywords like "שכנים"', () => {
     openChat();
     submitQuery('טיפ על שכנים');
-    expect(screen.getByText(/קהילה ושכנים/i)).toBeInTheDocument();
+    expect(screen.getByText(/קהילה ושכנים — יחסי שכנות וחיי שיתוף/i)).toBeInTheDocument();
   });
 
   it('should respond with Astrix schedule when querying "מתי אסטריקס מנגן"', () => {
