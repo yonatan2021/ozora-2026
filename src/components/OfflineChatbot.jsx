@@ -87,14 +87,14 @@ const HEBREW_COUNTRY_NAMES = {
   const map = {
     'Warmup Sat': 'חימום שבת',
     'Warmup Sun': 'חימום ראשון',
-    'Day 1': 'יום 1 (שני)',
-    'Day 2': 'יום 2 (שלישי)',
-    'Day 3': 'יום 3 (רביעי)',
-    'Day 4': 'יום 4 (חמישי)',
-    'Day 5': 'יום 5 (שישי)',
-    'Day 6': 'יום 6 (שבת)',
-    'Day 7': 'יום 7 (ראשון)',
-    'Day 8': 'יום 8 (שני)'
+    'DAY 1': 'יום 1 (שני)',
+    'DAY 2': 'יום 2 (שלישי)',
+    'DAY 3': 'יום 3 (רביעי)',
+    'DAY 4': 'יום 4 (חמישי)',
+    'DAY 5': 'יום 5 (שישי)',
+    'DAY 6': 'יום 6 (שבת)',
+    'DAY 7': 'יום 7 (ראשון)',
+    'DAY 8': 'יום 8 (שני)'
   };
   return map[day] || day;
 };
@@ -450,7 +450,7 @@ export default function OfflineChatbot({
     const translatedTokens = cleanTokens.map(token => {
       if (customTranslationMap[token]) return customTranslationMap[token];
       for (const [key, value] of Object.entries(customTranslationMap)) {
-        if (token.includes(key) || key.includes(token)) return value;
+        if (key.length >= 3 && (token.startsWith(key) || key.startsWith(token))) return value;
       }
       return token;
     });

@@ -276,7 +276,7 @@ export function searchSchedule(query, sets, context = {}) {
       // 1. Check custom translation dictionary
       let translated = '';
       for (let [key, value] of customTranslationEntries) {
-        if (term.includes(key) || key.includes(term)) {
+        if (key.length >= 3 && (term.startsWith(key) || key.startsWith(term))) {
           translated = value;
           break;
         }

@@ -76,6 +76,7 @@ export default function PsychedelicBackground({ themeClass, selectedStage = 'ALL
 
     const onPointerMove = (e) => {
       const touch = e.touches ? e.touches[0] : e;
+      if (!touch || !window.innerWidth || !window.innerHeight) return;
       mouse.current.x = touch.clientX / window.innerWidth;
       mouse.current.y = touch.clientY / window.innerHeight;
     };
@@ -88,6 +89,10 @@ export default function PsychedelicBackground({ themeClass, selectedStage = 'ALL
       time += 0.008;
       const w = window.innerWidth;
       const h = window.innerHeight;
+      if (!w || !h) {
+        animFrame.current = requestAnimationFrame(draw);
+        return;
+      }
       const mx = mouse.current.x * w;
       const my = mouse.current.y * h;
 
