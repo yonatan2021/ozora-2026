@@ -1,10 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { exportEquipmentImageAsPng } from './exportEquipmentImage';
 
+function bi(text) {
+  return { he: text, en: text };
+}
+
 const sampleSection = {
-  title: 'ציוד שטח (קבוצתי)',
+  title: bi('ציוד שטח (קבוצתי)'),
   topics: [
-    { id: 'shelter', heading: 'מחסה וצל', items: [{ id: 'shared-tents', label: 'אוהלים' }] }
+    { id: 'shelter', heading: bi('מחסה וצל'), items: [{ id: 'shared-tents', label: bi('אוהלים') }] }
   ]
 };
 
@@ -83,14 +87,14 @@ describe('exportEquipmentImageAsPng', () => {
     }));
 
     const multiSection = {
-      title: 'ציוד שטח (קבוצתי)',
+      title: bi('ציוד שטח (קבוצתי)'),
       topics: [
         {
           id: 'shelter',
-          heading: 'מחסה וצל',
+          heading: bi('מחסה וצל'),
           items: [
-            { id: 'shared-tents', label: 'אוהלים' },
-            { id: 'shared-tarp', label: 'צילייה' }
+            { id: 'shared-tents', label: bi('אוהלים') },
+            { id: 'shared-tarp', label: bi('צילייה') }
           ]
         }
       ]
@@ -132,13 +136,13 @@ describe('exportEquipmentImageAsPng', () => {
     }));
 
     const multiSection = {
-      title: 'ציוד שטח (קבוצתי)',
+      title: bi('ציוד שטח (קבוצתי)'),
       topics: [
         {
           id: 'shelter',
-          heading: 'מחסה וצל',
+          heading: bi('מחסה וצל'),
           items: [
-            { id: 'shared-tents', label: 'אוהלים' }
+            { id: 'shared-tents', label: bi('אוהלים') }
           ]
         }
       ]
@@ -154,6 +158,55 @@ describe('exportEquipmentImageAsPng', () => {
 
     const calls = fillTextSpy.mock.calls.map(call => call[0]);
     expect(calls).toContain('אוהלים  ✓');
+  });
+
+  it('exports the English label when lang is en, using the .en field', async () => {
+    const fillTextSpy = vi.fn();
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+      fillRect: vi.fn(),
+      createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      fillText: fillTextSpy,
+      measureText: vi.fn(() => ({ width: 50 })),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      drawImage: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      closePath: vi.fn(),
+      scale: vi.fn(),
+    }));
+
+    const bilingualSection = {
+      title: { he: 'ציוד שטח (קבוצתי)', en: 'Camping Gear (Shared)' },
+      topics: [
+        {
+          id: 'shelter',
+          heading: { he: 'מחסה וצל', en: 'Shelter & Shade' },
+          items: [
+            { id: 'shared-tents', label: { he: 'אוהלים', en: 'Tents' } }
+          ]
+        }
+      ]
+    };
+
+    await exportEquipmentImageAsPng({
+      shared: bilingualSection,
+      personal: null,
+      checkedMap: { 'shared-tents': true },
+      onlyChecked: true,
+      lang: 'en'
+    });
+
+    const calls = fillTextSpy.mock.calls.map(call => call[0]);
+    expect(calls).toContain('Camping Gear (Shared)');
+    expect(calls).toContain('Shelter & Shade');
+    expect(calls).toContain('✓  Tents');
+    expect(calls).not.toContain('אוהלים');
   });
 
   it('excludes empty topics and empty sections when onlyChecked is true', async () => {
@@ -178,28 +231,28 @@ describe('exportEquipmentImageAsPng', () => {
     }));
 
     const sharedSection = {
-      title: 'Shared Title',
+      title: bi('Shared Title'),
       topics: [
         {
           id: 'topic1',
-          heading: 'Topic Heading 1',
-          items: [{ id: 'shared-item1', label: 'Item 1' }]
+          heading: bi('Topic Heading 1'),
+          items: [{ id: 'shared-item1', label: bi('Item 1') }]
         },
         {
           id: 'topic2',
-          heading: 'Topic Heading 2',
-          items: [{ id: 'shared-item2', label: 'Item 2' }]
+          heading: bi('Topic Heading 2'),
+          items: [{ id: 'shared-item2', label: bi('Item 2') }]
         }
       ]
     };
 
     const personalSection = {
-      title: 'Personal Title',
+      title: bi('Personal Title'),
       topics: [
         {
           id: 'topic3',
-          heading: 'Topic Heading 3',
-          items: [{ id: 'personal-item1', label: 'Item 3' }]
+          heading: bi('Topic Heading 3'),
+          items: [{ id: 'personal-item1', label: bi('Item 3') }]
         }
       ]
     };

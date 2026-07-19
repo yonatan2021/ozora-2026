@@ -1,6 +1,5 @@
 import { getEquipmentItemFields } from './equipmentItemFields';
-
-const BRAND_NOTE = 'רשימת Ozora 2026 נועדה לעזור בהיערכות. בדקו תמיד מגבלות טיסה, מזג אוויר והנחיות רשמיות של הפסטיבל.';
+import { translations } from './lang';
 
 function normalizeItemState(value) {
   if (value === true || value === false) {
@@ -43,9 +42,10 @@ function getSections(equipmentData, scope) {
   return sections;
 }
 
-function getRows(equipmentData, checkedMap, scope, onlyChecked = false) {
+function getRows(equipmentData, checkedMap, scope, onlyChecked = false, lang = 'he') {
   const rows = [];
   const sections = getSections(equipmentData, scope);
+  const t = translations[lang];
 
   for (const sec of sections) {
     for (const topic of sec.data.topics) {
@@ -54,13 +54,13 @@ function getRows(equipmentData, checkedMap, scope, onlyChecked = false) {
         if (onlyChecked && !details.checked) continue;
         const fields = getEquipmentItemFields(item, topic, sec.key);
         rows.push({
-          sectionTitle: sec.data.title,
-          topicHeading: topic.heading,
-          label: item.label,
+          sectionTitle: sec.data.title[lang],
+          topicHeading: topic.heading[lang],
+          label: item.label[lang],
           quantity: fields.quantity ? details.quantity : '',
           userNote: fields.note ? details.note : '',
-          ozoraNote: item.hint || '',
-          status: details.checked ? 'סומן' : 'לא סומן'
+          ozoraNote: item.hint ? item.hint[lang] : '',
+          status: details.checked ? t.equipStatusChecked : t.equipStatusUnchecked
         });
       }
     }
@@ -69,9 +69,10 @@ function getRows(equipmentData, checkedMap, scope, onlyChecked = false) {
   return rows;
 }
 
-export function exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked = false) {
-  const rows = getRows(equipmentData, checkedMap, scope, onlyChecked);
-  let csvContent = 'סוג,קטגוריה,פריט,כמות,הערת משתמש,הערת Ozora,סטטוס\n';
+export function exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyChecked = false, lang = 'he') {
+  const t = translations[lang];
+  const rows = getRows(equipmentData, checkedMap, scope, onlyChecked, lang);
+  let csvContent = `${t.type},${t.equipColCategory},${t.equipColItem},${t.equipQuantityLabel},${t.equipColUserNote},${t.equipColOzoraNote},${t.equipColStatus}\n`;
 
   for (const row of rows) {
     csvContent += `"${escapeCsv(row.sectionTitle)}","${escapeCsv(row.topicHeading)}","${escapeCsv(row.label)}","${escapeCsv(row.quantity)}","${escapeCsv(row.userNote)}","${escapeCsv(row.ozoraNote)}","${escapeCsv(row.status)}"\n`;
@@ -86,9 +87,13 @@ export function exportEquipmentToCsv(equipmentData, checkedMap, scope, onlyCheck
   URL.revokeObjectURL(url);
 }
 
-function worksheetXml(name, rows, description) {
+function worksheetXml(name, rows, description, lang = 'he') {
+  const t = translations[lang];
+  const isHe = lang === 'he';
+  const align = isHe ? 'Right' : 'Left';
+
   const emptyMessage = rows.length === 0
-    ? '<Row ss:Height="32"><Cell ss:MergeAcross="6" ss:StyleID="Muted"><Data ss:Type="String">לא נמצאו פריטים לייצוא בבחירה הנוכחית.</Data></Cell></Row>'
+    ? `<Row ss:Height="32"><Cell ss:MergeAcross="6" ss:StyleID="Muted"><Data ss:Type="String">${escapeXml(t.equipNoExportItems)}</Data></Cell></Row>`
     : '';
 
   const dataRows = rows.map(row => `
@@ -99,12 +104,12 @@ function worksheetXml(name, rows, description) {
       <Cell ss:StyleID="Cell"><Data ss:Type="String">${escapeXml(row.quantity)}</Data></Cell>
       <Cell ss:StyleID="CellWrap"><Data ss:Type="String">${escapeXml(row.userNote)}</Data></Cell>
       <Cell ss:StyleID="CellWrap"><Data ss:Type="String">${escapeXml(row.ozoraNote)}</Data></Cell>
-      <Cell ss:StyleID="${row.status === 'סומן' ? 'DoneCell' : 'PendingCell'}"><Data ss:Type="String">${escapeXml(row.status)}</Data></Cell>
+      <Cell ss:StyleID="${row.status === t.equipStatusChecked ? 'DoneCell' : 'PendingCell'}"><Data ss:Type="String">${escapeXml(row.status)}</Data></Cell>
     </Row>
   `).join('');
 
   return `
-    <Worksheet ss:Name="${escapeXml(name)}" ss:RightToLeft="1">
+    <Worksheet ss:Name="${escapeXml(name)}" ss:RightToLeft="${isHe ? '1' : '0'}">
       <Table ss:DefaultRowHeight="24">
         <Column ss:Width="130"/>
         <Column ss:Width="160"/>
@@ -114,38 +119,43 @@ function worksheetXml(name, rows, description) {
         <Column ss:Width="260"/>
         <Column ss:Width="90"/>
         <Row ss:Height="34">
-          <Cell ss:MergeAcross="6" ss:StyleID="BrandTitle"><Data ss:Type="String">OZORA 2026 · רשימת ציוד לפסטיבל</Data></Cell>
+          <Cell ss:MergeAcross="6" ss:StyleID="BrandTitle"><Data ss:Type="String">${escapeXml(t.equipBrandTitle)}</Data></Cell>
         </Row>
         <Row ss:Height="28">
-          <Cell ss:MergeAcross="6" ss:StyleID="BrandNote"><Data ss:Type="String">${escapeXml(description)}</Data></Cell>
+          <Cell ss:MergeAcross="6" ss:StyleID="BrandNote_${align}"><Data ss:Type="String">${escapeXml(description)}</Data></Cell>
         </Row>
         <Row ss:Height="28">
-          <Cell ss:MergeAcross="6" ss:StyleID="BrandNote"><Data ss:Type="String">${escapeXml(BRAND_NOTE)}</Data></Cell>
+          <Cell ss:MergeAcross="6" ss:StyleID="BrandNote_${align}"><Data ss:Type="String">${escapeXml(t.equipBrandNote)}</Data></Cell>
         </Row>
         <Row>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">סוג</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">קטגוריה</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">פריט</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">כמות</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">הערת משתמש</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">הערת Ozora</Data></Cell>
-          <Cell ss:StyleID="Header"><Data ss:Type="String">סטטוס</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.type)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipColCategory)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipColItem)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipQuantityLabel)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipColUserNote)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipColOzoraNote)}</Data></Cell>
+          <Cell ss:StyleID="Header_${align}"><Data ss:Type="String">${escapeXml(t.equipColStatus)}</Data></Cell>
         </Row>
         ${emptyMessage}
         ${dataRows}
         <Row ss:Height="26">
-          <Cell ss:MergeAcross="6" ss:StyleID="Footer"><Data ss:Type="String">נוצר עם ozora2026.app</Data></Cell>
+          <Cell ss:MergeAcross="6" ss:StyleID="Footer"><Data ss:Type="String">${escapeXml(t.exportFooter)}</Data></Cell>
         </Row>
       </Table>
     </Worksheet>
   `;
 }
 
-export function exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChecked = false) {
-  const selectedRows = getRows(equipmentData, checkedMap, scope, onlyChecked);
-  const checkedRows = getRows(equipmentData, checkedMap, scope, true);
-  const allRows = getRows(equipmentData, checkedMap, scope, false);
-  const description = onlyChecked ? 'ייצוא פריטים שסומנו בלבד' : 'ייצוא כל רשימת הציוד';
+export function exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChecked = false, lang = 'he') {
+  const t = translations[lang];
+  const isHe = lang === 'he';
+  const align = isHe ? 'Right' : 'Left';
+  const readingOrder = isHe ? 'RightToLeft' : 'LTR';
+
+  const selectedRows = getRows(equipmentData, checkedMap, scope, onlyChecked, lang);
+  const checkedRows = getRows(equipmentData, checkedMap, scope, true, lang);
+  const allRows = getRows(equipmentData, checkedMap, scope, false, lang);
+  const description = onlyChecked ? t.equipExportDescChecked : t.equipExportDescAll;
 
   const workbook = `<?xml version="1.0" encoding="UTF-8"?>
   <?mso-application progid="Excel.Sheet"?>
@@ -157,7 +167,7 @@ export function exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChe
     xmlns:html="http://www.w3.org/TR/REC-html40">
     <Styles>
       <Style ss:ID="Default" ss:Name="Normal">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right" ss:ReadingOrder="RightToLeft"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}" ss:ReadingOrder="${readingOrder}"/>
         <Font ss:FontName="Arial" ss:Size="11" ss:Color="#241434"/>
       </Style>
       <Style ss:ID="BrandTitle">
@@ -165,40 +175,51 @@ export function exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChe
         <Font ss:FontName="Arial" ss:Size="18" ss:Bold="1" ss:Color="#F3E8FF"/>
         <Interior ss:Color="#180A2A" ss:Pattern="Solid"/>
       </Style>
-      <Style ss:ID="BrandNote">
+      <Style ss:ID="BrandNote_Right">
         <Alignment ss:Vertical="Center" ss:Horizontal="Right" ss:WrapText="1"/>
         <Font ss:FontName="Arial" ss:Size="10" ss:Color="#5C2FA0"/>
         <Interior ss:Color="#F2E9FF" ss:Pattern="Solid"/>
       </Style>
-      <Style ss:ID="Header">
+      <Style ss:ID="BrandNote_Left">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Left" ss:WrapText="1"/>
+        <Font ss:FontName="Arial" ss:Size="10" ss:Color="#5C2FA0"/>
+        <Interior ss:Color="#F2E9FF" ss:Pattern="Solid"/>
+      </Style>
+      <Style ss:ID="Header_Right">
         <Alignment ss:Vertical="Center" ss:Horizontal="Right"/>
         <Font ss:FontName="Arial" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/>
         <Interior ss:Color="#6A2CE8" ss:Pattern="Solid"/>
         <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#C6A8FF"/></Borders>
       </Style>
+      <Style ss:ID="Header_Left">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Left"/>
+        <Font ss:FontName="Arial" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/>
+        <Interior ss:Color="#6A2CE8" ss:Pattern="Solid"/>
+        <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#C6A8FF"/></Borders>
+      </Style>
       <Style ss:ID="Cell">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}"/>
         <Interior ss:Color="#FBF8FF" ss:Pattern="Solid"/>
         <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E8DAFF"/></Borders>
       </Style>
       <Style ss:ID="StrongCell">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}"/>
         <Font ss:FontName="Arial" ss:Size="11" ss:Bold="1" ss:Color="#241434"/>
         <Interior ss:Color="#FBF8FF" ss:Pattern="Solid"/>
         <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E8DAFF"/></Borders>
       </Style>
       <Style ss:ID="CellWrap">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right" ss:WrapText="1"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}" ss:WrapText="1"/>
         <Interior ss:Color="#FBF8FF" ss:Pattern="Solid"/>
         <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E8DAFF"/></Borders>
       </Style>
       <Style ss:ID="DoneCell">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}"/>
         <Font ss:FontName="Arial" ss:Size="11" ss:Bold="1" ss:Color="#11692A"/>
         <Interior ss:Color="#E8F8EA" ss:Pattern="Solid"/>
       </Style>
       <Style ss:ID="PendingCell">
-        <Alignment ss:Vertical="Top" ss:Horizontal="Right"/>
+        <Alignment ss:Vertical="Top" ss:Horizontal="${align}"/>
         <Font ss:FontName="Arial" ss:Size="11" ss:Color="#6F5C7D"/>
         <Interior ss:Color="#F4F0F8" ss:Pattern="Solid"/>
       </Style>
@@ -212,9 +233,9 @@ export function exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChe
         <Interior ss:Color="#F2E9FF" ss:Pattern="Solid"/>
       </Style>
     </Styles>
-    ${worksheetXml(onlyChecked ? 'פריטים שסומנו' : 'רשימת ציוד', selectedRows, description)}
-    ${worksheetXml('ציוד שסומן', checkedRows, 'גיליון תיאום מהיר: רק פריטים שסומנו')}
-    ${worksheetXml('כל הרשימה', allRows, 'גיליון מלא: כולל פריטים שלא סומנו')}
+    ${worksheetXml(onlyChecked ? t.equipWorksheetChecked : t.equipWorksheetAll, selectedRows, description, lang)}
+    ${worksheetXml(t.equipWorksheetCoordination, checkedRows, t.equipWorksheetCoordinationDesc, lang)}
+    ${worksheetXml(t.equipWorksheetFull, allRows, t.equipWorksheetFullDesc, lang)}
   </Workbook>`;
 
   const blob = new Blob([workbook], { type: 'application/vnd.ms-excel;charset=utf-8;' });

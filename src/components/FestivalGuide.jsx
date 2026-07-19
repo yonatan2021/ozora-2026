@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useOutletContext } from 'react-router-dom';
 import useGuides from '../hooks/useGuides';
 import { getGuideIcon } from '../utils/guideIcons';
 import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { trackEvent } from '../utils/analytics';
 import EquipmentChecklist from './EquipmentChecklist';
 import { Backpack as EquipmentIcon } from 'lucide-react';
+import { translations } from '../utils/lang';
 
 export default function FestivalGuide() {
-  const { guides } = useGuides();
+  const { lang = 'he' } = useOutletContext() || {};
+  const t = translations[lang];
+  const { guides } = useGuides(lang);
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [openTopics, setOpenTopics] = useState({});
   const [showEquipment, setShowEquipment] = useState(false);
@@ -69,9 +72,9 @@ export default function FestivalGuide() {
         <header className="guide-header">
           <button className="guide-back-btn" onClick={handleEquipmentBack}>
             <ArrowRight size={18} />
-            <span>חזרה למדריכים</span>
+            <span>{t.guideBackToGuides}</span>
           </button>
-          <h2>ציוד לפסטיבל</h2>
+          <h2>{t.equipPageTitle}</h2>
         </header>
         <EquipmentChecklist />
       </div>
@@ -84,7 +87,7 @@ export default function FestivalGuide() {
         <header className="guide-header">
           <button className="guide-back-btn" onClick={handleBack}>
             <ArrowRight size={18} />
-            <span>חזרה למדריכים</span>
+            <span>{t.guideBackToGuides}</span>
           </button>
           <h2>{selectedGuide.title}</h2>
         </header>
@@ -119,8 +122,8 @@ export default function FestivalGuide() {
     return (
       <div className="guide-container stagger-slide-up" style={{ '--card-index': 0 }}>
         <header className="guide-header">
-          <h2>מדריך הפסטיבל</h2>
-          <p className="guide-subtitle">טיפים, עצות והתמצאות בשטח פסטיבל אוזורה 2026 – בקרוב!</p>
+          <h2>{t.guideMainTitle}</h2>
+          <p className="guide-subtitle">{t.guideMainSubtitleComingSoon}</p>
         </header>
       </div>
     );
@@ -129,8 +132,8 @@ export default function FestivalGuide() {
   return (
     <div className="guide-container stagger-slide-up" style={{ '--card-index': 0 }}>
       <header className="guide-header">
-        <h2>מדריך הפסטיבל</h2>
-        <p className="guide-subtitle">טיפים, עצות והתמצאות בשטח פסטיבל אוזורה 2026</p>
+        <h2>{t.guideMainTitle}</h2>
+        <p className="guide-subtitle">{t.guideMainSubtitle}</p>
       </header>
       <div className="guide-grid">
         <div
@@ -138,14 +141,14 @@ export default function FestivalGuide() {
           style={{ '--card-index': 0 }}
           onClick={() => {
             setShowEquipment(true);
-            trackEvent('guide_section_open', { guide_title: 'ציוד לפסטיבל' });
+            trackEvent('guide_section_open', { guide_title: t.equipPageTitle });
           }}
         >
           <div className="guide-card-icon">
             <EquipmentIcon size={20} />
           </div>
-          <h3>ציוד לפסטיבל</h3>
-          <p className="guide-card-topic-count">צ׳ק-ליסט אישי וקבוצתי</p>
+          <h3>{t.equipPageTitle}</h3>
+          <p className="guide-card-topic-count">{t.equipPageSubtitle}</p>
         </div>
         {guides.map((guide, index) => {
           const Icon = getGuideIcon(guide.icon);
@@ -164,7 +167,7 @@ export default function FestivalGuide() {
               </div>
               <h3>{guide.title}</h3>
               <p className="guide-card-topic-count">
-                {guide.topics.length} נושאים
+                {t.guideTopicsCount.replace('{count}', guide.topics.length)}
               </p>
             </div>
           );

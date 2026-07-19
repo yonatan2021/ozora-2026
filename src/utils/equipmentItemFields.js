@@ -103,7 +103,7 @@ export function getEquipmentItemFields(item, topic = {}, sectionKey = 'personal'
     };
   }
 
-  const text = `${item.label || ''} ${item.hint || ''} ${topic.heading || ''}`;
+  const text = `${item.label?.he || ''} ${item.hint?.he || ''} ${topic.heading?.he || ''}`;
   const quantity = sectionKey === 'shared' || includesAny(text, QUANTITY_KEYWORDS);
   const note = sectionKey === 'shared' || includesAny(text, NOTE_KEYWORDS);
 

@@ -48,23 +48,32 @@ function parseTopics(markdownBody) {
   return topics;
 }
 
-export default function useGuides() {
+export default function useGuides(lang = 'he') {
   const guides = useMemo(() => {
-    const parsedGuides = [];
+    const bySlug = {};
 
     for (const [filepath, raw] of Object.entries(guideModules)) {
       const filename = filepath.split('/').pop().replace('.md', '');
-
       if (filename === 'README') continue;
 
-      const { data, content } = parseFrontmatter(raw);
+      const enMatch = filename.match(/^(.*)\.en$/);
+      const slug = enMatch ? enMatch[1] : filename;
+      const fileLang = enMatch ? 'en' : 'he';
 
-      if (!data.title) continue;
+      const parsed = parseFrontmatter(raw);
+      if (!parsed.data.title) continue;
 
+      bySlug[slug] = bySlug[slug] || {};
+      bySlug[slug][fileLang] = parsed;
+    }
+
+    const parsedGuides = [];
+    for (const [slug, byLang] of Object.entries(bySlug)) {
+      const { data, content } = byLang[lang] || byLang.he || byLang.en;
       const topics = parseTopics(content);
 
       parsedGuides.push({
-        slug: filename,
+        slug,
         title: data.title,
         icon: data.icon || 'compass',
         order: data.order ?? 999,
@@ -75,7 +84,7 @@ export default function useGuides() {
 
     parsedGuides.sort((a, b) => a.order - b.order);
     return parsedGuides;
-  }, []);
+  }, [lang]);
 
   return { guides, loading: false };
 }

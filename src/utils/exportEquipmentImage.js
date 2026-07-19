@@ -1,5 +1,6 @@
 import logoSrc from '../assets/logo.png';
 import { getEquipmentItemFields } from './equipmentItemFields';
+import { translations } from './lang';
 
 const WIDTH = 1080;
 const PADDING = 56;
@@ -112,26 +113,28 @@ function downloadCanvas(canvas, filename) {
   });
 }
 
-function drawPageMarker(ctx, page, total, h, theme) {
+function drawPageMarker(ctx, page, total, h, theme, lang = 'he') {
   if (total <= 1) return;
   const isDay = theme === 'theme-day';
+  const t = translations[lang];
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = isDay ? 'rgba(51, 34, 68, 0.62)' : 'rgba(232, 216, 255, 0.76)';
   ctx.font = "600 15px 'Exo 2', 'Heebo', sans-serif";
-  ctx.fillText(`OZORA 2026 · עמוד ${page}/${total} · ozora2026.app`, WIDTH / 2, h - 24);
+  ctx.fillText(t.equipPageMarker.replace('{page}', page).replace('{total}', total), WIDTH / 2, h - 24);
   ctx.restore();
 }
 
 function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', lang = 'he') {
   const isDay = theme === 'theme-day';
   const isHe = lang === 'he';
+  const t = translations[lang];
   let y = startY;
 
   ctx.textAlign = 'center';
   ctx.fillStyle = isDay ? '#332244' : '#e8d8ff';
   ctx.font = "700 26px 'Orbitron', 'Heebo', sans-serif";
-  ctx.fillText(section.title, WIDTH / 2, y);
+  ctx.fillText(section.title[lang], WIDTH / 2, y);
   y += 44;
 
   const headingX = isHe ? WIDTH - PADDING : PADDING;
@@ -141,16 +144,17 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', la
     ctx.textAlign = isHe ? 'right' : 'start';
     ctx.fillStyle = isDay ? '#5a30a3' : '#c9a8ff';
     ctx.font = "700 19px 'Exo 2', 'Heebo', sans-serif";
-    ctx.fillText(topic.heading, headingX, y);
+    ctx.fillText(topic.heading[lang], headingX, y);
     y += 30;
 
     for (const item of topic.items) {
       const details = normalizeItemState(checkedMap[item.id]);
       const checked = details.checked;
+      const label = item.label[lang];
       const fields = getEquipmentItemFields(item, topic, section.key);
       const metaParts = [];
-      if (fields.quantity && details.quantity) metaParts.push(`כמות: ${details.quantity}`);
-      if (fields.note && details.note) metaParts.push(`הערה: ${details.note}`);
+      if (fields.quantity && details.quantity) metaParts.push(`${t.equipQuantityLabel}: ${details.quantity}`);
+      if (fields.note && details.note) metaParts.push(`${t.noteLabel}: ${details.note}`);
       ctx.font = "400 16px 'Exo 2', 'Heebo', sans-serif";
       ctx.textAlign = isHe ? 'right' : 'start';
 
@@ -158,9 +162,9 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', la
         if (checked) {
           ctx.fillStyle = '#1e7e34';
           if (isHe) {
-            ctx.fillText(`${item.label}  ✓`, itemX, y);
+            ctx.fillText(`${label}  ✓`, itemX, y);
           } else {
-            ctx.fillText(`✓  ${item.label}`, itemX, y);
+            ctx.fillText(`✓  ${label}`, itemX, y);
           }
         } else {
           ctx.fillStyle = 'rgba(51, 34, 68, 0.35)';
@@ -168,18 +172,18 @@ function drawSection(ctx, section, checkedMap, startY, theme = 'theme-night', la
           ctx.fillStyle = 'rgba(51, 34, 68, 0.45)';
           const spacing = ctx.measureText('○  ').width;
           if (isHe) {
-            ctx.fillText(item.label, itemX - spacing, y);
+            ctx.fillText(label, itemX - spacing, y);
           } else {
-            ctx.fillText(item.label, itemX + spacing, y);
+            ctx.fillText(label, itemX + spacing, y);
           }
         }
       } else {
         ctx.fillStyle = checked ? '#7be88a' : 'rgba(255,255,255,0.35)';
         const mark = checked ? '✓' : '○';
         if (isHe) {
-          ctx.fillText(`${item.label}  ${mark}`, itemX, y);
+          ctx.fillText(`${label}  ${mark}`, itemX, y);
         } else {
-          ctx.fillText(`${mark}  ${item.label}`, itemX, y);
+          ctx.fillText(`${mark}  ${label}`, itemX, y);
         }
       }
       y += 24;
@@ -280,7 +284,7 @@ export async function exportEquipmentImageAsPng({ shared, personal, checkedMap, 
       pageHeight * SCALE_FACTOR
     );
     pageCtx.scale(SCALE_FACTOR, SCALE_FACTOR);
-    drawPageMarker(pageCtx, page + 1, pageCount, pageHeight, theme);
+    drawPageMarker(pageCtx, page + 1, pageCount, pageHeight, theme, lang);
 
     const suffix = pageCount > 1 ? `-${page + 1}-of-${pageCount}` : '';
     await downloadCanvas(pageCanvas, `ozora-2026-equipment-checklist${suffix}.png`);

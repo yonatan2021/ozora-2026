@@ -72,7 +72,7 @@ describe('App End-to-End Flows', () => {
     // Switch to Guide tab
     const guideNavBtn = screen.getAllByRole('button', { name: /Guide/i })[0];
     fireEvent.click(guideNavBtn);
-    expect(await screen.findByText(/מדריך הפסטיבל/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Festival Guide/i)).toBeInTheDocument();
   });
 
   it('should render the footer offline install CTA', () => {

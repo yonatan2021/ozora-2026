@@ -7,6 +7,7 @@ import { exportEquipmentImageAsPng } from '../utils/exportEquipmentImage';
 import { exportEquipmentToExcel, exportEquipmentToJson } from '../utils/exportEquipmentData';
 import { getEquipmentItemFields } from '../utils/equipmentItemFields';
 import { trackEvent } from '../utils/analytics';
+import { translations } from '../utils/lang';
 
 const highlightText = (text, highlight) => {
   const trimmed = highlight.trim();
@@ -22,6 +23,7 @@ const highlightText = (text, highlight) => {
 
 export default function EquipmentChecklist() {
   const { lang = 'he' } = useOutletContext() || {};
+  const t = translations[lang];
   const [activeKey, setActiveKey] = useState('shared');
   const [openTopics, setOpenTopics] = useState({});
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
@@ -68,7 +70,7 @@ export default function EquipmentChecklist() {
   const handleExportCsv = (scope, onlyChecked = false) => {
     setExportMenuOpen(false);
     trackEvent('equipment_export', { method: 'excel', scope, onlyChecked });
-    exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChecked);
+    exportEquipmentToExcel(equipmentData, checkedMap, scope, onlyChecked, lang);
   };
 
   const handleExportJson = () => {
@@ -99,12 +101,12 @@ export default function EquipmentChecklist() {
             }
           }
           importCheckedMap(validated);
-          alert('הגיבוי נטען בהצלחה!');
+          alert(t.equipBackupLoaded);
         } else {
-          alert('קובץ הגיבוי אינו תקין.');
+          alert(t.equipBackupInvalid);
         }
       } catch {
-        alert('שגיאה בקריאת קובץ הגיבוי.');
+        alert(t.equipBackupReadError);
       }
     };
     reader.readAsText(file);
@@ -150,20 +152,20 @@ export default function EquipmentChecklist() {
     if (!isPrint) {
       const query = searchTerm.toLowerCase().trim();
       displayTopics = section.topics.map(topic => {
-        const matchesHeading = query === '' || topic.heading.toLowerCase().includes(query);
+        const matchesHeading = query === '' || topic.heading[lang].toLowerCase().includes(query);
         const filteredItems = topic.items.filter(item => {
           // Status filter
-          const matchesStatus = 
+          const matchesStatus =
             statusFilter === 'all' ||
             (statusFilter === 'checked' && isChecked(item.id)) ||
             (statusFilter === 'unchecked' && !isChecked(item.id));
-          
+
           if (!matchesStatus) return false;
 
           // Search filter
           if (matchesHeading) return true;
-          const matchesLabel = item.label.toLowerCase().includes(query);
-          const matchesHint = item.hint && item.hint.toLowerCase().includes(query);
+          const matchesLabel = item.label[lang].toLowerCase().includes(query);
+          const matchesHint = item.hint && item.hint[lang].toLowerCase().includes(query);
           return matchesLabel || matchesHint;
         });
 
@@ -181,16 +183,16 @@ export default function EquipmentChecklist() {
         data-testid={isPrint ? undefined : `equipment-section-${key}`}
       >
         <div className="equipment-section-header">
-          <h3>{isPrint ? `הדפסת ${section.title}` : section.title}</h3>
+          <h3>{isPrint ? t.equipPrintingTitle.replace('{title}', section.title[lang]) : section.title[lang]}</h3>
           <span className="equipment-progress-badge">
-            {progress.done}/{progress.total} סומנו
+            {progress.done}/{progress.total} {t.equipCheckedCount}
           </span>
         </div>
 
         <div className="equipment-topics">
           {displayTopics.length === 0 ? (
             <div className="equipment-empty-search" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-              לא נמצאו פריטים המתאימים לסינון הנוכחי.
+              {t.equipNoItemsMatch}
             </div>
           ) : (
             displayTopics.map((topic) => {
@@ -210,7 +212,7 @@ export default function EquipmentChecklist() {
                     onClick={isPrint ? undefined : () => toggleTopic(topic.id)}
                   >
                     <span className="equipment-topic-heading">
-                      {isPrint ? `נושא: ${topic.heading}` : highlightText(topic.heading, searchTerm)}
+                      {isPrint ? t.equipTopicPrintPrefix.replace('{heading}', topic.heading[lang]) : highlightText(topic.heading[lang], searchTerm)}
                     </span>
                     <span className="equipment-topic-right">
                       <span className="equipment-topic-progress">{topicProgress.done}/{topicProgress.total}</span>
@@ -241,11 +243,11 @@ export default function EquipmentChecklist() {
                           </label>
                           <span className="equipment-item-text">
                             <span className="equipment-item-label">
-                              {isPrint ? `• ${item.label}` : highlightText(item.label, searchTerm)}
+                              {isPrint ? `• ${item.label[lang]}` : highlightText(item.label[lang], searchTerm)}
                             </span>
                             {item.hint && (
                               <span className="equipment-item-hint">
-                                {isPrint ? item.hint : highlightText(item.hint, searchTerm)}
+                                {isPrint ? item.hint[lang] : highlightText(item.hint[lang], searchTerm)}
                               </span>
                             )}
                             {(() => {
@@ -258,9 +260,9 @@ export default function EquipmentChecklist() {
                                 if (!hasQuantity && !hasNote) return null;
                                 return (
                                   <span className="equipment-print-meta">
-                                    {hasQuantity ? `כמות: ${details.quantity}` : ''}
+                                    {hasQuantity ? `${t.equipQuantityLabel}: ${details.quantity}` : ''}
                                     {hasQuantity && hasNote ? ' | ' : ''}
-                                    {hasNote ? `הערה: ${details.note}` : ''}
+                                    {hasNote ? `${t.noteLabel}: ${details.note}` : ''}
                                   </span>
                                 );
                               }
@@ -271,7 +273,7 @@ export default function EquipmentChecklist() {
                                 <span className="equipment-item-fields" onClick={(event) => event.stopPropagation()}>
                                   {fields.quantity && (
                                     <label className="equipment-quantity-field">
-                                      <span className="equipment-field-label">כמות</span>
+                                      <span className="equipment-field-label">{t.equipQuantityLabel}</span>
                                       <input
                                         type="number"
                                         inputMode="numeric"
@@ -280,19 +282,19 @@ export default function EquipmentChecklist() {
                                         value={details.quantity}
                                         onChange={(event) => setQuantity(item.id, event.target.value)}
                                         placeholder="1"
-                                        aria-label={`כמות עבור ${item.label}`}
+                                        aria-label={t.equipQuantityForAria.replace('{item}', item.label[lang])}
                                       />
                                     </label>
                                   )}
                                   {fields.note && (
                                     <label className="equipment-note-field">
-                                      <span className="equipment-field-label">הערה</span>
+                                      <span className="equipment-field-label">{t.noteLabel}</span>
                                       <textarea
                                         rows="1"
                                         value={details.note}
                                         onChange={(event) => setNote(item.id, event.target.value)}
-                                        placeholder="מי מביא, סוג, מידה..."
-                                        aria-label={`הערה עבור ${item.label}`}
+                                        placeholder={t.equipNotePlaceholder}
+                                        aria-label={t.equipNoteForAria.replace('{item}', item.label[lang])}
                                       />
                                     </label>
                                   )}
@@ -326,7 +328,7 @@ export default function EquipmentChecklist() {
       <div className="equipment-header-actions">
         <div className="equipment-info-note">
           <Info size={16} />
-          <span>לאחר סימון הציוד ברשימה, תוכלו לייצא אותו לאקסל, להדפיס או לשמור גיבוי.</span>
+          <span>{t.equipInfoNote}</span>
         </div>
         <div className="equipment-export-wrap" ref={menuRef}>
           <button
@@ -336,7 +338,7 @@ export default function EquipmentChecklist() {
             onClick={() => setExportMenuOpen(prev => !prev)}
           >
             <Share2 size={16} />
-            <span>ייצוא וגיבוי</span>
+            <span>{t.equipExportBackupBtn}</span>
           </button>
           
           <input
@@ -349,46 +351,46 @@ export default function EquipmentChecklist() {
 
           {exportMenuOpen && (
             <div className="equipment-export-menu">
-              <div className="menu-section-title">ייצוא נתונים (Excel)</div>
+              <div className="menu-section-title">{t.equipExportExcelSection}</div>
               <button type="button" onClick={() => handleExportCsv('both', false)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
-                <span>ייצוא אקסל ממותג (כל הציוד)</span>
+                <span>{t.equipExportExcelAll}</span>
               </button>
               <button type="button" onClick={() => handleExportCsv('both', true)}>
                 <FileSpreadsheet size={14} className="menu-icon-csv" />
-                <span>ייצוא אקסל ממותג (פריטים שסומנו בלבד)</span>
+                <span>{t.equipExportExcelChecked}</span>
               </button>
 
               <div className="menu-divider" />
 
-              <div className="menu-section-title">הדפסה ומדיה</div>
+              <div className="menu-section-title">{t.equipPrintMediaSection}</div>
               <button type="button" onClick={() => handlePrint(false)}>
                 <Printer size={14} className="menu-icon-print" />
-                <span>הדפסת הרשימה (כל הציוד)</span>
+                <span>{t.equipPrintAll}</span>
               </button>
               <button type="button" onClick={() => handlePrint(true)}>
                 <Printer size={14} className="menu-icon-print" />
-                <span>הדפסת פריטים שסומנו בלבד</span>
+                <span>{t.equipPrintChecked}</span>
               </button>
               <button type="button" onClick={() => handleExportImage('both', false)}>
                 <ImageIcon size={14} className="menu-icon-image" />
-                <span>ייצוא לתמונות קריאות (כל הציוד)</span>
+                <span>{t.equipExportImageAll}</span>
               </button>
               <button type="button" onClick={() => handleExportImage('both', true)}>
                 <ImageIcon size={14} className="menu-icon-image" />
-                <span>ייצוא לתמונות קריאות (פריטים שסומנו בלבד)</span>
+                <span>{t.equipExportImageChecked}</span>
               </button>
 
               <div className="menu-divider" />
 
-              <div className="menu-section-title">גיבוי אופליין (JSON)</div>
+              <div className="menu-section-title">{t.equipBackupSection}</div>
               <button type="button" onClick={handleExportJson}>
                 <Download size={14} className="menu-icon-download" />
-                <span>שמירת קובץ גיבוי</span>
+                <span>{t.equipSaveBackup}</span>
               </button>
               <button type="button" onClick={() => fileInputRef.current.click()}>
                 <Upload size={14} className="menu-icon-upload" />
-                <span>טעינת קובץ גיבוי</span>
+                <span>{t.equipLoadBackup}</span>
               </button>
             </div>
           )}
@@ -402,7 +404,7 @@ export default function EquipmentChecklist() {
           <input
             type="text"
             className="equipment-search-input"
-            placeholder="חיפוש פריט או רמז עזר..."
+            placeholder={t.equipSearchPlaceholder}
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
           />
@@ -414,7 +416,7 @@ export default function EquipmentChecklist() {
                 setLocalSearch('');
                 setSearchTerm('');
               }}
-              title="נקה חיפוש"
+              title={t.equipClearSearch}
             >
               <X size={16} />
             </button>
@@ -426,21 +428,21 @@ export default function EquipmentChecklist() {
             className={`equipment-filter-chip ${statusFilter === 'all' ? 'active' : ''}`}
             onClick={() => setStatusFilter('all')}
           >
-            הכל
+            {t.equipFilterAll}
           </button>
           <button
             type="button"
             className={`equipment-filter-chip ${statusFilter === 'unchecked' ? 'active' : ''}`}
             onClick={() => setStatusFilter('unchecked')}
           >
-            טרם סומנו
+            {t.equipFilterUnchecked}
           </button>
           <button
             type="button"
             className={`equipment-filter-chip ${statusFilter === 'checked' ? 'active' : ''}`}
             onClick={() => setStatusFilter('checked')}
           >
-            סומנו
+            {t.equipFilterChecked}
           </button>
         </div>
       </div>
@@ -453,7 +455,7 @@ export default function EquipmentChecklist() {
           onClick={() => setActiveKey('shared')}
         >
           <Users size={16} />
-          <span>קבוצתי</span>
+          <span>{t.equipTabShared}</span>
         </button>
         <button
           type="button"
@@ -462,7 +464,7 @@ export default function EquipmentChecklist() {
           onClick={() => setActiveKey('personal')}
         >
           <User size={16} />
-          <span>אישי</span>
+          <span>{t.equipTabPersonal}</span>
         </button>
       </div>
 

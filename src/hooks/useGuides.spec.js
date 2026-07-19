@@ -35,4 +35,21 @@ describe('useGuides hook', () => {
       }
     }
   });
+
+  it('serves the English translation when lang is "en", keeping the same slug', () => {
+    const { result } = renderHook(() => useGuides('en'));
+    const { guides } = result.current;
+
+    const tickets = guides.find(g => g.slug === 'tickets');
+    expect(tickets).toBeDefined();
+    expect(tickets.title).toBe('Tickets & Purchasing');
+    expect(tickets.topics.length).toBeGreaterThan(0);
+  });
+
+  it('falls back to Hebrew for guides without an English translation yet', () => {
+    const { result: heResult } = renderHook(() => useGuides('he'));
+    const { result: enResult } = renderHook(() => useGuides('en'));
+
+    expect(heResult.current.guides.length).toBe(enResult.current.guides.length);
+  });
 });
